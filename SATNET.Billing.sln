@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SATNET.WebApp", "SATNET.WebApp\SATNET.WebApp.csproj", "{FCB706E8-196A-4933-A78F-49AFDB778C12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SATNET.Service", "SATNET.Service\SATNET.Service.csproj", "{5D6D8E95-6CCE-4B20-8AFE-7A4B0B4F7CAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SATNET.Domain", "SATNET.Domain\SATNET.Domain.csproj", "{8C494A38-7CF5-4011-B5A8-3E80C120E558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SATNET.Repository", "SATNET.Repository\SATNET.Repository.csproj", "{99412EB7-AEF7-4FAD-B7A1-08FFC86F4CB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCB706E8-196A-4933-A78F-49AFDB778C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB706E8-196A-4933-A78F-49AFDB778C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB706E8-196A-4933-A78F-49AFDB778C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB706E8-196A-4933-A78F-49AFDB778C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6D8E95-6CCE-4B20-8AFE-7A4B0B4F7CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6D8E95-6CCE-4B20-8AFE-7A4B0B4F7CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6D8E95-6CCE-4B20-8AFE-7A4B0B4F7CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6D8E95-6CCE-4B20-8AFE-7A4B0B4F7CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C494A38-7CF5-4011-B5A8-3E80C120E558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C494A38-7CF5-4011-B5A8-3E80C120E558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C494A38-7CF5-4011-B5A8-3E80C120E558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C494A38-7CF5-4011-B5A8-3E80C120E558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99412EB7-AEF7-4FAD-B7A1-08FFC86F4CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99412EB7-AEF7-4FAD-B7A1-08FFC86F4CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99412EB7-AEF7-4FAD-B7A1-08FFC86F4CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99412EB7-AEF7-4FAD-B7A1-08FFC86F4CB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB6AE7D3-5EA9-4214-A904-6BBFDA512295}
+	EndGlobalSection
+EndGlobal
