@@ -4,4 +4,65 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Themes\Default\Layout\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Themes\Default\Resources\css\adminlte.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\adminlte.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\adminlte.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\adminlte.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.components.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.components.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.components.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.components.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.core.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.core.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.core.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.core.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.extra-components.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.extra-components.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.extra-components.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.extra-components.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.pages.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.pages.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.pages.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.pages.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.plugins.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.plugins.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.plugins.min.css" />
+    <None Include="wwwroot\Themes\Default\Resources\css\alt\adminlte.plugins.min.css.map" />
+    <None Include="wwwroot\Themes\Default\Resources\img\AdminLTELogo.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\avatar.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\avatar04.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\avatar2.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\avatar3.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\avatar5.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\american-express.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\cirrus.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\mastercard.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\mestro.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\paypal.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\paypal2.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\credit\visa.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\icons.png" />
+    <None Include="wwwroot\Themes\Default\Resources\img\user2-160x160.jpg" />
+    <None Include="wwwroot\Themes\Default\Resources\js\adminlte.js" />
+    <None Include="wwwroot\Themes\Default\Resources\js\adminlte.js.map" />
+    <None Include="wwwroot\Themes\Default\Resources\js\adminlte.min.js" />
+    <None Include="wwwroot\Themes\Default\Resources\js\adminlte.min.js.map" />
+    <None Include="wwwroot\Themes\Default\Resources\js\demo.js" />
+    <None Include="wwwroot\Themes\Default\Resources\js\pages\dashboard.js" />
+    <None Include="wwwroot\Themes\Default\Resources\js\pages\dashboard2.js" />
+    <None Include="wwwroot\Themes\Default\Resources\js\pages\dashboard3.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>
