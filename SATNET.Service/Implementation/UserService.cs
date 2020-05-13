@@ -1,30 +1,37 @@
 ﻿using SATNET.Domain;
+using SATNET.Repository.Interface;
 using SATNET.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
     public class UserService : IUserService
     {
-        public User GetUserById(int id)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+        public Task<User> GetUserById(int id)
         {
             throw new NotImplementedException();
         }
-        public List<User> GetAllUsers()
+        public Task<List<User>> GetAllUsers()
+        {
+            return _userRepository.GetAllUsers();
+        }
+        public Task<bool> AddUser(User user)
         {
             throw new NotImplementedException();
         }
-        public bool AddUser(User user)
+        public Task<bool> UpdateUser(User user)
         {
             throw new NotImplementedException();
         }
-        public bool UpdateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-        public bool DeleteUser(int id)
+        public Task<bool> DeleteUser(int id)
         {
             throw new NotImplementedException();
         }

@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SATNET.Repository.Implementation;
+using SATNET.Repository.Interface;
+using SATNET.Service.Implementation;
+using SATNET.Service.Interface;
 
 namespace SATNET.WebApp
 {
@@ -23,6 +27,9 @@ namespace SATNET.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
         }
 
@@ -53,5 +60,6 @@ namespace SATNET.WebApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }
