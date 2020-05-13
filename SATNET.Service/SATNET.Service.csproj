@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SATNET.Domain\SATNET.Domain.csproj" />
+    <ProjectReference Include="..\SATNET.Repository\SATNET.Repository.csproj" />
   </ItemGroup>
 
 </Project>
