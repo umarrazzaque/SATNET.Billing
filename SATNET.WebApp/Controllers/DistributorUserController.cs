@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SATNET.Domain;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models;
 
@@ -28,7 +29,8 @@ namespace SATNET.WebApp.Controllers
                         DistributorId = i.DistributorId,
                         Id = i.Id,
                         FirstName = i.FirstName,
-                        LastName = i.LastName
+                        LastName = i.LastName,
+                        UserName = i.UserName
                     };
                     model.Add(user);
                 });
@@ -36,5 +38,39 @@ namespace SATNET.WebApp.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(DistributorUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View();
+        }
+
+        //[HttpPut]
+        //[Route()]
+        //public async Task<IActionResult> Edit(DistributorUserViewModel model)
+        //{
+        //    var user = new User()
+        //    {
+        //        Id=model.Id,
+        //        FirstName = model.FirstName,
+        //        LastName=model.LastName,
+        //        UpdatedOn=DateTime.Now,
+        //        UpdatedBy=123
+        //    };
+        //    var serviceResult = await _userService.UpdateUser(user);
+
+        //    return Json()
+        //}
+
     }
 }
