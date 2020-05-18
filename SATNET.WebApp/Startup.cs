@@ -50,7 +50,7 @@ namespace SATNET.WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

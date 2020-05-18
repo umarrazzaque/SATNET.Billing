@@ -1,0 +1,77 @@
+﻿@model SATNET.WebApp.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Add User</h4>
+    </div>
+    <div class="card-body">
+        <form id="formAddUser" autocomplete="off" asp-action="Add">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="lable-control"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="LastName" class="lable-control"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="UserName" class="lable-control"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="EmailAddress" class="lable-control"></label>
+                        <input asp-for="EmailAddress" class="form-control" />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Password" class="lable-control"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="lable-control"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary rounded-0">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script src="~/js/add-user.js"></script>
+}
+
+
+
+

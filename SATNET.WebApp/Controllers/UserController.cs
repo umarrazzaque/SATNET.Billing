@@ -9,28 +9,29 @@ using SATNET.WebApp.Models;
 
 namespace SATNET.WebApp.Controllers
 {
-    public class DistributorUserController : Controller
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public DistributorUserController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
-            List<DistributorUserViewModel> model = new List<DistributorUserViewModel>();
+            List<UserViewModel> model = new List<UserViewModel>();
             var serviceResult = await _userService.GetAllUsers();
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(i =>
                 {
-                    DistributorUserViewModel user = new DistributorUserViewModel()
+                    UserViewModel user = new UserViewModel()
                     {
                         DistributorId = i.DistributorId,
                         Id = i.Id,
                         FirstName = i.FirstName,
                         LastName = i.LastName,
-                        UserName = i.UserName
+                        UserName = i.UserName,
+                        EmailAddress = i.EmailAddress
                     };
                     model.Add(user);
                 });
@@ -46,13 +47,15 @@ namespace SATNET.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(DistributorUserViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(UserViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-
+                return View(model);
             }
-            return View();
+
+            return RedirectToAction(nameof(Index));
         }
 
         //[HttpPut]
