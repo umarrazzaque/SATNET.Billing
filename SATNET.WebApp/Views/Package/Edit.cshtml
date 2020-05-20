@@ -1,0 +1,61 @@
+﻿@model SATNET.WebApp.Models.PackageModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@await Component.InvokeAsync("ContentHead", @Model.MenuModel)
+
+    <section class="content">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form method="post" data-ajax="true" asp-controller="Package" asp-action="Edit" data-ajax-method="post"
+                      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PackageName, new { @class = "col-sm-4 col-form-label" })
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PackageType, new { @class = "col-sm-4 col-form-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.PackageType, new SelectList(Model.PackageTypeList, "Value", "Text"), "-Select Paarent-", new { @class = "form-control select2 text-input" })
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Rate, new { @class = "col-sm-4 col-form-label" })
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password", @type = "number" } })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary btn-sm mr-3 pl-3 pr-3">Submit</button>
+                        <a class="btn btn-default btn-sm pl-3 pr-3 right-pan" href="@String.Format("/{0}", "Package/Reset")">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </section>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    $.validator.unobtrusive.parse('#formAdd');
+    
+</script>

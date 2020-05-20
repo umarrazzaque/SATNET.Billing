@@ -1,0 +1,55 @@
+﻿@model SATNET.WebApp.Models.PackageModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@await Component.InvokeAsync("ContentHead", @Model.MenuModel)
+
+    <section class="content">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                <div class="row">
+                    <label class="col-sm-3">@Html.DisplayNameFor(model => model.PackageName):</label>
+                    <div class="col-sm-9">
+                        <span>@Html.DisplayFor(model => model.PackageName)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-3">@Html.DisplayNameFor(model => model.PackageType):</label>
+                    <div class="col-sm-9">
+                        <span>@Html.DisplayFor(model => model.PackageType)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-3">@Html.DisplayNameFor(model => model.Speed):</label>
+                    <div class="col-sm-9">
+                        <span>@Html.DisplayFor(model => model.Speed)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-3">@Html.DisplayNameFor(model => model.Rate):</label>
+                    <div class="col-sm-9">
+                        <span>@Html.DisplayFor(model => model.Rate)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <a class="btn btn-default btn-sm right-pan pl-3 pr-3 mt-3" href="@String.Format("/{0}", "Package/Reset")">
+                        Back
+                    </a>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            
+        </div>
+    </section>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    $.validator.unobtrusive.parse('#formAdd');
+    
+</script>

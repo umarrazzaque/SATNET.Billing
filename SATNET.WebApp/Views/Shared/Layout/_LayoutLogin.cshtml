@@ -1,0 +1,77 @@
+﻿@*@using System.Web.Optimization*@
+@using SATNET.WebApp.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AMF Information Management System</title>
+    @*@Styles.Render("~/Content/css")*@
+    <link href="@SessionObjects.Theme.ThemeCssPath/theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="@SessionObjects.Theme.ThemeCssPath/style.css" rel="stylesheet" type="text/css" />
+    @*@Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/Modules")
+    @Scripts.Render("~/bundles/jquery")*@
+    @RenderSection("styles", required: false)
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box shadow">
+        <div class="login-box-body">
+            <div class="login-logo">
+                <a ><img src="@string.Format("{0}/logo.jpg", SessionObjects.Theme.ThemeImagesPath)" alt="" class="img-responsive text-center"></a>
+            </div><!-- /.login-logo -->
+            @RenderBody()
+            @*<a href="#">I forgot my password</a>*@
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+    <script language="javascript" type="text/javascript"> 
+        $('#pakNo').focusout(function () {
+            
+            $('#password').attr('disabled', 'disabled');
+            var varPakNo = $("#pakNo").val();
+            if (varPakNo ) {
+                Layout.RightLoader(true);
+                $.ajax({
+                    url: '/Auth/GetUserNameByPakNo',
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ pakNo: varPakNo }),
+                    async: true,
+                    processData: false,
+                    cache: false,
+                    success: function (data) {
+                        Layout.RightLoader(false);
+                        if (data.IsSuccess) {
+                            $('#password').removeAttr('disabled');
+                            $('#btnLogin').removeAttr('disabled');
+                            $("#password").focus();
+                            $("#loginStatus").html("");
+                            $("#userName").val(data.UserName);
+                            $("#UserPasswordVal").val(data.UserPassword);
+                            $("#UserId").val(data.UserId);
+                            $("#WpId").val(data.WpId);
+                            return true;
+                        } else {
+                            $('#password').attr('disabled', 'disabled');
+                            $('#btnLogin').attr('disabled', 'disabled');
+                            $("#pakNo").focus();
+                            $("#userName").val(""); 
+                            $("#loginStatus").html(data.ErrorDesc);
+                            return false;
+                        }
+                       
+                    },
+                    error: function (xhr) {
+                        alert(xhr); 
+                    }
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>

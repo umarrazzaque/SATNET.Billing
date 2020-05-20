@@ -1,0 +1,72 @@
+﻿@model SATNET.WebApp.Models.PackageModelList
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="table table-bordered table-head-fixed text-nowrap dataTable " role="grid" aria-describedby="">
+        <thead>
+            <tr role="row">
+                <th width="10%">Sr No</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().PackageName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().Rate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().Speed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().PackageType)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model.PackageModels)
+            {
+                <tr role="row">
+                    <td>
+                        @{
+                            counter++;
+                        }
+                        @counter
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PackageName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Speed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PackageType)
+                    </td>
+                    <td>
+                        <a href="@String.Format("/{0}?id={1}", "Package/Edit", item.PackageId)" class="pl-1 pr-1 edit-pan">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "Package/Details", item.PackageId)" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-bars" aria-hidden="true"></span>
+                        </a>
+                        <a href="#" class="pl-1 pr-1">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>
+
