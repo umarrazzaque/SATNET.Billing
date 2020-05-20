@@ -1,0 +1,43 @@
+﻿@using SATNET.WebApp.Helpers
+@{
+//if (!Request.IsAjaxRequest())
+//{
+//    Layout = SessionObjects.Theme.ThemePath + "/Layouts/_LayoutMain.cshtml";
+//}
+}
+
+@*<section class="content-header">
+    <h1>
+        @SessionObjects.MenuHeading
+        <small>@SessionObjects.MenuSubHeading</small>
+    </h1>
+    <ol class="breadcrumb">
+        @if (SessionObjects.BredCrums != null)
+        {
+            var bcList = SessionObjects.BredCrums;
+
+            foreach (var bc in bcList)
+            {
+                <li>
+                    @{
+                var bUrl = bc.Url;
+                if (bc.ParentId == 0)
+                {
+                    bUrl = Url.Action("SetModule", "Home", new { moduleId = bc.MenuId });
+                }
+                    }
+                    <a href="@bUrl" class="@bc.CssClass">@bc.DisplayName</a>
+                </li>
+            }
+        }
+    </ol>
+</section>*@
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</section>

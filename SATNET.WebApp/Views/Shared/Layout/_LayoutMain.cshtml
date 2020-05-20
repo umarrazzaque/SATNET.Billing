@@ -1,0 +1,164 @@
+﻿@using System.Globalization
+@using SATNET.WebApp.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AMF Information Management System</title>
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")*@
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemePluginsPath/select2/select2.min.css">
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemePluginsPath/iCheck/all.css">
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemePluginsPath/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemeCssPath/theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemeCssPath/style.css" type="text/css" />
+    <link rel="stylesheet" href="@SessionObjects.Theme.ThemeCssPath/skins/_all-skins.min.css" type="text/css">
+    <link rel="stylesheet" href="@SessionObjects.SiteUrl/Content/jquery-ui.css">
+    
+    @RenderSection("styles", required: false)
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        @{
+            await Component.InvokeAsync("Head");
+
+            await Component.InvokeAsync("SideMenu");    
+        }
+        <div class="content-wrapper" id="MainContents">
+            @RenderBody()
+        </div>
+        <div id="divDialogPan"></div>
+        <div class="msgStatus"></div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.0.0
+            </div>
+            Designed & Developed by Software Development Cell, Aircraft Manufacturing Factory, PAC Kamra
+        </footer>
+    </div><!-- ./wrapper -->
+    @*@Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Modules")*@
+    <script src="@SessionObjects.Theme.ThemePluginsPath/select2/select2.full.min.js"></script>
+    <script src="@SessionObjects.Theme.ThemePluginsPath/iCheck/icheck.min.js"></script>
+    <script src="@SessionObjects.Theme.ThemeJsPath/app.min.js"></script>
+    <script src="@SessionObjects.Theme.ThemePluginsPath/datepicker/bootstrap-datepicker.js"></script>
+    <script src="@SessionObjects.Theme.ThemePluginsPath/input-mask/jquery.inputmask.js"></script>
+    @*<script src="@SessionObjects.Theme.ThemePluginsPath/chartjs/Chart.min.js"></script>
+        <script src="@SessionObjects.Theme.ThemeJsPath/pages/dashboard2.js"></script>
+        <script src="@SessionObjects.Theme.ThemeJsPath/demo.js"></script>*@
+
+    <script type="text/javascript">
+        //If Ajax Request not working then this script will run for iCheckboxs & Select2
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="checkbox"].check-box, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        });
+        $(".select2").select2(); //End If Ajax Request not working then this script will run for iCheckboxs & Select2
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+            @*$('#SelectedMenuId').val("@SharedHelpers.Encrypt(SessionObjects.ModuleId.ToString(CultureInfo.InvariantCulture))");*@
+            $('#SelectedMenuId').change(function () {
+                var val = $('#SelectedMenuId').val();
+                window.location = "/Home/SetModule?uid=" + val;
+            });
+            $(document).on("click", '.spin-icon', function (e) {
+                $(".theme-config-box").toggleClass("show");
+            });
+
+            $(document).on("click", 'a.right-pan', function (e) {
+                e.preventDefault();
+                Layout.LoadContent($(this).attr("href"),null);
+                return true;
+            });
+
+            $(document).on("click", 'a.dialog-pan', function (e) {
+                e.preventDefault();
+                Layout.LoadModal($(this).attr("href"), null);
+                return true;
+            });
+
+            $(document).on("click", 'a.edit-pan', function (e) {
+                e.preventDefault();
+                Layout.LoadEdit($(this).attr("href"), null);
+                return true;
+            });
+
+            $(document).on("click", 'attribute-pan', function (e) {
+                e.preventDefault();
+                Layout.LoadAttributes($(this).attr("href"), null);
+                return true;
+            });
+            $(document).on("click", 'a.pglink', function (e) {
+                e.preventDefault();
+                if ($(this).attr("id") === "btnSearchReset") {
+                    $("#frmSearch")[0].reset();
+                }
+                Layout.LoadList($(this).attr("href"));
+                return true;
+            });
+
+            $(document).on("click", 'a.reset', function (e) {
+                e.preventDefault();
+                Layout.ResetList($(this).attr("href"));
+                return true;
+            });
+            $(document).on("click", 'a.modal-pan', function (e) {
+                e.preventDefault();
+                $("#delModalAnch").attr("href", $(this).attr("href"));
+                $("#deleteModal").modal();
+                return false;
+            });
+            $(document).on("click", 'a.modal-pan-partial', function (e) {
+                e.preventDefault();
+                $("#delModalAnchPartial").attr("href", $(this).attr("href"));
+                $("#deleteModalParial").modal();
+                return false;
+            });
+            $(document).on("click", 'a.export-pan', function (e) {
+                e.preventDefault();
+                $("#exportModal").modal();
+                return false;
+            });
+
+
+            $(document).on("click", 'a.modal-pan-restpassword', function (e) {
+                e.preventDefault();
+                $("#restModalAnch").attr("href", $(this).attr("href"));
+                $("#restPasswordModal").modal();
+                return false;
+            });
+            $(document).on("click", 'button.btnPrint', function (e) {
+                e.preventDefault(); 
+                var contents = $("#printArea").html();
+                var frame1 = $('<iframe />');
+                frame1[0].name = "frame1";
+                frame1.css({ "position": "absolute", "top": "-1000000px" });
+                $("body").append(frame1);
+                var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                frameDoc.document.open();
+                //Create a new HTML document.
+                frameDoc.document.write('<html><head><title></title>');
+                frameDoc.document.write('</head><body>');
+                //Append the external CSS file.
+                frameDoc.document.write('<link href="~/Content/bootstrap.css" media="print" rel="stylesheet" type="text/css"  />');
+                frameDoc.document.write('<link href="~/Content/print.css" media="print" rel="stylesheet" type="text/css" />');
+                //Append the DIV contents.
+                frameDoc.document.write(contents);
+                frameDoc.document.write('</body></html>');
+                frameDoc.document.close();
+                setTimeout(function () {
+                    window.frames["frame1"].focus();
+                    window.frames["frame1"].print();
+                    frame1.remove();
+                }, 500);
+            });
+
+        });
+
+        @*@RenderSection("scripts", false)*@
+    </script>
+</body>
+</html>

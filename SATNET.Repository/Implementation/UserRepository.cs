@@ -48,7 +48,7 @@ namespace SATNET.Repository.Implementation
                 parameters.Add("@FirstName", user.FirstName);
                 parameters.Add("@LastName", user.LastName);
                 parameters.Add("@UserName", user.UserName);
-                parameters.Add("@Password", user.Password);
+                parameters.Add("@Password", user.UserPassword);
                 parameters.Add("@DistributorId", user.DistributorId);
                 rowsAffected = await con.ExecuteAsync("GetAllDistributorUsers", parameters, commandType: CommandType.StoredProcedure);
             }
