@@ -25,7 +25,6 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<List<User>> GetAllUsers()
         {
-            var conString = _config.GetConnectionString("DefaultConnection");
             var users = new List<User>();
             using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
