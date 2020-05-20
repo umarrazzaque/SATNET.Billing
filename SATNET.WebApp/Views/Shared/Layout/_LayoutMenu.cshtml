@@ -1,0 +1,58 @@
+﻿
+@*@using Microsoft.Ajax.Utilities
+//@model MenusModel*@
+@{
+//var mainList = Model.MenuItems;
+//var modules = mainList.Where(x => x.ParentId == 0 && x.Dormant == false).DistinctBy(x => x.MenuId).OrderBy(x => x.DisplayIndex).Select(m=>new MenuModel{DisplayName = m.DisplayName,Url = SharedHelpers.Encrypt(m.MenuId.ToString(CultureInfo.InvariantCulture)) }).ToList();
+//if (mainList != null && mainList.Count > 0)
+//{
+        @*<aside class="main-sidebar"> 
+            <section class="sidebar">
+                
+                @SharedHelpers.RenderFormRow("", @Html.DropDownListFor(m => m.SelectedMenuId, new SelectList(modules, "Url", "DisplayName"), new { @class = "form-control" }), null, false, "", "row", "sidebar-form", "")
+                <ul class="sidebar-menu">
+                    @{
+        var topMenuList = mainList.Where(x => x.ParentId == SessionObjects.ModuleId && x.IsLeftCol == true).DistinctBy(x => x.MenuId).OrderBy(x => x.DisplayIndex).ToList();
+                        foreach (var topMenu in topMenuList)
+                        {
+                            MenuModel menu = topMenu;
+                            var uri = Url.Content("~") + menu.Url;
+                            var levelTwoMenuList = mainList.Where(x => x.ParentId == menu.MenuId && x.IsLeftCol == true).DistinctBy(x => x.MenuId).OrderBy(x => x.DisplayIndex).ToList();
+                            if (levelTwoMenuList.Any())
+                            {
+                                <li class="treeview">
+                                    <a href="#">
+                                        <i class="@topMenu.Icon"></i> <span>@topMenu.DisplayName</span> <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        @{
+                                            foreach (var levelTwoMenu in levelTwoMenuList)
+                                            {
+                                                uri = Url.Content("~") + levelTwoMenu.Url;
+                                                <li><a href="@uri" class="@levelTwoMenu.CssClass"><i class="@levelTwoMenu.Icon"></i>@levelTwoMenu.DisplayName</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li><a href="" class="" ><i class=""></i><span>@topMenu/Dospla</span></a></li>
+                                <li><a href="@uri" class="@topMenu.CssClass"><i class="@topMenu.Icon"></i> <span>@topMenu.DisplayName</span></a></li>
+                            }
+                        }
+
+                    }
+                </ul>
+            </section> 
+        </aside>*@
+        @RenderBody()
+    //}
+}
+
+
+
+
+
+
+

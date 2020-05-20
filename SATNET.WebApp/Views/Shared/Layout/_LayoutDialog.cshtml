@@ -1,0 +1,41 @@
+﻿@using SATNET.WebApp.Helpers
+@{
+//if (!Request.IsAjaxRequest())
+//{
+//    Layout = SessionObjects.Theme.ThemePath + "/Layouts/_LayoutMain.cshtml";
+//}    
+}
+<div class="modal " id="DailogPan">
+    <div class="modal-dialog ">
+        <div class="modal-content dialogModal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @RenderBody()
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div> 
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({
+            //startDate: '-3d',
+            // format: "dd,MM,yyyy",
+            format: "dd/MM/yyyy"
+        }).datepicker("setDate", new Date());
+    });
+        @*@if (Request.IsAjaxRequest()) {
+        <text>
+            //iCheck for checkbox and radio inputs
+       $('input[type="checkbox"].minimal, input[type="checkbox"].check-box, input[type="radio"].minimal').iCheck({
+           checkboxClass: 'icheckbox_minimal-blue',
+           radioClass: 'iradio_minimal-blue'
+       });
+        $(".select2").select2();
+        </text>
+    }*@
+</script>

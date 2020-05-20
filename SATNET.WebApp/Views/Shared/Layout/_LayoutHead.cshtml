@@ -1,0 +1,46 @@
+﻿@using SATNET.WebApp.Helpers
+<header class="main-header">
+    <a href="" class="logo">
+        <span class="logo-mini">IMS</span>
+        <span class="logo-lg"><img src="@string.Format("{0}/aircraft.png", SessionObjects.Theme.ThemeImagesPath)" alt="Aircraft"> IMS</span>
+    </a>
+
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="javascipt:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs"><i class="fa fa-bars"></i>&nbsp;&nbsp;QUICK LINKS</span>
+                    </a>
+
+                    @*//@Html.Partial("_quickLinks", Model)*@
+
+                </li>
+
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs"><i class="fa fa-user-md"></i>&nbsp;&nbsp;@SessionObjects.LoginedUserName</span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("Index", "QuickLink")" class="right-pan"><i class="fa fa-link"></i> Manage Quick Links</a></li>
+                        <li><a href="@Url.Action("ChangePassword", "Auth")"> <i class="fa fa-shield"></i> Change Password</a></li>
+                        <li><a href="@Url.Action("Logout", "Auth")"> <i class="fa fa-sign-out"></i> Logout</a></li>
+                        <li class="divider"></li>
+                    </ul>
+                </li> 
+            </ul>
+        </div>
+    </nav>
+</header> 
+@{
+    RenderBody();
+}
+
+
+
