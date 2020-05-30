@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SATNET.Service.Interface;
+using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Models;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserController(IUserService userService, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userService = userService;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -27,7 +37,10 @@ namespace SATNET.WebApp.Controllers
                     {
                         Id = i.Id,
                         FirstName = i.FirstName,
-                        LastName = i.LastName
+                        LastName = i.LastName,
+                        UserName = i.UserName,
+                        Contact = i.Contact,
+                        Email = i.Email
                     };
                     model.Add(user);
                 });
@@ -42,10 +55,30 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Add(UserViewModel model)
+        public async Task<IActionResult> Add(UserViewModel model)
         {
-            List<UserViewModel> list = new List<UserViewModel>();
-            return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { 
+                    UserName = model.UserName, 
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.Contact,
+
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return RedirectToAction("Add");
+            //return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
         }
     }
 }

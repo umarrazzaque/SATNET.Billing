@@ -61,9 +61,10 @@
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
                                         @Html.DisplayNameFor(model => model.Email)
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                    @*<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         @Html.DisplayNameFor(model => model.Contact)
-                                    </th>
+                                    </th>*@
+                                    <th></th>
                             </thead>
                             <tbody>
                                 @if (Model.Count() > 0)
@@ -80,9 +81,9 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Email)
                                             </td>
-                                            <td>
+                                            @*<td>
                                                 @Html.DisplayFor(modelItem => item.Contact)
-                                            </td>
+                                            </td>*@
                                             <td>
                                                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                                                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })

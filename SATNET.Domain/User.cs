@@ -11,5 +11,7 @@ namespace SATNET.Domain
         public string UserName { get; set; }
         public string UserPassword { get; set; }
         public DateTime PasswordExpiry { get; set; }
+        public string Contact { get; set; }
+        public string Email { get; set; }
     }
 }

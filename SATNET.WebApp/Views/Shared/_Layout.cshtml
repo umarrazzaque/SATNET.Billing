@@ -49,29 +49,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto mr-2">
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <div class="nav-link" data-toggle="dropdown">
-                        <img class="img-fluid img-circle img-sm" src="~/Themes/Default/Resources/img/user8-128x128.jpg" alt="Alt Text">
-                        <!-- .img-push is used to add margin to elements next to floating images -->
-                        <div class="img-push">
-                            <span class="username">
-                                Luna Stark
-                            </span>
-                        </div>
-                    </div>
-                    <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Home </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Change password </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Logout </a>
-
-                    </div>
-                </li>
-            </ul>
-
+            <partial name="_LoginPartial" />
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
@@ -206,6 +184,24 @@
     <!-- Toastr -->
     <script src="~/Themes/Default/Resources/plugins//toastr/toastr.min.js"></script>
     <script src="~/Themes/Default/Resources/js/custom.js"></script>
+    @*<script type="text/javascript">
+        $(function () {
+            $("#lnkLogout").click(function () {
+                var returnUrl = '';
+                $.ajax({
+                    url: '/Identity/Account/Logout',
+                    data: returnUrl,
+                    type: 'POST',
+                    success: function () {
+                    }
+                });
+
+            });
+
+        });
+
+    </script>*@
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
