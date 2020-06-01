@@ -1,4 +1,4 @@
-﻿using System; 
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +49,7 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
 
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             UserViewModel model = new UserViewModel();
             return View(model);
@@ -59,8 +59,9 @@ namespace SATNET.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { 
-                    UserName = model.UserName, 
+                var user = new ApplicationUser
+                {
+                    UserName = model.UserName,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
@@ -79,6 +80,73 @@ namespace SATNET.WebApp.Controllers
             }
             return RedirectToAction("Add");
             //return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return NotFound(
+                    $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            UserEditViewModel model = new UserEditViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Contact = user.PhoneNumber,
+                Email = user.Email
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.Id.ToString());
+
+                user.Email = model.Email;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.Contact;
+                if (!string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(model.ConfirmPassword))
+                {
+                    var newPassword =  _userManager.PasswordHasher.HashPassword(user, model.Password);
+                    user.PasswordHash = newPassword;
+                }
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return RedirectToAction("Edit");
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                user.IsDeleted = true;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View();
         }
     }
 }
