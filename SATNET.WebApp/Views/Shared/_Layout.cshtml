@@ -49,29 +49,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto mr-2">
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <div class="nav-link" data-toggle="dropdown">
-                        <img class="img-fluid img-circle img-sm" src="~/Themes/Default/Resources/img/user8-128x128.jpg" alt="Alt Text">
-                        <!-- .img-push is used to add margin to elements next to floating images -->
-                        <div class="img-push">
-                            <span class="username">
-                                Luna Stark
-                            </span>
-                        </div>
-                    </div>
-                    <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Home </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Change password </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"> <i class="fa fa-home mr-2"></i> Logout </a>
-
-                    </div>
-                </li>
-            </ul>
-
+            <partial name="_LoginPartial" />
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
@@ -112,27 +90,27 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href=@Url.Action("Index", "DistributorUser") class="nav-link">
+                                    <a href=@Url.Action("Index", "User") class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>CRUD</p>
+                                        <p>Manage Users</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=@Url.Action("Add", "DistributorUser") class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Distributor</p>
+                                        <p>Manage Distributors </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href=@Url.Action("Index", "Package") class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Package</p>
+                                        <p>Manage Packages</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="pages/charts/inline.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Hardware</p>
+                                        <p>Manage Hardwares</p>
                                     </a>
                                 </li>
                             </ul>
@@ -146,10 +124,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" id="MainContents">
-
             @RenderBody()
-
-            @RenderSection("scripts", false)
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -209,5 +184,24 @@
     <!-- Toastr -->
     <script src="~/Themes/Default/Resources/plugins//toastr/toastr.min.js"></script>
     <script src="~/Themes/Default/Resources/js/custom.js"></script>
+    @*<script type="text/javascript">
+        $(function () {
+            $("#lnkLogout").click(function () {
+                var returnUrl = '';
+                $.ajax({
+                    url: '/Identity/Account/Logout',
+                    data: returnUrl,
+                    type: 'POST',
+                    success: function () {
+                    }
+                });
+
+            });
+
+        });
+
+    </script>*@
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

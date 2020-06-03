@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.WebApp.Attributes;
 using SATNET.WebApp.Models;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize]
     public class PackageController : BaseController
     {
+     
         public PackageController()
         {
 
