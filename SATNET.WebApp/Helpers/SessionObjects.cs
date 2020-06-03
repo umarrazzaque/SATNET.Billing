@@ -98,7 +98,7 @@ namespace SATNET.WebApp.Helpers
         //{
         //    get; set;
         //}  
-        public static void InitSession(DistributorUserViewModel model)
+        public static void InitSession(UserViewModel model)
         {
             //HttpContext.Current.Session.Clear();
             //LoginedUserId = model.UserId;

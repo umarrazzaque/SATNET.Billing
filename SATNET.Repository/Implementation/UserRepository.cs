@@ -25,7 +25,6 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<List<User>> GetAllUsers()
         {
-            var conString = _config.GetConnectionString("DefaultConnection");
             var users = new List<User>();
             using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
@@ -38,21 +37,7 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<bool> AddUser(User user)
         {
-            int rowsAffected = 0;
-            using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                if (con.State == ConnectionState.Closed)
-                    con.Open();
-
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@FirstName", user.FirstName);
-                parameters.Add("@LastName", user.LastName);
-                parameters.Add("@UserName", user.UserName);
-                parameters.Add("@Password", user.UserPassword);
-                parameters.Add("@DistributorId", user.DistributorId);
-                rowsAffected = await con.ExecuteAsync("GetAllDistributorUsers", parameters, commandType: CommandType.StoredProcedure);
-            }
-            return rowsAffected > 0 ? true : false;
+            throw new NotImplementedException();
         }
         public Task<bool> UpdateUser(User user)
         {
