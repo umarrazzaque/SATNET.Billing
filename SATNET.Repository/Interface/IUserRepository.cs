@@ -8,6 +8,7 @@ namespace SATNET.Repository.Interface
 {
     public interface IUserRepository
     {
+
         public Task<User> GetUserById(int id);
         public Task<List<User>> GetAllUsers();
         public Task<bool> AddUser(User user);
