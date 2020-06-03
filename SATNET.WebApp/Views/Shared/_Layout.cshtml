@@ -38,7 +38,8 @@
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-
+    @using Microsoft.AspNetCore.Authorization
+    @inject IAuthorizationService AuthorizationService 
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -89,12 +90,15 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href=@Url.Action("Index", "User") class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manage Users</p>
-                                    </a>
-                                </li>
+                                @if ( (await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
+                                {
+                                    <li class="nav-item">
+                                        <a href=@Url.Action("Index", "User") class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Users</p>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>

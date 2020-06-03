@@ -43,9 +43,19 @@ namespace SATNET.WebApp
     options.UseSqlServer(
         Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin", "Admin"));
+                options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
+            });
+
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
+    AdditionalUserClaimsPrincipalFactory>();
 
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();

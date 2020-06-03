@@ -12,18 +12,21 @@ using SATNET.WebApp.Models;
 
 namespace SATNET.WebApp.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "UserAccessPolicy")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         public UserController(IUserService userService, UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager)
         {
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -48,13 +51,14 @@ namespace SATNET.WebApp.Controllers
 
             return View(model);
         }
-
+        [Authorize(Policy = "UserEditPolicy")]
         public async Task<IActionResult> Add()
         {
             UserViewModel model = new UserViewModel();
             return View(model);
         }
         [HttpPost]
+        [Authorize(Policy = "UserEditPolicy")]
         public async Task<IActionResult> Add(UserViewModel model)
         {
             if (ModelState.IsValid)
@@ -65,8 +69,7 @@ namespace SATNET.WebApp.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    PhoneNumber = model.Contact,
-
+                    PhoneNumber = model.Contact
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -82,6 +85,7 @@ namespace SATNET.WebApp.Controllers
             //return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
         }
 
+        [Authorize(Policy = "UserEditPolicy")]
         public async Task<IActionResult> Edit(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -102,6 +106,7 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Policy = "UserEditPolicy")]
         public async Task<IActionResult> Edit(UserEditViewModel model)
         {
             if (ModelState.IsValid)
@@ -114,7 +119,7 @@ namespace SATNET.WebApp.Controllers
                 user.PhoneNumber = model.Contact;
                 if (!string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(model.ConfirmPassword))
                 {
-                    var newPassword =  _userManager.PasswordHasher.HashPassword(user, model.Password);
+                    var newPassword = _userManager.PasswordHasher.HashPassword(user, model.Password);
                     user.PasswordHash = newPassword;
                 }
 
@@ -130,6 +135,7 @@ namespace SATNET.WebApp.Controllers
             }
             return RedirectToAction("Edit");
         }
+        [Authorize(Policy = "UserEditPolicy")]
         public async Task<IActionResult> Delete(int id)
         {
             if (ModelState.IsValid)

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200601153105_CustomUserData.cs" />
+    <Compile Remove="Migrations\20200601153105_CustomUserData.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <Folder Include="wwwroot\Themes\Default\Layout\" />
   </ItemGroup>
@@ -60,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />
