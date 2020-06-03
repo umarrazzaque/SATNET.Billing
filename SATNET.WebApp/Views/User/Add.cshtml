@@ -1,4 +1,4 @@
-﻿@model SATNET.WebApp.Models.UserViewModel
+@model SATNET.WebApp.Models.UserViewModel
 @*@{
         var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
     }*@
@@ -93,10 +93,8 @@
         $(document).ready(function () {
             console.log("ready!");
         });
-
         $(function () {
             $("#formAdd").submit(function (e) {
-
                 $.post($(this).attr("action"),
                     $(this).serialize(),
                     function (data) {
