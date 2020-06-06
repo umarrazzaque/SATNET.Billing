@@ -61,13 +61,13 @@ namespace SATNET.WebApp
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
 
-    //        services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
-    //.AddRazorPagesOptions(options =>
-    //{
-    //    options.AllowAreas = true;
-    //    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-    //    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-    //});
+            //        services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+            //.AddRazorPagesOptions(options =>
+            //{
+            //    options.AllowAreas = true;
+            //    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+            //    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+            //});
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -80,9 +80,9 @@ namespace SATNET.WebApp
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserRepository, UserRepository>();            
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
- 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
