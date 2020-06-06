@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Internal;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Models;
@@ -36,6 +37,8 @@ namespace SATNET.WebApp.Controllers
             {
                 serviceResult.ForEach(i =>
                 {
+                    var appUser = _userManager.FindByIdAsync(i.Id.ToString());
+                    var appRoles = _userManager.GetRolesAsync(appUser.Result); 
                     UserViewModel user = new UserViewModel()
                     {
                         Id = i.Id,
@@ -43,7 +46,8 @@ namespace SATNET.WebApp.Controllers
                         LastName = i.LastName,
                         UserName = i.UserName,
                         Contact = i.Contact,
-                        Email = i.Email
+                        Email = i.Email,
+                        Roles = appRoles.Result.ToList()
                     };
                     model.Add(user);
                 });
@@ -71,9 +75,13 @@ namespace SATNET.WebApp.Controllers
                     LastName = model.LastName,
                     PhoneNumber = model.Contact
                 };
+                //creating user
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //adding user role
+                    var role = model.Roles.FirstOrDefault().ToString();
+                    await _userManager.AddToRoleAsync(user, role);
                     return RedirectToAction("Index");
                 }
                 foreach (var error in result.Errors)
@@ -94,6 +102,7 @@ namespace SATNET.WebApp.Controllers
                 return NotFound(
                     $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            var roleResult  = _userManager.GetRolesAsync(user);
 
             UserEditViewModel model = new UserEditViewModel()
             {
@@ -101,7 +110,8 @@ namespace SATNET.WebApp.Controllers
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Contact = user.PhoneNumber,
-                Email = user.Email
+                Email = user.Email,
+                Roles = roleResult.Result.ToList()
             };
             return View(model);
         }
@@ -123,6 +133,18 @@ namespace SATNET.WebApp.Controllers
                     user.PasswordHash = newPassword;
                 }
 
+                //updating user roles
+                var role = model.Roles.First();
+                var roleResult = await _userManager.GetRolesAsync(user);
+                var oldRole = roleResult.First().ToString();
+                if (oldRole != role)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, oldRole);
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+
+                //updating user details
+                await _userManager.AddToRoleAsync(user, role);
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {

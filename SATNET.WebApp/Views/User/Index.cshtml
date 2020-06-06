@@ -61,9 +61,12 @@
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
                                         @Html.DisplayNameFor(model => model.Email)
                                     </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                                        @Html.DisplayNameFor(model => model.Roles)
+                                    </th>
                                     @*<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
-                                        @Html.DisplayNameFor(model => model.Contact)
-                                    </th>*@
+                                            @Html.DisplayNameFor(model => model.Contact)
+                                        </th>*@
                                     <th></th>
                             </thead>
                             <tbody>
@@ -81,14 +84,28 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Email)
                                             </td>
-                                            @*<td>
-                                                @Html.DisplayFor(modelItem => item.Contact)
-                                            </td>*@
-                                        <td>
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                            <a href="/User/Delete/@item.Id" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                                            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-                                        </td>
+                                            <td>
+                                                @if (item.Roles.Any())
+                                                {
+                                                    <ul>
+                                                        @foreach (var role in item.Roles)
+                                                        {
+                                                            <li class="no-bullet">@role</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </td>
+
+                                            @if (item.UserName == "superuser")
+                                            {
+                                                continue;
+                                            }
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                                <a href="/User/Delete/@item.Id" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                                                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                            </td>
+
                                         </tr>
                                     }
                                 }

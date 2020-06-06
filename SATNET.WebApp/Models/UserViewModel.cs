@@ -39,12 +39,15 @@ namespace SATNET.WebApp.Models
         public string Email { get; set; }
         [DisplayName("Contact")]
         public string Contact { get; set; }
+        [DisplayName("Password")]
         [Required(ErrorMessage = "Please enter password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [DisplayName("Confirm Password")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
         public string ConfirmPassword { get; set; }
+        public List<string> Roles { get; set; }
         public SelectList customList { get; set; }
     }
 }
