@@ -6,34 +6,31 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class UserRepository : IUserRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly IConfiguration _config;
-        public UserRepository(IConfiguration config)
+        public OrderRepository(IConfiguration config)
         {
             _config = config;
         }
-        public Task<User> GetUserById(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public async Task<List<User>> GetAllUsers()
+
+        public async Task<bool> Add(Order order)
         {
             var users = new List<User>();
+            int orderId = 0;
             using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var result = await con.QueryAsync<User>("GetAllDistributorUsers", commandType: CommandType.StoredProcedure);
-                users = result.ToList();
+                orderId = await con.ExecuteScalarAsync<int>("InsertOrder", commandType: CommandType.StoredProcedure);
             }
-            return users;
-        }    
+            return orderId > 0 ? true:false;
+        }
+
     }
 }
