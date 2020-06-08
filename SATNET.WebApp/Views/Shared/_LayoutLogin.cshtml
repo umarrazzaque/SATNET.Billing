@@ -1,49 +1,73 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SATNET </title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <title>Universal SatNet</title>
+
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/icofont.css" />
+    @*<link href="./main.css?<?php echo date('l jS \of F Y h:i:s A'); ?>" rel="stylesheet">*@
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/fontawesome-free/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/toastr/toastr.min.css">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="~/Themes/QMSN/Resources/js/jquery/jquery.min.js"></script>
+
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SATNET</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    @*<partial name="_LoginPartial" />*@
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="app-main">
+        <div class="app-main__outer">
+            <div class="" style="">
+
+                <div class="h-100 bg-plum-plate1 bg-animation" style="background-image: url(assets/images/bg.png);">
+                    <div class="d-flex h-100 justify-content-center align-items-center">
+                        <div class="mx-auto app-login-box col-md-3">
+                            <div class=" mx-auto">
+                                <div class="">
+                                    <div class="">
+                                        <div class=" modal-title text-center mb-3">
+                                            <div class="app-logo-inverse mx-auto mb-3 mt-2 text-center"> <img src="~/Themes/QMSN/Resources/img/logo-icon.png" style="max-width: 100%; margin-bottom:20px;" /> </div>
+
+                                            <p> Sign in to your account </p>
+
+                                        </div>
+                                        <br />
+                                        @RenderBody()
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div class="text-center text-white opacity-8 mt-3">Copyright © 2020 </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - SATNET - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

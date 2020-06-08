@@ -7,6 +7,10 @@
   <ItemGroup>
 
     <Folder Include="wwwroot\Themes\Default\Layout\" />
+
+    <Folder Include="wwwroot\Themes\QMSN\Resources\fonts\" />
+
+    <Folder Include="wwwroot\Themes\QMSN\Resources\img\" />
   </ItemGroup>
 
   <ItemGroup>

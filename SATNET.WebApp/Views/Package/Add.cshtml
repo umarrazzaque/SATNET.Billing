@@ -1,61 +1,79 @@
-﻿@model SATNET.WebApp.Models.PackageModel
+﻿@model SATNET.WebApp.Models.CreatePackageModel
 @*@{
         var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
     }*@
 
 <!-- Main content -->
-@await Component.InvokeAsync("ContentHead", @Model.MenuModel)
-
-    <section class="content">
-        <div class="card">
-            <!-- /.card-header -->
-            <div class="card-body">
-                <form method="post" data-ajax="true" asp-controller="Package" asp-action="Add" data-ajax-method="post"
-                      enctype="multipart/form-data" id="formAdd" autocomplete="off">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.PackageName, new { @class = "col-sm-4 col-form-label" })
-                            <div class="col-sm-8">
-                                @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name" } })
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.PackageType, new { @class = "col-sm-4 col-form-label" })
-                            <div class="col-sm-8">
-                                @Html.DropDownListFor(model => model.PackageType, new SelectList(Model.PackageTypeList, "Value", "Text"), "-Select Paarent-", new { @class = "form-control select2 text-input" })
-
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Rate, new { @class = "col-sm-4 col-form-label" })
-                            <div class="col-sm-8">
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password", @type = "password" } })
-                            </div>
-                        </div>
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+<form method="post" data-ajax="true" asp-controller="Package" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Package
+                    <div class="page-title-subheading">
+                        Please fillout following form
                     </div>
-                    <!-- /.card-body -->
-
-                    <div class="row">
-                        <button type="submit" class="btn btn-primary btn-sm mr-3 pl-3 pr-3">Submit</button>
-                        <a class="btn btn-default btn-sm pl-3 pr-3 right-pan" href="@String.Format("/{0}", "Package/Reset")">
-                            Cancel
-                        </a>
-                    </div>
-                </form>
+                </div>
             </div>
-            <!-- /.card-body -->
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "Package/Reset")" class=" btn btn-danger right-pan">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Record</button>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.PackageModel.Name, new { })
+                @Html.EditorFor(model => model.PackageModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Package Name", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.PackageModel.Price, new { })
+                @Html.EditorFor(model => model.PackageModel.Price, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Package Name", @type = "decimal" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.PackageModel.Speed, new { })
+                @Html.EditorFor(model => model.PackageModel.Speed, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Speed", @type = "decimal" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.PackageModel.PackageType, new { })
+                @Html.DropDownListFor(model => model.PackageModel.PackageType, new SelectList(Model.PackageTypesList as System.Collections.IEnumerable, "PackageTypeId", "PackageTypeName"), "-Select Package Type-", new { @class = "form-control select2 text-input" })
+
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.PackageModel.Rate, new { })
+                @Html.EditorFor(model => model.PackageModel.Rate, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Rate", @type = "decimal" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label class="">Expiry Date</label>
+                <input type="date" placeholder="..." class="form-control" value="">
+            </div>
+        </div>
+    </div>
+</form>
 
 
 <!-- /.Main content -->
 
 <script language="javascript" type="text/javascript">
     $.validator.unobtrusive.parse('#formAdd');
-    
+
 </script>

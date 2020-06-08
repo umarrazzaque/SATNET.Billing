@@ -71,6 +71,10 @@ namespace SATNET.WebApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            
+            services.AddScoped<IPackageService, PackageService>();
+            services.AddScoped<IPackageRepository, PackageRepository>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
