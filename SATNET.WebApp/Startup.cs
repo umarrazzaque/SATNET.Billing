@@ -81,9 +81,10 @@ namespace SATNET.WebApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPackageService, PackageService>();
+            services.AddScoped<IPackageRepository, PackageRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

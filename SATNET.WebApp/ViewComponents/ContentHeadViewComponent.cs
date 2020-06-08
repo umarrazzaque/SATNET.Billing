@@ -10,6 +10,7 @@ namespace SATNET.WebApp.ViewComponents
     [ViewComponent(Name = "ContentHead")]
     public class ContentHeadViewComponent : ViewComponent
     {
+
         public async Task<IViewComponentResult> InvokeAsync(MenuModel model)
         {
             

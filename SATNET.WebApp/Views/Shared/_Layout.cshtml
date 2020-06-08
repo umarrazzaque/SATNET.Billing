@@ -3,30 +3,29 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 3 | Dashboard</title>
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Font Awesome -->
-    <link href="~/css/custom.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    @*<link rel="stylesheet" href="~/Themes/Default/Resources/plugins/jqvmap/jqvmap.min.css">*@
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/Themes/Default/Resources/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/daterangepicker/daterangepicker.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <title>Universal SatNet</title>
+
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="~/Themes/QMSN/Resources/css/icofont.css" />
+    @*<link href="./main.css?<?php echo date('l jS \of F Y h:i:s A'); ?>" rel="stylesheet">*@
     <!-- summernote -->
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/summernote/summernote-bs4.css">
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/fontawesome-free/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+
     <!-- Toastr -->
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/toastr/toastr.min.css">
 
@@ -34,117 +33,258 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="~/Themes/Default/Resources/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Themes/QMSN/Resources/js/jquery/jquery.min.js"></script>
 
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-    @using Microsoft.AspNetCore.Authorization
-    @inject IAuthorizationService AuthorizationService 
-    <div class="wrapper">
+<body>
 
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-            </ul>
-            <partial name="_LoginPartial" />
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <img src="~/Themes/Default/Resources/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">Universal SatNat</span>
-            </a>
+    <div class="app-container app-theme-white body-tabs-shadow1 fixed-sidebar fixed-header fixed-footer">
+        <!-- Top Header -->
+        <div class="app-header   ">
+            <div class="app-header__logo">
+                <a href="@Url.Action("Index","Home")">
 
-            <!-- Sidebar -->
-            <div class="sidebar">
+                    <div class="logo-src"><img src="~/Themes/QMSN/Resources/img/logo-icon.png" style="height:50px" /> </div>
 
+                </a>
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                             with font-awesome or any other icon font library -->
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>
+            <div class="app-header__content">
+                <div class="app-header-left">
+                    <!-- <div class="search-wrapper">
+                        <div class="input-holder">
+                            <input type="text" class="search-input" placeholder="Type to search">
+                            <button class="search-icon"><span></span></button>
+                        </div>
+                        <button class="close"></button>
+                    </div> -->
+                    <ul class="header-menu nav">
                         <li class="nav-item">
-                            <a href="@Url.Action("Index", "Home")" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                            <a href="javascript:void(0);" class="nav-link">
+
                             </a>
                         </li>
 
+                    </ul>
+                </div>
+                <div class="app-header-right">
+                    <div class="header-btn-lg pr-0">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" class="p-0 ">
+                                            <img width="30" class="rounded-circle" src="assets/images/thumbail-user.png" alt="">
+                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                        </a>
+                                        <div class="widget-content-left  ml-3 header-user-info">
+                                            <div class="widget-heading">
+                                                Amjad Khan
+                                            </div>
+                                            <div class="widget-subheading">
+                                                Account Manager
+                                            </div>
+                                        </div>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" tabindex="0" class="dropdown-item">Change Password</button>
+                                            <button type="button" tabindex="0" class="dropdown-item">Profile Settings</button>
 
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Menu
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                @if ( (await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
-                                {
-                                    <li class="nav-item">
-                                        <a href=@Url.Action("Index", "User") class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Manage Users</p>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+
+                                            <a href="login.php?logout=true" class="dropdown-item">Logout</a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Header -->
+        <div class="app-main">
+            <!-- SideMenu -->
+            <div class="app-sidebar  ">
+                <div class="app-header__logo">
+                    <div class="logo-src"></div>
+                    <div class="header__pane ml-auto">
+                        <div>
+                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-header__mobile-menu">
+                    <div>
+                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="app-header__menu">
+                    <span>
+                        <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                            <span class="btn-icon-wrapper">
+                                <i class="fa fa-ellipsis-v fa-w-6"></i>
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                <div class="scrollbar-sidebar ps ps--active-y">
+                    <div class="app-sidebar__inner">
+                        <ul class="vertical-nav-menu">
+                            <li class="app-sidebar__heading">Billing System</li>
+                            <li>
+                                <a href="@Url.Action("Index","Home")" class="">
+                                    <i class="metismenu-icon icofont-contrast"></i> Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","Package")" class="">
+                                    <i class="metismenu-icon icofont-library"></i> Packages
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","User")" class="">
+                                    <i class="metismenu-icon icofont-search-user"></i> Users
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","Distributor")" class="">
+                                    <i class="metismenu-icon icofont-plus"></i> Distributors
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-file-document"></i> Billing
+                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                </a>
+                                <ul class="vertical-nav-menu">
+                                    <li>
+                                        <a href="" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Sub Menu
+                                        </a>
+                                        <a href="" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Sub Menu
                                         </a>
                                     </li>
-                                }
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manage Distributors </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href=@Url.Action("Index", "Package") class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manage Packages</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manage Hardwares</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                                </ul>
+                            </li>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" id="MainContents">
-            @RenderBody()
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Side Menu -->
+            <div class="app-main__outer">
+                <div class="app-main__inner" id="MainContents">
+                    @RenderBody()
+                </div>
+
+                <!-- Footer -->
+                <div class="app-wrapper-footer">
+                    <div class="app-footer">
+                        <div class="app-footer__inner">
+                            <div class="app-footer-left">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+                                            <!-- Metis Pvt. Int. -->
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+                                        <img src="assets/images/govt-pakistan-logo.png" height="30" />
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                            <div class="app-footer-right">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+                                            <div class="badge badge-default mr-1 ml-0">
+                                                <small>Copyright © 2020   </small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer -->
+            </div>
+
         </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2016-2020 <a href="">Metis Pvt Ltd</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
-            </div>
-        </footer>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+        <div class="modal" id="modal-deleteConfirm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Delete Confirmation</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-warning text-danger delete-icon" aria-hidden="true"></span>
+                        </a>
+                        <i class="fa fa-warning text-danger delete-icon"></i>
+                        <p>Are you sure you want to delete this record?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info" id="deleteConfirmSubmit" data-dismiss="modal">Proceed</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
     </div>
 
     <!-- ./wrapper -->
@@ -156,18 +296,7 @@
     </script>
     <!-- Bootstrap 4 -->
     <script src="~/Themes/Default/Resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/Themes/Default/Resources/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    @*<script src="~/Themes/Default/Resources/plugins/sparklines/sparkline.js"></script>*@
-    <!-- JQVMap -->
-    @*<script src="~/Themes/Default/Resources/plugins/jqvmap/jquery.vmap.min.js"></script>
-        <script src="~/Themes/Default/Resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>*@
-    <!-- jQuery Knob Chart -->
-    <script src="~/Themes/Default/Resources/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="~/Themes/Default/Resources/plugins/moment/moment.min.js"></script>
-    <script src="~/Themes/Default/Resources/plugins/daterangepicker/daterangepicker.js"></script>
+
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="~/Themes/Default/Resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Summernote -->
@@ -178,34 +307,13 @@
     <script src="~/Themes/Default/Resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/Themes/Default/Resources/js/adminlte.min.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/Themes/Default/Resources/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/Themes/Default/Resources/js/demo.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <!-- Toastr -->
     <script src="~/Themes/Default/Resources/plugins//toastr/toastr.min.js"></script>
-    <script src="~/Themes/Default/Resources/js/custom.js"></script>
-    @*<script type="text/javascript">
-        $(function () {
-            $("#lnkLogout").click(function () {
-                var returnUrl = '';
-                $.ajax({
-                    url: '/Identity/Account/Logout',
-                    data: returnUrl,
-                    type: 'POST',
-                    success: function () {
-                    }
-                });
+    <script src="~/Themes/QMSN/Resources/js/popper.min.js"></script>
+    <script src="~/Themes/QMSN/Resources/js/main.js"></script>
+    <script src="~/js/custom.js"></script>
 
-            });
-
-        });
-
-    </script>*@
 
     @RenderSection("Scripts", required: false)
 </body>

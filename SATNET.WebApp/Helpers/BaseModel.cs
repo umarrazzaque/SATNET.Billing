@@ -10,8 +10,7 @@ namespace SATNET.WebApp.Helpers
     {
         public BaseModel()
         {
-            MenuModel = new MenuModel();
+            
         }
-        public MenuModel MenuModel { get; set; }
     }
 }

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace SATNET.Domain
 {
-    class Package : BaseEntity
+    public class Package : BaseEntity
     {
-        public string PackageName { get; set; }
+        public string Name { get; set; }
         public decimal Rate { get; set; }
         public decimal Speed { get; set; }
-        public string PackageType { get; set; }
+        public string Type { get; set; }
     }
 }
