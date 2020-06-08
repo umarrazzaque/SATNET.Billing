@@ -43,9 +43,19 @@ namespace SATNET.WebApp
     options.UseSqlServer(
         Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin", "Admin"));
+                options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
+            });
+
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
+    AdditionalUserClaimsPrincipalFactory>();
 
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -71,12 +81,10 @@ namespace SATNET.WebApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            
             services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IPackageRepository, PackageRepository>();
-
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

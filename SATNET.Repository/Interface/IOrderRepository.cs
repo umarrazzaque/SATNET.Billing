@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Interface
 {
-    public interface IUserRepository
+    public interface IOrderRepository
     {
-
-        public Task<User> GetUserById(int id);
-        public Task<List<User>> GetAllUsers();
+        public Task<bool> Add(Order order);
     }
 }

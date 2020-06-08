@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SATNET.WebApp.Models;
 
+
 namespace SATNET.WebApp.Controllers
 {
     [Authorize]
@@ -20,7 +21,7 @@ namespace SATNET.WebApp.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
