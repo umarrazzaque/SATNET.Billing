@@ -35,13 +35,16 @@
     <!-- jQuery -->
     <script src="~/Themes/QMSN/Resources/js/jquery/jquery.min.js"></script>
 
+    <!-- custom css at project level -->
+    <link href="~/css/custom.css" rel="stylesheet" />
 
 </head>
 <body>
-
+    @using Microsoft.AspNetCore.Authorization
+    @inject IAuthorizationService AuthorizationService
     <div class="app-container app-theme-white body-tabs-shadow1 fixed-sidebar fixed-header fixed-footer">
         <!-- Top Header -->
-        <div class="app-header   ">
+        <div class="app-header">
             <div class="app-header__logo">
                 <a href="@Url.Action("Index","Home")">
 
@@ -95,42 +98,7 @@
 
                     </ul>
                 </div>
-                <div class="app-header-right">
-                    <div class="header-btn-lg pr-0">
-                        <div class="widget-content p-0">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="btn-group">
-                                        <a data-toggle="dropdown" class="p-0 ">
-                                            <img width="30" class="rounded-circle" src="assets/images/thumbail-user.png" alt="">
-                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
-                                        </a>
-                                        <div class="widget-content-left  ml-3 header-user-info">
-                                            <div class="widget-heading">
-                                                Amjad Khan
-                                            </div>
-                                            <div class="widget-subheading">
-                                                Account Manager
-                                            </div>
-                                        </div>
-                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <button type="button" tabindex="0" class="dropdown-item">Change Password</button>
-                                            <button type="button" tabindex="0" class="dropdown-item">Profile Settings</button>
-
-                                            <div tabindex="-1" class="dropdown-divider"></div>
-
-                                            <a href="login.php?logout=true" class="dropdown-item">Logout</a>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <partial name="_LoginPartial" />
             </div>
         </div>
         <!-- Top Header -->
@@ -181,11 +149,14 @@
                                     <i class="metismenu-icon icofont-library"></i> Packages
                                 </a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Index","User")" class="">
-                                    <i class="metismenu-icon icofont-search-user"></i> Users
-                                </a>
-                            </li>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "User")" class="">
+                                        <i class="metismenu-icon icofont-search-user"></i> Users
+                                    </a>
+                                </li>
+                            }
                             <li>
                                 <a href="@Url.Action("Index","Distributor")" class="">
                                     <i class="metismenu-icon icofont-plus"></i> Distributors
