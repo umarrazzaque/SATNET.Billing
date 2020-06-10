@@ -1,0 +1,59 @@
+﻿@model SATNET.WebApp.Models.HardwareModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+<form method="post" data-ajax="true" asp-controller="Hardware" asp-action="Edit" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    @Html.HiddenFor(model => model.HardwareId)
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Edit Hardware
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "Hardware/Reset")" class=" btn btn-danger right-pan">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.Modem, new { })
+                @Html.EditorFor(model => model.Modem, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.Antenna, new { })
+                @Html.EditorFor(model => model.Antenna, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Antenna", @type = "decimal" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.Transceiver, new { })
+                @Html.EditorFor(model => model.Transceiver, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Transciever", @type = "decimal" } })
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    $.validator.unobtrusive.parse('#formAdd');
+
+</script>

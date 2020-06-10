@@ -1,0 +1,56 @@
+﻿@model SATNET.WebApp.Models.PackageModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div>
+                Package Detail
+                <div class="page-title-subheading">
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <div class="d-inline-block dropdown">
+                <a href="@String.Format("/{0}", "Package/Reset")" class=" btn btn-danger right-pan">
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.Name, new { })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.PackageType, new { })
+            @Html.EditorFor(model => model.PackageType, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.Speed, new { })
+            @Html.EditorFor(model => model.Speed, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.Rate, new { })
+            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+</div>
+
+<!-- /.Main content -->
+

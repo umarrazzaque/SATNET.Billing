@@ -1,0 +1,145 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.PackageModel>
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                <th class="text-center" width="30">
+                    <!-- <input type="checkbox"> -->
+                </th>
+                <th class="text-center">#</th>
+
+                <th> @Html.DisplayNameFor(model => model.Name) </th>
+                <th> Price </th>
+                <th> @Html.DisplayNameFor(model => model.Speed)</th>
+                <th> @Html.DisplayNameFor(model => model.PackageType) </th>
+                <th> @Html.DisplayNameFor(model => model.Rate) </th>
+                <th> Expiry Date </th>
+                <th class="text-center"> Actions </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center"> <input type="checkbox"></td>
+                    <td class="text-center text-muted">
+                        @{
+                            counter++;
+                        }
+                        @counter
+                    </td>
+                    <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                    <td> $ 200</td>
+                    <td> @Html.DisplayFor(modelItem => item.Speed)</td>
+                    <td> @Html.DisplayFor(modelItem => item.PackageType)</td>
+                    <td> @Html.DisplayFor(modelItem => item.Rate)</td>
+                    <td>14/01/2020, 11:31am</td>
+                    <td class="text-center">
+                        <div class="buttons">
+                            <a href="@String.Format("/{0}?id={1}", "Package/Edit", item.PackageId)" class="pl-1 pr-1 edit-pan">
+                                <span class="fa fa-edit" aria-hidden="true"></span>
+                            </a>
+                            <a href="@String.Format("/{0}?id={1}", "Package/Details", item.PackageId)" class="pl-1 pr-1 right-pan">
+                                <span class="fa fa-bars" aria-hidden="true"></span>
+                            </a>
+                            <a href="@String.Format("/{0}?id={1}", "Package/Delete", item.PackageId)" class="pl-1 pr-1 modal-pan"
+                               data-toggle="modal" data-target="#modal-deleteConfirm">
+                                <span class="fa fa-trash" aria-hidden="true"></span>
+                            </a>
+
+                            @*<a href="@String.Format("/{0}?id={1}", "Package/Edit", item.PackageId)" class="btn-icon">
+                                    <i class="icofont-ui-edit"></i>
+                                </a>
+                                <a href="@String.Format("/{0}?id={1}", "Package/Delete", item.PackageId)" class="btn-icon">
+                                    <i class="icofont-ui-delete"></i>
+                                </a>
+                                <button class="btn-icon">
+                                    <i class="icofont-ui-contact-list"></i>
+                                </button>*@
+                        </div>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>
+@*<div class="dataTables_wrapper dt-bootstrap4 mt-2">
+        <table id="grid_table" class="table table-bordered table-head-fixed text-nowrap dataTable " role="grid" aria-describedby="">
+            <thead>
+                <tr role="row">
+                    <th width="10%">Sr No</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().Rate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().Speed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PackageModels.FirstOrDefault().PackageType)
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 0;
+                }
+                @foreach (var item in Model.PackageModels)
+                {
+                    <tr role="row">
+                        <td>
+                            @{
+                                counter++;
+                            }
+                            @counter
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Speed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PackageType)
+                        </td>
+                        <td>
+                            <a href="@String.Format("/{0}?id={1}", "Package/Edit", item.PackageId)" class="pl-1 pr-1 edit-pan">
+                                <span class="fa fa-edit" aria-hidden="true"></span>
+                            </a>
+                            <a href="@String.Format("/{0}?id={1}", "Package/Details", item.PackageId)" class="pl-1 pr-1 right-pan">
+                                <span class="fa fa-bars" aria-hidden="true"></span>
+                            </a>
+                            <a href="@String.Format("/{0}?id={1}", "Package/Delete", item.PackageId)" class="pl-1 pr-1 modal-pan"
+                               data-toggle="modal" data-target="#modal-deleteConfirm">
+                                <span class="fa fa-trash" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>*@
+
+
