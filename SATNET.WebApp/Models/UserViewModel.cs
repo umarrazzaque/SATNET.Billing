@@ -10,16 +10,6 @@ namespace SATNET.WebApp.Models
 {
     public class UserViewModel
     {
-        public UserViewModel()
-        {
-            //FirstName = "";
-            //customList = new SelectList(
-            //new List<SelectListItem>
-            //{
-            //    new SelectListItem {Text = "Google", Value = "Go"},
-            //    new SelectListItem {Text = "Other", Value = "Ot"},
-            //}, "Value", "Text");
-        }
         public int Id { get; set; }
         [DisplayName("First Name")]
         [Required(ErrorMessage = "Please enter first name")]
@@ -48,6 +38,5 @@ namespace SATNET.WebApp.Models
         [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
         public string ConfirmPassword { get; set; }
         public List<string> Roles { get; set; }
-        //public SelectList customList { get; set; }
     }
 }

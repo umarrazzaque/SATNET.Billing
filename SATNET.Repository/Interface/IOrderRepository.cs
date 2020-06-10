@@ -8,6 +8,10 @@ namespace SATNET.Repository.Interface
 {
     public interface IOrderRepository
     {
-        public Task<bool> Add(Order order);
+        public Task<Order> Get(int id);
+        public Task<List<Order>> List();
+        public Task<int> Add(Order order);
+        public Task<int> Update(Order order);
+        public Task<int> Delete(int id, int deletedBy);
     }
 }

@@ -84,6 +84,7 @@ namespace SATNET.WebApp
             services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IPackageRepository, PackageRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
