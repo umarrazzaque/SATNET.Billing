@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SATNET.Domain;
 using SATNET.Repository.Implementation;
 using SATNET.Repository.Interface;
 using SATNET.Service.Implementation;
@@ -83,7 +84,17 @@ namespace SATNET.WebApp
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IPackageRepository, PackageRepository>();
+
+            services.AddScoped<IRepository<Reseller>, ResellerRepository>();
+            services.AddScoped<IRepository<Hardware>, HardwareRepository>();
+            services.AddScoped<IRepository<Site>, SiteRepository>();
+
+            services.AddScoped<IServices<Reseller>, ResellerService>();
+            services.AddScoped<IServices<Hardware>, HardwareService>();
+            services.AddScoped<IServices<Site>, SiteService>();
+
             services.AddScoped<IOrderRepository, OrderRepository>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

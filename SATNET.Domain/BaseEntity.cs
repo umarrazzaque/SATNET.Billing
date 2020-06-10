@@ -12,5 +12,6 @@ namespace SATNET.Domain
         public DateTime? UpdatedOn { get; set; }
         public int UpdatedBy { get; set; }
         public bool Dormant { get; set; }
+        public string BriefDescription { get; set; }
     }
 }

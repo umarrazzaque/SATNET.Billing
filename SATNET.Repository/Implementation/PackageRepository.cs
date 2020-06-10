@@ -30,7 +30,6 @@ namespace SATNET.Repository.Implementation
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
                 package = await con.QueryFirstOrDefaultAsync<Package>("PackageGet", commandType: CommandType.StoredProcedure, param: queryParameters);
-                
             }
             return package;
         }
@@ -96,7 +95,7 @@ namespace SATNET.Repository.Implementation
                 queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
-                
+
                 int retResult = await con.ExecuteScalarAsync<int>("PackageDelete", commandType: CommandType.StoredProcedure, param: queryParameters);
                 result = Parse.ToInt32(queryParameters.Get<int>("@P_Return_ID"));
             }
