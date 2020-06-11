@@ -34,7 +34,7 @@
                     $("#MainContents").html(data.html);
                 },
                 error: function () {
-                    alert('Error');
+                    alert('Error on clicking right pan');
                 }
             });
     });
@@ -51,7 +51,7 @@
                     $("#MainContents").html(data.html);
                 },
                 error: function () {
-                    alert('Error');
+                    alert('Error on clicking edit pan');
                 }
             });
     });
@@ -86,10 +86,16 @@
                 type: 'get',
                 dataType: "json",
                 success: function (data) {
+                    if (data.isSuccess === true) {
+                        ShowMessage(data.errorCode, 'Success Message', 1);
+                    }
+                    else {
+                        ShowMessage(data.errorCode, 'Error Message', 2);
+                    }
                     $("#MainContents").html(data.html);
                 },
                 error: function () {
-                    alert('Error');
+                    alert('Error on clicking delete confirmation');
                 }
             });
 

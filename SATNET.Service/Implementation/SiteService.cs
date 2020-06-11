@@ -95,7 +95,7 @@ namespace SATNET.Service.Implementation
 
         public Task<List<Site>> List()
         {
-            return _siteRepository.List();
+            return _siteRepository.List(new Site { });
         }
 
         public Task<StatusModel> Update(Site obj)

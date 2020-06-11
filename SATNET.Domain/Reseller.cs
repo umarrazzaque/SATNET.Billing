@@ -6,11 +6,12 @@ namespace SATNET.Domain
 {
     public class Reseller: BaseEntity
     {
-        public string RName { get; set; }
-        public int RTypeId { get; set; }
-        public string RType { get; set; }
-        public string REmail { get; set; }
-        public string RAddress { get; set; }
-        public string RContactNumber { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+        public int TypeId { get; set; }
+        public string Type { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string ContactNumber { get; set; }
     }
 }

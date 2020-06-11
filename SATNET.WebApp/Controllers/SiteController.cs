@@ -30,7 +30,9 @@ namespace SATNET.WebApp.Controllers
         {
             CreateSiteModel siteModel = new CreateSiteModel
             {
-                SiteModel = new SiteModel(),
+                SiteModel = new SiteModel {
+                    Name = "ZXC-001"
+                },
                 SiteStatus = GetSiteStatusList()
             };
 
@@ -48,23 +50,13 @@ namespace SATNET.WebApp.Controllers
                 status = _siteService.Add(new Site
                 {
                     Id = 0,
-                    SiteName = siteModel.SiteName,
-                    SiteStatusId = siteModel.SiteStatusId,
+                    Name = siteModel.Name,
+                    StatusId = siteModel.StatusId,
                     Area = siteModel.Area,
                     City = siteModel.City,
+                    Subscriber = siteModel.Subscriber,
                     CreatedBy = 1
                 }).Result;
-                //if (status.IsSuccess)
-                //{
-                //    //get error code description from configuration
-                //    //status.ErrorCode = "";
-                //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
-                //}
-                //else
-                //{
-                //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
-                //}
-                //return Json(new { isValid = false, msg = "Error in inserting the record!", html = RenderViewToString(this, "Index", await GetPackagesList()) });
             }
             else
             {
@@ -80,11 +72,12 @@ namespace SATNET.WebApp.Controllers
             Site site = await _siteService.Get(id);
             SiteModel pacModel = new SiteModel
             {
-                SiteId = site.Id,
-                SiteName = site.SiteName,
-                SiteStatusId = site.SiteStatusId,
+                Id = site.Id,
+                Name = site.Name,
+                StatusId = site.StatusId,
                 Area = site.Area,
-                City = site.City
+                City = site.City,
+                Subscriber = site.Subscriber,
             };
             CreateSiteModel siteModel = new CreateSiteModel
             {
@@ -104,11 +97,12 @@ namespace SATNET.WebApp.Controllers
             SiteModel siteModel = createSiteModel.SiteModel;
             var status = _siteService.Update(new Site
             {
-                Id = siteModel.SiteId,
-                SiteName = siteModel.SiteName,
-                SiteStatusId = siteModel.SiteStatusId,
+                Id = siteModel.Id,
+                Name = siteModel.Name,
+                StatusId = siteModel.StatusId,
                 Area = siteModel.Area,
                 City = siteModel.City,
+                Subscriber = siteModel.Subscriber,
                 CreatedBy = 1
             }).Result;
             status.Html = RenderViewToString(this, "Index", await GetPackagesList());
@@ -121,9 +115,9 @@ namespace SATNET.WebApp.Controllers
             Site site = await _siteService.Get(id);
             SiteModel siteModel = new SiteModel
             {
-                SiteId = site.Id,
-                SiteName = site.SiteName,
-                SiteStatusId = site.SiteStatusId,
+                Id = site.Id,
+                Name = site.Name,
+                StatusId = site.StatusId,
                 Area = site.Area,
                 City = site.City
             };
@@ -157,11 +151,13 @@ namespace SATNET.WebApp.Controllers
                 {
                     SiteModel siteModel = new SiteModel()
                     {
-                        SiteId = site.Id,
-                        SiteName = site.SiteName,
-                        SiteStatusId = site.SiteStatusId,
+                        Id = site.Id,
+                        Name = site.Name,
+                        StatusId = site.StatusId,
                         Area = site.Area,
-                        City = site.City
+                        City = site.City,
+                        Subscriber = site.Subscriber,
+                        ActivatedDate = site.ActivatedDate
                     };
                     siteListModel.Add(siteModel);
                 });

@@ -13,11 +13,12 @@
                 </th>
                 <th class="text-center">#</th>
 
-                <th> @Html.DisplayNameFor(model => model.RName) </th>
-                <th> @Html.DisplayNameFor(model => model.RType) </th>
-                <th> @Html.DisplayNameFor(model => model.REmail)</th>
-                <th> @Html.DisplayNameFor(model => model.RAddress) </th>
-                <th> @Html.DisplayNameFor(model => model.RContactNumber) </th>
+                <th> @Html.DisplayNameFor(model => model.Name) </th>
+                <th> @Html.DisplayNameFor(model => model.Type) </th>
+                <th> @Html.DisplayNameFor(model => model.Code) </th>
+                <th> @Html.DisplayNameFor(model => model.Email)</th>
+                <th> @Html.DisplayNameFor(model => model.Address) </th>
+                <th> @Html.DisplayNameFor(model => model.ContactNumber) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -28,35 +29,35 @@
             }
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="text-center"> <input type="checkbox"></td>
-                    <td class="text-center text-muted">
-                        @{
-                            counter++;
-                        }
-                        @counter
-                    </td>
-                    <td> @Html.DisplayFor(modelItem => item.RName)</td>
-                    <td> @Html.DisplayFor(modelItem => item.RType)</td>
-                    <td> @Html.DisplayFor(modelItem => item.REmail)</td>
-                    <td> @Html.DisplayFor(modelItem => item.RAddress)</td>
-                    <td> @Html.DisplayFor(modelItem => item.RContactNumber)</td>
-                    <td>14/01/2020, 11:31am</td>
-                    <td class="text-center">
-                        <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "Reseller/Edit", item.ResellerId)" class="pl-1 pr-1 edit-pan">
-                                <span class="fa fa-edit" aria-hidden="true"></span>
-                            </a>
-                            <a href="@String.Format("/{0}?id={1}", "Reseller/Details", item.ResellerId)" class="pl-1 pr-1 right-pan">
-                                <span class="fa fa-bars" aria-hidden="true"></span>
-                            </a>
-                            <a href="@String.Format("/{0}?id={1}", "Reseller/Delete", item.ResellerId)" class="pl-1 pr-1 modal-pan"
-                               data-toggle="modal" data-target="#modal-deleteConfirm">
-                                <span class="fa fa-trash" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+                <td class="text-center"> <input type="checkbox"></td>
+                <td class="text-center text-muted">
+                    @{
+                        counter++;
+                    }
+                    @counter
+                </td>
+                <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                <td> @Html.DisplayFor(modelItem => item.TypeId)</td>
+                <td> @Html.DisplayFor(modelItem => item.Code)</td>
+                <td> @Html.DisplayFor(modelItem => item.Email)</td>
+                <td> @Html.DisplayFor(modelItem => item.Address)</td>
+                <td> @Html.DisplayFor(modelItem => item.ContactNumber)</td>
+                <td class="text-center">
+                    <div class="buttons">
+                        <a href="@String.Format("/{0}?id={1}", "Reseller/Edit", item.Id)" class="pl-1 pr-1 edit-pan">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "Reseller/Details", item.Id)" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-bars" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "Reseller/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                           data-toggle="modal" data-target="#modal-deleteConfirm">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
             }
 
 

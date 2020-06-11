@@ -35,11 +35,12 @@ namespace SATNET.Repository.Implementation
                     con.Open();
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.Output);
-                queryParameters.Add("@P_RName", obj.RName, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RTypeId", obj.RTypeId, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_REmail", obj.REmail, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RAddressType", obj.RAddress, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RContactNumber", obj.RContactNumber, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Address", obj.Address, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ContactNumber", obj.ContactNumber, DbType.String, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                 int retResult = await con.ExecuteScalarAsync<int>("ResellerAdd", commandType: CommandType.StoredProcedure, param: queryParameters);
                 result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
@@ -79,14 +80,20 @@ namespace SATNET.Repository.Implementation
             return reseller;
         }
 
-        public async Task<List<Reseller>> List()
+        public async Task<List<Reseller>> List(Reseller obj)
         {
             List<Reseller> resellers = new List<Reseller>();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var result = await con.QueryAsync<Reseller>("ResellerList", commandType: CommandType.StoredProcedure);
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
+                var result = await con.QueryAsync<Reseller>("ResellerList", commandType: CommandType.StoredProcedure, param: queryParameters);
+
                 resellers = result.ToList();
             }
             return resellers;
@@ -101,11 +108,12 @@ namespace SATNET.Repository.Implementation
                     con.Open();
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@P_RName", obj.RName, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RTypeId", obj.RTypeId, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_REmail", obj.REmail, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RAddressType", obj.RAddress, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_RContactNumber", obj.RContactNumber, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TypeId", obj.TypeId, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Address", obj.Address, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ContactNumber", obj.ContactNumber, DbType.String, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                 int retResult = await con.ExecuteScalarAsync<int>("ResellerUpdate", commandType: CommandType.StoredProcedure, param: queryParameters);
                 result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));

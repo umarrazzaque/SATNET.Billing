@@ -96,7 +96,8 @@ namespace SATNET.Service.Implementation
 
         public Task<List<Hardware>> List()
         {
-            return _hardwareRepository.List();
+
+            return _hardwareRepository.List(new Hardware { });
         }
 
         public Task<StatusModel> Update(Hardware obj)

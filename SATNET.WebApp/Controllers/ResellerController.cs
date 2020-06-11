@@ -49,11 +49,12 @@ namespace SATNET.WebApp.Controllers
                 status = _resellerService.Add(new Reseller
                 {
                     Id = 0,
-                    RName = resellerModel.RName,
-                    RTypeId = resellerModel.RTypeId,
-                    REmail = resellerModel.REmail,
-                    RAddress = resellerModel.RAddress,
-                    RContactNumber = resellerModel.RContactNumber,
+                    Name = resellerModel.Name,
+                    TypeId = resellerModel.TypeId,
+                    Code = resellerModel.Code,
+                    Email = resellerModel.Email,
+                    Address = resellerModel.Address,
+                    ContactNumber = resellerModel.ContactNumber,
                     CreatedBy = 1
                 }).Result;
             }
@@ -71,12 +72,13 @@ namespace SATNET.WebApp.Controllers
             Reseller reseller = await _resellerService.Get(id);
             ResellerModel resModel = new ResellerModel
             {
-                ResellerId = reseller.Id,
-                RName = reseller.RName,
-                RTypeId = reseller.RTypeId,
-                REmail = reseller.REmail,
-                RAddress = reseller.RAddress,
-                RContactNumber = reseller.RContactNumber
+                Id = reseller.Id,
+                Name = reseller.Name,
+                TypeId = reseller.TypeId,
+                Code = reseller.Code,
+                Email = reseller.Email,
+                Address = reseller.Address,
+                ContactNumber = reseller.ContactNumber
             };
             CreateResellerModel resellerModel = new CreateResellerModel
             {
@@ -96,12 +98,13 @@ namespace SATNET.WebApp.Controllers
             ResellerModel resellerModel = createResellerModel.ResellerModel;
             var status = _resellerService.Update(new Reseller
             {
-                Id = resellerModel.ResellerId,
-                RName = resellerModel.RName,
-                RTypeId = resellerModel.RTypeId,
-                REmail = resellerModel.REmail,
-                RAddress = resellerModel.RAddress,
-                RContactNumber = resellerModel.RContactNumber,
+                Id = resellerModel.Id,
+                Name = resellerModel.Name,
+                TypeId = resellerModel.TypeId,
+                Code = resellerModel.Code,
+                Email = resellerModel.Email,
+                Address = resellerModel.Address,
+                ContactNumber = resellerModel.ContactNumber,
                 CreatedBy = 1
             }).Result;
             status.Html = RenderViewToString(this, "Index", await GetResellersList());
@@ -114,12 +117,13 @@ namespace SATNET.WebApp.Controllers
             Reseller reseller = await _resellerService.Get(id);
             ResellerModel resellerModel = new ResellerModel
             {
-                ResellerId = reseller.Id,
-                RName = reseller.RName,
-                RTypeId = reseller.RTypeId,
-                REmail = reseller.REmail,
-                RAddress = reseller.RAddress,
-                RContactNumber = reseller.RContactNumber
+                Id = reseller.Id,
+                Name = reseller.Name,
+                TypeId = reseller.TypeId,
+                Code = reseller.Code,
+                Email = reseller.Email,
+                Address = reseller.Address,
+                ContactNumber = reseller.ContactNumber
             };
             var status = new StatusModel
             {
@@ -148,12 +152,13 @@ namespace SATNET.WebApp.Controllers
                 {
                     ResellerModel reseller = new ResellerModel()
                     {
-                        ResellerId = res.Id,
-                        RName = res.RName,
-                        RTypeId = res.RTypeId,
-                        REmail = res.REmail,
-                        RAddress = res.RAddress,
-                        RContactNumber = res.RContactNumber
+                        Id = res.Id,
+                        Name = res.Name,
+                        TypeId = res.TypeId,
+                        Code = res.Code,
+                        Email = res.Email,
+                        Address = res.Address,
+                        ContactNumber = res.ContactNumber
                     };
                     ResellerListModel.Add(reseller);
                 });

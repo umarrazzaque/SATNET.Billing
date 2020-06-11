@@ -7,8 +7,9 @@ namespace SATNET.Repository.Interface
 {
     public interface IRepository<T>
     {
+
         public Task<T> Get(int id);
-        public Task<List<T>> List();
+        public Task<List<T>> List(T obj); 
         public Task<int> Add(T obj);
         public Task<int> Update(T obj);
         public Task<int> Delete(int id, int deletedBy);

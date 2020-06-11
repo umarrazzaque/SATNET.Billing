@@ -6,9 +6,13 @@ namespace SATNET.Domain
 {
     public class Hardware : BaseEntity
     {
-        public string HKit { get; set; }
-        public string Antenna { get; set; }
-        public string Modem { get; set; }
-        public string Transceiver { get; set; }
+        public string ModemModel { get; set; }
+        public string ModemSerialNo { get; set; }
+        public string MACAirNo { get; set; }
+        public string AntennaSize { get; set; }
+        public string AntennaSrNo { get; set; }
+        public string TransceiverWAAT { get; set; }
+        public string TransceiverSrNo { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SATNET.WebApp.Models.PackageModel
+﻿@model SATNET.WebApp.Models.ResellerModel
 @*@{
         var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
     }*@
@@ -9,14 +9,14 @@
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div>
-                Package Detail
+                Reseller Detail
                 <div class="page-title-subheading">
                 </div>
             </div>
         </div>
         <div class="page-title-actions">
             <div class="d-inline-block dropdown">
-                <a href="@String.Format("/{0}", "Package/Reset")" class=" btn btn-danger right-pan">
+                <a href="@String.Format("/{0}", "Reseller/Reset")" class=" btn btn-danger right-pan">
                     Back
                 </a>
             </div>
@@ -34,20 +34,26 @@
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
-            @Html.LabelFor(model => model.PackageType, new { })
-            @Html.EditorFor(model => model.PackageType, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+            @Html.LabelFor(model => model.Type, new { })
+            @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
-            @Html.LabelFor(model => model.Speed, new { })
-            @Html.EditorFor(model => model.Speed, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+            @Html.LabelFor(model => model.Email, new { })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
-            @Html.LabelFor(model => model.Rate, new { })
-            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+            @Html.LabelFor(model => model.Address, new { })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.ContactNumber, new { })
+            @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>
     </div>
 </div>
