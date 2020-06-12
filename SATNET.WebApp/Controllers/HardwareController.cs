@@ -42,11 +42,14 @@ namespace SATNET.WebApp.Controllers
             {
                 status = _hardwareService.Add(new Hardware
                 {
-                    Id = 0,
-                    HKit = hardwareModel.HKit,
-                    Modem = hardwareModel.Modem,
-                    Antenna = hardwareModel.Antenna,
-                    Transceiver = hardwareModel.Transceiver,
+                    ModemSerialNo = hardwareModel.ModemSerialNo,
+                    ModemModel = hardwareModel.ModemModel,
+                    MACAirNo = hardwareModel.MACAirNo,
+                    AntennaSize = hardwareModel.AntennaSize,
+                    AntennaSrNo = hardwareModel.AntennaSrNo,
+                    TransceiverSrNo = hardwareModel.TransceiverSrNo,
+                    TransceiverWAAT = hardwareModel.TransceiverWAAT,
+                    Price = hardwareModel.Price,
                     CreatedBy = 1
                 }).Result;
             }
@@ -65,10 +68,14 @@ namespace SATNET.WebApp.Controllers
             HardwareModel hardwareModel = new HardwareModel
             {
                 HardwareId = hardware.Id,
-                HKit = hardware.HKit,
-                Modem = hardware.Modem,
-                Antenna = hardware.Antenna,
-                Transceiver = hardware.Transceiver
+                ModemSerialNo = hardware.ModemSerialNo,
+                ModemModel = hardware.ModemModel,
+                MACAirNo = hardware.MACAirNo,
+                AntennaSize = hardware.AntennaSize,
+                AntennaSrNo = hardware.AntennaSrNo,
+                TransceiverSrNo = hardware.TransceiverSrNo,
+                TransceiverWAAT = hardware.TransceiverWAAT,
+                Price = hardware.Price,
             };
             var status = new StatusModel
             {
@@ -82,11 +89,15 @@ namespace SATNET.WebApp.Controllers
         {
             var status = _hardwareService.Update(new Hardware
             {
-                Id = 0,
-                HKit = hardwareModel.HKit,
-                Modem = hardwareModel.Modem,
-                Antenna = hardwareModel.Antenna,
-                Transceiver = hardwareModel.Transceiver,
+                Id = hardwareModel.HardwareId,
+                ModemSerialNo = hardwareModel.ModemSerialNo,
+                ModemModel = hardwareModel.ModemModel,
+                MACAirNo = hardwareModel.MACAirNo,
+                AntennaSize = hardwareModel.AntennaSize,
+                AntennaSrNo = hardwareModel.AntennaSrNo,
+                TransceiverSrNo = hardwareModel.TransceiverSrNo,
+                TransceiverWAAT = hardwareModel.TransceiverWAAT,
+                Price = hardwareModel.Price,
                 CreatedBy = 1
             }).Result;
             status.Html = RenderViewToString(this, "Index", await GetHardwareList());
@@ -100,10 +111,14 @@ namespace SATNET.WebApp.Controllers
             HardwareModel hardwareModel = new HardwareModel
             {
                 HardwareId = hardware.Id,
-                HKit = hardware.HKit,
-                Modem = hardware.Modem,
-                Antenna = hardware.Antenna,
-                Transceiver = hardware.Transceiver
+                ModemSerialNo = hardware.ModemSerialNo,
+                ModemModel = hardware.ModemModel,
+                MACAirNo = hardware.MACAirNo,
+                AntennaSize = hardware.AntennaSize,
+                AntennaSrNo = hardware.AntennaSrNo,
+                TransceiverSrNo = hardware.TransceiverSrNo,
+                TransceiverWAAT = hardware.TransceiverWAAT,
+                Price = hardware.Price,
             };
             var status = new StatusModel
             {
@@ -136,10 +151,14 @@ namespace SATNET.WebApp.Controllers
                     HardwareModel hardware = new HardwareModel()
                     {
                         HardwareId = har.Id,
-                        HKit = har.HKit,
-                        Modem = har.Modem,
-                        Antenna = har.Antenna,
-                        Transceiver = har.Transceiver
+                        ModemSerialNo = har.ModemSerialNo,
+                        ModemModel = har.ModemModel,
+                        MACAirNo = har.MACAirNo,
+                        AntennaSize = har.AntennaSize,
+                        AntennaSrNo = har.AntennaSrNo,
+                        TransceiverSrNo = har.TransceiverSrNo,
+                        TransceiverWAAT = har.TransceiverWAAT,
+                        Price = har.Price,
                     };
                     hardwareListModel.Add(hardware);
                 });

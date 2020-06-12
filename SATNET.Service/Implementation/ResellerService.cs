@@ -97,7 +97,7 @@ namespace SATNET.Service.Implementation
 
         public Task<List<Reseller>> List()
         {
-            return _resellerRepository.List();
+            return _resellerRepository.List(new Reseller { });
         }
 
         public Task<StatusModel> Update(Reseller obj)

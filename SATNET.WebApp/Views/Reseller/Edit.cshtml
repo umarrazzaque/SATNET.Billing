@@ -6,7 +6,6 @@
 <!-- Main content -->
 <form method="post" data-ajax="true" asp-controller="Reseller" asp-action="Edit" data-ajax-method="post"
       enctype="multipart/form-data" id="formAdd" autocomplete="off">
-    @Html.HiddenFor(model => model.ResellerModel.ResellerId)
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -30,37 +29,42 @@
 
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @Html.HiddenFor(model => model.ResellerModel.ResellerId)
-        
+        @Html.HiddenFor(model => model.ResellerModel.Id)
+
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.ResellerModel.RName, new { })
-                @Html.EditorFor(model => model.ResellerModel.RName, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name", @type = "text" } })
+                @Html.LabelFor(model => model.ResellerModel.Name, new { })
+                @Html.EditorFor(model => model.ResellerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                @Html.LabelFor(model => model.ResellerModel.RType, new { })
-                @Html.DropDownListFor(model => model.ResellerModel.RTypeId, new SelectList(Model.ResellerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Reseller Type-", new { @class = "form-control select2 text-input" })
-
+                @Html.LabelFor(model => model.ResellerModel.Type, new { })
+                @Html.DropDownListFor(model => model.ResellerModel.TypeId, new SelectList(Model.ResellerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Reseller Type-", new { @class = "form-control select2 text-input" })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.ResellerModel.REmail, new { })
-                @Html.EditorFor(model => model.ResellerModel.REmail, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Email", @type = "text" } })
+                @Html.LabelFor(model => model.ResellerModel.Code, new { })
+                @Html.EditorFor(model => model.ResellerModel.Code, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Code", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.ResellerModel.RAddress, new { })
-                @Html.EditorFor(model => model.ResellerModel.RAddress, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Address", @type = "text" } })
+                @Html.LabelFor(model => model.ResellerModel.Email, new { })
+                @Html.EditorFor(model => model.ResellerModel.Email, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Email", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.ResellerModel.RContactNumber, new { })
-                @Html.EditorFor(model => model.ResellerModel.RContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Contact", @type = "type" } })
+                @Html.LabelFor(model => model.ResellerModel.Address, new { })
+                @Html.EditorFor(model => model.ResellerModel.Address, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Address", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.ResellerModel.ContactNumber, new { })
+                @Html.EditorFor(model => model.ResellerModel.ContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Contact", @type = "type" } })
             </div>
         </div>
     </div>

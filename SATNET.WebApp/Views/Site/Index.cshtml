@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.PackageModel>
+﻿@model IEnumerable<SATNET.WebApp.Models.SiteModel>
 
 <div id="MainContents">
 
@@ -7,7 +7,7 @@
             <div class="page-title-heading">
 
                 <div>
-                    Packages
+                    Sites
                     <div class="page-title-subheading">
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                             <button type="button" tabindex="0" class="dropdown-item">Print</button>
                         </div>
                     </div>
-                    <a href="@String.Format("/{0}", "Package/Add")" class=" btn btn-default right-pan">
+                    <a href="@String.Format("/{0}", "Site/Add")" class=" btn btn-default right-pan">
                         Add New
                     </a>
                 </div>
@@ -32,36 +32,10 @@
         </div>
     </div>
 
-    <div class="filters">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="position-relative form-group">
-                    <select type="select" class="form-control ">
-                        <option value="">Type</option>
-                        <option>value</option>
-                        <option>value</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-lg-2">
-                <div class="position-relative form-group">
-
-                    <select type="select" class="form-control ">
-                        <option value="">Speed</option>
-                        <option>value</option>
-                        <option>value</option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_PackageList", Model)
+                @await Html.PartialAsync("_Site", Model)
             </div>
             
 
@@ -87,7 +61,7 @@
             "columnDefs": [
                 { "orderable": false, "targets": 0 },
                 { "orderable": false, "targets": 1 },
-                { "orderable": false, "targets": 8 }
+                { "orderable": false, "targets": 6 }
             ],
             //"columnDefs": [
             //    {

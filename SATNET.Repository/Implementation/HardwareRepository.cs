@@ -31,10 +31,16 @@ namespace SATNET.Repository.Implementation
                     con.Open();
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.Output);
-                queryParameters.Add("@P_HKit", obj.HKit, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Antenna", obj.Antenna, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Modem", obj.Modem, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Transceiver", obj.Transceiver, DbType.String, ParameterDirection.Input);
+                //queryParameters.Add("@P_HKit", obj.HKit, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ModemModel", obj.ModemModel, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ModemSerialNo", obj.ModemSerialNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_MACAirNo", obj.MACAirNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_AntennaSize", obj.AntennaSize, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_AntennaSrNo", obj.AntennaSrNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TransceiverWAAT", obj.TransceiverWAAT, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TransceiverSrNo", obj.TransceiverSrNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Price", obj.Price, DbType.Decimal, ParameterDirection.Input);
+
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                 int retResult = await con.ExecuteScalarAsync<int>("HardwareAdd", commandType: CommandType.StoredProcedure, param: queryParameters);
                 result = Parse.ToInt32(queryParameters.Get<int>("P_Id"));
@@ -74,14 +80,19 @@ namespace SATNET.Repository.Implementation
             return hardware;
         }
 
-        public async Task<List<Hardware>> List()
+        public async Task<List<Hardware>> List(Hardware obj)
         {
             List<Hardware> hardwares = new List<Hardware>();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var result = await con.QueryAsync<Hardware>("HardwareList", commandType: CommandType.StoredProcedure);
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
+                var result = await con.QueryAsync<Hardware>("HardwareList", commandType: CommandType.StoredProcedure, param: queryParameters);
                 hardwares = result.ToList();
             }
             return hardwares;
@@ -96,10 +107,15 @@ namespace SATNET.Repository.Implementation
                     con.Open();
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@P_HKit", obj.HKit, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Antenna", obj.Antenna, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Modem", obj.Modem, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Transceiver", obj.Transceiver, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ModemModel", obj.ModemModel, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ModemSerialNo", obj.ModemSerialNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_MACAirNo", obj.MACAirNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_AntennaSize", obj.AntennaSize, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_AntennaSrNo", obj.AntennaSrNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TransceiverWAAT", obj.TransceiverWAAT, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_TransceiverSrNo", obj.TransceiverSrNo, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Price", obj.Price, DbType.Decimal, ParameterDirection.Input);
+
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                 int retResult = await con.ExecuteScalarAsync<int>("HardwareUpdate", commandType: CommandType.StoredProcedure, param: queryParameters);
                 result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));

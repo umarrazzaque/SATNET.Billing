@@ -32,20 +32,50 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.Modem, new { })
-                @Html.EditorFor(model => model.Modem, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem", @type = "text" } })
+                @Html.LabelFor(model => model.ModemSerialNo, new { })
+                @Html.EditorFor(model => model.ModemSerialNo, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem Sr No ", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.Antenna, new { })
-                @Html.EditorFor(model => model.Antenna, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Antenna", @type = "decimal" } })
+                @Html.LabelFor(model => model.ModemModel, new { })
+                @Html.EditorFor(model => model.ModemModel, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem Model", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.Transceiver, new { })
-                @Html.EditorFor(model => model.Transceiver, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Transciever", @type = "decimal" } })
+                @Html.LabelFor(model => model.MACAirNo, new { })
+                @Html.EditorFor(model => model.MACAirNo, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "MAC", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.AntennaSrNo, new { })
+                @Html.EditorFor(model => model.AntennaSrNo, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Antenna Sr No", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.AntennaSize, new { })
+                @Html.EditorFor(model => model.AntennaSize, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Antenna Size", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.TransceiverWAAT, new { })
+                @Html.EditorFor(model => model.TransceiverWAAT, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Transceiver WAAT", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.TransceiverSrNo, new { })
+                @Html.EditorFor(model => model.TransceiverSrNo, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Transceiver Sr No", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.Price, new { })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Price", @type = "decimal" } })
             </div>
         </div>
     </div>

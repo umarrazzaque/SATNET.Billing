@@ -9,15 +9,17 @@ namespace SATNET.WebApp.Models
     {
         public SiteModel()
         {
-            SiteId = SiteStatusId = -1;
-            SiteName = SiteStaus = City = Area = "";
+            Id = StatusId = -1;
+            Name = Status = City = Area = "";
         }
-        public int SiteId { get; set; }
-        public string SiteName { get; set; }
-        public int SiteStatusId { get; set; }
-        public string SiteStaus { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int StatusId { get; set; }
+        public string Status { get; set; }
         public string City { get; set; }
         public string Area { get; set; }
+        public string Subscriber { get; set; }
+        public DateTime ActivatedDate { get; set; }
     }
 
     public class CreateSiteModel
