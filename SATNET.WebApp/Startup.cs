@@ -55,9 +55,6 @@ namespace SATNET.WebApp
                 options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
             });
 
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
-    AdditionalUserClaimsPrincipalFactory>();
-
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
@@ -82,19 +79,23 @@ namespace SATNET.WebApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IPackageService, PackageService>();
-            services.AddScoped<IPackageRepository, PackageRepository>();
+            services.AddScoped<IService<Package>, PackageService>();
+            services.AddScoped<IRepository<Package>, PackageRepository>();
 
             services.AddScoped<IRepository<Reseller>, ResellerRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
 
-            services.AddScoped<IServices<Reseller>, ResellerService>();
-            services.AddScoped<IServices<Hardware>, HardwareService>();
-            services.AddScoped<IServices<Site>, SiteService>();
+            services.AddScoped<IService<Reseller>, ResellerService>();
+            services.AddScoped<IService<Hardware>, HardwareService>();
+            services.AddScoped<IService<Site>, SiteService>();
 
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ILookupRepository, LookupRepository>();
+            services.AddScoped<ILookupService, LookupService>();
+            services.AddScoped<IRepository<Lookup>, LookupRepository>();
+            services.AddScoped<IService<Lookup>, LookupService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

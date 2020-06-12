@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Interface
 {
-    public interface IServices<T>
+    public interface IService<T>
     {
         public Task<T> Get(int id);
         public Task<List<T>> List();

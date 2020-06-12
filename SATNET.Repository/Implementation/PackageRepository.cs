@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class PackageRepository : IPackageRepository
+    public class PackageRepository : IRepository<Package>
     {
         private readonly IConfiguration _config;
         public PackageRepository(IConfiguration config)

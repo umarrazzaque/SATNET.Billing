@@ -30,48 +30,32 @@ namespace SATNET.Repository.Implementation
                 if (con.State == ConnectionState.Closed)
                     con.Open();
                 var queryParameters = new DynamicParameters();
-                queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.Output);
-                queryParameters.Add("@P_SiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_SiteStatusId", obj.SiteStatusId, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@P_City", obj.City, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Area", obj.Area, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@DistributorId", obj.DistributorId, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@HardwareId", obj.HardwareId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@PackageId", obj.PackageId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@PlanTypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@StatusId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@Name", obj.Name, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@IP", obj.IP, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@Download", obj.Download, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@Upload", obj.Upload, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@InstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                 int retResult = await con.ExecuteScalarAsync<int>("SiteAdd", commandType: CommandType.StoredProcedure, param: queryParameters);
-                result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
+                result = Parse.ToInt32(retResult);
             }
             return result;
         }
 
         public async Task<int> Delete(int id, int deletedBy)
         {
-            int result = 0;
-            using (IDbConnection con = new SqlConnection(_connectionString))
-            {
-                if (con.State == ConnectionState.Closed)
-                    con.Open();
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
-
-                int retResult = await con.ExecuteScalarAsync<int>("SiteDelete", commandType: CommandType.StoredProcedure, param: queryParameters);
-                result = Parse.ToInt32(queryParameters.Get<int>("@P_Return_ID"));
-            }
-            return result;
+            throw new NotImplementedException();
         }
 
         public async Task<Site> Get(int id)
         {
-            Site site = new Site();
-            using (IDbConnection con = new SqlConnection(_connectionString))
-            {
-                if (con.State == ConnectionState.Closed)
-                    con.Open();
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
-                site = await con.QueryFirstOrDefaultAsync<Site>("SiteGet", commandType: CommandType.StoredProcedure, param: queryParameters);
-            }
-            return site;
+            throw new NotImplementedException();
         }
 
         public async Task<List<Site>> List()
@@ -89,22 +73,7 @@ namespace SATNET.Repository.Implementation
 
         public async Task<int> Update(Site obj)
         {
-            int result = 0;
-            using (IDbConnection con = new SqlConnection(_connectionString))
-            {
-                if (con.State == ConnectionState.Closed)
-                    con.Open();
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@P_SiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_SiteStatusId", obj.SiteStatusId, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@P_City", obj.City, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_Area", obj.Area, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                int retResult = await con.ExecuteScalarAsync<int>("SiteUpdate", commandType: CommandType.StoredProcedure, param: queryParameters);
-                result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
-            }
-            return result;
+            throw new NotImplementedException();
         }
     }
 }

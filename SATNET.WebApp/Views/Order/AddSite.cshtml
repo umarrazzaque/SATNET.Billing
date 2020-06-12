@@ -1,0 +1,142 @@
+﻿@model SATNET.WebApp.Models.Order.CreateSiteViewModel
+
+<form method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Service Order
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "Order/Reset")" class=" btn btn-danger right-pan">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="ResellerName"></label>
+                <input disabled="disabled" asp-for="ResellerName" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-12">
+            <h5 class="title">New Site Details</h5>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" placeholder="Name" class="form-control text-input" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="InstallationDate"></label>
+                <input asp-for="InstallationDate" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="InstallationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="PlanTypeSelectList"></label>
+                <select asp-for="PlanTypeId" asp-items="Model.PlanTypeSelectList" class="form-control select2 text-input"></select>
+                <span asp-validation-for="PlanTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="IP"></label>
+                <input asp-for="IP" type="text" placeholder="IP" class="form-control text-input" />
+                <span asp-validation-for="IP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="Download"></label>
+                <input asp-for="Download" type="text" placeholder="Download" class="form-control text-input" />
+                <span asp-validation-for="Download" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="Upload"></label>
+                <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
+                <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="HardwareSelectList"></label>
+                <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input"></select>
+                <span asp-validation-for="HardwareId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="PackageSelectList"></label>
+                <select asp-for="PackageId" asp-items="Model.PackageSelectList" class="form-control select2 text-input"></select>
+                <span asp-validation-for="PackageId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12">
+
+            <h5 class="title">Customer Details</h5>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerName"></label>
+                <input asp-for="CustomerName" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerCity"></label>
+                <input asp-for="CustomerCity" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerCity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerEmail"></label>
+                <input asp-for="CustomerEmail" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerArea"></label>
+                <input asp-for="CustomerArea" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerArea" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerNotes"></label>
+                <input asp-for="CustomerNotes" type="text" placeholder="..." class="form-control" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- /.Main content -->
+
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}

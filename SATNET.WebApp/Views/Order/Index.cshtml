@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.OrderViewModel>
+﻿@model IEnumerable<SATNET.WebApp.Models.Order.OrderViewModel>
 
 <div id="MainContents">
 
@@ -25,7 +25,7 @@
                         </div>
                     </div>
 
-                    <a href="@String.Format("/{0}", "Order/Add")" class=" btn btn-default right-pan">
+                    <a href="@String.Format("/{0}", "Order/AddAjax")" class=" btn btn-default right-pan">
                         Add New
                     </a>
                 </div>
@@ -62,11 +62,8 @@
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_PackageList", Model)
+                @await Html.PartialAsync("_OrderList", Model)
             </div>
-
-
-
         </div>
 
     </div>

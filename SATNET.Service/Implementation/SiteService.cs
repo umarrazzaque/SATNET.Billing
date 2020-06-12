@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class SiteService : IServices<Site>
+    public class SiteService : IService<Site>
     {
         private readonly IRepository<Site> _siteRepository;
         public SiteService(IRepository<Site> siteRepository)
         {
             _siteRepository = siteRepository;
         }
-        public Task<StatusModel> Add(Site obj)
+        public async Task<StatusModel> Add(Site obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Site/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
             try
             {
-                int retId = _siteRepository.Add(obj).Result;
+                int retId = await _siteRepository.Add(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -42,15 +42,15 @@ namespace SATNET.Service.Implementation
             {
 
             }
-            return Task.FromResult(status);
+            return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Site/Index" };
             try
             {
-                int dRow = _siteRepository.Delete(recId, deletedBy).Result;
+                int dRow = await _siteRepository.Delete(recId, deletedBy);
                 if (dRow > 0)
                 {
                     status.IsSuccess = true;
@@ -63,20 +63,22 @@ namespace SATNET.Service.Implementation
             }
             catch (Exception e)
             {
-                status.ErrorCode = "Cannot delete record due to referential records.";
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing request.";
+                status.ErrorDescription = e.Message;
             }
             finally
             {
             }
-            return Task.FromResult(status);
+            return status;
         }
 
-        public Task<Site> Get(int id)
+        public async Task<Site> Get(int id)
         {
             var retModel = new Site();
             try
             {
-                retModel = _siteRepository.Get(id).Result;
+                retModel = await _siteRepository.Get(id);
                 if (retModel.Id != 0)
                 {
 
@@ -90,20 +92,20 @@ namespace SATNET.Service.Implementation
             {
 
             }
-            return Task.FromResult(retModel);
+            return retModel;
         }
 
-        public Task<List<Site>> List()
+        public async Task<List<Site>> List()
         {
-            return _siteRepository.List();
+            return await _siteRepository.List();
         }
 
-        public Task<StatusModel> Update(Site obj)
+        public async Task<StatusModel> Update(Site obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Site/Index" };
             try
             {
-                int retId = _siteRepository.Update(obj).Result;
+                int retId = await _siteRepository.Update(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -125,7 +127,7 @@ namespace SATNET.Service.Implementation
             {
 
             }
-            return Task.FromResult(status);
+            return status;
         }
     }
 }

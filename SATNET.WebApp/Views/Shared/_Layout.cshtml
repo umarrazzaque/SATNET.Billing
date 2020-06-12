@@ -175,16 +175,19 @@
 
                             <li>
                                 <a href="" class="">
-                                    <i class="metismenu-icon icofont-file-document"></i> Billing
+                                    <i class="metismenu-icon icofont-file-document"></i> Service Orders
                                     <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
                                 </a>
                                 <ul class="vertical-nav-menu">
                                     <li>
-                                        <a href="" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Sub Menu
+                                        <a href="@String.Format("/{0}", "Order/AddSite")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> New Site
                                         </a>
-                                        <a href="" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Sub Menu
+                                        <a href="@String.Format("/{0}", "")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Existing Site
+                                        </a>
+                                        <a href="@String.Format("/{0}", "Order")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> View all Service Orders
                                         </a>
                                     </li>
                                 </ul>

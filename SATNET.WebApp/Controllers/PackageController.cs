@@ -13,8 +13,8 @@ namespace SATNET.WebApp.Controllers
 
     public class PackageController : BaseController
     {
-        private readonly IPackageService _packageService;
-        public PackageController(IPackageService packageService)
+        private readonly IService<Package> _packageService;
+        public PackageController(IService<Package> packageService)
         {
             _packageService = packageService;
         }
