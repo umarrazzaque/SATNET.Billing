@@ -1,0 +1,261 @@
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+<form method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Service Order
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "Order/Reset")" class=" btn btn-danger right-pan">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label>Reseller/Partner: @Model.ResellerName</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="RequestTypeSelectList"></label>
+                <select asp-for="RequestTypeId" asp-items="Model.RequestTypeSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="RequestTypeId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="SiteSelectList"></label>
+                <select asp-for="SiteId" asp-items="Model.SiteSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="SiteId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="HardwareSelectList"></label>
+                <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="HardwareId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="PackageSelectList"></label>
+                <select asp-for="PackageId" asp-items="Model.PackageSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="PackageId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-12 new-site">
+            <h5 class="title">New Site Details</h5>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="InstallationDate"></label>
+                <input asp-for="InstallationDate" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="InstallationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="form-group">
+                <label asp-for="PlanTypeSelectList"></label>
+                <select asp-for="PlanTypeId" asp-items="Model.PlanTypeSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="PlanTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="IP"></label>
+                <input asp-for="IP" type="text" placeholder="IP" class="form-control text-input" />
+                <span asp-validation-for="IP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="Download"></label>
+                <input asp-for="Download" type="text" placeholder="Download" class="form-control text-input" />
+                <span asp-validation-for="Download" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="Upload"></label>
+                <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
+                <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 new-site">
+
+            <h5 class="title">Customer Details</h5>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerName"></label>
+                <input asp-for="CustomerName" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerCity"></label>
+                <input asp-for="CustomerCity" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerCity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerEmail"></label>
+                <input asp-for="CustomerEmail" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerArea"></label>
+                <input asp-for="CustomerArea" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="CustomerArea" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="CustomerNotes"></label>
+                <input asp-for="CustomerNotes" type="text" placeholder="..." class="form-control" />
+            </div>
+        </div>
+        <div class="col-lg-12 upgrade">
+            <h5 class="title">Upgrade</h5>
+        </div>
+        <div class="col-lg-3 upgrade">
+            <div class="position-relative form-group">
+                <label asp-for="UpgradeFrom"></label>
+                <input asp-for="UpgradeFrom" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="UpgradeFrom" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 upgrade">
+            <div class="position-relative form-group">
+                <label asp-for="UpgradeTo"></label>
+                <input asp-for="UpgradeTo" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="UpgradeTo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 downgrade">
+            <h5 class="title">Downgrade</h5>
+        </div>
+        <div class="col-lg-3 downgrade">
+            <div class="position-relative form-group">
+                <label asp-for="DowngradeFrom"></label>
+                <input asp-for="DowngradeFrom" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="DowngradeFrom" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 downgrade">
+            <div class="position-relative form-group">
+                <label asp-for="DowngradeTo"></label>
+                <input asp-for="DowngradeTo" type="date" placeholder="..." class="form-control" value="" />
+                <span asp-validation-for="DowngradeTo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 token">
+            <h5 class="title">Token Top-Up</h5>
+        </div>
+        <div class="col-lg-3 token">
+            <div class="position-relative form-group">
+                <label asp-for="Token"></label>
+                <input asp-for="Token" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="Token" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 token">
+            <div class="position-relative form-group">
+                <label asp-for="Promotion"></label>
+                <input asp-for="Promotion" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="Promotion" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 other">
+            <h5 class="title">Other</h5>
+        </div>
+        <div class="col-lg-3 other">
+            <div class="position-relative form-group">
+                <label asp-for="Other"></label>
+                <input asp-for="Other" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="Other" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- /.Main content -->
+
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script type="text/javascript">
+        $(function () {
+            hideAllSections();
+            $("#RequestTypeId").change(function () {
+                var requestTypeId = $("#RequestTypeId").val();
+                switch (requestTypeId) {
+                    case '1'://Activation
+                        hideAllSections();
+                        $(".new-site").show();
+                        break
+                    case '3'://Upgrade
+                        hideAllSections();
+                        $(".upgrade").show();
+                        break
+                    case '4'://Downgrade
+                        hideAllSections();
+                        $(".downgrade").show();
+                        break
+                    case '5':// Token Top up
+                        hideAllSections();
+                        $(".token").show();
+                        break
+                    case '8':// Other
+                        hideAllSections();
+                        $(".other").show();
+                        break
+                    default:
+                        hideAllSections();
+                }
+            });
+        });
+
+        hideAllSections = function () {
+            $(".new-site").hide();
+            $(".upgrade").hide();
+            $(".downgrade").hide();
+            $(".token").hide();
+            $(".other").hide();
+        }
+
+    </script>
+}

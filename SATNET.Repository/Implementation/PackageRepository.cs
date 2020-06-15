@@ -33,7 +33,7 @@ namespace SATNET.Repository.Implementation
             }
             return package;
         }
-        public async Task<List<Package>> List()
+        public async Task<List<Package>> List(Package obj)
         {
             var packages = new List<Package>();
             using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))

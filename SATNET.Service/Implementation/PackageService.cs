@@ -39,7 +39,8 @@ namespace SATNET.Service.Implementation
         }
         public Task<List<Package>> List()
         {
-            return _packageRepository.List();
+            Package p = new Package();
+            return _packageRepository.List(p);
         }
         public Task<StatusModel> Add(Package package)
         {

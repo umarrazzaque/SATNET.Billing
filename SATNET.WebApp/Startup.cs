@@ -90,8 +90,8 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
 
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IService<Order>, OrderService>();
             services.AddScoped<ILookupRepository, LookupRepository>();
             services.AddScoped<ILookupService, LookupService>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();

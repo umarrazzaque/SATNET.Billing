@@ -7,13 +7,14 @@ using SATNET.Domain;
 using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models;
+using SATNET.WebApp.Models.Lookup;
 
 namespace SATNET.WebApp.Controllers
 {
     public class SiteController : BaseController
     {
-        private readonly IServices<Site> _siteService;
-        public SiteController(IServices<Site> siteService)
+        private readonly IService<Site> _siteService;
+        public SiteController(IService<Site> siteService)
         {
             _siteService = siteService;
         }

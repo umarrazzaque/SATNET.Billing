@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
+using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Models;
@@ -17,38 +18,53 @@ namespace SATNET.WebApp.Controllers
     [Authorize]
     public class OrderController : BaseController
     {
-        //private readonly IOrderService _orderService;
+        private readonly IService<Order> _orderService;
         private readonly ILookupService _lookupService;
         private readonly IService<Hardware> _hardwareService;
         private readonly IService<Package> _packageService;
-        public OrderController(/*IOrderService orderService, */ILookupService lookupService, IService<Hardware> hardwareService, IService<Package> packageService)
+        private readonly IService<Site> _siteService;
+        public OrderController(IService<Order> orderService, ILookupService lookupService, IService<Hardware> hardwareService, IService<Package> packageService, IService<Site> siteService)
         {
-            //_orderService = orderService;
+            _orderService = orderService;
             _lookupService = lookupService;
             _hardwareService = hardwareService;
             _packageService = packageService;
+            _siteService = siteService;
         }
         public async Task<IActionResult> Index()
         {
             return View(await GetOrderList());
         }
-        public async Task<IActionResult> AddSite()
+        public async Task<IActionResult> Add()
         {
-            CreateSiteViewModel model = new CreateSiteViewModel();
+            OrderViewModel model = new OrderViewModel();
 
             var planTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
+            var requestTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.RequestType));
             var hardwares = await _hardwareService.List();
             var packages = await _packageService.List();
+            var sites = await _siteService.List();
 
+            model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.PlanTypeSelectList = new SelectList(planTypes, "Id", "Name");
             model.PackageSelectList = new SelectList(packages, "Id", "Name");
+            model.SiteSelectList = new SelectList(sites, "Id", "Name");
             model.ResellerName = "Satnet Partner";
+
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> AddSite(CreateSiteViewModel model)
+        public async Task<IActionResult> Add(OrderViewModel model)
         {
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            if (ModelState.IsValid)
+            {
+                status = _orderService.Add(new Order()
+                {
+
+                }).Result;
+            }
 
             return View(model);
         }

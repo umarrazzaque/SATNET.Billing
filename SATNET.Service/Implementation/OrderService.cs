@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class OrderService : IOrderService
+    public class OrderService : IService<Order>
     {
-        private readonly IOrderRepository _orderRepository;
-        public OrderService(IOrderRepository orderRepository)
+        private readonly IRepository<Order> _orderRepository;
+        public OrderService(IRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }
@@ -21,7 +21,8 @@ namespace SATNET.Service.Implementation
         }
         public async Task<List<Order>> List()
         {
-            return await _orderRepository.List();
+            Order obj = new Order();
+            return await _orderRepository.List(obj);
         }
         public async Task<StatusModel> Add(Order order)
         {
