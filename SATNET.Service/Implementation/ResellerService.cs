@@ -9,7 +9,7 @@ using SATNET.Repository.Implementation;
 
 namespace SATNET.Service.Implementation
 {
-    public class ResellerService : IServices<Reseller>
+    public class ResellerService : IService<Reseller>
     {
 
         private readonly IRepository<Reseller> _resellerRepository;

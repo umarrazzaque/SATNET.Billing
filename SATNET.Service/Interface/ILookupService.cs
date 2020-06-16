@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SATNET.Repository.Interface
+namespace SATNET.Service.Interface
 {
-    public interface IOrderRepository
+    public interface ILookupService 
     {
+        public Task<List<Lookup>> ListByFilter(int lookupTypeId);
 
     }
 }

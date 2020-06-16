@@ -8,16 +8,58 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class OrderService : IOrderService
+    public class OrderService : IService<Order>
     {
-        private readonly IOrderRepository _orderRepository;
-        public OrderService(IOrderRepository orderRepository)
+        private readonly IRepository<Order> _orderRepository;
+        public OrderService(IRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }
-        public async Task<bool> Add(Order order)
+        public async Task<Order> Get(int id)
         {
-            return await _orderRepository.Add(order);
+            throw new NotImplementedException();
+        }
+        public async Task<List<Order>> List()
+        {
+            Order obj = new Order();
+            return await _orderRepository.List(obj);
+        }
+        public async Task<StatusModel> Add(Order order)
+        {
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
+            try
+            {
+                int retId = await _orderRepository.Add(order);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record inserted successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in inserting the record.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing the request.";
+                status.ErrorDescription = e.Message;
+            }
+            finally
+            {
+
+            }
+            return status;
+        }
+        public async Task<StatusModel> Update(Order order)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<StatusModel> Delete(int id, int deletedBy)
+        {
+            throw new NotImplementedException();
         }
     }
 }

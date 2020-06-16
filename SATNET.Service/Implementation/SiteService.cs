@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class SiteService : IServices<Site>
+    public class SiteService : IService<Site>
     {
         private readonly IRepository<Site> _siteRepository;
         public SiteService(IRepository<Site> siteRepository)

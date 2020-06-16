@@ -12,8 +12,8 @@ namespace SATNET.WebApp.Controllers
 {
     public class HardwareController : BaseController
     {
-        private readonly IServices<Hardware> _hardwareService;
-        public HardwareController(IServices<Hardware> hardwareService)
+        private readonly IService<Hardware> _hardwareService;
+        public HardwareController(IService<Hardware> hardwareService)
         {
             _hardwareService = hardwareService;
         }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SATNET.WebApp.Models
+namespace SATNET.WebApp.Models.Lookup
 {
-    public class LookUpModel
+    public class LookUpTypeModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int LookUpTypeId { get; set; }
     }
 }

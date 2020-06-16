@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Models;
+using SATNET.WebApp.Models.User;
 
 namespace SATNET.WebApp.Controllers
 {

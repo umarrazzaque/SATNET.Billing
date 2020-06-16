@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class PackageRepository : IPackageRepository
+    public class PackageRepository : IRepository<Package>
     {
         private readonly IConfiguration _config;
         public PackageRepository(IConfiguration config)
@@ -33,7 +33,7 @@ namespace SATNET.Repository.Implementation
             }
             return package;
         }
-        public async Task<List<Package>> List()
+        public async Task<List<Package>> List(Package obj)
         {
             var packages = new List<Package>();
             using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))

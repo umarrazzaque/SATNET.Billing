@@ -8,13 +8,14 @@ using SATNET.Service;
 using SATNET.Service.Implementation;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models;
+using SATNET.WebApp.Models.Lookup;
 
 namespace SATNET.WebApp.Controllers
 {
     public class ResellerController : BaseController
     {
-        private readonly IServices<Reseller> _resellerService;
-        public ResellerController(IServices<Reseller> resellerService)
+        private readonly IService<Reseller> _resellerService;
+        public ResellerController(IService<Reseller> resellerService)
         {
             _resellerService = resellerService;
         }

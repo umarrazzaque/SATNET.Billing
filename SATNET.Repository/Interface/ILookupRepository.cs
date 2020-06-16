@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Interface
 {
-    public interface IOrderRepository
+    public interface ILookupRepository
     {
-
+        public Task<List<Lookup>> ListByFilter(int lookupTypeId);
     }
 }

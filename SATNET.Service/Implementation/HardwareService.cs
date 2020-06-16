@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class HardwareService : IServices<Hardware>
+    public class HardwareService : IService<Hardware>
     {
         private readonly IRepository<Hardware> _hardwareRepository;
         public HardwareService(IRepository<Hardware> hardwareRepository)
