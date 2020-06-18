@@ -143,7 +143,7 @@ namespace SATNET.WebApp.Controllers
             //packageList.MenuModel = SetLayoutContent(heading: "Hardware",subHeading: "Listing");
 
             List<HardwareModel> hardwareListModel = new List<HardwareModel>();
-            var serviceResult = await _hardwareService.List();
+            var serviceResult = await _hardwareService.List(new Hardware());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(har =>

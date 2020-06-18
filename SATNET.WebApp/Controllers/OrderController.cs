@@ -10,6 +10,7 @@ using SATNET.Domain.Enums;
 using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Helpers;
+using SATNET.WebApp.Mappings;
 using SATNET.WebApp.Models;
 using SATNET.WebApp.Models.Order;
 
@@ -33,7 +34,20 @@ namespace SATNET.WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View(await GetOrderList());
+            var requestTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.RequestType));
+            var orderStatuses = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.OrderStatus));
+
+            ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
+            ViewBag.OrderStatusSelectList = new SelectList(orderStatuses, "Id", "Name");
+
+            List<OrderViewModel> model = new List<OrderViewModel>();
+            var serviceResult = await _orderService.List(new Order());
+            if (serviceResult.Any())
+            {
+                model = OrderMapping.GetListViewModel(serviceResult);
+            }
+
+            return View(model);
         }
         public async Task<IActionResult> Add()
         {
@@ -41,9 +55,9 @@ namespace SATNET.WebApp.Controllers
 
             var planTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
             var requestTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.RequestType));
-            var hardwares = await _hardwareService.List();
-            var packages = await _packageService.List();
-            var sites = await _siteService.List();
+            var hardwares = await _hardwareService.List(new Hardware());
+            var packages = await _packageService.List(new Package());
+            var sites = await _siteService.List(new Site());
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
@@ -57,48 +71,51 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(OrderViewModel model)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
-            if (ModelState.IsValid)
+            var result = await _orderService.Add(new Order()
             {
-                status = _orderService.Add(new Order()
-                {
-
-                }).Result;
+                SiteId = model.SiteId,
+                HardwareId = model.HardwareId,
+                PackageId = model.PackageId,
+                RequestTypeId = model.RequestTypeId,
+                UpgradeFrom = model.UpgradeFrom,
+                UpgradeTo = model.UpgradeTo,
+                DowngradeFrom = model.DowngradeFrom,
+                DowngradeTo = model.DowngradeTo,
+                CreatedBy = 1,
+                InstallationDate = model.InstallationDate,
+                PlanTypeId = model.PlanTypeId,
+                IP = model.IP,
+                Download = model.Download,
+                Upload = model.Upload,
+                SubscriberArea = model.SubscriberArea,
+                SubscriberCity = model.SubscriberCity,
+                SubscriberEmail = model.SubscriberEmail,
+                SubscriberName = model.SubscriberName,
+                SubscriberNotes = model.SubscriberNotes
+            });
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("Index");
             }
+            var status = new StatusModel { IsSuccess = false,ErrorDescription=result.ErrorDescription };
+            //status.Html = RenderViewToString(this, "Index", await GetOrderList());
+            return Json(status);
 
-            return View(model);
         }
 
-        public async Task<IActionResult> Reset()
-        {
-            return Json(new { isValid = true, html = RenderViewToString(this, "Index", await GetOrderList()) });
-        }
-
-        private async Task<List<DistributorViewModel>> GetSiteList()
-        {
-            throw new NotImplementedException();
-        }
-        private async Task<List<OrderViewModel>> GetOrderList()
+        public async Task<IActionResult> GetOrdersByDDLFilter(string requestTypeValue, string statusValue)
         {
             List<OrderViewModel> model = new List<OrderViewModel>();
-            //var serviceResult = await _orderService.List();
-            //if (serviceResult.Any())
-            //{
-            //    serviceResult.ForEach(i =>
-            //    {
-            //        OrderViewModel order = new OrderViewModel()
-            //        {
-            //            Id = i.Id,
-            //            SiteName = i.SiteName,
-            //            PackageName = i.PackageName,
-            //            RequestTypeName = i.RequestTypeName,
-            //            CustomerName = i.CustomerName,
-            //            ServiceOrderDate = i.CreatedOn
-            //        };
-            //        model.Add(order);
-            //    });
-            //}
-            return model;
+            Order obj = new Order();
+            obj.RequestTypeId = string.IsNullOrEmpty(requestTypeValue) ? 0 : Convert.ToInt32(requestTypeValue);
+            obj.StatusId = string.IsNullOrEmpty(statusValue) ? 0 : Convert.ToInt32(statusValue);
+
+            var serviceResult = await _orderService.List(obj);
+            if (serviceResult.Any())
+            {
+                model = OrderMapping.GetListViewModel(serviceResult);
+            }
+            return Json(new { isValid = true, html = RenderViewToString(this, "_OrderList", model) });
         }
     }
 }

@@ -13,31 +13,31 @@ namespace SATNET.WebApp.Models.Order
     {
         [DisplayName("Reseller/Partner Name")]
         public string ResellerName { get; set; }
+        public string StatusName { get; set; }
         public string SiteName { get; set; }
+        [Required(ErrorMessage = "Site is required")]
         public int SiteId { get; set; }
         [DisplayName("Site")]
-        [Required(ErrorMessage = "Site is required")]
         public SelectList SiteSelectList { get; set; }
+        [Required(ErrorMessage = "Request Type is required")]
         public int RequestTypeId { get; set; }
         public string RequestTypeName { get; set; }
         [DisplayName("Request Type")]
-        [Required(ErrorMessage = "Request Type is required")]
         public SelectList RequestTypeSelectList { get; set; }
+        [Required(ErrorMessage = "Plan type is required")]
         public int PlanTypeId { get; set; }
         [DisplayName("Plan Type")]
-        [Required(ErrorMessage = "Plan type is required")]
         public SelectList PlanTypeSelectList { get; set; }
+        [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
         [DisplayName("Hardware")]
-        [Required(ErrorMessage = "Hardware is required")]
         public SelectList HardwareSelectList { get; set; }
+        [Required(ErrorMessage = "Package is required")]
         public int PackageId { get; set; }
         public string PackageName { get; set; }
         [DisplayName("Package")]
-        [Required(ErrorMessage = "Package is required")]
         public SelectList PackageSelectList { get; set; }
         [DisplayName("IP")]
-        [Required(ErrorMessage = "IP is required")]
         public string IP { get; set; }
         [DisplayName("Download")]
         [Required(ErrorMessage = "Download is required")]
@@ -49,27 +49,35 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Installation date is required")]
         public DateTime? InstallationDate { get; set; }
         [DisplayName("Name")]
-        [Required(ErrorMessage = "Customer name is required")]
-        public string CustomerName { get; set; }
+        [Required(ErrorMessage = "Subscriber name is required")]
+        public string SubscriberName { get; set; }
         [DisplayName("City")]
-        [Required(ErrorMessage = "Customer city is required")]
-        public string CustomerCity { get; set; }
+        [Required(ErrorMessage = "Subscriber city is required")]
+        public string SubscriberCity { get; set; }
         [DisplayName("Email")]
-        [Required(ErrorMessage = "Customer email is required")]
+        [Required(ErrorMessage = "Subscriber email is required")]
         [EmailAddress]
-        public string CustomerEmail { get; set; }
+        public string SubscriberEmail { get; set; }
         [DisplayName("Area")]
-        [Required(ErrorMessage = "Customer area is required")]
-        public string CustomerArea { get; set; }
+        [Required(ErrorMessage = "Subscriber area is required")]
+        public string SubscriberArea { get; set; }
         [DisplayName("Notes")]
-        public string CustomerNotes { get; set; }
+        public string SubscriberNotes { get; set; }
+        [Required(ErrorMessage = "Upgrade From is required")]
+        [DataType(DataType.DateTime)]
         public DateTime? UpgradeFrom { get; set; }
+        [Required(ErrorMessage = "Upgrade To is required")]
+        [DataType(DataType.DateTime)]
         public DateTime? UpgradeTo { get; set; }
+        [Required(ErrorMessage = "Downgrade From is required")]
+        [DataType(DataType.DateTime)]
         public DateTime? DowngradeFrom { get; set; }
+        [Required(ErrorMessage = "Downgrade To is required")]
+        [DataType(DataType.DateTime)]
         public DateTime? DowngradeTo { get; set; }
         public string Token { get; set; }
         public string Promotion { get; set; }
         public string Other { get; set; }
-        public DateTime ServiceOrderDate { get; set; }
+        public DateTime? ServiceOrderDate { get; set; }
     }
 }

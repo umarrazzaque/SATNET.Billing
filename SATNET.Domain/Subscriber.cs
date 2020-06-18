@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SATNET.Domain
 {
-    public class Customer: BaseEntity
+    public class Subscriber: BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
