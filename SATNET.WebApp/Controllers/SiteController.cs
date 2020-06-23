@@ -145,7 +145,7 @@ namespace SATNET.WebApp.Controllers
             //packageList.MenuModel = SetLayoutContent(heading: "Site",subHeading: "Listing");
 
             List<SiteModel> siteListModel = new List<SiteModel>();
-            var serviceResult = await _siteService.List();
+            var serviceResult = await _siteService.List(new Site());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(site =>

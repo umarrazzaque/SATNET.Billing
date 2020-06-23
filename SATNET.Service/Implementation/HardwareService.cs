@@ -94,7 +94,7 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
-        public Task<List<Hardware>> List()
+        public Task<List<Hardware>> List(Hardware obj)
         {
 
             return _hardwareRepository.List(new Hardware { });

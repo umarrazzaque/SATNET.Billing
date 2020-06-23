@@ -93,9 +93,9 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
-        public Task<List<Site>> List()
+        public Task<List<Site>> List(Site obj)
         {
-            return _siteRepository.List(new Site { });
+            return _siteRepository.List(obj);
         }
 
         public Task<StatusModel> Update(Site obj)

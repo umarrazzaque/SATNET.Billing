@@ -33,7 +33,7 @@ namespace SATNET.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task<List<Lookup>> List()
+        public async Task<List<Lookup>> List(Lookup obj)
         {
             throw new NotImplementedException();
         }

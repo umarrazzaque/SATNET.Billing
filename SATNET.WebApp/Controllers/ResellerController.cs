@@ -146,7 +146,7 @@ namespace SATNET.WebApp.Controllers
         private async Task<List<ResellerModel>> GetResellersList()
         {
             List<ResellerModel> ResellerListModel = new List<ResellerModel>();
-            var serviceResult = await _resellerService.List();
+            var serviceResult = await _resellerService.List(new Reseller());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(res =>

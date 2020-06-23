@@ -8,8 +8,14 @@ namespace SATNET.Domain
     {
         public int SiteId { get; set; }
         public string SiteName { get; set; }
-        public int? CustomerId { get; set; }
-        public string CustomerName { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
+        public int? SubscriberId { get; set; }
+        public string SubscriberName { get; set; }
+        public string SubscriberCity { get; set; }
+        public string SubscriberEmail { get; set; }
+        public string SubscriberArea { get; set; }
+        public string SubscriberNotes{ get; set; }
         public int HardwareId { get; set; }
         public string HardwareName { get; set; }
         public int PackageId { get; set; }

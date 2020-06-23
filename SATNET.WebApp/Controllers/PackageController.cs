@@ -151,7 +151,7 @@ namespace SATNET.WebApp.Controllers
             //packageList.MenuModel = SetLayoutContent(heading: "Package",subHeading: "Listing");
 
             List<PackageModel> packageListModel = new List<PackageModel>();
-            var serviceResult = await _packageService.List();
+            var serviceResult = await _packageService.List(new Package());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(i =>
