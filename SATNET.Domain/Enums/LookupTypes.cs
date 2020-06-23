@@ -8,6 +8,7 @@ namespace SATNET.Domain.Enums
     {
         RequestType = 1,
         PriceTier = 2,
-        PlanType = 3
+        PlanType = 3,
+        CustomerType = 1003
     }
 }

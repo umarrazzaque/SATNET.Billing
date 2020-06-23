@@ -13,12 +13,13 @@ namespace SATNET.Domain
         public int UpdatedBy { get; set; }
         public bool isDormant
         {
-            get { return Dormant == 1 ? true : false; }
-            set { Dormant = value ? 1 : 0; }
+            get { return isActive == 1 ? true : false; }
+            set { isActive = value ? 1 : 0; }
         }
-        public int Dormant { get; set; }
+        public int isActive { get; set; }
         public string BriefDescription { get; set; }
-
+        public DateTime? DeletedOn { get; set; }
+        public int DeletedBy { get; set; }
 
 
         public String SearchBy { get; set; }

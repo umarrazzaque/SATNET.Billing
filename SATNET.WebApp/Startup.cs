@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,12 +15,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SATNET.Domain;
+using SATNET.Repository.Core;
+using SATNET.Repository.Core.Interface;
 using SATNET.Repository.Implementation;
 using SATNET.Repository.Interface;
 using SATNET.Service.Implementation;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Data;
+using SATNET.WebApp.MappingProfiles;
 
 namespace SATNET.WebApp
 {
@@ -55,6 +60,14 @@ namespace SATNET.WebApp
                 options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
             });
 
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
@@ -77,6 +90,8 @@ namespace SATNET.WebApp
             // using Microsoft.AspNetCore.Identity.UI.Services;
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IService<Package>, PackageService>();
@@ -85,10 +100,12 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Reseller>, ResellerRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
+            services.AddScoped<IRepository<Customer>, CustomerRepository>();
 
             services.AddScoped<IService<Reseller>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
+            services.AddScoped<IService<Customer>, CustomerService>();
 
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IService<Order>, OrderService>();
