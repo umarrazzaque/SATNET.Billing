@@ -63,7 +63,8 @@ namespace SATNET.WebApp.Controllers
             {
                 status.ErrorCode = "Error occured see entity validation errors.";
             }
-            //status.Html = RenderViewToString(this, "Index", await GetCustomersList());
+            //'
+            status.Html = RenderViewToString(this, "Index", await GetCustomersList());
             return Json(status);
 
         }
