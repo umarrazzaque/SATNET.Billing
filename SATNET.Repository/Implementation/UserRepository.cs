@@ -12,28 +12,54 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IRepository<User>
     {
         private readonly IConfiguration _config;
+        private readonly string _connectionString;
         public UserRepository(IConfiguration config)
         {
             _config = config;
+            _connectionString = _config.GetConnectionString("DefaultConnection");
         }
-        public Task<User> GetUserById(int id)
+        public async Task<User> Get(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task<List<User>> GetAllUsers()
+        public async Task<List<User>> List(User obj)
         {
             var users = new List<User>();
-            using (IDbConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            IDbConnection con = new SqlConnection(_connectionString);
+            using(con)
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var result = await con.QueryAsync<User>("GetAllDistributorUsers", commandType: CommandType.StoredProcedure);
-                users = result.ToList();
+                var qResult = await con.QueryAsync<User>("UserList", commandType: CommandType.StoredProcedure);
+                users = qResult.ToList();
+                if (users.Any())
+                {
+                    List<string> roles = new List<string>();
+                    var parms = new DynamicParameters();
+                    foreach (var item in users)
+                    {
+                        parms.Add("@UserId", item.Id, DbType.Int32, ParameterDirection.Input);
+                        var qResult2 = await con.QueryAsync<string>("UserRoleList", parms, commandType: CommandType.StoredProcedure);
+                        item.Roles = qResult2.ToList();
+                    }
+                }
             }
             return users;
-        }    
+        }
+        public async Task<int> Add(User obj) 
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> Update(User obj)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> Delete(int id, int deletedBy)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

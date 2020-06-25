@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class LookupService : IService<Lookup>, ILookupService
+    public class LookupService : IService<Lookup>
     {
         private readonly IRepository<Lookup> _lookupRepository;
-        private readonly ILookupRepository _lookupRepository2;
-        public LookupService(IRepository<Lookup> lookupRepository, ILookupRepository lookupRepository2)
+        public LookupService(IRepository<Lookup> lookupRepository)
         {
             _lookupRepository = lookupRepository;
-            _lookupRepository2 = lookupRepository2;
         }
 
         public async Task<StatusModel> Add(Lookup obj)
@@ -35,18 +33,12 @@ namespace SATNET.Service.Implementation
 
         public async Task<List<Lookup>> List(Lookup obj)
         {
-            throw new NotImplementedException();
+            return await _lookupRepository.List(obj);
         }
 
         public async Task<StatusModel> Update(Lookup obj)
         {
             throw new NotImplementedException();
         }
-        public async Task<List<Lookup>> ListByFilter(int lookupTypeId)
-        {
-            return await _lookupRepository2.ListByFilter(lookupTypeId);
-        }
-
-
     }
 }

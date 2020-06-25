@@ -14,8 +14,8 @@ namespace SATNET.WebApp.Controllers
 {
     public class ResellerController : BaseController
     {
-        private readonly IService<Reseller> _resellerService;
-        public ResellerController(IService<Reseller> resellerService)
+        private readonly IService<Customer> _resellerService;
+        public ResellerController(IService<Customer> resellerService)
         {
             _resellerService = resellerService;
         }
@@ -47,7 +47,7 @@ namespace SATNET.WebApp.Controllers
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Reseller/Index" };
             if (ModelState.IsValid)
             {
-                status = _resellerService.Add(new Reseller
+                status = _resellerService.Add(new Customer
                 {
                     Id = 0,
                     Name = resellerModel.Name,
@@ -70,7 +70,7 @@ namespace SATNET.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Reseller reseller = await _resellerService.Get(id);
+            Customer reseller = await _resellerService.Get(id);
             ResellerModel resModel = new ResellerModel
             {
                 Id = reseller.Id,
@@ -97,7 +97,7 @@ namespace SATNET.WebApp.Controllers
         public async Task<IActionResult> Edit(CreateResellerModel createResellerModel)
         {
             ResellerModel resellerModel = createResellerModel.ResellerModel;
-            var status = _resellerService.Update(new Reseller
+            var status = _resellerService.Update(new Customer
             {
                 Id = resellerModel.Id,
                 Name = resellerModel.Name,
@@ -115,7 +115,7 @@ namespace SATNET.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            Reseller reseller = await _resellerService.Get(id);
+            Customer reseller = await _resellerService.Get(id);
             ResellerModel resellerModel = new ResellerModel
             {
                 Id = reseller.Id,
@@ -146,7 +146,7 @@ namespace SATNET.WebApp.Controllers
         private async Task<List<ResellerModel>> GetResellersList()
         {
             List<ResellerModel> ResellerListModel = new List<ResellerModel>();
-            var serviceResult = await _resellerService.List(new Reseller());
+            var serviceResult = await _resellerService.List(new Customer());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(res =>

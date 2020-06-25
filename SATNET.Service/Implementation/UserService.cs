@@ -8,32 +8,38 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class UserService : IUserService
+    public class UserService : IService<User>
     {
-        private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IRepository<User> _userRepository;
+        public UserService(IRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
-        public Task<User> GetUserById(int id)
+
+        public async Task<StatusModel> Add(User obj)
         {
             throw new NotImplementedException();
         }
-        public Task<List<User>> GetAllUsers()
-        {
-            return _userRepository.GetAllUsers();
-        }
-        public Task<bool> AddUser(User user)
+
+        public async Task<StatusModel> Delete(int id, int deletedBy)
         {
             throw new NotImplementedException();
         }
-        public Task<bool> UpdateUser(User user)
+
+        public async Task<User> Get(int id)
         {
             throw new NotImplementedException();
         }
-        public Task<bool> DeleteUser(int id)
+
+        public async Task<List<User>> List(User obj)
+        {
+            return await _userRepository.List(obj);
+        }
+
+        public async Task<StatusModel> Update(User obj)
         {
             throw new NotImplementedException();
         }
+
     }
 }

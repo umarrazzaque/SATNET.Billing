@@ -87,10 +87,10 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.isSuccess === true) {
-                        ShowMessage(data.errorCode, 'Success Message', 1);
+                        ShowMessage(data.errorCode, 'Record deleted successfully.', 1);
                     }
                     else {
-                        ShowMessage(data.errorCode, 'Error Message', 2);
+                        ShowMessage(data.errorCode, 'Error in deleting record.', 2);
                     }
                     $("#MainContents").html(data.html);
                 },
