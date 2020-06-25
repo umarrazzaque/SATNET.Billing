@@ -51,8 +51,8 @@ namespace SATNET.WebApp
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin", "Admin"));
-                options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
+                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin"));
+                //options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
             });
 
             services.AddControllersWithViews();
@@ -77,25 +77,22 @@ namespace SATNET.WebApp
             // using Microsoft.AspNetCore.Identity.UI.Services;
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IService<Package>, PackageService>();
-            services.AddScoped<IRepository<Package>, PackageRepository>();
-
-            services.AddScoped<IRepository<Reseller>, ResellerRepository>();
-            services.AddScoped<IRepository<Hardware>, HardwareRepository>();
-            services.AddScoped<IRepository<Site>, SiteRepository>();
-
-            services.AddScoped<IService<Reseller>, ResellerService>();
+            services.AddScoped<IService<Customer>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
-
-            services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IService<Order>, OrderService>();
-            services.AddScoped<ILookupRepository, LookupRepository>();
-            services.AddScoped<ILookupService, LookupService>();
-            services.AddScoped<IRepository<Lookup>, LookupRepository>();
             services.AddScoped<IService<Lookup>, LookupService>();
+
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Package>, PackageRepository>();
+            services.AddScoped<IRepository<Customer>, ResellerRepository>();
+            services.AddScoped<IRepository<Hardware>, HardwareRepository>();
+            services.AddScoped<IRepository<Site>, SiteRepository>();
+            services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IRepository<Lookup>, LookupRepository>();
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

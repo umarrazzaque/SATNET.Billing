@@ -38,5 +38,13 @@ namespace SATNET.WebApp.Models.User
         [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
         public string ConfirmPassword { get; set; }
         public List<string> Roles { get; set; }
+        [Required]
+        public int UserTypeId { get; set; }
+        public SelectList UserTypeSelectList { get; set; }
+        public string UserTypeName { get; set; }
+        [Required]
+        public int CustomerId { get; set; }
+        public SelectList CustomerSelectList { get; set; }
+        public string CustomerName { get; set; }
     }
 }

@@ -14,5 +14,10 @@ namespace SATNET.Domain
         public DateTime PasswordExpiry { get; set; }
         public string Contact { get; set; }
         public string Email { get; set; }
+        public int UserTypeId { get; set; }
+        public string UserTypeName { get; set; }
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

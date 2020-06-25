@@ -17,7 +17,7 @@ namespace SATNET.Repository.Implementation
     //{
     //    public Task<Reseller> GetDetail(int id);
     //}
-    public class ResellerRepository : IRepository<Reseller> //IResellerRepository
+    public class ResellerRepository : IRepository<Customer> //IResellerRepository
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
@@ -26,7 +26,7 @@ namespace SATNET.Repository.Implementation
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
-        public async Task<int> Add(Reseller obj)
+        public async Task<int> Add(Customer obj)
         {
             int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
@@ -66,23 +66,23 @@ namespace SATNET.Repository.Implementation
             return result;
         }
 
-        public async Task<Reseller> Get(int id)
+        public async Task<Customer> Get(int id)
         {
-            Reseller reseller = new Reseller();
+            Customer reseller = new Customer();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
-                reseller = await con.QueryFirstOrDefaultAsync<Reseller>("ResellerGet", commandType: CommandType.StoredProcedure, param: queryParameters);
+                reseller = await con.QueryFirstOrDefaultAsync<Customer>("ResellerGet", commandType: CommandType.StoredProcedure, param: queryParameters);
             }
             return reseller;
         }
 
-        public async Task<List<Reseller>> List(Reseller obj)
+        public async Task<List<Customer>> List(Customer obj)
         {
-            List<Reseller> resellers = new List<Reseller>();
+            List<Customer> resellers = new List<Customer>();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
@@ -92,14 +92,14 @@ namespace SATNET.Repository.Implementation
                 queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
                 queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
                 queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
-                var result = await con.QueryAsync<Reseller>("ResellerList", commandType: CommandType.StoredProcedure, param: queryParameters);
+                var result = await con.QueryAsync<Customer>("ResellerList", commandType: CommandType.StoredProcedure, param: queryParameters);
 
                 resellers = result.ToList();
             }
             return resellers;
         }
 
-        public async Task<int> Update(Reseller obj)
+        public async Task<int> Update(Customer obj)
         {
             int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
