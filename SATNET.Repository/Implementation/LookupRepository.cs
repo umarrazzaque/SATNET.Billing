@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class LookupRepository : IRepository<Lookup>, ILookupRepository
+    public class LookupRepository : IRepository<Lookup>
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
@@ -38,7 +38,17 @@ namespace SATNET.Repository.Implementation
 
         public async Task<List<Lookup>> List(Lookup obj)
         {
-            throw new NotImplementedException();
+            List<Lookup> lookups = new List<Lookup>();
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@LookupTypeId", obj.LookupTypeId, DbType.Int32, ParameterDirection.Input);
+                var result = await con.QueryAsync<Lookup>("LookupList", queryParameters, commandType: CommandType.StoredProcedure);
+                lookups = result.ToList();
+            }
+            return lookups;
         }
 
         public async Task<int> Update(Lookup obj)

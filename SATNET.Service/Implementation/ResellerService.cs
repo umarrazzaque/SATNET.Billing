@@ -9,15 +9,15 @@ using SATNET.Repository.Implementation;
 
 namespace SATNET.Service.Implementation
 {
-    public class ResellerService : IService<Reseller>
+    public class ResellerService : IService<Customer>
     {
 
-        private readonly IRepository<Reseller> _resellerRepository;
-        public ResellerService(IRepository<Reseller> resellerRepository)
+        private readonly IRepository<Customer> _resellerRepository;
+        public ResellerService(IRepository<Customer> resellerRepository)
         {
             _resellerRepository = resellerRepository;
         }
-        public Task<StatusModel> Add(Reseller obj)
+        public Task<StatusModel> Add(Customer obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Reseller/Index" };
             try
@@ -73,9 +73,9 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(status);
         }
 
-        public Task<Reseller> Get(int id)
+        public Task<Customer> Get(int id)
         {
-            var retModel = new Reseller();
+            var retModel = new Customer();
             try
             {
                 retModel = _resellerRepository.Get(id).Result;
@@ -95,12 +95,12 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
-        public Task<List<Reseller>> List(Reseller obj)
+        public Task<List<Customer>> List(Customer obj)
         {
             return _resellerRepository.List(obj);
         }
 
-        public Task<StatusModel> Update(Reseller obj)
+        public Task<StatusModel> Update(Customer obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Reseller/Index" };
             try

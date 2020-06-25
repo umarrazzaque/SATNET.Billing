@@ -56,8 +56,8 @@ namespace SATNET.WebApp
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin", "Admin"));
-                options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
+                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin"));
+                //options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
             });
 
             // Auto Mapper Configurations
@@ -95,24 +95,25 @@ namespace SATNET.WebApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IService<Package>, PackageService>();
-            services.AddScoped<IRepository<Package>, PackageRepository>();
+            services.AddScoped<IService<Customer>, ResellerService>();
+            services.AddScoped<IService<Hardware>, HardwareService>();
+            services.AddScoped<IService<Site>, SiteService>();
+            services.AddScoped<IService<Order>, OrderService>();
+            services.AddScoped<IService<Lookup>, LookupService>();
 
-            services.AddScoped<IRepository<Reseller>, ResellerRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Package>, PackageRepository>();
+            services.AddScoped<IRepository<Customer>, ResellerRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
-            services.AddScoped<IRepository<Customer>, CustomerRepository>();
 
             services.AddScoped<IService<Reseller>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
-            services.AddScoped<IService<Customer>, CustomerService>();
 
             services.AddScoped<IRepository<Order>, OrderRepository>();
-            services.AddScoped<IService<Order>, OrderService>();
-            services.AddScoped<ILookupRepository, LookupRepository>();
-            services.AddScoped<ILookupService, LookupService>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();
-            services.AddScoped<IService<Lookup>, LookupService>();
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

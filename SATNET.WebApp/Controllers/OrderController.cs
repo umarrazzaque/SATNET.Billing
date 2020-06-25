@@ -20,22 +20,23 @@ namespace SATNET.WebApp.Controllers
     public class OrderController : BaseController
     {
         private readonly IService<Order> _orderService;
-        private readonly ILookupService _lookupService;
+        private readonly IService<Lookup> _lookupService;
         private readonly IService<Hardware> _hardwareService;
         private readonly IService<Package> _packageService;
         private readonly IService<Site> _siteService;
-        public OrderController(IService<Order> orderService, ILookupService lookupService, IService<Hardware> hardwareService, IService<Package> packageService, IService<Site> siteService)
+        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<Package> packageService, IService<Site> siteService
+            , IService<Lookup> lookupService)
         {
             _orderService = orderService;
-            _lookupService = lookupService;
             _hardwareService = hardwareService;
             _packageService = packageService;
             _siteService = siteService;
+            _lookupService = lookupService;
         }
         public async Task<IActionResult> Index()
         {
-            var requestTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.RequestType));
-            var orderStatuses = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.OrderStatus));
+            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
+            var orderStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderStatus) });
 
             ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             ViewBag.OrderStatusSelectList = new SelectList(orderStatuses, "Id", "Name");
@@ -53,8 +54,8 @@ namespace SATNET.WebApp.Controllers
         {
             OrderViewModel model = new OrderViewModel();
 
-            var planTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            var requestTypes = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.RequestType));
+            var planTypes = await _lookupService.List(new Lookup() {LookupTypeId= Convert.ToInt32(LookupTypes.PlanType) });
+            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
             var hardwares = await _hardwareService.List(new Hardware());
             var packages = await _packageService.List(new Package());
             var sites = await _siteService.List(new Site());

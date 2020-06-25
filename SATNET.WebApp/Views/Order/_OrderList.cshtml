@@ -9,8 +9,8 @@
         <thead>
             <tr>
                 @*<th class="text-center" width="30">
-                     <input type="checkbox"> 
-                </th>*@
+                         <input type="checkbox">
+                    </th>*@
                 @*<th class="text-center">#</th>*@
                 <th> Site </th>
                 <th> Request Type </th>
@@ -28,35 +28,35 @@
             }
             @foreach (var item in Model)
             {
-            <tr>
-                @*<td class="text-center"> <input type="checkbox"></td>*@
-                @*<td class="text-center text-muted">
-                    @{
-                        counter++;
-                    }
-                    @counter
-                </td>*@
-                <td> @item.SiteName</td>
-                <td> @item.RequestTypeName</td>
-                <td> @item.SubscriberName</td>
-                <td> @item.PackageName</td>
-                <td>@item.ServiceOrderDate</td>>
-                <td>@item.StatusName</td>>
-                <td class="text-center">
-                    @*<div class="buttons">
-                        <a href="@String.Format("/{0}?id={1}", "Order/Edit", @item.Id)" class="pl-1 pr-1 edit-pan">
-                            <span class="fa fa-edit" aria-hidden="true"></span>
-                        </a>
-                        <a href="@String.Format("/{0}?id={1}", "Package/Details", @item.PackageId)" class="pl-1 pr-1 right-pan">
-                    <span class="fa fa-bars" aria-hidden="true"></span>
-                </a>
-                        <a href="@String.Format("/{0}?id={1}", "Order/Delete", @item.Id)" class="pl-1 pr-1 modal-pan"
-                           data-toggle="modal" data-target="#modal-deleteConfirm">
-                            <span class="fa fa-trash" aria-hidden="true"></span>
-                        </a>
-                    </div>*@
-                </td>
-            </tr>
+                <tr>
+                    @*<td class="text-center"> <input type="checkbox"></td>*@
+                    @*<td class="text-center text-muted">
+                            @{
+                                counter++;
+                            }
+                            @counter
+                        </td>*@
+                    <td> @item.SiteName</td>
+                    <td> @item.RequestTypeName</td>
+                    <td> @item.SubscriberName</td>
+                    <td> @item.PackageName</td>
+                    <td>@item.ServiceOrderDate</td>>
+                    <td>@item.StatusName</td>>
+                    <td class="text-center">
+                        <div class="buttons">
+                            @*<a href="@String.Format("/{0}?id={1}", "Order/Edit", @item.Id)" class="pl-1 pr-1 edit-pan">
+                                <span class="fa fa-edit" aria-hidden="true"></span>
+                            </a>*@
+                            <a href="@String.Format("/{0}?id={1}", "Invoice/Details", @item.Id)" class="pl-1 pr-1">
+                                <span class="fa fa-bars" aria-hidden="true"></span>
+                            </a>
+                            @*<a href="@String.Format("/{0}?id={1}", "Order/Delete", @item.Id)" class="pl-1 pr-1 modal-pan"
+                               data-toggle="modal" data-target="#modal-deleteConfirm">
+                                <span class="fa fa-trash" aria-hidden="true"></span>
+                            </a>*@
+                        </div>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
