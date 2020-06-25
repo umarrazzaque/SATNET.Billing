@@ -19,9 +19,8 @@ namespace SATNET.Service.Implementation
         {
             throw new NotImplementedException();
         }
-        public async Task<List<Order>> List()
+        public async Task<List<Order>> List(Order obj)
         {
-            Order obj = new Order();
             return await _orderRepository.List(obj);
         }
         public async Task<StatusModel> Add(Order order)

@@ -37,10 +37,9 @@ namespace SATNET.Service.Implementation
             }
             return Task.FromResult(retModel);
         }
-        public Task<List<Package>> List()
+        public Task<List<Package>> List(Package obj)
         {
-            Package p = new Package();
-            return _packageRepository.List(p);
+            return _packageRepository.List(obj);
         }
         public Task<StatusModel> Add(Package package)
         {

@@ -1,7 +1,7 @@
 ﻿@model SATNET.WebApp.Models.Order.OrderViewModel
 
 <form method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
-      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+      enctype="multipart/form-data" autocomplete="off">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -14,7 +14,7 @@
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "Order/Reset")" class=" btn btn-danger right-pan">
+                    <a href="@String.Format("/{0}", "Order/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
                     <button type="submit" class="btn btn-default">Save Record</button>
@@ -112,40 +112,40 @@
         </div>
         <div class="col-lg-12 new-site">
 
-            <h5 class="title">Customer Details</h5>
+            <h5 class="title">Subscriber Details</h5>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="CustomerName"></label>
-                <input asp-for="CustomerName" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                <label asp-for="SubscriberName"></label>
+                <input asp-for="SubscriberName" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberName" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="CustomerCity"></label>
-                <input asp-for="CustomerCity" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="CustomerCity" class="text-danger"></span>
+                <label asp-for="SubscriberCity"></label>
+                <input asp-for="SubscriberCity" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberCity" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="CustomerEmail"></label>
-                <input asp-for="CustomerEmail" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                <label asp-for="SubscriberEmail"></label>
+                <input asp-for="SubscriberEmail" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberEmail" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="CustomerArea"></label>
-                <input asp-for="CustomerArea" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="CustomerArea" class="text-danger"></span>
+                <label asp-for="SubscriberArea"></label>
+                <input asp-for="SubscriberArea" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberArea" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="CustomerNotes"></label>
-                <input asp-for="CustomerNotes" type="text" placeholder="..." class="form-control" />
+                <label asp-for="SubscriberNotes"></label>
+                <input asp-for="SubscriberNotes" type="text" placeholder="..." class="form-control" />
             </div>
         </div>
         <div class="col-lg-12 upgrade">
