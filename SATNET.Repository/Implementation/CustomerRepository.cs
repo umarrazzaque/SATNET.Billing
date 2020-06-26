@@ -19,7 +19,11 @@ namespace SATNET.Repository.Implementation
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
+<<<<<<< HEAD
             queryParameters.Add("@P_TypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
+=======
+            queryParameters.Add("@P_CustomerTypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
+>>>>>>> devUmerKhalid
             queryParameters.Add("@P_PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
@@ -63,6 +67,7 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<int> Update(Customer obj)
         {
+<<<<<<< HEAD
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
@@ -76,6 +81,26 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
             _ = await dbCon.ExecuteScalarAsync<int>("CustomerAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             int result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
+=======
+            int result = 0;
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
+                queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_CustomerTypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@P_PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_Address", obj.Address, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@P_ContactNumber", obj.ContactNumber, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
+                int retResult = await con.ExecuteScalarAsync<int>("CustomerAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters);
+                result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
+            }
+>>>>>>> devUmerKhalid
             return result;
         }
     }

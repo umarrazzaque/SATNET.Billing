@@ -11,8 +11,8 @@ namespace SATNET.WebApp.Models.Order
 {
     public class OrderViewModel: BaseModel
     {
-        [DisplayName("Reseller/Partner Name")]
-        public string ResellerName { get; set; }
+        [DisplayName("Customer Name")]
+        public string CustomerName { get; set; }
         public string StatusName { get; set; }
         public string SiteName { get; set; }
         [Required(ErrorMessage = "Site is required")]
@@ -24,21 +24,24 @@ namespace SATNET.WebApp.Models.Order
         public string RequestTypeName { get; set; }
         [DisplayName("Request Type")]
         public SelectList RequestTypeSelectList { get; set; }
-        [Required(ErrorMessage = "Plan type is required")]
-        public int PlanTypeId { get; set; }
-        [DisplayName("Plan Type")]
-        public SelectList PlanTypeSelectList { get; set; }
+        [Required(ErrorMessage = "Service Plan type is required")]
+        public int ServicePlanTypeId { get; set; }
+        [DisplayName("Service Plan Type")]
+        public SelectList ServicePlanTypeSelectList { get; set; }
+        [Required(ErrorMessage = "Service plan is required")]
+        public int ServicePlanId { get; set; }
+        public string ServicePlanName { get; set; }
+        [DisplayName("Service Plan")]
+        public SelectList ServicePlanSelectList { get; set; }
         [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }
-        [Required(ErrorMessage = "Package is required")]
-        public int PackageId { get; set; }
-        public string PackageName { get; set; }
-        [DisplayName("Package")]
-        public SelectList PackageSelectList { get; set; }
         [DisplayName("IP")]
-        public string IP { get; set; }
+        public SelectList IPSelectList { get; set; }
+
+        [DisplayName("IP")]
+        public int? IPId { get; set; }
         [DisplayName("Download")]
         [Required(ErrorMessage = "Download is required")]
         public int Download { get; set; }
@@ -64,19 +67,28 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Notes")]
         public string SubscriberNotes { get; set; }
         [Required(ErrorMessage = "Upgrade From is required")]
-        [DataType(DataType.DateTime)]
-        public DateTime? UpgradeFrom { get; set; }
+        public int? UpgradeFromId { get; set; }
+        [DisplayName("Upgrade From")]
+        public SelectList UpgradeFromSelectList { get; set; }
         [Required(ErrorMessage = "Upgrade To is required")]
-        [DataType(DataType.DateTime)]
-        public DateTime? UpgradeTo { get; set; }
+        [DisplayName("Upgrade To")]
+        public SelectList UpgradeToSelectList { get; set; }
+        public int? UpgradeToId { get; set; }
         [Required(ErrorMessage = "Downgrade From is required")]
-        [DataType(DataType.DateTime)]
-        public DateTime? DowngradeFrom { get; set; }
+        public int? DowngradeFromId { get; set; }
+        [DisplayName("Downgrade From")]
+        public SelectList DowngradeFromSelectList { get; set; }
+        [DisplayName("Downgrade To")]
+        public SelectList DowngradeToSelectList { get; set; }
         [Required(ErrorMessage = "Downgrade To is required")]
-        [DataType(DataType.DateTime)]
-        public DateTime? DowngradeTo { get; set; }
-        public string Token { get; set; }
-        public string Promotion { get; set; }
+        public int? DowngradeToId { get; set; }
+        [Required(ErrorMessage = "Token is required")]
+        public int? TokenId { get; set; }
+        [DisplayName("Token(GB)")]
+        public SelectList TokenSelectList { get; set; }
+        [DisplayName("Promotion")]
+        public SelectList PromotionSelectList { get; set; }
+        public int? PromotionId { get; set; }
         public string Other { get; set; }
         public DateTime? ServiceOrderDate { get; set; }
     }

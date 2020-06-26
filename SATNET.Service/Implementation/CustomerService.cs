@@ -104,7 +104,11 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
+<<<<<<< HEAD
         public Task<List<Customer>> List(Customer obj)
+=======
+        public async Task<List<Customer>> List(Customer obj)
+>>>>>>> devUmerKhalid
         {
             List<Customer> retList = new List<Customer>();
             try

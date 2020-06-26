@@ -16,7 +16,7 @@ namespace SATNET.WebApp.Mappings
             {
                 Id = obj.Id,
                 SiteName = obj.SiteName,
-                PackageName = obj.PackageName,
+                ServicePlanName = obj.ServicePlanName,
                 RequestTypeName = obj.RequestTypeName,
                 SubscriberName = obj.SubscriberName,
                 ServiceOrderDate = obj.CreatedOn,
@@ -31,7 +31,7 @@ namespace SATNET.WebApp.Mappings
             {
                 Id = model.Id,
                 SiteName = model.SiteName,
-                PackageName = model.PackageName,
+                ServicePlanName = model.ServicePlanName,
                 RequestTypeName = model.RequestTypeName,
                 SubscriberName = model.SubscriberName,
                 StatusName = model.StatusName
