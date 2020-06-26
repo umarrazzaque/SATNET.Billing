@@ -23,25 +23,15 @@
         </div>
     </div>
 
-    <div class="row">
+    @*<div class="row">
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                <label>Reseller/Partner: @Model.ResellerName</label>
+                <label>Customer: @Model.CustomerName</label>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label asp-for="RequestTypeSelectList"></label>
-                <select asp-for="RequestTypeId" asp-items="Model.RequestTypeSelectList" class="form-control select2 text-input">
-                    <option value="" hidden disabled selected>Select</option>
-                </select>
-                <span asp-validation-for="RequestTypeId" class="text-danger"></span>
-            </div>
-        </div>
-
         <div class="col-lg-3">
             <div class="form-group">
                 <label asp-for="SiteSelectList"></label>
@@ -53,25 +43,15 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <label asp-for="HardwareSelectList"></label>
-                <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
+                <label asp-for="RequestTypeSelectList"></label>
+                <select asp-for="RequestTypeId" asp-items="Model.RequestTypeSelectList" class="form-control select2 text-input">
                     <option value="" hidden disabled selected>Select</option>
                 </select>
-                <span asp-validation-for="HardwareId" class="text-danger"></span>
+                <span asp-validation-for="RequestTypeId" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label asp-for="PackageSelectList"></label>
-                <select asp-for="PackageId" asp-items="Model.PackageSelectList" class="form-control select2 text-input">
-                    <option value="" hidden disabled selected>Select</option>
-                </select>
-                <span asp-validation-for="PackageId" class="text-danger"></span>
-            </div>
-        </div>
-
         <div class="col-lg-12 new-site">
-            <h5 class="title">New Site Details</h5>
+            <h5 class="title">Site Details</h5>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
@@ -82,18 +62,29 @@
         </div>
         <div class="col-lg-3 new-site">
             <div class="form-group">
-                <label asp-for="PlanTypeSelectList"></label>
-                <select asp-for="PlanTypeId" asp-items="Model.PlanTypeSelectList" class="form-control select2 text-input">
+                <label asp-for="ServicePlanTypeSelectList"></label>
+                <select asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" class="form-control select2 text-input">
                     <option value="" hidden disabled selected>Select</option>
                 </select>
-                <span asp-validation-for="PlanTypeId" class="text-danger"></span>
+                <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="form-group">
+                <label asp-for="ServicePlanSelectList"></label>
+                <select disabled asp-for="ServicePlanId" asp-items="Model.ServicePlanSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="ServicePlanId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
             <div class="position-relative form-group">
-                <label asp-for="IP"></label>
-                <input asp-for="IP" type="text" placeholder="IP" class="form-control text-input" />
-                <span asp-validation-for="IP" class="text-danger"></span>
+                <label asp-for="IPSelectList"></label>
+                <select disabled asp-for="IPId" asp-items="Model.IPSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="IPId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 new-site">
@@ -108,6 +99,18 @@
                 <label asp-for="Upload"></label>
                 <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
                 <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 new-site">
+            <h5 class="title">Hardware Details</h5>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="form-group">
+                <label asp-for="HardwareSelectList"></label>
+                <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="HardwareId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-12 new-site">
@@ -153,16 +156,20 @@
         </div>
         <div class="col-lg-3 upgrade">
             <div class="position-relative form-group">
-                <label asp-for="UpgradeFrom"></label>
-                <input asp-for="UpgradeFrom" type="date" placeholder="..." class="form-control" value="" />
-                <span asp-validation-for="UpgradeFrom" class="text-danger"></span>
+                <label asp-for="UpgradeFromSelectList"></label>
+                <select asp-for="UpgradeFromId" asp-items="Model.UpgradeFromSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="UpgradeFromId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 upgrade">
             <div class="position-relative form-group">
-                <label asp-for="UpgradeTo"></label>
-                <input asp-for="UpgradeTo" type="date" placeholder="..." class="form-control" value="" />
-                <span asp-validation-for="UpgradeTo" class="text-danger"></span>
+                <label asp-for="UpgradeToSelectList"></label>
+                <select asp-for="UpgradeToId" asp-items="Model.UpgradeToSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>                
+                <span asp-validation-for="UpgradeToId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-12 downgrade">
@@ -170,16 +177,20 @@
         </div>
         <div class="col-lg-3 downgrade">
             <div class="position-relative form-group">
-                <label asp-for="DowngradeFrom"></label>
-                <input asp-for="DowngradeFrom" type="date" placeholder="..." class="form-control" value="" />
-                <span asp-validation-for="DowngradeFrom" class="text-danger"></span>
+                <label asp-for="DowngradeFromSelectList"></label>
+                <select asp-for="DowngradeFromId" asp-items="Model.DowngradeFromSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="DowngradeFromId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 downgrade">
             <div class="position-relative form-group">
-                <label asp-for="DowngradeTo"></label>
-                <input asp-for="DowngradeTo" type="date" placeholder="..." class="form-control" value="" />
-                <span asp-validation-for="DowngradeTo" class="text-danger"></span>
+                <label asp-for="DowngradeToSelectList"></label>
+                <select asp-for="DowngradeToId" asp-items="Model.DowngradeToSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="DowngradeToId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-12 token">
@@ -187,16 +198,20 @@
         </div>
         <div class="col-lg-3 token">
             <div class="position-relative form-group">
-                <label asp-for="Token"></label>
-                <input asp-for="Token" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="Token" class="text-danger"></span>
+                <label asp-for="TokenSelectList"></label>
+                <select asp-for="TokenId" asp-items="Model.TokenSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="TokenId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-3 token">
             <div class="position-relative form-group">
-                <label asp-for="Promotion"></label>
-                <input asp-for="Promotion" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="Promotion" class="text-danger"></span>
+                <label asp-for="PromotionSelectList"></label>
+                <select asp-for="PromotionId" asp-items="Model.PromotionSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="PromotionId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-lg-12 other">
@@ -204,7 +219,7 @@
         </div>
         <div class="col-lg-3 other">
             <div class="position-relative form-group">
-                <label asp-for="Other"></label>
+                <label>Specify</label>
                 <input asp-for="Other" type="text" placeholder="..." class="form-control" />
                 <span asp-validation-for="Other" class="text-danger"></span>
             </div>
@@ -224,6 +239,10 @@
                 var requestTypeId = $("#RequestTypeId").val();
                 switch (requestTypeId) {
                     case '1'://Activation
+                        hideAllSections();
+                        $(".new-site").show();
+                        break
+                    case '32'://Re-Activation
                         hideAllSections();
                         $(".new-site").show();
                         break

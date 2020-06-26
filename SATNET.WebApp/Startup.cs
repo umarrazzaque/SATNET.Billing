@@ -78,7 +78,7 @@ namespace SATNET.WebApp
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IService<User>, UserService>();
-            services.AddScoped<IService<Package>, PackageService>();
+            services.AddScoped<IService<ServicePlan>, ServicePlanService>();
             services.AddScoped<IService<Customer>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
@@ -86,7 +86,7 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Lookup>, LookupService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IRepository<Package>, PackageRepository>();
+            services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
             services.AddScoped<IRepository<Customer>, ResellerRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();

@@ -22,9 +22,9 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Order> _orderService;
         private readonly IService<Lookup> _lookupService;
         private readonly IService<Hardware> _hardwareService;
-        private readonly IService<Package> _packageService;
+        private readonly IService<ServicePlan> _packageService;
         private readonly IService<Site> _siteService;
-        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<Package> packageService, IService<Site> siteService
+        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> packageService, IService<Site> siteService
             , IService<Lookup> lookupService)
         {
             _orderService = orderService;
@@ -54,18 +54,16 @@ namespace SATNET.WebApp.Controllers
         {
             OrderViewModel model = new OrderViewModel();
 
-            var planTypes = await _lookupService.List(new Lookup() {LookupTypeId= Convert.ToInt32(LookupTypes.PlanType) });
-            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
-            var hardwares = await _hardwareService.List(new Hardware());
-            var packages = await _packageService.List(new Package());
             var sites = await _siteService.List(new Site());
+            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
+            var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PlanType) });
+            var hardwares = await _hardwareService.List(new Hardware());
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
-            model.PlanTypeSelectList = new SelectList(planTypes, "Id", "Name");
-            model.PackageSelectList = new SelectList(packages, "Id", "Name");
+            model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
             model.SiteSelectList = new SelectList(sites, "Id", "Name");
-            model.ResellerName = "Satnet Partner";
+            model.CustomerName = "Satnet Customer";
 
             return View(model);
         }
@@ -76,16 +74,18 @@ namespace SATNET.WebApp.Controllers
             {
                 SiteId = model.SiteId,
                 HardwareId = model.HardwareId,
-                PackageId = model.PackageId,
+                ServicePlanId = model.ServicePlanId,
                 RequestTypeId = model.RequestTypeId,
-                UpgradeFrom = model.UpgradeFrom,
-                UpgradeTo = model.UpgradeTo,
-                DowngradeFrom = model.DowngradeFrom,
-                DowngradeTo = model.DowngradeTo,
+                UpgradeFromId = model.UpgradeFromId,
+                UpgradeToId = model.UpgradeToId,
+                DowngradeFromId = model.DowngradeFromId,
+                DowngradeToId = model.DowngradeToId,
                 CreatedBy = 1,
                 InstallationDate = model.InstallationDate,
-                PlanTypeId = model.PlanTypeId,
-                IP = model.IP,
+                ServicePlanTypeId = model.ServicePlanTypeId,
+                IPId = model.IPId,
+                TokenId = model.TokenId,
+                PromotionId = model.PromotionId,
                 Download = model.Download,
                 Upload = model.Upload,
                 SubscriberArea = model.SubscriberArea,
