@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using SATNET.Domain;
 using SATNET.Repository.Core.Base;
 using SATNET.Repository.Core.Interface;
@@ -7,7 +8,9 @@ using SATNET.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 namespace SATNET.Repository.Implementation
 {

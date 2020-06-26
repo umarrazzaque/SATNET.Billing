@@ -18,18 +18,21 @@ namespace SATNET.Domain
         public string SubscriberNotes{ get; set; }
         public int HardwareId { get; set; }
         public string HardwareName { get; set; }
-        public int PackageId { get; set; }
-        public string PackageName { get; set; }
         public int RequestTypeId { get; set; }
         public string RequestTypeName { get; set; }
-        public DateTime? UpgradeFrom { get; set; }
-        public DateTime? UpgradeTo{ get; set; }
-        public DateTime? DowngradeFrom { get; set; }
-        public DateTime? DowngradeTo { get; set; }
+        public int? UpgradeFromId { get; set; }
+        public int? UpgradeToId { get; set; }
+        public int? DowngradeFromId { get; set; }
+        public int? DowngradeToId { get; set; }
         public DateTime? InstallationDate { get; set; }
-        public int PlanTypeId { get; set; }
-        public string IP { get; set; }
+        public int ServicePlanTypeId { get; set; }
+        public int ServicePlanId { get; set; }
+        public string ServicePlanName { get; set; }
+        public int? IPId { get; set; }
         public int? Download { get; set; }
         public int? Upload { get; set; }
+        public int? TokenId { get; set; }
+        public int? PromotionId { get; set; }
+        public string Other { get; set; }
     }
 }

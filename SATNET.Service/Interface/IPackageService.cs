@@ -9,10 +9,10 @@ namespace SATNET.Service.Interface
 {
     public interface IPackageService
     {
-        public Task<Package> Get(int id);
-        public Task<List<Package>> List();
-        public Task<StatusModel> Add(Package package);
-        public Task<StatusModel> Update(Package package);
+        public Task<ServicePlan> Get(int id);
+        public Task<List<ServicePlan>> List();
+        public Task<StatusModel> Add(ServicePlan package);
+        public Task<StatusModel> Update(ServicePlan package);
         public Task<StatusModel> Delete(int recId, int deletedBy);
     }
 }

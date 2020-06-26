@@ -128,11 +128,6 @@ namespace SATNET.WebApp.Controllers
             if (serviceResult.Any())
             {
                 customerListModel = _mapper.Map<List<CustomerModel>>(serviceResult);
-                //serviceResult.ForEach(res =>
-                //{
-                //    CustomerModel customer = _mapper.Map<CustomerModel>(res);
-                //    customerListModel.Add(customer);
-                //});
             }
             return customerListModel;
         }
@@ -147,15 +142,6 @@ namespace SATNET.WebApp.Controllers
                 
             }
             return customerTypeListModel;
-
-            //var result = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            //List<LookUpModel> customerTypeList = new List<LookUpModel>
-            //{
-            //    new LookUpModel{ Id = 1, Name = "Partner"},
-            //    new LookUpModel{ Id = 2, Name = "Distributor"}
-            //};
-            //return customerTypeList;
-            //return result;
         }
 
         private async Task<List<LookUpModel>> GetPriceTierList()
@@ -169,14 +155,6 @@ namespace SATNET.WebApp.Controllers
             }
             return customerTypeListModel;
 
-            //var result = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            //List<LookUpModel> customerTypeList = new List<LookUpModel>
-            //{
-            //    new LookUpModel{ Id = 1, Name = "Partner"},
-            //    new LookUpModel{ Id = 2, Name = "Distributor"}
-            //};
-            //return customerTypeList;
-            //return result;
         }
     }
 }

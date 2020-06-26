@@ -104,6 +104,7 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
+
         public Task<List<Customer>> List(Customer obj)
         {
             List<Customer> retList = new List<Customer>();
@@ -120,9 +121,6 @@ namespace SATNET.Service.Implementation
             }
             return Task.FromResult(retList);
         }
-
-
-
         public Task<StatusModel> Update(Customer obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
