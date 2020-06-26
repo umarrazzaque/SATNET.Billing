@@ -14,7 +14,8 @@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.Name) </th>
-                <th> @Html.DisplayNameFor(model => model.CustomerTypeId) </th>
+                <th> @Html.DisplayNameFor(model => model.CustomerType) </th>
+                <th> @Html.DisplayNameFor(model => model.PriceTierName) </th>
                 <th> @Html.DisplayNameFor(model => model.Code) </th>
                 <th> @Html.DisplayNameFor(model => model.Email)</th>
                 <th> @Html.DisplayNameFor(model => model.Address) </th>
@@ -38,7 +39,8 @@
                     @counter
                 </td>
                 <td> @Html.DisplayFor(modelItem => item.Name)</td>
-                <td> @Html.DisplayFor(modelItem => item.CustomerTypeId)</td>
+                <td> @Html.DisplayFor(modelItem => item.CustomerType)</td>
+                <td> @Html.DisplayFor(modelItem => item.PriceTierName)</td>
                 <td> @Html.DisplayFor(modelItem => item.Code)</td>
                 <td> @Html.DisplayFor(modelItem => item.Email)</td>
                 <td> @Html.DisplayFor(modelItem => item.Address)</td>

@@ -67,9 +67,10 @@ namespace SATNET.Repository.Core
             }
         }
 
-
-
         private IRepository<Customer> _customerRepository;
         public IRepository<Customer> Customers { get { return _customerRepository ?? (_customerRepository = new CustomerRepository(this)); } }
+
+        private IRepository<ServicePlan> _serviceRepository;
+        public IRepository<ServicePlan> ServicePlans { get { return _serviceRepository ?? (_serviceRepository = new ServicePlanRepository(this));  } }
     }
 }
