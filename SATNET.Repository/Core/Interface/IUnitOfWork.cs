@@ -16,5 +16,6 @@ namespace SATNET.Repository.Core.Interface
         public void Rollback();
 
         IRepository<Customer> Customers { get; }
+        IRepository<ServicePlan> ServicePlans { get; }
     }
 }

@@ -38,8 +38,15 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                @Html.LabelFor(model => model.CustomerModel.CustomerTypeId, new { })
-                @Html.DropDownListFor(model => model.CustomerModel.CustomerTypeId, new SelectList(Model.CustomerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Customer Type-", new { @class = "form-control select2 text-input" })
+                @Html.LabelFor(model => model.CustomerModel.TypeId, new { })
+                @Html.DropDownListFor(model => model.CustomerModel.TypeId, new SelectList(Model.CustomerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Customer Type-", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerModel.PriceTierId, new { })
+                @Html.DropDownListFor(model => model.CustomerModel.PriceTierId, new SelectList(Model.PriceTier as System.Collections.IEnumerable, "Id", "Name"), "-Select Price Tier-", new { @class = "form-control select2 text-input" })
+                
             </div>
         </div>
         <div class="col-lg-3">

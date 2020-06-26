@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SATNET.Domain;
 using SATNET.WebApp.Models;
+using SATNET.WebApp.Models.Lookup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace SATNET.WebApp.MappingProfiles
         {
             CreateMap<Customer, CustomerModel>();
             CreateMap<CustomerModel, Customer>();
+
+            CreateMap<Lookup, LookUpModel>();
+            CreateMap<LookUpModel, Lookup>();
         }
     }
 }

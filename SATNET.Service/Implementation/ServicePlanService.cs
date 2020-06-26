@@ -1,32 +1,24 @@
-﻿using SATNET.Service.Interface;
+﻿using SATNET.Domain;
+using SATNET.Repository.Core;
+using SATNET.Service.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using SATNET.Domain;
 using System.Threading.Tasks;
-using SATNET.Repository.Interface;
-using SATNET.Repository.Implementation;
-using SATNET.Repository.Core;
 
 namespace SATNET.Service.Implementation
 {
-    public class CustomerService : IService<Customer>
+    public class ServicePlanService : IService<ServicePlan>
     {
-
-        public CustomerService()
+        public Task<StatusModel> Add(ServicePlan obj)
         {
-
-        }
-        public Task<StatusModel> Add(Customer obj)
-        {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlan/Index" };
             try
             {
                 int retId = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    retId = uow.Customers.Add(obj).Result;
+                    retId = uow.ServicePlans.Add(obj).Result;
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -51,14 +43,14 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlan/Index" };
             try
             {
                 int dRow = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    dRow = uow.Customers.Delete(recId, deletedBy).Result;
+                    dRow = uow.ServicePlans.Delete(recId, deletedBy).Result;
                     if (dRow > 0)
                     {
                         uow.SaveChanges();
@@ -78,15 +70,15 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(status);
         }
 
-        public Task<Customer> Get(int id)
+        public Task<ServicePlan> Get(int id)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
-            var retModel = new Customer();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlan/Index" };
+            var retModel = new ServicePlan();
             try
             {
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
-                    retModel = uow.Customers.Get(id).Result;
+                    retModel = uow.ServicePlans.Get(id).Result;
                     if (retModel.Id != 0)
                     {
 
@@ -97,21 +89,17 @@ namespace SATNET.Service.Implementation
             {
 
             }
-            finally
-            {
-
-            }
             return Task.FromResult(retModel);
         }
 
-        public Task<List<Customer>> List(Customer obj)
+        public Task<List<ServicePlan>> List(ServicePlan obj)
         {
-            List<Customer> retList = new List<Customer>();
+            List<ServicePlan> retList = new List<ServicePlan>();
             try
             {
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
-                    retList = uow.Customers.List(obj).Result;
+                    retList = uow.ServicePlans.List(obj).Result;
                 }
             }
             catch (Exception e)
@@ -121,18 +109,16 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retList);
         }
 
-
-
-        public Task<StatusModel> Update(Customer obj)
+        public Task<StatusModel> Update(ServicePlan obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlan/Index" };
             try
             {
                 int retId = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    retId = uow.Customers.Update(obj).Result;
+                    retId = uow.ServicePlans.Update(obj).Result;
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -151,10 +137,6 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing request.";
                 status.ErrorDescription = e.Message;
-            }
-            finally
-            {
-
             }
             return Task.FromResult(status);
         }
