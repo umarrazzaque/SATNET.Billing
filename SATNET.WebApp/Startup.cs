@@ -92,6 +92,7 @@ namespace SATNET.WebApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IRepository<User>, UserRepository>();
@@ -100,6 +101,12 @@ namespace SATNET.WebApp
             services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IService<ServicePlan>, ServicePlanService>();
 >>>>>>> devUmerKhalid
+=======
+            services.AddScoped<IService<ServicePlan>, ServicePlanService>();
+            services.AddScoped<IService<User>, UserService>();
+            services.AddScoped<IRepository<User>, UserRepository>();
+
+>>>>>>> 388dfc3f9ee2874e38d93ced8e64be189ee9d2bb
             services.AddScoped<IService<Customer>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
@@ -115,6 +122,7 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
 <<<<<<< HEAD
+<<<<<<< HEAD
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
 =======
             services.AddScoped<IRepository<IP>, IPRepository>();
@@ -122,6 +130,14 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Token>, TokenRepository>();
 >>>>>>> devUmerKhalid
 
+=======
+
+            services.AddScoped<IRepository<IP>, IPRepository>();
+            services.AddScoped<IRepository<Promotion>, PromotionRepository>();
+            services.AddScoped<IRepository<Token>, TokenRepository>();
+            services.AddScoped<IRepository<Customer>, CustomerRepository>();
+          
+>>>>>>> 388dfc3f9ee2874e38d93ced8e64be189ee9d2bb
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
             services.AddScoped<IService<Customer>, CustomerService>();

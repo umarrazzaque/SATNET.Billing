@@ -19,10 +19,7 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Customer> _customerService;
         private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
-<<<<<<< HEAD
 
-=======
->>>>>>> devUmerKhalid
         public CustomerController(IService<Customer> customerService, IService<Lookup> lookupService,
             IMapper mapper)
         {
@@ -45,7 +42,7 @@ namespace SATNET.WebApp.Controllers
             CreateCustomerModel customerModel = new CreateCustomerModel
             {
                 CustomerModel = new CustomerModel(),
-                CustomerType =  GetCustomerTypeList().Result,
+                CustomerType = GetCustomerTypeList().Result,
                 PriceTier = GetPriceTierList().Result
             };
             return View(customerModel);
@@ -62,7 +59,7 @@ namespace SATNET.WebApp.Controllers
             {
                 Customer customerObj = _mapper.Map<Customer>(customerModel);
                 status = _customerService.Add(customerObj).Result;
-                
+
             }
             else
             {
@@ -94,7 +91,7 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CreateCustomerModel createCustomerModel)
         {
-            
+
             Customer customerObj = _mapper.Map<Customer>(createCustomerModel.CustomerModel);
             var status = _customerService.Update(customerObj).Result;
             status.Html = RenderViewToString(this, "Index", await GetCustomersList());
@@ -126,21 +123,11 @@ namespace SATNET.WebApp.Controllers
 
         private async Task<List<CustomerModel>> GetCustomersList()
         {
-<<<<<<< HEAD
             List<CustomerModel> customerListModel = new List<CustomerModel>();
             var serviceResult = await _customerService.List(new Customer { });
-=======
-            List<CustomerModel> CustomerListModel = new List<CustomerModel>();
-            var serviceResult = await _customerService.List(new Customer());
->>>>>>> devUmerKhalid
             if (serviceResult.Any())
             {
                 customerListModel = _mapper.Map<List<CustomerModel>>(serviceResult);
-                //serviceResult.ForEach(res =>
-                //{
-                //    CustomerModel customer = _mapper.Map<CustomerModel>(res);
-                //    customerListModel.Add(customer);
-                //});
             }
             return customerListModel;
         }
@@ -152,18 +139,9 @@ namespace SATNET.WebApp.Controllers
             if (retList.Any())
             {
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
-                
+
             }
             return customerTypeListModel;
-
-            //var result = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            //List<LookUpModel> customerTypeList = new List<LookUpModel>
-            //{
-            //    new LookUpModel{ Id = 1, Name = "Partner"},
-            //    new LookUpModel{ Id = 2, Name = "Distributor"}
-            //};
-            //return customerTypeList;
-            //return result;
         }
 
         private async Task<List<LookUpModel>> GetPriceTierList()
@@ -177,14 +155,6 @@ namespace SATNET.WebApp.Controllers
             }
             return customerTypeListModel;
 
-            //var result = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            //List<LookUpModel> customerTypeList = new List<LookUpModel>
-            //{
-            //    new LookUpModel{ Id = 1, Name = "Partner"},
-            //    new LookUpModel{ Id = 2, Name = "Distributor"}
-            //};
-            //return customerTypeList;
-            //return result;
         }
     }
 }
