@@ -1,18 +1,49 @@
 /**
- * AdminLTE Demo Menu
+ * Theme Custom JS
  * ------------------
- * You should not use this file in production.
- * This file is for demo purposes only.
+ * Use this file to add theme specific js 
  */
+function Layout() {
+}
+
 (function ($) {
+    $(document).ready(function () {
+        if (localStorage.getItem("TransactionStatus")) {
+            var jsonObj = JSON.parse(localStorage.getItem("TransactionStatusMessage"));
+            Layout.ShowMessage(jsonObj.text, jsonObj.title, jsonObj.type);
+            localStorage.clear();
+        }
+        else {
+            console.log('Custom.js - Local Storage Keys not found');
+        }
+
+    });
 
     'use strict'
 
-    function ShowMessage(text, title, type) {
+    //Load right content area
+    Layout.LoadContent = function (url, actionModel) {
+        //Layout.Loading(true);
+        //$("#MainContents").load(window.location.origin + url, function (response, status, xhr) {
+        //    if (status === "error") {
+        //        window.location.href = window.location.origin + "/Auth/Login";
+        //    }
+        //    //Layout.Loading(false);
+        //    if (actionModel !== null) {
+        //        //Layout.ErrorMsgModel(actionModel);
+        //    }
+        //});
+
+        //window.location.href = 'https://localhost:44367/Customer';
+        //$("#MainContents").html(data.html);
+        window.location.href = window.location.origin + url;
+    };
+
+    Layout.ShowMessage = function (text, title, type) {
         if (type === 1) {
             toastr.success(text, title, {
                 "closeButton": true,
-                "progressBar": true
+                "progressBar": true,
             });
         } else if (type === 2) {
             toastr.error(text, title, {
@@ -20,40 +51,51 @@
                 "progressBar": true
             });
         }
+    };
 
+    Layout.ProcessTransactionMessage = function (isSuccess, errorCode) {
+        var jsonObj = {
+            "text": "",
+            "title": "",
+            "type": -1
+        };
+        localStorage.setItem("TransactionStatus", isSuccess);
+        console.log(localStorage.getItem("TransactionStatus"));
+        if (isSuccess === true) {
+            jsonObj = { text: errorCode, title: "Success Message", type: 1 };
+        }
+        else {
+            jsonObj = { text: errorCode, title: "Error Message", type: 2 };
+        }
+        localStorage.setItem("TransactionStatusMessage", JSON.stringify(jsonObj));
+    };
+
+    Layout.Add = function () {
+        console.log('Layout is added');
     };
 
     $(document).on("click", 'a.right-pan', function (e) {
         e.preventDefault();
-        $.ajax(
-            {
-                url: $(this).attr("href"),
-                type: 'get',
-                dataType: "json",
-                success: function (data) {
-                    $("#MainContents").html(data.html);
-                },
-                error: function () {
-                    alert('Error on clicking right pan');
-                }
-            });
+        var href = $(this).attr("href");
+        Layout.LoadContent(href, null);
+        return true;
     });
 
     $(document).on("click", 'a.edit-pan', function (e) {
         e.preventDefault();
-        $.ajax(
-            {
-                url: $(this).attr("href"),
-                type: 'get',
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    $("#MainContents").html(data.html);
-                },
-                error: function () {
-                    alert('Error on clicking edit pan');
-                }
-            });
+        //$.ajax(
+        //    {
+        //        url: $(this).attr("href"),
+        //        type: 'get',
+        //        dataType: "json",
+        //        success: function (data) {
+        //            console.log(data);
+        //            $("#MainContents").html(data.html);
+        //        },
+        //        error: function () {
+        //            alert('Error on clicking edit pan');
+        //        }
+        //    });
     });
 
     $(document).on("submit", '#formAdd', function (e) {
@@ -61,13 +103,8 @@
         $.post($(this).attr("action"),
             $(this).serialize(),
             function (data) {
-                if (data.isSuccess === true) {
-                    ShowMessage(data.errorCode, 'Success Message', 1);
-                }
-                else {
-                    ShowMessage(data.errorCode, 'Error Message', 2);
-                }
-                $("#MainContents").html(data.html);
+                Layout.LoadContent(data.responseUrl, null);
+                Layout.ProcessTransactionMessage(data.isSuccess, data.errorCode);
             });
     });
 
@@ -87,10 +124,10 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.isSuccess === true) {
-                        ShowMessage(data.errorCode, 'Record deleted successfully.', 1);
+                        Layout.ShowMessage(data.errorCode, 'Success Message', 1);
                     }
                     else {
-                        ShowMessage(data.errorCode, 'Error in deleting record.', 2);
+                        Layout.ShowMessage(data.errorCode, 'Error Message', 2);
                     }
                     $("#MainContents").html(data.html);
                 },

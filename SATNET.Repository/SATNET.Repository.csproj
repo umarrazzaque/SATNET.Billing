@@ -14,8 +14,4 @@
     <ProjectReference Include="..\SATNET.Domain\SATNET.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
-
 </Project>
