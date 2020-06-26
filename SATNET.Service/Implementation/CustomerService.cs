@@ -108,7 +108,7 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retModel);
         }
 
-        public async Task<List<Customer>> List()
+        public async Task<List<Customer>> List(Customer obj)
         {
             List<Customer> retList = new List<Customer>();
             using (var uow = new UnitOfWorkFactory().Create())

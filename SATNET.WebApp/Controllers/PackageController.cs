@@ -44,6 +44,37 @@ namespace SATNET.WebApp.Controllers
         public async Task<IActionResult> Add(CreatePackageModel createPackageModel)
         {
             throw new NotImplementedException();
+            //PackageModel packageModel = createPackageModel.PackageModel;
+            //var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            //if (ModelState.IsValid)
+            //{
+            //    status = _packageService.Add(new Package
+            //    {
+            //        Id = 0,
+            //        Name = packageModel.Name,
+            //        Type = packageModel.PackageType,
+            //        Rate = packageModel.Rate,
+            //        Speed = packageModel.Speed,
+            //        CreatedBy = 1
+            //    }).Result;
+            //    //if (status.IsSuccess)
+            //    //{
+            //    //    //get error code description from configuration
+            //    //    //status.ErrorCode = "";
+            //    //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
+            //    //}
+            //    //else
+            //    //{
+            //    //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
+            //    //}
+            //    //return Json(new { isValid = false, msg = "Error in inserting the record!", html = RenderViewToString(this, "Index", await GetPackagesList()) });
+            //}
+            //else
+            //{
+            //    status.ErrorCode = "Error occured see entity validation errors.";
+            //}
+            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //return Json(status);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

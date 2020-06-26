@@ -24,14 +24,21 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Hardware> _hardwareService;
         private readonly IService<ServicePlan> _packageService;
         private readonly IService<Site> _siteService;
+        private readonly IService<Token> _tokenService;
+        private readonly IService<Promotion> _promotionService;
+        private readonly IService<IP> _ipService;
+
         public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> packageService, IService<Site> siteService
-            , IService<Lookup> lookupService)
+            , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService)
         {
             _orderService = orderService;
             _hardwareService = hardwareService;
             _packageService = packageService;
             _siteService = siteService;
             _lookupService = lookupService;
+            _tokenService = tokenService;
+            _promotionService = promotionService;
+            _ipService = ipService;
         }
         public async Task<IActionResult> Index()
         {
@@ -58,11 +65,17 @@ namespace SATNET.WebApp.Controllers
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PlanType) });
             var hardwares = await _hardwareService.List(new Hardware());
+            var tokens = await _tokenService.List(new Token());
+            var promotions = await _promotionService.List(new Promotion());
+            var ips = await _ipService.List(new IP());
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
             model.SiteSelectList = new SelectList(sites, "Id", "Name");
+            model.TokenSelectList = new SelectList(tokens, "Id", "Name");
+            model.PromotionSelectList = new SelectList(promotions, "Id", "Name");
+            model.IPSelectList = new SelectList(ips, "Id", "Name");
             model.CustomerName = "Satnet Customer";
 
             return View(model);

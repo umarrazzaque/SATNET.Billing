@@ -84,7 +84,7 @@ namespace SATNET.WebApp.Models.Order
         public int? DowngradeToId { get; set; }
         [Required(ErrorMessage = "Token is required")]
         public int? TokenId { get; set; }
-        [DisplayName("Token")]
+        [DisplayName("Token(GB)")]
         public SelectList TokenSelectList { get; set; }
         [DisplayName("Promotion")]
         public SelectList PromotionSelectList { get; set; }

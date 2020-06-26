@@ -17,9 +17,9 @@ namespace SATNET.WebApp.Controllers
     public class CustomerController : BaseController
     {
         private readonly IService<Customer> _customerService;
-        private readonly ILookupService _lookupService;
+        private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
-        public CustomerController(IService<Customer> customerService, ILookupService lookupService,
+        public CustomerController(IService<Customer> customerService, IService<Lookup> lookupService,
             IMapper mapper)
         {
             _customerService = customerService;
@@ -121,7 +121,7 @@ namespace SATNET.WebApp.Controllers
         private async Task<List<CustomerModel>> GetCustomersList()
         {
             List<CustomerModel> CustomerListModel = new List<CustomerModel>();
-            var serviceResult = await _customerService.List();
+            var serviceResult = await _customerService.List(new Customer());
             if (serviceResult.Any())
             {
                 serviceResult.ForEach(res =>

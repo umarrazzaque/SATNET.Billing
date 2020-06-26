@@ -34,7 +34,7 @@ namespace SATNET.Repository.Implementation
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_CustomerTypeId", obj.CustomerTypeId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_CustomerTypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
@@ -120,7 +120,7 @@ namespace SATNET.Repository.Implementation
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
                 queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@P_CustomerTypeId", obj.CustomerTypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@P_CustomerTypeId", obj.TypeId, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@P_PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@P_Code", obj.Code, DbType.String, ParameterDirection.Input);
                 queryParameters.Add("@P_Email", obj.Email, DbType.String, ParameterDirection.Input);
