@@ -23,7 +23,17 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<Order> Get(int id)
         {
-            throw new NotImplementedException();
+            var order = new Order();
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
+
+                var parms = new DynamicParameters();
+                parms.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
+                order = await con.QueryFirstOrDefaultAsync<Order>("OrderGet", parms, commandType: CommandType.StoredProcedure);
+            }
+            return order;
         }
         public async Task<List<Order>> List(Order obj)
         {

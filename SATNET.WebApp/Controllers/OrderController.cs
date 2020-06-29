@@ -141,5 +141,15 @@ namespace SATNET.WebApp.Controllers
             var servicePlans = await _servicePlanService.List(obj);
             return Json(new SelectList(servicePlans, "Id", "Name"));            
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var svcResult = await _orderService.Get(id);
+            OrderViewModel model = new OrderViewModel();
+            model = OrderMapping.GetViewModel(svcResult);
+            return View(model);
+        }
+
     }
 }

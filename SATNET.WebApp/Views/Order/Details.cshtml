@@ -1,4 +1,5 @@
-﻿
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
 <div id="MainContents">
 
     <div class="app-page-title">
@@ -6,7 +7,7 @@
             <div class="page-title-heading">
 
                 <div>
-                    Invoice #35845 - Ella-Rose
+                    @*Invoice #35845 - Ella-Rose*@
                     <div class="page-title-subheading">
                     </div>
                 </div>
@@ -54,20 +55,20 @@
                         <div class="row contacts">
                             <div class="col invoice-to">
                                 <div class="text-gray-light">INVOICE TO:</div>
-                                <h2 class="to">Ella-Rose</h2>
-                                <div class="address">City, Area</div>
-                                <div class="email"><a href="">info@ella-rose.com</a></div>
+                                <h2 class="to">@Model.SubscriberName</h2>
+                                <div class="address">@Model.SubscriberCity , @Model.SubscriberArea</div>
+                                <div class="email"><a href="">@Model.SubscriberEmail</a></div>
                             </div>
                             <div class="col invoice-details">
-                                <h1 class="invoice-id">INVOICE 3-2-1</h1>
-                                <div class="date">Date of Invoice: 01/10/2020</div>
-                                <div class="date">Due Date: 30/10/2020</div>
+                              @*  <h1 class="invoice-id">INVOICE 3-2-1</h1>*@
+                                <div class="date">Date of Invoice: @DateTime.Now.Date</div>
+                                <div class="date">Due Date: @DateTime.Now.Date.AddDays(30)</div>
                             </div>
                         </div>
                         <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th class="no">#</th>
                                     <th class="text-left">Description</th>
                                     <th class="text-right">Price</th>
                                     <th class="text-right">Total</th>
@@ -78,48 +79,60 @@
                                     <td class="no">1</td>
                                     <td class="text-left">
                                         <h3>
-                                            Package #1
+                                            Service Plan
                                         </h3>
-                                        10 GB - 1024kbps - 30 days
+                                        @Model.ServicePlanName
+                                        - @Model.ServicePlanUnit
                                     </td>
-                                    <td class="unit">$0.00</td>
-                                    <td class="total">$0.00</td>
+                                    <td class="unit">$ @Model.ServicePlanPrice</td>
+                                    <td class="total">$ @Model.ServicePlanProRataPrice</td>
                                 </tr>
                                 <tr>
-                                    <td class="no">1</td>
+                                    <td class="no">2</td>
                                     <td class="text-left">
                                         <h3>
-                                            Package #1
+                                            Hardware
                                         </h3>
-                                        10 GB - 1024kbps - 30 days
+                                        @Model.HardwareModel
                                     </td>
-                                    <td class="unit">$0.00</td>
-                                    <td class="total">$0.00</td>
+                                    <td class="unit">$ @Model.HardwarePrice</td>
+                                    <td class="total">$ @Model.HardwarePrice</td>
+                                </tr>
+                                <tr>
+                                    <td class="no">3</td>
+                                    <td class="text-left">
+                                        <h3>
+                                            IP
+                                        </h3>
+                                        @Model.IPName
+                                    </td>
+                                    <td class="unit">$ @Model.IPPrice</td>
+                                    <td class="total">$ @Model.IPPrice</td>
                                 </tr>
                             </tbody>
                             <tfoot>
+                                @*<tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">SUBTOTAL</td>
+                                        <td>$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">TAX 25%</td>
+                                        <td>$0.00</td>
+                                    </tr>*@
                                 <tr>
                                     <td colspan="2"></td>
-                                    <td colspan="2">SUBTOTAL</td>
-                                    <td>$0.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="2">TAX 25%</td>
-                                    <td>$0.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="2">GRAND TOTAL</td>
-                                    <td>$0.00</td>
+                                    <td>GRAND TOTAL</td>
+                                    <td>$ @Model.Total</td>
                                 </tr>
                             </tfoot>
                         </table>
                         <div class="thanks">Thank you!</div>
-                        <div class="notices">
-                            <div>NOTICE:</div>
-                            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
-                        </div>
+                        @*<div class="notices">
+                                <div>NOTICE:</div>
+                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                            </div>*@
                     </main>
                     <footer>
                         Invoice was created on a computer and is valid without the signature and seal.

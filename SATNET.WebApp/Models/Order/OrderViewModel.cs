@@ -31,17 +31,27 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Service plan is required")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        public string ServicePlanTypeName { get; set; }
+        public string ServicePlanUnit { get; set; }
+        public decimal ServicePlanPrice { get; set; }
+        public decimal ServicePlanProRataPrice { get; set; }
+
         [DisplayName("Service Plan")]
         public SelectList ServicePlanSelectList { get; set; }
         [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
+        public string HardwareModel { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }
+        public decimal HardwarePrice { get; set; }
         [DisplayName("IP")]
         public SelectList IPSelectList { get; set; }
 
         [DisplayName("IP")]
         public int? IPId { get; set; }
+        public string IPName { get; set; }
+        public decimal IPPrice { get; set; }
+        public DateTime ServiceOrderDate { get; set; }
         [DisplayName("Download")]
         [Required(ErrorMessage = "Download is required")]
         public int Download { get; set; }
@@ -50,7 +60,7 @@ namespace SATNET.WebApp.Models.Order
         public int Upload { get; set; }
         [DisplayName("Planned Installation Date")]
         [Required(ErrorMessage = "Installation date is required")]
-        public DateTime? InstallationDate { get; set; }
+        public DateTime InstallationDate { get; set; }
         [DisplayName("Name")]
         [Required(ErrorMessage = "Subscriber name is required")]
         public string SubscriberName { get; set; }
@@ -90,6 +100,6 @@ namespace SATNET.WebApp.Models.Order
         public SelectList PromotionSelectList { get; set; }
         public int? PromotionId { get; set; }
         public string Other { get; set; }
-        public DateTime? ServiceOrderDate { get; set; }
+        public decimal Total { get; set; }
     }
 }

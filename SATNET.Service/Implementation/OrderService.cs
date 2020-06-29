@@ -1,4 +1,6 @@
-﻿using SATNET.Domain;
+﻿using Microsoft.VisualBasic;
+using SATNET.Domain;
+using SATNET.Domain.Enums;
 using SATNET.Repository.Interface;
 using SATNET.Service.Interface;
 using System;
@@ -17,7 +19,26 @@ namespace SATNET.Service.Implementation
         }
         public async Task<Order> Get(int id)
         {
-            throw new NotImplementedException();
+            var retModel = new Order();
+            try
+            {
+                retModel = await _orderRepository.Get(id);
+                if (retModel.Id != 0)
+                {
+                    retModel.ServiceProRataPrice = CalculateProRataPrice(retModel);
+                    retModel.Total = retModel.ServiceProRataPrice + retModel.HardwarePrice + retModel.IPPrice;
+                    retModel.ServicePlanUnit = SetServicePlanUnit(retModel.ServicePlanTypeId);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+
+            }
+            return retModel;
         }
         public async Task<List<Order>> List(Order obj)
         {
@@ -59,6 +80,30 @@ namespace SATNET.Service.Implementation
         public async Task<StatusModel> Delete(int id, int deletedBy)
         {
             throw new NotImplementedException();
+        }
+
+        private decimal CalculateProRataPrice(Order obj)
+        {
+            int installationMonth = DateAndTime.Month(obj.InstallationDate);
+            int installationDay = DateAndTime.Day(obj.InstallationDate);
+            int daysPerMonth = DateTime.DaysInMonth(2020, installationMonth);
+            int remainingDays = daysPerMonth - installationDay + 1;
+            decimal proRataPrice = (obj.ServicePlanPrice / 30) * remainingDays;
+            return decimal.Round(proRataPrice, 2, MidpointRounding.AwayFromZero);
+        }
+
+        private string SetServicePlanUnit(int servicePlanTypeId)
+        {
+            string servicePlanUnit = "";
+            if (servicePlanTypeId == 12)
+            {//quota
+                servicePlanUnit = ServiceUnit.GBPerMonth;
+            }
+            else if (servicePlanTypeId == 14)
+            {//dedicated
+                servicePlanUnit = ServiceUnit.Mbps;
+            }
+            return servicePlanUnit;
         }
     }
 }
