@@ -25,12 +25,8 @@
 
     //dropdown filters change events
 
-    $("#ddlRequestType").change(function () {
+    $(".filters select").change(function () {
         GetOrdersByDDLFilter();
-    });
-    $("#ddlOrderStatus").change(function () {
-        GetOrdersByDDLFilter();
-
     });
 });
 

@@ -41,9 +41,9 @@ namespace SATNET.Repository.Implementation
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@PlanTypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
-                var result = await con.QueryAsync<ServicePlan>("ServicePlanList", commandType: CommandType.StoredProcedure);
+                var parms = new DynamicParameters();
+                parms.Add("@PlanTypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
+                var result = await con.QueryAsync<ServicePlan>("ServicePlanList",parms, commandType: CommandType.StoredProcedure);
                 packages = result.ToList();
             }
             return packages;

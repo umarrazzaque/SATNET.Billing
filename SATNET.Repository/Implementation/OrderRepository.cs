@@ -76,18 +76,18 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@HardwareId", obj.HardwareId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@ServicePlanId", obj.ServicePlanId, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@UpgradeFromId", obj.UpgradeFromId, DbType.DateTime, ParameterDirection.Input);
-                    paramsOrder.Add("@UpgradeToId", obj.UpgradeToId, DbType.DateTime, ParameterDirection.Input);
-                    paramsOrder.Add("@DowngradeFromId", obj.DowngradeFromId, DbType.DateTime, ParameterDirection.Input);
-                    paramsOrder.Add("@DowngradeToId", obj.DowngradeToId, DbType.DateTime, ParameterDirection.Input);
+                    paramsOrder.Add("@UpgradeFromId", obj.UpgradeFromId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@UpgradeToId", obj.UpgradeToId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@DowngradeFromId", obj.DowngradeFromId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@DowngradeToId", obj.DowngradeToId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@InstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
                     paramsOrder.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@Download", obj.Download, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@Upload", obj.Upload, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@IPId", obj.IPId, DbType.String, ParameterDirection.Input);
-                    paramsOrder.Add("@TokenId", obj.TokenId, DbType.String, ParameterDirection.Input);
-                    paramsOrder.Add("@PromotionId", obj.PromotionId, DbType.String, ParameterDirection.Input);
+                    //paramsOrder.Add("@Download", obj.Download, DbType.Int32, ParameterDirection.Input);
+                    //paramsOrder.Add("@Upload", obj.Upload, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@PromotionId", obj.PromotionId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@Other", obj.Other, DbType.String, ParameterDirection.Input);
                     orderId = await con.ExecuteScalarAsync<int>("OrderInsert", paramsOrder, transaction, commandType: CommandType.StoredProcedure);
 

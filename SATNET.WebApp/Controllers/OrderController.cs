@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,27 +23,29 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Order> _orderService;
         private readonly IService<Lookup> _lookupService;
         private readonly IService<Hardware> _hardwareService;
-        private readonly IService<ServicePlan> _packageService;
+        private readonly IService<ServicePlan> _servicePlanService;
         private readonly IService<Site> _siteService;
         private readonly IService<Token> _tokenService;
         private readonly IService<Promotion> _promotionService;
         private readonly IService<IP> _ipService;
+        private readonly IMapper _mapper;
 
-        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> packageService, IService<Site> siteService
-            , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService)
+        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
+            , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper)
         {
             _orderService = orderService;
             _hardwareService = hardwareService;
-            _packageService = packageService;
+            _servicePlanService = servicePlanService;
             _siteService = siteService;
             _lookupService = lookupService;
             _tokenService = tokenService;
             _promotionService = promotionService;
             _ipService = ipService;
+            _mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
-            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
+            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var orderStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderStatus) });
 
             ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
@@ -60,10 +63,9 @@ namespace SATNET.WebApp.Controllers
         public async Task<IActionResult> Add()
         {
             OrderViewModel model = new OrderViewModel();
-
             var sites = await _siteService.List(new Site());
-            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.RequestType) });
-            var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PlanType) });
+            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
+            var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
             var hardwares = await _hardwareService.List(new Hardware());
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
@@ -95,12 +97,12 @@ namespace SATNET.WebApp.Controllers
                 DowngradeToId = model.DowngradeToId,
                 CreatedBy = 1,
                 InstallationDate = model.InstallationDate,
-                ServicePlanTypeId = model.ServicePlanTypeId,
                 IPId = model.IPId,
                 TokenId = model.TokenId,
                 PromotionId = model.PromotionId,
                 Download = model.Download,
                 Upload = model.Upload,
+                Other = model.Other,
                 SubscriberArea = model.SubscriberArea,
                 SubscriberCity = model.SubscriberCity,
                 SubscriberEmail = model.SubscriberEmail,
@@ -130,6 +132,14 @@ namespace SATNET.WebApp.Controllers
                 model = OrderMapping.GetListViewModel(serviceResult);
             }
             return Json(new { isValid = true, html = RenderViewToString(this, "_OrderList", model) });
+        }
+        public async Task<IActionResult> GetServicePlansByType(string servicePlanTypeId)
+        {
+            ServicePlan obj = new ServicePlan();
+            obj.PlanTypeId = string.IsNullOrEmpty(servicePlanTypeId) ? 0 : Convert.ToInt32(servicePlanTypeId);
+
+            var servicePlans = await _servicePlanService.List(obj);
+            return Json(new SelectList(servicePlans, "Id", "Name"));            
         }
     }
 }
