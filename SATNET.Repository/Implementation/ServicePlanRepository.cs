@@ -60,6 +60,7 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@PlanTypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);

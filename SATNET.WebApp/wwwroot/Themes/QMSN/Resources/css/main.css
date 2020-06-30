@@ -25309,7 +25309,7 @@ a.fc-more {
         }
 
         .invoice table td h3 {
-            margin: 0;
+            /*margin: 0;*/
             font-weight: 400;
             color: #3989c6;
             font-size: 14px;

@@ -61,8 +61,8 @@
                             </div>
                             <div class="col invoice-details">
                               @*  <h1 class="invoice-id">INVOICE 3-2-1</h1>*@
-                                <div class="date">Date of Invoice: @DateTime.Now.Date</div>
-                                <div class="date">Due Date: @DateTime.Now.Date.AddDays(30)</div>
+                                <div class="date">Date of Invoice: @DateTime.Now.ToShortDateString()</div>
+                                <div class="date">Due Date: @DateTime.Now.AddDays(30).ToShortDateString()</div>
                             </div>
                         </div>
                         <table border="0" cellspacing="0" cellpadding="0">
