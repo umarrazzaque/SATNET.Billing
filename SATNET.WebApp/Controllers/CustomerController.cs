@@ -19,6 +19,7 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Customer> _customerService;
         private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
+
         public CustomerController(IService<Customer> customerService, IService<Lookup> lookupService,
             IMapper mapper)
         {
@@ -41,7 +42,8 @@ namespace SATNET.WebApp.Controllers
             CreateCustomerModel customerModel = new CreateCustomerModel
             {
                 CustomerModel = new CustomerModel(),
-                CustomerType = GetCustomerTypeList()
+                CustomerType =  GetCustomerTypeList().Result,
+                PriceTier = GetPriceTierList().Result
             };
             return View(customerModel);
             //return Json(new { isValid = true, html = RenderViewToString(this, "Add", customerModel) });
@@ -75,7 +77,8 @@ namespace SATNET.WebApp.Controllers
             CreateCustomerModel customerModel = new CreateCustomerModel
             {
                 CustomerModel = _mapper.Map<CustomerModel>(customer),
-                CustomerType = GetCustomerTypeList()
+                CustomerType = GetCustomerTypeList().Result,
+                PriceTier = GetPriceTierList().Result
             };
             return View(customerModel);
             //var status = new StatusModel
@@ -120,30 +123,38 @@ namespace SATNET.WebApp.Controllers
 
         private async Task<List<CustomerModel>> GetCustomersList()
         {
-            List<CustomerModel> CustomerListModel = new List<CustomerModel>();
-            var serviceResult = await _customerService.List(new Customer());
+            List<CustomerModel> customerListModel = new List<CustomerModel>();
+            var serviceResult = await _customerService.List(new Customer { });
             if (serviceResult.Any())
             {
-                serviceResult.ForEach(res =>
-                {
-
-                    CustomerModel customer = _mapper.Map<CustomerModel>(res);
-                    CustomerListModel.Add(customer);
-                });
+                customerListModel = _mapper.Map<List<CustomerModel>>(serviceResult);
             }
-            return CustomerListModel;
+            return customerListModel;
         }
 
-        private List<LookUpModel> GetCustomerTypeList()
+        private async Task<List<LookUpModel>> GetCustomerTypeList()
         {
-            //var result = await _lookupService.ListByFilter(Convert.ToInt32(LookupTypes.PlanType));
-            List<LookUpModel> customerTypeList = new List<LookUpModel>
+            List<LookUpModel> customerTypeListModel = new List<LookUpModel>();
+            var retList = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
+            if (retList.Any())
             {
-                new LookUpModel{ Id = 1, Name = "Partner"},
-                new LookUpModel{ Id = 2, Name = "Distributor"}
-            };
-            return customerTypeList;
-            //return result;
+                customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
+                
+            }
+            return customerTypeListModel;
+        }
+
+        private async Task<List<LookUpModel>> GetPriceTierList()
+        {
+            List<LookUpModel> customerTypeListModel = new List<LookUpModel>();
+            var retList = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PriceTier) });
+            if (retList.Any())
+            {
+                customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
+
+            }
+            return customerTypeListModel;
+
         }
     }
 }

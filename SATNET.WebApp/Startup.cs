@@ -91,8 +91,10 @@ namespace SATNET.WebApp
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IService<ServicePlan>, ServicePlanService>();
+            services.AddScoped<IService<User>, UserService>();
+            services.AddScoped<IRepository<User>, UserRepository>();
+
             services.AddScoped<IService<Customer>, ResellerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
@@ -107,12 +109,15 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Customer>, ResellerRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
+
             services.AddScoped<IRepository<IP>, IPRepository>();
             services.AddScoped<IRepository<Promotion>, PromotionRepository>();
             services.AddScoped<IRepository<Token>, TokenRepository>();
-
+            services.AddScoped<IRepository<Customer>, CustomerRepository>();
+          
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
+            services.AddScoped<IService<Customer>, CustomerService>();
 
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();

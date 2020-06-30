@@ -12,16 +12,18 @@ namespace SATNET.WebApp.Models
         public CustomerModel()
         {
             Name = Code = Email = Address = ContactNumber = Notes = "";
-            PriceTierId = CustomerTypeId = Id = -1;
+            PriceTierId = TypeId = Id = -1;
         }
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
 
         public string Name { get; set; }
         public string Code { get; set; }
-        public int CustomerTypeId { get; set; }
+        [DisplayName("Customer Type")]
+        public int TypeId { get; set; }
+        public string CustomerType { get; set; }
+        [DisplayName("Price Tier Type")]
         public int PriceTierId { get; set; }
+        public string PriceTierName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public string ContactNumber { get; set; }
