@@ -9,7 +9,7 @@ namespace SATNET.Domain
     {
         public string Name { get; set; }
         public int PlanTypeId { get; set; }
-        public string PlanName { get; set; }
+        public string PlanType { get; set; }
         public decimal DownloadMIR { get; set; }
         public decimal UploadMIR { get; set; }
         public decimal DownloadCIR { get; set; }

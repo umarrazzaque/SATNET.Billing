@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
+using SATNET.Domain.Enums;
 using SATNET.Service;
 using SATNET.Service.Interface;
+using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Models;
 using SATNET.WebApp.Models.Lookup;
 
@@ -14,9 +19,15 @@ namespace SATNET.WebApp.Controllers
     public class SiteController : BaseController
     {
         private readonly IService<Site> _siteService;
-        public SiteController(IService<Site> siteService)
+        private readonly IService<Lookup> _lookUpService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+        public SiteController(IService<Site> siteService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Lookup> lookUpService)
         {
             _siteService = siteService;
+            _userManager = userManager;
+            _mapper = mapper;
+            _lookUpService = lookUpService;
         }
         public async Task<IActionResult> Index()
         {
@@ -29,114 +40,97 @@ namespace SATNET.WebApp.Controllers
         }
         public IActionResult Add()
         {
-            CreateSiteModel siteModel = new CreateSiteModel
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var resultModel = new CreateSiteModel
             {
                 SiteModel = new SiteModel {
-                    Name = "ZXC-001"
+                    Name = GetLoggedInUserName3(userName).ToUpper() + '-' + GetNumber(GetSiteCount() + 1),
+                    CustomerId = userId
                 },
-                SiteStatus = GetSiteStatusList()
+                SiteStatus = GetSiteStatusList().Result
             };
-
-            return Json(new { isValid = true, html = RenderViewToString(this, "Add", siteModel) });
+            return View(resultModel);
+            //return Json(new { isValid = true, html = RenderViewToString(this, "Add", siteModel) });
         }
 
+        private int GetSiteCount()
+        {
+            int totalCount = 1;
+            var serviceResult = _siteService.List(new Site() { Flag = "GET_SITE_COUNT"}).Result;
+            if (serviceResult.Any()){
+                totalCount = serviceResult.FirstOrDefault().RecordsCount;
+            }
+            return totalCount;
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CreateSiteModel createSiteModel)
+        public async Task<IActionResult> Add(CreateSiteModel createReturnModel)
         {
-            SiteModel siteModel = createSiteModel.SiteModel;
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Site/Index" };
+            var statusModel = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
+            var retModel = createReturnModel.SiteModel;
+            retModel.CreatedBy = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (ModelState.IsValid)
             {
-                status = _siteService.Add(new Site
-                {
-                    Id = 0,
-                    Name = siteModel.Name,
-                    StatusId = siteModel.StatusId,
-                    Area = siteModel.Area,
-                    City = siteModel.City,
-                    Subscriber = siteModel.Subscriber,
-                    CreatedBy = 1
-                }).Result;
+                Site obj = _mapper.Map<Site>(retModel);
+                statusModel = await _siteService.Add(obj);
             }
             else
             {
-                status.ErrorCode = "Error occured see entity validation errors.";
+                statusModel.ErrorCode = "Error occured see entity validation errors.";
             }
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
+            //statusModel.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            return Json(statusModel);
 
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             Site site = await _siteService.Get(id);
-            SiteModel pacModel = new SiteModel
+            var resultModel = new CreateSiteModel
             {
-                Id = site.Id,
-                Name = site.Name,
-                StatusId = site.StatusId,
-                Area = site.Area,
-                City = site.City,
-                Subscriber = site.Subscriber,
+                SiteModel = _mapper.Map<SiteModel>(await _siteService.Get(id)),
+                SiteStatus = GetSiteStatusList().Result
             };
-            CreateSiteModel siteModel = new CreateSiteModel
-            {
-                SiteModel = pacModel,
-                SiteStatus = GetSiteStatusList()
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Edit", siteModel)
-            };
-            return Json(status);
+            //var status = new StatusModel
+            //{
+            //    IsSuccess = true,
+            //    Html = RenderViewToString(this, "Edit", siteModel)
+            //};
+            //return Json(status);
+            return View(resultModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(CreateSiteModel createSiteModel)
+        public async Task<IActionResult> Edit(CreateSiteModel createReturnModel)
         {
-            SiteModel siteModel = createSiteModel.SiteModel;
-            var status = _siteService.Update(new Site
-            {
-                Id = siteModel.Id,
-                Name = siteModel.Name,
-                StatusId = siteModel.StatusId,
-                Area = siteModel.Area,
-                City = siteModel.City,
-                Subscriber = siteModel.Subscriber,
-                CreatedBy = 1
-            }).Result;
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
+            Site obj = _mapper.Map<Site>(createReturnModel.SiteModel);
+            var statusModel = await _siteService.Update(obj);
+            return Json(statusModel);
+            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //return Json(status);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            Site site = await _siteService.Get(id);
-            SiteModel siteModel = new SiteModel
-            {
-                Id = site.Id,
-                Name = site.Name,
-                StatusId = site.StatusId,
-                Area = site.Area,
-                City = site.City
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Details", siteModel)
-            };
-            return Json(status);
+            Site obj = await _siteService.Get(id);
+            SiteModel retModel = _mapper.Map<SiteModel>(obj);
+            //var status = new StatusModel
+            //{
+            //    IsSuccess = true,
+            //    Html = RenderViewToString(this, "Details", siteModel)
+            //};
+            //return Json(status);
+            return View(retModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             //1  as loged in user id
-            var status = _siteService.Delete(id, 1).Result;
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
+            var statusModel = _siteService.Delete(id, 1).Result;
+            statusModel.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            return Json(statusModel);
         }
 
         private async Task<List<SiteModel>> GetPackagesList()
@@ -144,37 +138,58 @@ namespace SATNET.WebApp.Controllers
             //PackageModelList packageList = new PackageModelList();
             //packageList.MenuModel = SetLayoutContent(heading: "Site",subHeading: "Listing");
 
-            List<SiteModel> siteListModel = new List<SiteModel>();
+            var retList = new List<SiteModel>();
             var serviceResult = await _siteService.List(new Site());
             if (serviceResult.Any())
             {
-                serviceResult.ForEach(site =>
-                {
-                    SiteModel siteModel = new SiteModel()
-                    {
-                        Id = site.Id,
-                        Name = site.Name,
-                        StatusId = site.StatusId,
-                        Area = site.Area,
-                        City = site.City,
-                        Subscriber = site.Subscriber,
-                        ActivatedDate = site.ActivatedDate
-                    };
-                    siteListModel.Add(siteModel);
-                });
+                retList = _mapper.Map<List<SiteModel>>(serviceResult);
             }
-            return siteListModel;
+            return retList;
         }
 
-        private List<LookUpModel> GetSiteStatusList()
+        private async Task<List<LookUpModel>> GetSiteStatusList()
         {
-            List<LookUpModel> siteStatusList = new List<LookUpModel>
+            List<LookUpModel> retListModel = new List<LookUpModel>();
+            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.SiteStatus) });
+            if (retList.Any())
             {
-                new LookUpModel{ Id = 1, Name = "Active"},
-                new LookUpModel{ Id = 2, Name = "Lock"},
-                new LookUpModel{ Id = 3, Name = "Terminated"}
-            };
-            return siteStatusList;
+                retListModel = _mapper.Map<List<LookUpModel>>(retList);
+
+            }
+            return retListModel;
         }
+
+        private string GetLoggedInUserName3(string userName)
+        {
+            int maxLength = userName.Length >= 3 ? 3 : userName.Length;
+            var ret = userName.Substring(0, maxLength);
+            return ret;
+        }
+        private string GetNumber(int to)
+        {
+            var oneZero = "0";
+            var twoZero = "00";
+            var retValue = "";
+            if (to < 10)
+            {
+                retValue = twoZero + to;
+            }
+            else if (to >= 10 && to < 99)
+            {
+                retValue = oneZero + to;
+            }
+            return retValue;
+        }
+
+        //private List<LookUpModel> GetSiteStatusList()
+        //{
+        //    List<LookUpModel> siteStatusList = new List<LookUpModel>
+        //    {
+        //        new LookUpModel{ Id = 1, Name = "Active"},
+        //        new LookUpModel{ Id = 2, Name = "Lock"},
+        //        new LookUpModel{ Id = 3, Name = "Terminated"}
+        //    };
+        //    return siteStatusList;
+        //}
     }
 }

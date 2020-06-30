@@ -48,7 +48,7 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
-            ServicePlan servicePlan = await dbCon.QueryFirstOrDefaultAsync<ServicePlan>("ServicePlaGet", commandType: CommandType.StoredProcedure, param: queryParameters);
+            ServicePlan servicePlan = await dbCon.QueryFirstOrDefaultAsync<ServicePlan>("ServicePlanGet", commandType: CommandType.StoredProcedure, param: queryParameters);
             return servicePlan;
         }
         public async Task<List<ServicePlan>> List(ServicePlan obj)

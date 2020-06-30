@@ -90,24 +90,14 @@ namespace SATNET.WebApp
             // using Microsoft.AspNetCore.Identity.UI.Services;
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
             services.AddScoped<IService<User>, UserService>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IService<Package>, PackageService>();
-=======
-            services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IService<ServicePlan>, ServicePlanService>();
->>>>>>> devUmerKhalid
-=======
-            services.AddScoped<IService<ServicePlan>, ServicePlanService>();
-            services.AddScoped<IService<User>, UserService>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-
->>>>>>> 388dfc3f9ee2874e38d93ced8e64be189ee9d2bb
-            services.AddScoped<IService<Customer>, ResellerService>();
+            services.AddScoped<IService<ServicePlanPrice>, ServicePlanPriceService>();
+            services.AddScoped<IService<Customer>, CustomerService>();
             services.AddScoped<IService<Hardware>, HardwareService>();
             services.AddScoped<IService<Site>, SiteService>();
             services.AddScoped<IService<Order>, OrderService>();
@@ -116,36 +106,25 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Promotion>, PromotionService>();
             services.AddScoped<IService<IP>, IPService>();
 
+            
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
-            services.AddScoped<IRepository<Customer>, ResellerRepository>();
+            services.AddScoped<IRepository<ServicePlanPrice>, ServicePlanPriceRepository>();
             services.AddScoped<IRepository<Hardware>, HardwareRepository>();
             services.AddScoped<IRepository<Site>, SiteRepository>();
-<<<<<<< HEAD
-<<<<<<< HEAD
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
-=======
             services.AddScoped<IRepository<IP>, IPRepository>();
             services.AddScoped<IRepository<Promotion>, PromotionRepository>();
             services.AddScoped<IRepository<Token>, TokenRepository>();
->>>>>>> devUmerKhalid
-
-=======
-
-            services.AddScoped<IRepository<IP>, IPRepository>();
-            services.AddScoped<IRepository<Promotion>, PromotionRepository>();
-            services.AddScoped<IRepository<Token>, TokenRepository>();
-            services.AddScoped<IRepository<Customer>, CustomerRepository>();
-          
->>>>>>> 388dfc3f9ee2874e38d93ced8e64be189ee9d2bb
-            services.AddScoped<IService<Hardware>, HardwareService>();
-            services.AddScoped<IService<Site>, SiteService>();
-            services.AddScoped<IService<Customer>, CustomerService>();
-
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();
             
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+
+            //-------------Misc-----------
+            //services.AddScoped<IRepository<Customer>, ResellerRepository>();
+            //services.AddScoped<IService<Customer>, ResellerService>();
+            //-------------Misc-----------
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

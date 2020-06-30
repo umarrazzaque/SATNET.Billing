@@ -9,10 +9,10 @@ using SATNET.Service;
 
 namespace SATNET.Service.Implementation
 {
-    public class ServicePlanService : IService<ServicePlan>
+    public class PackageService : IService<ServicePlan>
     {
         private readonly IRepository<ServicePlan> _ServicePlanRepository;
-        public ServicePlanService(IRepository<ServicePlan> ServicePlanRepository)
+        public PackageService(IRepository<ServicePlan> ServicePlanRepository)
         {
             _ServicePlanRepository = ServicePlanRepository;
         }

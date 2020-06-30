@@ -1,4 +1,5 @@
 ﻿using SATNET.WebApp.Helpers;
+using SATNET.WebApp.Models.Lookup;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace SATNET.WebApp.Models
         public string Name { get; set; }
         [DisplayName("Plan Type")]
         public int PlanTypeId { get; set; }
-        public string PlanName { get; set; }
+        public string PlanType { get; set; }
         [DisplayName("Download MIR")]
         public decimal DownloadMIR { get; set; }
         [DisplayName("Upload MIR")]
@@ -25,5 +26,15 @@ namespace SATNET.WebApp.Models
         public decimal DownloadCIR { get; set; }
         [DisplayName("Upload CIR")]
         public decimal UploadCIR { get; set; }
+    }
+    public class CreateServicePlanModel : BaseModel
+    {
+        public CreateServicePlanModel()
+        {
+            ServicePlanModel = new ServicePlanModel();
+            PlanType = new List<LookUpModel>();
+        }
+        public ServicePlanModel ServicePlanModel { get; set; }
+        public List<LookUpModel> PlanType { get; set; }
     }
 }

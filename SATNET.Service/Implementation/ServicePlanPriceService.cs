@@ -1,27 +1,24 @@
 ﻿using SATNET.Domain;
 using SATNET.Repository.Core;
-using SATNET.Repository.Interface;
 using SATNET.Service.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class SiteService : IService<Site>
+    public class ServicePlanPriceService : IService<ServicePlanPrice>
     {
-        
-        public Task<StatusModel> Add(Site obj)
+        public Task<StatusModel> Add(ServicePlanPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlanPrice/Index" };
             try
             {
                 int retId = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    retId = uow.Sites.Add(obj).Result;
+                    retId = uow.ServicePlanPrices.Add(obj).Result;
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -41,23 +38,19 @@ namespace SATNET.Service.Implementation
                 status.ErrorCode = "An error occured while processing request.";
                 status.ErrorDescription = e.Message;
             }
-            finally
-            {
-
-            }
             return Task.FromResult(status);
         }
 
         public Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlanPrice/Index" };
             try
             {
                 int dRow = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    dRow = uow.Sites.Delete(recId, deletedBy).Result;
+                    dRow = uow.ServicePlanPrices.Delete(recId, deletedBy).Result;
                     if (dRow > 0)
                     {
                         uow.SaveChanges();
@@ -74,20 +67,18 @@ namespace SATNET.Service.Implementation
             {
                 status.ErrorCode = "Cannot delete record due to referential records.";
             }
-            finally
-            {
-            }
             return Task.FromResult(status);
         }
 
-        public Task<Site> Get(int id)
+        public Task<ServicePlanPrice> Get(int id)
         {
-            var retModel = new Site();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlanPrice/Index" };
+            var retModel = new ServicePlanPrice();
             try
             {
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
-                    retModel = uow.Sites.Get(id).Result;
+                    retModel = uow.ServicePlanPrices.Get(id).Result;
                     if (retModel.Id != 0)
                     {
 
@@ -98,21 +89,17 @@ namespace SATNET.Service.Implementation
             {
 
             }
-            finally
-            {
-
-            }
             return Task.FromResult(retModel);
         }
 
-        public Task<List<Site>> List(Site obj)
+        public Task<List<ServicePlanPrice>> List(ServicePlanPrice obj)
         {
-            List<Site> retList = new List<Site>();
+            List<ServicePlanPrice> retList = new List<ServicePlanPrice>();
             try
             {
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
-                    retList = uow.Sites.List(obj).Result;
+                    retList = uow.ServicePlanPrices.List(obj).Result;
                 }
             }
             catch (Exception e)
@@ -122,16 +109,16 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(retList);
         }
 
-        public Task<StatusModel> Update(Site obj)
+        public Task<StatusModel> Update(ServicePlanPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlanPrice/Index" };
             try
             {
                 int retId = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
                     uow.BeginTransaction();
-                    retId = uow.Sites.Update(obj).Result;
+                    retId = uow.ServicePlanPrices.Update(obj).Result;
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -150,7 +137,7 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing request.";
                 status.ErrorDescription = e.Message;
-            }   
+            }
             return Task.FromResult(status);
         }
     }

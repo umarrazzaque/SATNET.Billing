@@ -18,7 +18,7 @@
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "Site/Reset")" class=" btn btn-danger right-pan">
+                    <a href="@String.Format("/{0}", "Site/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
                     <button type="submit" class="btn btn-default">Save Record</button>
@@ -30,6 +30,7 @@
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.HiddenFor(model => model.SiteModel.Id)
+        @Html.HiddenFor(model => model.SiteModel.CustomerId)
         <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.SiteModel.Name, new { })

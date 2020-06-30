@@ -16,7 +16,7 @@
         </div>
         <div class="page-title-actions">
             <div class="d-inline-block dropdown">
-                <a href="@String.Format("/{0}", "Site/Reset")" class=" btn btn-danger right-pan">
+                <a href="@String.Format("/{0}", "Site/Index")" class=" btn btn-danger ">
                     Back
                 </a>
             </div>
@@ -58,8 +58,8 @@
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
-            @Html.LabelFor(model => model.ActivatedDate, new { })
-            @Html.EditorFor(model => model.ActivatedDate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+            @Html.LabelFor(model => model.ActivationDate, new { })
+            @Html.EditorFor(model => model.ActivationDate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>
     </div>
 </div>

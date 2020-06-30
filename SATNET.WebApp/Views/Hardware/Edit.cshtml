@@ -6,7 +6,7 @@
 <!-- Main content -->
 <form method="post" data-ajax="true" asp-controller="Hardware" asp-action="Edit" data-ajax-method="post"
       enctype="multipart/form-data" id="formAdd" autocomplete="off">
-    @Html.HiddenFor(model => model.HardwareId)
+    @Html.HiddenFor(model => model.Id)
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -19,7 +19,7 @@
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "Hardware/Reset")" class=" btn btn-danger right-pan">
+                    <a href="@String.Format("/{0}", "Hardware/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
                     <button type="submit" class="btn btn-default">Save Record</button>

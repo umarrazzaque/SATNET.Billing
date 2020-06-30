@@ -1,0 +1,59 @@
+﻿@model SATNET.WebApp.Models.ServicePlanModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div>
+                Service Plan Detail
+                <div class="page-title-subheading">
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <div class="d-inline-block dropdown">
+                <a href="@String.Format("/{0}", "ServicePlan/Index")" class=" btn btn-danger right-pan">
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.Name, new { htmlAttributes = new { @class = "text-input" } })
+            @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            @Html.LabelFor(model => model.Name, new { htmlAttributes = new { @class = "col-md-5 " } })
+            <div class="col-md-7">
+                @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                
+            </div>
+        </div>
+        @*<div class="input-group mb-3">
+            <input type="text" class="form-control">
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+        </div>*@
+    </div>
+    
+    @*<div class="col-lg-6">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.TypeId, new { })
+                @Html.DisplayFor(model => model.ServicePlanType, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+            </div>
+        </div>*@
+</div>
+
+<!-- /.Main content -->

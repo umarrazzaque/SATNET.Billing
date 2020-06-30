@@ -58,7 +58,7 @@ namespace SATNET.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 Customer customerObj = _mapper.Map<Customer>(customerModel);
-                status = _customerService.Add(customerObj).Result;
+                status = await _customerService.Add(customerObj);
 
             }
             else
@@ -66,7 +66,7 @@ namespace SATNET.WebApp.Controllers
                 status.ErrorCode = "Error occured see entity validation errors.";
             }
             //'
-            status.Html = RenderViewToString(this, "Index", await GetCustomersList());
+            //status.Html = RenderViewToString(this, "Index", await GetCustomersList());
             return Json(status);
 
         }
@@ -151,7 +151,6 @@ namespace SATNET.WebApp.Controllers
             if (retList.Any())
             {
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
-
             }
             return customerTypeListModel;
 

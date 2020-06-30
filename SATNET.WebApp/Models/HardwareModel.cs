@@ -10,10 +10,10 @@ namespace SATNET.WebApp.Models
     {
         public HardwareModel()
         {
-            HardwareId = -1;
+            Id = -1;
             ModemModel = ModemSerialNo = MACAirNo = AntennaSize = AntennaSrNo = TransceiverWAAT = TransceiverSrNo ="";
         }
-        public int HardwareId { get; set; }
+        public int Id { get; set; }
         [DisplayName("Modem Model")]
         public string ModemModel { get; set; }
         [DisplayName("Modem Sr No")]

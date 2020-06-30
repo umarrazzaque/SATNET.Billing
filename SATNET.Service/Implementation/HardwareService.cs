@@ -18,7 +18,7 @@ namespace SATNET.Service.Implementation
         }
         public Task<StatusModel> Add(Hardware obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Hardware/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Hardware/Index" };
             try
             {
                 int retId = _hardwareRepository.Add(obj).Result;
@@ -48,7 +48,7 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Hardware/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Hardware/Index" };
             try
             {
                 int dRow = _hardwareRepository.Delete(recId, deletedBy).Result;
@@ -102,7 +102,7 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Update(Hardware obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Hardware/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Hardware/Index" };
             try
             {
                 int retId = _hardwareRepository.Update(obj).Result;
