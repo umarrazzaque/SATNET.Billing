@@ -1,0 +1,80 @@
+﻿@model SATNET.WebApp.Models.HardwareModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div>
+                Hardware Detail
+                <div class="page-title-subheading">
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <div class="d-inline-block dropdown">
+                <a href="@String.Format("/{0}", "Hardware/Reset")" class=" btn btn-danger right-pan">
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.ModemSerialNo, new { })
+            @Html.EditorFor(model => model.ModemSerialNo, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.ModemModel, new { })
+            @Html.EditorFor(model => model.ModemModel, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.MACAirNo, new { })
+            @Html.EditorFor(model => model.MACAirNo, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.AntennaSrNo, new { })
+            @Html.EditorFor(model => model.AntennaSrNo, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.AntennaSize, new { })
+            @Html.EditorFor(model => model.AntennaSize, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.TransceiverSrNo, new { })
+            @Html.EditorFor(model => model.TransceiverSrNo, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.TransceiverWAAT, new { })
+            @Html.EditorFor(model => model.TransceiverWAAT, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.Price, new { })
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+</div>
+
+<!-- /.Main content -->
+

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.HardwareModel>
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                <th class="text-center" width="30">
+                    <!-- <input type="checkbox"> -->
+                </th>
+                <th class="text-center">#</th>
+
+                <th> @Html.DisplayNameFor(model => model.ModemSerialNo) </th>
+                <th> @Html.DisplayNameFor(model => model.ModemModel)</th>
+                <th> @Html.DisplayNameFor(model => model.MACAirNo) </th>
+                <th> @Html.DisplayNameFor(model => model.AntennaSrNo) </th>
+                <th> @Html.DisplayNameFor(model => model.MACAirNo) </th>
+                <th> @Html.DisplayNameFor(model => model.TransceiverSrNo) </th>
+                <th> @Html.DisplayNameFor(model => model.TransceiverWAAT) </th>
+                <th> @Html.DisplayNameFor(model => model.Price) </th>
+                <th class="text-center"> Actions </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td class="text-center"> <input type="checkbox"></td>
+                <td class="text-center text-muted">
+                    @{
+                        counter++;
+                    }
+                    @counter
+                </td>
+                <td> @Html.DisplayFor(modelItem => item.ModemSerialNo)</td>
+                <td> @Html.DisplayFor(modelItem => item.ModemModel)</td>
+                <td> @Html.DisplayFor(modelItem => item.MACAirNo)</td>
+                <td> @Html.DisplayFor(modelItem => item.AntennaSrNo)</td>
+                <td> @Html.DisplayFor(modelItem => item.AntennaSize)</td>
+                <td> @Html.DisplayFor(modelItem => item.TransceiverSrNo)</td>
+                <td> @Html.DisplayFor(modelItem => item.TransceiverWAAT)</td>
+                <td> @Html.DisplayFor(modelItem => item.Price)</td>
+                <td class="text-center">
+                    <div class="buttons">
+                        <a href="@String.Format("/{0}?id={1}", "Hardware/Edit", item.Id)" class="pl-1 pr-1">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "Hardware/Details", item.Id)" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-bars" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "Hardware/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                           data-toggle="modal" data-target="#modal-deleteConfirm">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>

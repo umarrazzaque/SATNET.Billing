@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.Order.OrderViewModel>
+
+<div id="MainContents">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    Service Orders
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+
+                <div class="d-inline-block dropdown">
+
+                    <div class="dropdown d-inline-block">
+                        <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info">Export  <i class="fa fa-angle-down ml-2"></i></button>
+                        <div tabindex="-1" role="menu" class="dropdown-menu">
+                            <button type="button" tabindex="0" class="dropdown-item">PDF</button>
+                            <button type="button" tabindex="0" class="dropdown-item">CSV</button>
+                            <button type="button" tabindex="0" class="dropdown-item">Print</button>
+                        </div>
+                    </div>
+
+                    <a href="@String.Format("/{0}", "Order/Add")" class=" btn btn-default">
+                        Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <select id="ddlRequestType" type="select" class="form-control" asp-items="ViewBag.RequestTypeSelectList">
+                        <option value="" selected>Request Type</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <select id="ddlOrderStatus" type="select" class="form-control" asp-items="ViewBag.OrderStatusSelectList">
+                        <option value="" selected>Status</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="BodyContent">
+                @await Html.PartialAsync("_OrderList", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/order/order-list.js"></script>
+}

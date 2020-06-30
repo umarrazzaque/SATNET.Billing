@@ -46,10 +46,4 @@ namespace SATNET.WebApp.Models
         }
         public List<PackageModel> PackageModels  { get; set; }
     }
-
-   
-
-    
-
-
 }

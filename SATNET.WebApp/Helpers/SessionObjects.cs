@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SATNET.WebApp.Models;
+using SATNET.WebApp.Models.User;
 using System;
 using System.Collections.Generic;
 

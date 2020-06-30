@@ -1,0 +1,85 @@
+﻿@model SATNET.WebApp.Models.CreateCustomerModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+<form method="post" data-ajax="true" asp-controller="Customer" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Customer
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "Customer/Index")" class=" btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.Name, new { })
+                @Html.EditorFor(model => model.CustomerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerModel.TypeId, new { })
+                @Html.DropDownListFor(model => model.CustomerModel.TypeId, new SelectList(Model.CustomerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Customer Type-", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerModel.PriceTierId, new { })
+                @Html.DropDownListFor(model => model.CustomerModel.PriceTierId, new SelectList(Model.PriceTier as System.Collections.IEnumerable, "Id", "Name"), "-Select Price Tier-", new { @class = "form-control select2 text-input" })
+                
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.Code, new { })
+                @Html.EditorFor(model => model.CustomerModel.Code, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Code", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.Email, new { })
+                @Html.EditorFor(model => model.CustomerModel.Email, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Email", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.Address, new { })
+                @Html.EditorFor(model => model.CustomerModel.Address, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Address", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.ContactNumber, new { })
+                @Html.EditorFor(model => model.CustomerModel.ContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Contact", @type = "type" } })
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    //$.validator.unobtrusive.parse('#formAdd');
+
+</script>

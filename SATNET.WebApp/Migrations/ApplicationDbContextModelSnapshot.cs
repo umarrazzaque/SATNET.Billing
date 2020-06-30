@@ -115,14 +115,14 @@ namespace SATNET.WebApp.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DeletedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("DistributorId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -183,6 +183,9 @@ namespace SATNET.WebApp.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

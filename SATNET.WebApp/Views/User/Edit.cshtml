@@ -1,91 +1,130 @@
-﻿@model SATNET.WebApp.Models.UserEditViewModel
+﻿@model SATNET.WebApp.Models.User.UserEditViewModel
 @{
     ViewData["Title"] = "Edit User";
 }
 
-<!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Edit User</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/User/Index">Users</a></li>
-                    <li class="breadcrumb-item active">Edit User</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-<!-- Main content -->
-<section class="content" id="MainContent">
-    <div class="card card-primary">
-        <!-- /.card-header -->
-        <!-- form start -->
-        <div class="card-body">
-            <form id="formAddUser" autocomplete="off" asp-action="Edit">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="FirstName" class="lable-control"></label>
-                            <input asp-for="FirstName" class="form-control" />
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="LastName" class="lable-control"></label>
-                            <input asp-for="LastName" class="form-control" />
-                            <span asp-validation-for="LastName" class="text-danger"></span>
-                        </div>
-                    </div>
+<form method="post" data-ajax="true" asp-controller="User" asp-action="Edit" data-ajax-method="post" enctype="multipart/form-data" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Update User
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="UserName" class="lable-control"></label>
-                            <input disabled="disabled" asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Email" class="lable-control"></label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                    </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "User/Index")" class=" btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Update Record</button>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Password" class="lable-control"></label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ConfirmPassword" class="lable-control"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary rounded-0">Update</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</section>
-<!-- /.Main content -->
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>User Type</label>
+                <select asp-for="UserTypeId" asp-items="Model.UserTypeSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="UserTypeId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Customer</label>
+                <select disabled asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="FirstName" class="lable-control"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="form-group">
+                <label asp-for="LastName" class="lable-control"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="UserName" class="lable-control"></label>
+                <input disabled="disabled" asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="Email" class="lable-control"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="Password" class="lable-control"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="ConfirmPassword" class="lable-control"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <div class="form-group">
+                    <label class="lable-control">Select Role</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" value="Admin" id="radioAdmin" asp-for="Roles">
+                    <label class="form-check-label" for="radioAdmin">Admin</label>
+                </div>
+                <!-- Material inline 2 -->
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" value="User" id="radioUser" asp-for="Roles">
+                    <label class="form-check-label" for="radioUser">User</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 @section scripts{
     @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script type="text/javascript">
+    $(function () {
+    var role = '@Model.Roles.FirstOrDefault().ToString()';
+        if (role == 'Admin') {
+            $("#radioAdmin").attr('checked', true);
+        }
+        else {
+            $("#radioUser").attr('checked', true);
+        }
+    })
+        $("#UserTypeId").change(function () {
+            if ($("#UserTypeId").val() !== "" && $("#UserTypeId").val() !== "24") {
+                $("#CustomerId").prop("disabled", false);
+            }
+            else {
+                $("#CustomerId").prop("disabled", true);
+            }
+        });
+    </script>
 }
 
 

@@ -9,19 +9,19 @@ using SATNET.Service;
 
 namespace SATNET.Service.Implementation
 {
-    public class PackageService : IPackageService
+    public class PackageService : IService<ServicePlan>
     {
-        private readonly IPackageRepository _packageRepository;
-        public PackageService(IPackageRepository packageRepository)
+        private readonly IRepository<ServicePlan> _ServicePlanRepository;
+        public PackageService(IRepository<ServicePlan> ServicePlanRepository)
         {
-            _packageRepository = packageRepository;
+            _ServicePlanRepository = ServicePlanRepository;
         }
-        public Task<Package> Get(int id)
+        public Task<ServicePlan> Get(int id)
         {
-            var retModel = new Package();
+            var retModel = new ServicePlan();
             try
             {
-                retModel = _packageRepository.Get(id).Result;
+                retModel = _ServicePlanRepository.Get(id).Result;
                 if (retModel.Id != 0)
                 {
 
@@ -37,16 +37,16 @@ namespace SATNET.Service.Implementation
             }
             return Task.FromResult(retModel);
         }
-        public Task<List<Package>> List()
+        public Task<List<ServicePlan>> List(ServicePlan obj)
         {
-            return _packageRepository.List();
+            return _ServicePlanRepository.List(obj);
         }
-        public Task<StatusModel> Add(Package package)
+        public Task<StatusModel> Add(ServicePlan ServicePlan)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "ServicePlan/Index" };
             try
             {
-                int retId = _packageRepository.Add(package).Result;
+                int retId = _ServicePlanRepository.Add(ServicePlan).Result;
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -69,14 +69,14 @@ namespace SATNET.Service.Implementation
 
             }
             return Task.FromResult(status);
-            //return _packageRepository.Add(package);
+            //return _ServicePlanRepository.Add(ServicePlan);
         }
-        public Task<StatusModel> Update(Package package)
+        public Task<StatusModel> Update(ServicePlan ServicePlan)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "ServicePlan/Index" };
             try
             {
-                int retId = _packageRepository.Update(package).Result;
+                int retId = _ServicePlanRepository.Update(ServicePlan).Result;
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -102,10 +102,10 @@ namespace SATNET.Service.Implementation
         }
         public Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "ServicePlan/Index" };
             try
             {
-                int dRow = _packageRepository.Delete(recId, deletedBy).Result;
+                int dRow = _ServicePlanRepository.Delete(recId, deletedBy).Result;
                 if (dRow > 0) {
                     status.IsSuccess = true;
                     status.ErrorCode = "Transaction completed successfully.";

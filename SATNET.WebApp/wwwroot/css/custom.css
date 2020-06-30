@@ -1,0 +1,6 @@
+﻿ul .no-bullet{
+    list-style-type:none;
+}
+table tbody tr td ul {
+    margin: auto;
+}

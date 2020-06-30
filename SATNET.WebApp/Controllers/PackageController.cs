@@ -7,14 +7,15 @@ using SATNET.WebApp.Models;
 using SATNET.Service.Interface;
 using SATNET.Service;
 using SATNET.Domain;
+using System;
 
 namespace SATNET.WebApp.Controllers
 {
 
     public class PackageController : BaseController
     {
-        private readonly IPackageService _packageService;
-        public PackageController(IPackageService packageService)
+        private readonly IService<ServicePlan> _packageService;
+        public PackageController(IService<ServicePlan> packageService)
         {
             _packageService = packageService;
         }
@@ -42,132 +43,137 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreatePackageModel createPackageModel)
         {
-            PackageModel packageModel = createPackageModel.PackageModel;
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
-            if (ModelState.IsValid)
-            {
-                status = _packageService.Add(new Package
-                {
-                    Id = 0,
-                    Name = packageModel.Name,
-                    Type = packageModel.PackageType,
-                    Rate = packageModel.Rate,
-                    Speed = packageModel.Speed,
-                    CreatedBy = 1
-                }).Result;
-                //if (status.IsSuccess)
-                //{
-                //    //get error code description from configuration
-                //    //status.ErrorCode = "";
-                //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
-                //}
-                //else
-                //{
-                //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
-                //}
-                //return Json(new { isValid = false, msg = "Error in inserting the record!", html = RenderViewToString(this, "Index", await GetPackagesList()) });
-            }
-            else
-            {
-                status.ErrorCode = "Error occured see entity validation errors.";
-            }
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
-
+            throw new NotImplementedException();
+            //PackageModel packageModel = createPackageModel.PackageModel;
+            //var status = new StatusModel { IsSuccess = false, ResponseUrl = "Package/Index" };
+            //if (ModelState.IsValid)
+            //{
+            //    status = _packageService.Add(new Package
+            //    {
+            //        Id = 0,
+            //        Name = packageModel.Name,
+            //        Type = packageModel.PackageType,
+            //        Rate = packageModel.Rate,
+            //        Speed = packageModel.Speed,
+            //        CreatedBy = 1
+            //    }).Result;
+            //    //if (status.IsSuccess)
+            //    //{
+            //    //    //get error code description from configuration
+            //    //    //status.ErrorCode = "";
+            //    //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
+            //    //}
+            //    //else
+            //    //{
+            //    //    //status.Data = RenderViewToString(this, "Index", await GetPackagesList());
+            //    //}
+            //    //return Json(new { isValid = false, msg = "Error in inserting the record!", html = RenderViewToString(this, "Index", await GetPackagesList()) });
+            //}
+            //else
+            //{
+            //    status.ErrorCode = "Error occured see entity validation errors.";
+            //}
+            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //return Json(status);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Package package = await _packageService.Get(id);
-            PackageModel pacModel = new PackageModel
-            {
-                PackageId = package.Id,
-                Name = package.Name,
-                Rate = package.Rate,
-                Speed = package.Speed,
-                PackageType = package.Type
-            };
-            CreatePackageModel packageModel = new CreatePackageModel
-            {
-                PackageModel = pacModel,
-                PackageTypesList = GetPackageTypeList()
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Edit", packageModel)
-            };
-            return Json(status);
+            throw new NotImplementedException();
+            //ServicePlan package = await _packageService.Get(id);
+            //PackageModel pacModel = new PackageModel
+            //{
+            //    PackageId = package.Id,
+            //    Name = package.Name,
+            //    Rate = package.Rate,
+            //    Speed = package.Speed,
+            //    PackageType = package.Type
+            //};
+            //CreatePackageModel packageModel = new CreatePackageModel
+            //{
+            //    PackageModel = pacModel,
+            //    PackageTypesList = GetPackageTypeList()
+            //};
+            //var status = new StatusModel
+            //{
+            //    IsSuccess = true,
+            //    Html = RenderViewToString(this, "Edit", packageModel)
+            //};
+            //return Json(status);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreatePackageModel createPackageModel)
         {
-            PackageModel packageModel = createPackageModel.PackageModel;
-            var status = _packageService.Update(new Package
-            {
-                Id = packageModel.PackageId,
-                Name = packageModel.Name,
-                Type = packageModel.PackageType,
-                Rate = packageModel.Rate,
-                Speed = packageModel.Speed,
-                CreatedBy = 1
-            }).Result;
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
+            throw new NotImplementedException();
+            //PackageModel packageModel = createPackageModel.PackageModel;
+            //var status = _packageService.Update(new ServicePlan
+            //{
+            //    Id = packageModel.PackageId,
+            //    Name = packageModel.Name,
+            //    Type = packageModel.PackageType,
+            //    Rate = packageModel.Rate,
+            //    Speed = packageModel.Speed,
+            //    CreatedBy = 1
+            //}).Result;
+            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //return Json(status);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            Package package = await _packageService.Get(id);
-            PackageModel packageModel = new PackageModel
-            {
-                PackageId = package.Id,
-                Name = package.Name,
-                Rate = package.Rate,
-                Speed = package.Speed,
-                PackageType = package.Type
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Details", packageModel)
-            };
-            return Json(status);
+            throw new NotImplementedException();
+            //ServicePlan package = await _packageService.Get(id);
+            //PackageModel packageModel = new PackageModel
+            //{
+            //    PackageId = package.Id,
+            //    Name = package.Name,
+            //    Rate = package.Rate,
+            //    Speed = package.Speed,
+            //    PackageType = package.Type
+            //};
+            //var status = new StatusModel
+            //{
+            //    IsSuccess = true,
+            //    Html = RenderViewToString(this, "Details", packageModel)
+            //};
+            //return Json(status);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+            throw new NotImplementedException();
             //1  as loged in user id
-            var status = _packageService.Delete(id, 1).Result;
-            status.Html = RenderViewToString(this, "Index", await GetPackagesList());
-            return Json(status);
+            //var status = _packageService.Delete(id, 1).Result;
+            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //return Json(status);
         }
 
         private async Task<List<PackageModel>> GetPackagesList()
         {
+            throw new NotImplementedException();
             //PackageModelList packageList = new PackageModelList();
             //packageList.MenuModel = SetLayoutContent(heading: "Package",subHeading: "Listing");
 
-            List<PackageModel> packageListModel = new List<PackageModel>();
-            var serviceResult = await _packageService.List();
-            if (serviceResult.Any())
-            {
-                serviceResult.ForEach(i =>
-                {
-                    PackageModel package = new PackageModel()
-                    {
-                        PackageId = i.Id,
-                        Name = i.Name,
-                        PackageType = i.Type,
-                        Rate = i.Rate,
-                        Speed = i.Speed
-                    };
-                    packageListModel.Add(package);
-                });
-            }
-            return packageListModel;
+            //List<PackageModel> packageListModel = new List<PackageModel>();
+            //var serviceResult = await _packageService.List(new ServicePlan());
+            //if (serviceResult.Any())
+            //{
+            //    serviceResult.ForEach(i =>
+            //    {
+            //        PackageModel package = new PackageModel()
+            //        {
+            //            PackageId = i.Id,
+            //            Name = i.Name,
+            //            PackageType = i.Type,
+            //            Rate = i.Rate,
+            //            Speed = i.Speed
+            //        };
+            //        packageListModel.Add(package);
+            //    });
+            //}
+            //return packageListModel;
         }
 
         private IList<PackageTypeModel> GetPackageTypeList()
