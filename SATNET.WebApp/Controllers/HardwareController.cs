@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
 using SATNET.Service;
@@ -13,9 +14,13 @@ namespace SATNET.WebApp.Controllers
     public class HardwareController : BaseController
     {
         private readonly IService<Hardware> _hardwareService;
-        public HardwareController(IService<Hardware> hardwareService)
+        private readonly IService<Lookup> _lookUpService;
+        private readonly IMapper _mapper;   
+        public HardwareController(IService<Hardware> hardwareService, IMapper mapper, IService<Lookup> lookUpService)
         {
             _hardwareService = hardwareService;
+            _mapper = mapper;
+            _lookUpService = lookUpService;
         }
         public async Task<IActionResult> Index()
         {
@@ -28,142 +33,66 @@ namespace SATNET.WebApp.Controllers
         }
         public IActionResult Add()
         {
-            HardwareModel hardwareModel = new HardwareModel();
-
-            return Json(new { isValid = true, html = RenderViewToString(this, "Add", hardwareModel) });
+            var resultModel = new HardwareModel();
+            return View(resultModel);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Add(HardwareModel hardwareModel)
+        public async Task<IActionResult> Add(HardwareModel retModel)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Hardware/Index" };
+            var statusModel = new StatusModel { IsSuccess = false, ResponseUrl = "/Hardware/Index" };
             if (ModelState.IsValid)
             {
-                status = _hardwareService.Add(new Hardware
-                {
-                    ModemSerialNo = hardwareModel.ModemSerialNo,
-                    ModemModel = hardwareModel.ModemModel,
-                    MACAirNo = hardwareModel.MACAirNo,
-                    AntennaSize = hardwareModel.AntennaSize,
-                    AntennaSrNo = hardwareModel.AntennaSrNo,
-                    TransceiverSrNo = hardwareModel.TransceiverSrNo,
-                    TransceiverWAAT = hardwareModel.TransceiverWAAT,
-                    Price = hardwareModel.Price,
-                    CreatedBy = 1
-                }).Result;
+                Hardware obj = _mapper.Map<Hardware>(retModel);
+                statusModel = await _hardwareService.Add(obj);
             }
             else
             {
-                status.ErrorCode = "Error occured see entity validation errors.";
+                statusModel.ErrorCode = "Error occured see entity validation errors.";
             }
-            status.Html = RenderViewToString(this, "Index", await GetHardwareList());
-            return Json(status);
+            return Json(statusModel);
 
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Hardware hardware = await _hardwareService.Get(id);
-            HardwareModel hardwareModel = new HardwareModel
-            {
-                HardwareId = hardware.Id,
-                ModemSerialNo = hardware.ModemSerialNo,
-                ModemModel = hardware.ModemModel,
-                MACAirNo = hardware.MACAirNo,
-                AntennaSize = hardware.AntennaSize,
-                AntennaSrNo = hardware.AntennaSrNo,
-                TransceiverSrNo = hardware.TransceiverSrNo,
-                TransceiverWAAT = hardware.TransceiverWAAT,
-                Price = hardware.Price,
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Edit", hardwareModel)
-            };
-            return Json(status);
+            var resultModel = _mapper.Map<HardwareModel>(await _hardwareService.Get(id));
+            return View(resultModel);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(HardwareModel hardwareModel)
         {
-            var status = _hardwareService.Update(new Hardware
-            {
-                Id = hardwareModel.HardwareId,
-                ModemSerialNo = hardwareModel.ModemSerialNo,
-                ModemModel = hardwareModel.ModemModel,
-                MACAirNo = hardwareModel.MACAirNo,
-                AntennaSize = hardwareModel.AntennaSize,
-                AntennaSrNo = hardwareModel.AntennaSrNo,
-                TransceiverSrNo = hardwareModel.TransceiverSrNo,
-                TransceiverWAAT = hardwareModel.TransceiverWAAT,
-                Price = hardwareModel.Price,
-                CreatedBy = 1
-            }).Result;
-            status.Html = RenderViewToString(this, "Index", await GetHardwareList());
-            return Json(status);
+            Hardware obj = _mapper.Map<Hardware>(hardwareModel);
+            var statusModel = await _hardwareService.Update(obj);
+            return Json(statusModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            Hardware hardware = await _hardwareService.Get(id);
-            HardwareModel hardwareModel = new HardwareModel
-            {
-                HardwareId = hardware.Id,
-                ModemSerialNo = hardware.ModemSerialNo,
-                ModemModel = hardware.ModemModel,
-                MACAirNo = hardware.MACAirNo,
-                AntennaSize = hardware.AntennaSize,
-                AntennaSrNo = hardware.AntennaSrNo,
-                TransceiverSrNo = hardware.TransceiverSrNo,
-                TransceiverWAAT = hardware.TransceiverWAAT,
-                Price = hardware.Price,
-            };
-            var status = new StatusModel
-            {
-                IsSuccess = true,
-                Html = RenderViewToString(this, "Details", hardwareModel)
-            };
-            return Json(status);
+            Hardware obj = await _hardwareService.Get(id);
+            HardwareModel retModel = _mapper.Map<HardwareModel>(obj);
+            return View(retModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             //1  as loged in user id
-            var status = _hardwareService.Delete(id, 1).Result;
-            status.Html = RenderViewToString(this, "Index", await GetHardwareList());
-            return Json(status);
+            var statusModel = _hardwareService.Delete(id, 1).Result;
+            statusModel.Html = RenderViewToString(this, "Index", await GetHardwareList());
+            return Json(statusModel);
         }
 
         private async Task<List<HardwareModel>> GetHardwareList()
         {
-            //PackageModelList packageList = new PackageModelList();
-            //packageList.MenuModel = SetLayoutContent(heading: "Hardware",subHeading: "Listing");
-
-            List<HardwareModel> hardwareListModel = new List<HardwareModel>();
-            var serviceResult = await _hardwareService.List(new Hardware());
+            var retList = new List<HardwareModel>();
+            var serviceResult = await _hardwareService.List(new Hardware() { });
             if (serviceResult.Any())
             {
-                serviceResult.ForEach(har =>
-                {
-                    HardwareModel hardware = new HardwareModel()
-                    {
-                        HardwareId = har.Id,
-                        ModemSerialNo = har.ModemSerialNo,
-                        ModemModel = har.ModemModel,
-                        MACAirNo = har.MACAirNo,
-                        AntennaSize = har.AntennaSize,
-                        AntennaSrNo = har.AntennaSrNo,
-                        TransceiverSrNo = har.TransceiverSrNo,
-                        TransceiverWAAT = har.TransceiverWAAT,
-                        Price = har.Price,
-                    };
-                    hardwareListModel.Add(hardware);
-                });
+                retList = _mapper.Map<List<HardwareModel>>(serviceResult);
             }
-            return hardwareListModel;
+            return retList;
         }
 
     }

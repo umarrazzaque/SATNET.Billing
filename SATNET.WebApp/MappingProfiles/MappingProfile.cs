@@ -18,6 +18,11 @@ namespace SATNET.WebApp.MappingProfiles
 
             CreateMap<Lookup, LookUpModel>();
             CreateMap<LookUpModel, Lookup>();
+
+            CreateMap<Site, SiteModel>().ReverseMap();
+            CreateMap<ServicePlan, ServicePlanModel>().ReverseMap();
+            CreateMap<ServicePlanPrice, ServicePlanPriceModel>().ReverseMap();
+            CreateMap<Hardware, HardwareModel>().ReverseMap();
         }
     }
 }

@@ -13,10 +13,10 @@ namespace SATNET.Domain
         public int UpdatedBy { get; set; }
         public bool isDormant
         {
-            get { return isActive == 1 ? true : false; }
-            set { isActive = value ? 1 : 0; }
+            get { return isDeleted == 1 ? true : false; }
+            set { isDeleted = value ? 1 : 0; }
         }
-        public int isActive { get; set; }
+        public int isDeleted { get; set; }
         public string BriefDescription { get; set; }
         public DateTime? DeletedOn { get; set; }
         public int DeletedBy { get; set; }
@@ -27,5 +27,7 @@ namespace SATNET.Domain
         public String Flag { set; get; }
         public String OrderBy { get; set; }
         public String SortOrder { get; set; }
+
+        public int RecordsCount { get; set; }
     }
 }

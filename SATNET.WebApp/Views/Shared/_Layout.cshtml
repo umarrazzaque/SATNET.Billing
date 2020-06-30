@@ -145,8 +145,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index","Package")" class="">
-                                    <i class="metismenu-icon icofont-library"></i> Packages
+                                <a href="@Url.Action("Index","ServicePlan")" class="">
+                                    <i class="metismenu-icon icofont-library"></i> Service Plans
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","ServicePlanPrice")" class="">
+                                    <i class="metismenu-icon icofont-library"></i> Service Plan Prices
                                 </a>
                             </li>
                             @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)

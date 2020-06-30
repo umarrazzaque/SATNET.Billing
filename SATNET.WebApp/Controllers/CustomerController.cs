@@ -42,7 +42,7 @@ namespace SATNET.WebApp.Controllers
             CreateCustomerModel customerModel = new CreateCustomerModel
             {
                 CustomerModel = new CustomerModel(),
-                CustomerType =  GetCustomerTypeList().Result,
+                CustomerType = GetCustomerTypeList().Result,
                 PriceTier = GetPriceTierList().Result
             };
             return View(customerModel);
@@ -58,15 +58,15 @@ namespace SATNET.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 Customer customerObj = _mapper.Map<Customer>(customerModel);
-                status = _customerService.Add(customerObj).Result;
-                
+                status = await _customerService.Add(customerObj);
+
             }
             else
             {
                 status.ErrorCode = "Error occured see entity validation errors.";
             }
             //'
-            status.Html = RenderViewToString(this, "Index", await GetCustomersList());
+            //status.Html = RenderViewToString(this, "Index", await GetCustomersList());
             return Json(status);
 
         }
@@ -91,7 +91,7 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CreateCustomerModel createCustomerModel)
         {
-            
+
             Customer customerObj = _mapper.Map<Customer>(createCustomerModel.CustomerModel);
             var status = _customerService.Update(customerObj).Result;
             status.Html = RenderViewToString(this, "Index", await GetCustomersList());
@@ -139,7 +139,7 @@ namespace SATNET.WebApp.Controllers
             if (retList.Any())
             {
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
-                
+
             }
             return customerTypeListModel;
         }
@@ -151,7 +151,6 @@ namespace SATNET.WebApp.Controllers
             if (retList.Any())
             {
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
-
             }
             return customerTypeListModel;
 

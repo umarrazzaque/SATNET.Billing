@@ -1,5 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.HardwareModel>
-
+﻿@model IEnumerable<SATNET.WebApp.Models.ServicePlanPriceModel>
 @{
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
@@ -12,15 +11,12 @@
                     <!-- <input type="checkbox"> -->
                 </th>
                 <th class="text-center">#</th>
-
-                <th> @Html.DisplayNameFor(model => model.ModemSerialNo) </th>
-                <th> @Html.DisplayNameFor(model => model.ModemModel)</th>
-                <th> @Html.DisplayNameFor(model => model.MACAirNo) </th>
-                <th> @Html.DisplayNameFor(model => model.AntennaSrNo) </th>
-                <th> @Html.DisplayNameFor(model => model.MACAirNo) </th>
-                <th> @Html.DisplayNameFor(model => model.TransceiverSrNo) </th>
-                <th> @Html.DisplayNameFor(model => model.TransceiverWAAT) </th>
+                <th> @Html.DisplayNameFor(model => model.ServicePlanId) </th>
+                <th> @Html.DisplayNameFor(model => model.PriceTierId) </th>
                 <th> @Html.DisplayNameFor(model => model.Price) </th>
+                <th> @Html.DisplayNameFor(model => model.Markup)</th>
+                <th> @Html.DisplayNameFor(model => model.MarkupPercent) </th>
+                <th> @Html.DisplayNameFor(model => model.BriefDescription) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -39,23 +35,21 @@
                     }
                     @counter
                 </td>
-                <td> @Html.DisplayFor(modelItem => item.ModemSerialNo)</td>
-                <td> @Html.DisplayFor(modelItem => item.ModemModel)</td>
-                <td> @Html.DisplayFor(modelItem => item.MACAirNo)</td>
-                <td> @Html.DisplayFor(modelItem => item.AntennaSrNo)</td>
-                <td> @Html.DisplayFor(modelItem => item.AntennaSize)</td>
-                <td> @Html.DisplayFor(modelItem => item.TransceiverSrNo)</td>
-                <td> @Html.DisplayFor(modelItem => item.TransceiverWAAT)</td>
+                <td> @Html.DisplayFor(modelItem => item.ServicePlanName)</td>
+                <td> @Html.DisplayFor(modelItem => item.PriceTierName)</td>
                 <td> @Html.DisplayFor(modelItem => item.Price)</td>
+                <td> @Html.DisplayFor(modelItem => item.Markup)</td>
+                <td> @Html.DisplayFor(modelItem => item.MarkupPercent)</td>
+                <td> @Html.DisplayFor(modelItem => item.BriefDescription)</td>
                 <td class="text-center">
                     <div class="buttons">
-                        <a href="@String.Format("/{0}?id={1}", "Hardware/Edit", item.Id)" class="pl-1 pr-1">
+                        <a href="@String.Format("/{0}?id={1}", "ServicePlanPrice/Edit", item.Id)" class="pl-1 pr-1">
                             <span class="fa fa-edit" aria-hidden="true"></span>
                         </a>
-                        <a href="@String.Format("/{0}?id={1}", "Hardware/Details", item.Id)" class="pl-1 pr-1 right-pan">
+                        <a href="@String.Format("/{0}?id={1}", "ServicePlanPrice/Details", item.Id)" class="pl-1 pr-1 right-pan">
                             <span class="fa fa-bars" aria-hidden="true"></span>
                         </a>
-                        <a href="@String.Format("/{0}?id={1}", "Hardware/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                        <a href="@String.Format("/{0}?id={1}", "ServicePlanPrice/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
                            data-toggle="modal" data-target="#modal-deleteConfirm">
                             <span class="fa fa-trash" aria-hidden="true"></span>
                         </a>
@@ -69,3 +63,4 @@
     </table>
 
 </div>
+

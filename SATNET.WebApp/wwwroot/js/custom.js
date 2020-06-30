@@ -36,6 +36,7 @@ function Layout() {
 
         //window.location.href = 'https://localhost:44367/Customer';
         //$("#MainContents").html(data.html);
+        console.log(window.location.origin + url);
         window.location.href = window.location.origin + url;
     };
 
@@ -123,6 +124,7 @@ function Layout() {
                 type: 'get',
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
                     if (data.isSuccess === true) {
                         Layout.ShowMessage(data.errorCode, 'Success Message', 1);
                     }

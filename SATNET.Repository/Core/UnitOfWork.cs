@@ -72,5 +72,11 @@ namespace SATNET.Repository.Core
 
         private IRepository<ServicePlan> _serviceRepository;
         public IRepository<ServicePlan> ServicePlans { get { return _serviceRepository ?? (_serviceRepository = new ServicePlanRepository(this));  } }
+        
+        private IRepository<ServicePlanPrice> _servicePlanPriceRepository;
+        public IRepository<ServicePlanPrice> ServicePlanPrices { get { return _servicePlanPriceRepository ?? (_servicePlanPriceRepository = new ServicePlanPriceRepository(this)); } }
+
+        private IRepository<Site> _siteRepository;
+        public IRepository<Site> Sites { get { return _siteRepository ?? (_siteRepository = new SiteRepository(this)); } }
     }
 }
