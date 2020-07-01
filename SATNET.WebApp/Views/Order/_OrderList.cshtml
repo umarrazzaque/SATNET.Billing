@@ -43,15 +43,19 @@
                     <td class="text-center">
                         <div class="buttons">
                             @*<a href="@String.Format("/{0}?id={1}", "Order/Edit", @item.Id)" class="pl-1 pr-1 edit-pan">
-                                <span class="fa fa-edit" aria-hidden="true"></span>
-                            </a>*@
-                            <a href="@String.Format("/{0}?id={1}", "Invoice/Details", @item.Id)" class="pl-1 pr-1">
-                                <span class="fa fa-bars" aria-hidden="true"></span>
-                            </a>
+                                    <span class="fa fa-edit" aria-hidden="true"></span>
+                                </a>*@
+                            @if (item.RequestTypeId == 1 || item.RequestTypeId == 32)
+                            {
+                                <a href="@String.Format("/{0}?id={1}", "Order/Details", @item.Id)" class="pl-1 pr-1">
+                                    <span class="fa fa-bars" aria-hidden="true"></span>
+                                </a>
+                            }
+
                             @*<a href="@String.Format("/{0}?id={1}", "Order/Delete", @item.Id)" class="pl-1 pr-1 modal-pan"
-                               data-toggle="modal" data-target="#modal-deleteConfirm">
-                                <span class="fa fa-trash" aria-hidden="true"></span>
-                            </a>*@
+                                   data-toggle="modal" data-target="#modal-deleteConfirm">
+                                    <span class="fa fa-trash" aria-hidden="true"></span>
+                                </a>*@
                         </div>
                     </td>
                 </tr>

@@ -6,11 +6,14 @@ namespace SATNET.Domain.Enums
 {
     public enum LookupTypes
     {
-        RequestType = 1,
-        PriceTier = 2,
-        PlanType = 3,
+        OrderRequestType = 1,
+        CustomerPriceTier = 2,
+        ServicePlanType = 3,
         CustomerType = 1003,
         SiteStatus = 1004,
-        OrderStatus=1005
+        OrderStatus = 1005,
+        ServicePlanUnit = 1006,
+        SpeedUnit = 1007,
+        IPType = 1008
     }
 }

@@ -46,5 +46,10 @@ namespace SATNET.WebApp.Models.User
         public int CustomerId { get; set; }
         public SelectList CustomerSelectList { get; set; }
         public string CustomerName { get; set; }
+        [Required]
+        public int PriceTierId { get; set; }
+        public SelectList PriceTierSelectList { get; set; }
+        public string PriceTierName { get; set; }
+
     }
 }

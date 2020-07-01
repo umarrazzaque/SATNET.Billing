@@ -29,26 +29,27 @@ namespace SATNET.WebApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         public UserController(IService<User> userService, UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager, IService<Lookup> lookupService)
+            RoleManager<ApplicationRole> roleManager, IService<Lookup> lookupService, IService<Customer> customerService)
         {
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _lookupService = lookupService;
+            _customerService = customerService;
         }
         public async Task<IActionResult> Index()
         {
-            return View(await GetUsersList());
+            return View(await GetUsers());
         }
         public async Task<IActionResult> Add()
         {
             UserViewModel model = new UserViewModel();
             var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
-            //var customers = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PriceTier) });
+            var priceTiers = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
 
             model.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
-            //model.CustomerSelectList = new SelectList(customers, "Id", "Name");
+            model.PriceTierSelectList = new SelectList(priceTiers, "Id", "Name");
 
             return View(model);
         }
@@ -173,7 +174,7 @@ namespace SATNET.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     status.IsSuccess = true;
-                    status.Html = RenderViewToString(this, "Index", await GetUsersList());                   
+                    status.Html = RenderViewToString(this, "Index", await GetUsers());                   
                 }
                 else
                 {
@@ -185,7 +186,7 @@ namespace SATNET.WebApp.Controllers
             }
             return Json(status);
         }
-        private async Task<List<UserViewModel>> GetUsersList()
+        private async Task<List<UserViewModel>> GetUsers()
         {
             List<UserViewModel> model = new List<UserViewModel>();
             var svcResult = await _userService.List(new User());
@@ -195,7 +196,7 @@ namespace SATNET.WebApp.Controllers
             }
             return model;
         }
-        public async Task<IActionResult> GetUsersByDDLFilter(string userTypeValue, string  priceTierValue)
+        public async Task<IActionResult> GetUsers(string userTypeValue, string  priceTierValue)
         {
             List<UserViewModel> model = new List<UserViewModel>();
             User obj = new User();
@@ -208,6 +209,15 @@ namespace SATNET.WebApp.Controllers
                 model = UserMapping.GetListViewModel(svcResult);
             }
             return Json(new { isValid = true, html = RenderViewToString(this, "_OrderList", model) });
+        }
+        public async Task<IActionResult> GetCustomers(string customerTypeId, string priceTierId)
+        {
+            Customer obj = new Customer();
+            obj.TypeId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(customerTypeId);
+            obj.TypeId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(priceTierId);
+
+            var svcResult = await _customerService.List(obj);
+            return Json(new SelectList(svcResult, "Id", "Name"));
         }
 
     }

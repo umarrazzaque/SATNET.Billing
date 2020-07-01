@@ -33,7 +33,15 @@
                 <span asp-validation-for="UserTypeId" class="text-danger"></span>
             </div>
         </div>
-
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Price Tier</label>
+                <select disabled asp-for="PriceTierId" asp-items="Model.PriceTierSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="PriceTierId" class="text-danger"></span>
+            </div>
+        </div>
         <div class="col-lg-3">
             <div class="form-group">
                 <label>Customer</label>
@@ -107,17 +115,7 @@
 
 @section scripts{
     @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+<script src="~/js/user/add-user.js"></script>
 
-<script type="text/javascript">
-    $("#UserTypeId").change(function () {
-        if ($("#UserTypeId").val() !== "" && $("#UserTypeId").val() !== "24") {
-            $("#CustomerId").prop("disabled", false);
-        }
-        else {
-            $("#CustomerId").prop("disabled", true);
-        }
-    });
-
-</script>
 }
 
