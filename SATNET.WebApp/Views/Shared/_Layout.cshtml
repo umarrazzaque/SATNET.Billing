@@ -146,31 +146,12 @@
                             </li>
                             <li>
                                 <a href="@Url.Action("Index","ServicePlan")" class="">
-                                    <i class="metismenu-icon icofont-library"></i> Service Plans
+                                    <i class="metismenu-icon icofont-library"></i> Service Plan
                                 </a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Index","ServicePlanPrice")" class="">
-                                    <i class="metismenu-icon icofont-library"></i> Service Plan Prices
-                                </a>
-                            </li>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
-                            {
-                                <li>
-                                    <a href="@Url.Action("Index", "User")" class="">
-                                        <i class="metismenu-icon icofont-search-user"></i> Users
-                                    </a>
-                                </li>
-                            }
-
                             <li>
                                 <a href="@Url.Action("Index","Hardware")" class="">
                                     <i class="metismenu-icon icofont-wallet"></i> Hardware
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("Index","Customer")" class="">
-                                    <i class="metismenu-icon icofont-racing-car"></i> Customers
                                 </a>
                             </li>
                             <li>
@@ -178,10 +159,68 @@
                                     <i class="metismenu-icon icofont-air-ticket"></i> Site
                                 </a>
                             </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-air-ticket"></i> IP
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-air-ticket"></i> Token
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-air-ticket"></i> Promotion
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","Customer")" class="">
+                                    <i class="metismenu-icon icofont-racing-car"></i> Customer
+                                </a>
+                            </li>
+
+                            @*<li>
+            <a href="@Url.Action("Index","ServicePlanPrice")" class="">
+                <i class="metismenu-icon icofont-library"></i> Service Plan Prices
+            </a>
+        </li>*@
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "User")" class="">
+                                        <i class="metismenu-icon icofont-search-user"></i> User
+                                    </a>
+                                </li>
+                            }
+
+
 
                             <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-file-document"></i> Price
+                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                </a>
+                                <ul class="vertical-nav-menu">
+                                    <li>
+                                        <a href="@Url.Action("Index","ServicePlanPrice")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Service Plan
+                                        </a>
+                                        <a href="@String.Format("/{0}", "")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Hardware
+                                        </a>
+                                        <a href="@String.Format("/{0}", "")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> IP
+                                        </a>
+                                        <a href="@String.Format("/{0}", "")" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Token
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="@String.Format("/{0}", "Order")" class="">
-                                    <i class="metismenu-icon icofont-contrast"></i> Service Orders
+                                    <i class="metismenu-icon icofont-contrast"></i> Service Order
                                 </a>
                             </li>
 
