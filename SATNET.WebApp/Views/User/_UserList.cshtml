@@ -11,7 +11,7 @@
                 <th> Full Name</th>
                 <th> Username </th>
                 <th> Email</th>
-                <th> Roles </th>
+                @*<th> Roles </th>*@
                 <th>User Type</th>
                 <th class="text-center"> Actions </th>
             </tr>
@@ -24,34 +24,34 @@
                 {
                     continue;
                 }
-                <tr>
-                    <td> @item.FullName</td>
-                    <td> @item.UserName</td>
-                    <td> @item.Email</td>
-                    <td>
-                        @if (item.Roles.Any())
-                        {
-                            <ul class="list-unstyled">
-                                @foreach (var role in item.Roles)
-                                {
-                                    <li>@role</li>
-                                }
-                            </ul>
-                        }
-                    </td>
-                    <td> @item.UserTypeName</td>
-                    <td class="text-center">
-                        <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "User/Edit", item.Id)" class="pl-1 pr-1">
-                                <span class="fa fa-edit" aria-hidden="true"></span>
-                            </a>
-                            <a href="@String.Format("/{0}?id={1}", "User/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
-                               data-toggle="modal" data-target="#modal-deleteConfirm">
-                                <span class="fa fa-trash" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+                <td> @item.FullName</td>
+                <td> @item.UserName</td>
+                <td> @item.Email</td>
+                @*<td>
+            @if (item.Roles.Any())
+            {
+                <ul class="list-unstyled">
+                    @foreach (var role in item.Roles)
+                    {
+                        <li>@role</li>
+                    }
+                </ul>
+            }
+        </td>*@
+                <td> @item.UserTypeName</td>
+                <td class="text-center">
+                    <div class="buttons">
+                        <a href="@String.Format("/{0}?id={1}", "User/Edit", item.Id)" class="pl-1 pr-1">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "User/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                           data-toggle="modal" data-target="#modal-deleteConfirm">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
             }
 
 

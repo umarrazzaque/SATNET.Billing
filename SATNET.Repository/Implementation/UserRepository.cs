@@ -33,16 +33,18 @@ namespace SATNET.Repository.Implementation
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-                var qResult = await con.QueryAsync<User>("UserList", commandType: CommandType.StoredProcedure);
+                var parms = new DynamicParameters();
+                parms.Add("@UserTypeId", obj.UserTypeId, DbType.Int32, ParameterDirection.Input);
+                var qResult = await con.QueryAsync<User>("UserList",parms, commandType: CommandType.StoredProcedure);
                 users = qResult.ToList();
                 if (users.Any())
                 {
                     List<string> roles = new List<string>();
-                    var parms = new DynamicParameters();
+                    var parmsRole = new DynamicParameters();
                     foreach (var item in users)
                     {
-                        parms.Add("@UserId", item.Id, DbType.Int32, ParameterDirection.Input);
-                        var qResult2 = await con.QueryAsync<string>("UserRoleList", parms, commandType: CommandType.StoredProcedure);
+                        parmsRole.Add("@UserId", item.Id, DbType.Int32, ParameterDirection.Input);
+                        var qResult2 = await con.QueryAsync<string>("UserRoleList", parmsRole, commandType: CommandType.StoredProcedure);
                         item.Roles = qResult2.ToList();
                     }
                 }

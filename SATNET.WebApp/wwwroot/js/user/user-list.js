@@ -1,11 +1,8 @@
 ﻿$(function () {
     //dropdown filters change events
-    $("#UserTypeId").change(function () {
-        getUsers();
-    });
-    $("#ddlOrderStatus").change(function () {
-        getUsers();
 
+    $(".filters select").change(function () {
+        getUsers($(this).val());
     });
 
     //    var t = $("#grid_table").DataTable({
@@ -35,9 +32,9 @@
 });
 
 
-getUsers = function () {
-    var url = '/Order/GetUsers';
-    $.getJSON(url, { requestTypeValue: $("#ddlRequestType").val(), statusValue: $("#ddlOrderStatus").val() }, function (result) {
+getUsers = function (userType) {
+    var url = '/User/GetUsers';
+    $.getJSON(url, { userTypeId: userType }, function (result) {
         if (result.isValid === true && result.html !== null) {
             $("#grid_table").html(result.html);
         }
