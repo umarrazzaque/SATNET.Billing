@@ -18,7 +18,7 @@ namespace SATNET.Repository.Core
 
         public UnitOfWork()
         {
-            IDbConnection dbConnection = new SqlConnection("Server=.\\SQLExpress;Database=SatnetBilling_20200630;Trusted_Connection=True;MultipleActiveResultSets=true");
+            IDbConnection dbConnection = new SqlConnection("Server=.\\SQLExpress;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");
             _connection = dbConnection;
             OpenConnection();
         }
