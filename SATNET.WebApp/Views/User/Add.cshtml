@@ -93,8 +93,8 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-lg-3 new-site">
-            <div class="position-relative form-group">
+        @*<div class="col-lg-3 new-site">
+                <div class="position-relative form-group">
                 <div class="form-group">
                     <label class="lable-control">Select Role</label>
                 </div>
@@ -108,14 +108,14 @@
                     <label class="form-check-label" for="radioUser">User</label>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </form>
 
 
 @section scripts{
     @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
-<script src="~/js/user/add-user.js"></script>
+    <script src="~/js/user/user-add.js"></script>
 
 }
 

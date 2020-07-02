@@ -1,4 +1,12 @@
 ﻿$(function () {
+    var userTypeId = $("#hdnUserTypeId").val();
+    if (userTypeId != null && userTypeId ==24) {
+        $("#PriceTierId").prop("disabled", true);
+        $("#CustomerId").prop("disabled", true);
+        $("#PriceTierId").val('');
+        $("#CustomerId").val('');
+    }
+
     $("#UserTypeId").change(function () {
         var type = $(this).val();
         if (type !== "" && type !== "24") {
@@ -7,6 +15,9 @@
         else {
             $("#PriceTierId").prop("disabled", true);
         }
+        $("#CustomerId").prop("disabled", true);
+        $("#CustomerId").val("");
+        $("#PriceTierId").val("");
     });
     $("#PriceTierId").change(function () {
         var tier = $(this).val();
@@ -21,7 +32,7 @@
 
 getCustomers = function () {
     var tier = $("#PriceTierId").val();//customer price tier
-    var type = $("#CustomerId").val();//customer type
+    var type = $("#UserTypeId").val();//customer type
     var url = '/User/GetCustomers';
     $.getJSON(url, { customerTypeId: type, priceTierId: tier }, function (result) {
         var items = '';
