@@ -20,7 +20,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                @if (item.Roles.Contains("SuperAdmin"))
+                @if (item.Roles.Contains("Admin"))
                 {
                     continue;
                 }

@@ -9,11 +9,24 @@
 
     $("#UserTypeId").change(function () {
         var type = $(this).val();
-        if (type !== "" && type !== "24") {
-            $("#PriceTierId").prop("disabled", false);
-        }
-        else {
+
+        if(type == "24") {//satnet user type
             $("#PriceTierId").prop("disabled", true);
+            $("#RoleId").empty();
+            $("#RoleId").prop("disabled", false);
+            getRoles(33);//satnet role
+        }
+        else if (type == "15") {//direct customer user type
+            $("#PriceTierId").prop("disabled", true);
+            $("#PriceTierId").val('11');
+            $("#RoleId").empty();
+            $("#RoleId").prop("disabled", true);
+        }
+        else if (type == "16") {//reseller user type
+            $("#PriceTierId").prop("disabled", false);
+            $("#RoleId").empty();
+            $("#RoleId").prop("disabled", false);
+            getRoles(34);//reseller role
         }
         $("#CustomerId").prop("disabled", true);
         $("#CustomerId").val("");
@@ -42,5 +55,18 @@ getCustomers = function () {
         $("#CustomerId").empty();
         $("#CustomerId").html(items);
         $("#CustomerId").prop("disabled", false);
+    });
+}
+
+getRoles = function (roleType) {
+    var url = '/User/GetRoles';
+    $.getJSON(url, { type: roleType}, function (result) {
+        var items = '';
+        $.each(result, function (i, plan) {
+            items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+        });
+        $("#RoleId").empty();
+        $("#RoleId").html(items);
+        $("#RoleId").prop("disabled", false);
     });
 }

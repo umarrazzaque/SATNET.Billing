@@ -42,6 +42,7 @@ namespace SATNET.WebApp.Controllers
         {
             var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
             ViewBag.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
+
             return View(await GetUsers());
         }
         public async Task<IActionResult> Add()
@@ -225,6 +226,13 @@ namespace SATNET.WebApp.Controllers
 
             var svcResult = await _customerService.List(obj);
             return Json(new SelectList(svcResult, "Id", "Name"));
+        }
+        public IActionResult GetRoles(string type)
+        {
+            int typeId = typeId = string.IsNullOrEmpty(type) ? 0 : Convert.ToInt32(type);
+
+            var roles = _roleManager.Roles.Where(r => r.RoleType == typeId).ToList();
+            return Json(new SelectList(roles, "Id", "Name"));
         }
 
     }
