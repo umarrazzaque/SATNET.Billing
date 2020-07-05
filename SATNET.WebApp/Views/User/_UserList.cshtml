@@ -11,7 +11,7 @@
                 <th> Full Name</th>
                 <th> Username </th>
                 <th> Email</th>
-                @*<th> Roles </th>*@
+                <th> Roles </th>
                 <th>User Type</th>
                 <th class="text-center"> Actions </th>
             </tr>
@@ -20,15 +20,15 @@
         <tbody>
             @foreach (var item in Model)
             {
-                @if (item.Roles.Contains("Admin"))
+                @*@if (item.Roles.Contains("Admin"))
                 {
                     continue;
-                }
+                }*@
             <tr>
                 <td> @item.FullName</td>
                 <td> @item.UserName</td>
                 <td> @item.Email</td>
-                @*<td>
+                <td>
             @if (item.Roles.Any())
             {
                 <ul class="list-unstyled">
@@ -38,7 +38,7 @@
                     }
                 </ul>
             }
-        </td>*@
+        </td>
                 <td> @item.UserTypeName</td>
                 <td class="text-center">
                     <div class="buttons">

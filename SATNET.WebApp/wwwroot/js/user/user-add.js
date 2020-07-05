@@ -12,25 +12,26 @@
 
         if(type == "24") {//satnet user type
             $("#PriceTierId").prop("disabled", true);
-            $("#RoleId").empty();
-            $("#RoleId").prop("disabled", false);
+            $("#RoleName").empty();
+            $("#RoleName").prop("disabled", false);
             getRoles(33);//satnet role
         }
         else if (type == "15") {//direct customer user type
-            $("#PriceTierId").prop("disabled", true);
             $("#PriceTierId").val('11');
-            $("#RoleId").empty();
-            $("#RoleId").prop("disabled", true);
+            $("#PriceTierId").prop("disabled", true);
+            $("#RoleName").empty();
+            $("#RoleName").prop("disabled", true);
+            getCustomers();
         }
         else if (type == "16") {//reseller user type
             $("#PriceTierId").prop("disabled", false);
-            $("#RoleId").empty();
-            $("#RoleId").prop("disabled", false);
+            $("#PriceTierId").val('');
+            $("#RoleName").empty();
+            $("#RoleName").prop("disabled", false);
             getRoles(34);//reseller role
         }
         $("#CustomerId").prop("disabled", true);
         $("#CustomerId").val("");
-        $("#PriceTierId").val("");
     });
     $("#PriceTierId").change(function () {
         var tier = $(this).val();
@@ -63,10 +64,10 @@ getRoles = function (roleType) {
     $.getJSON(url, { type: roleType}, function (result) {
         var items = '';
         $.each(result, function (i, plan) {
-            items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+            items += "<option value='" + plan.text + "'>" + plan.text + "</option>";
         });
-        $("#RoleId").empty();
-        $("#RoleId").html(items);
-        $("#RoleId").prop("disabled", false);
+        $("#RoleName").empty();
+        $("#RoleName").html(items);
+        $("#RoleName").prop("disabled", false);
     });
 }

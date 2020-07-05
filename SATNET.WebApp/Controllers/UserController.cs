@@ -79,8 +79,11 @@ namespace SATNET.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     //adding user role
-                    //var role = model.Roles.FirstOrDefault().ToString();
-                    //await _userManager.AddToRoleAsync(user, role);
+                    if (!string.IsNullOrEmpty(model.RoleName))
+                    {
+                        var role = model.RoleName;
+                        await _userManager.AddToRoleAsync(user, role);
+                    }
                     return RedirectToAction("Index");
                 }
                 foreach (var error in result.Errors)
