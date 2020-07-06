@@ -102,10 +102,13 @@ namespace SATNET.WebApp.Controllers
                 return NotFound(
                     $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            //var roleResult  = _userManager.GetRolesAsync(user);
-
-            var customer = await _customerService.List(new Customer() { Id=user.CustomerId});
-            var customerPriceTierId = customer.FirstOrDefault().PriceTierId;
+            var roleResult = _userManager.GetRolesAsync(user);
+            int customerPriceTierId = 0;
+            if (user.CustomerId != 0)
+            {
+                var customer = await _customerService.Get(user.CustomerId);
+                customerPriceTierId = customer.PriceTierId;
+            }
             UserEditViewModel model = new UserEditViewModel()
             {
                 Id = user.Id,
@@ -114,18 +117,22 @@ namespace SATNET.WebApp.Controllers
                 UserName = user.UserName,
                 Contact = user.PhoneNumber,
                 Email = user.Email,
-                CustomerId=user.CustomerId,
+                CustomerId = user.CustomerId,
                 UserTypeId = user.UserTypeId,
-                PriceTierId = customerPriceTierId
-                //Roles = roleResult.Result.ToList()
+                PriceTierId = customerPriceTierId,
+                RoleName = roleResult.Result.FirstOrDefault()
             };
             var customers = await _customerService.List(new Customer() { PriceTierId= customerPriceTierId });
             var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
             var priceTiers = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
 
+            int typeId = model.UserTypeId==24 ? 33 : (model.UserTypeId == 16 ? 34 : 0);
+            var roles = _roleManager.Roles.Where(r => r.RoleType == typeId).ToList();
+
             model.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
             model.PriceTierSelectList = new SelectList(priceTiers, "Id", "Name");
             model.CustomerSelectList= new SelectList(customers, "Id", "Name");
+            model.RoleSelectList = new SelectList(roles, "Name", "Name");
 
             return View(model);
         }
@@ -152,17 +159,17 @@ namespace SATNET.WebApp.Controllers
                 }
 
                 //updating user roles
-                //var role = model.Roles.First();
-                //var roleResult = await _userManager.GetRolesAsync(user);
-                //var oldRole = roleResult.First().ToString();
-                //if (oldRole != role)
-                //{
-                //    await _userManager.RemoveFromRoleAsync(user, oldRole);
-                //    await _userManager.AddToRoleAsync(user, role);
-                //}
-
+                var roleResult = await _userManager.GetRolesAsync(user);
+                var oldRole = roleResult.FirstOrDefault();
+                if (!string.IsNullOrEmpty(oldRole))
+                {
+                    await _userManager.RemoveFromRoleAsync(user, oldRole);
+                }
+                if (!string.IsNullOrEmpty(model.RoleName))
+                {
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
+                }
                 //updating user details
-                //await _userManager.AddToRoleAsync(user, role);
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
@@ -232,10 +239,10 @@ namespace SATNET.WebApp.Controllers
         }
         public IActionResult GetRoles(string type)
         {
-            int typeId = typeId = string.IsNullOrEmpty(type) ? 0 : Convert.ToInt32(type);
+            int typeId = string.IsNullOrEmpty(type) ? 0 : Convert.ToInt32(type);
 
             var roles = _roleManager.Roles.Where(r => r.RoleType == typeId).ToList();
-            return Json(new SelectList(roles, "Id", "Name"));
+            return Json(new SelectList(roles, "Name", "Name"));
         }
 
     }

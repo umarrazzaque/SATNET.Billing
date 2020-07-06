@@ -1,11 +1,25 @@
-﻿$(function () {
-    var userTypeId = $("#hdnUserTypeId").val();
-    if (userTypeId != null && userTypeId ==24) {
-        $("#PriceTierId").prop("disabled", true);
-        $("#CustomerId").prop("disabled", true);
-        $("#PriceTierId").val('');
-        $("#CustomerId").val('');
+﻿var userTypeId = $("#hdnUserTypeId").val();
+var roleName = $("#hdnUserRoleName").val();
+
+$(function () {
+    // for edit user scenario
+    if (typeof userTypeId !== 'undefined') {
+        if (userTypeId == 24) {//satnet user type
+            $("#PriceTierId").prop("disabled", true);
+            $("#CustomerId").prop("disabled", true);
+            $("#PriceTierId").val('');
+            $("#CustomerId").val('');
+            //getRoles(33);//satnet role
+        }
+        else if (userTypeId == 15) {//direct user type
+            $("#RoleName").prop("disabled", true);
+        }
     }
+    //if (typeof roleName != 'undefined') {
+
+
+    //    $("#RoleName").val(roleName);
+    //}
 
     $("#UserTypeId").change(function () {
         var type = $(this).val();
