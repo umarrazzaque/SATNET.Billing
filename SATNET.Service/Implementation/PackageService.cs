@@ -3,9 +3,7 @@ using SATNET.Repository.Interface;
 using SATNET.Service.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using SATNET.Service;
 
 namespace SATNET.Service.Implementation
 {
