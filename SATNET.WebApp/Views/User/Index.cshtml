@@ -36,15 +36,13 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="position-relative form-group">
-                    <select type="select" class="form-control ">
+                    <select id="selectUserType" type="select" class="form-control" asp-items="ViewBag.UserTypeSelectList">
                         <option value="">User Type</option>
-                        <option>value</option>
-                        <option>value</option>
                     </select>
                 </div>
             </div>
 
-            <div class="col-lg-2">
+            @*<div class="col-lg-2">
                 <div class="position-relative form-group">
 
                     <select type="select" class="form-control ">
@@ -53,7 +51,7 @@
                         <option>value</option>
                     </select>
                 </div>
-            </div>
+            </div>*@
 
         </div>
     </div>
@@ -68,56 +66,7 @@
 </div>
 
 @section scripts{
-    <script type="text/javascript">
-
-        //$(function () {
-        //    var t = $("#grid_table").DataTable({
-
-        //        "paging": true,
-        //        "lengthChange": true,
-        //        "searching": true,
-        //        "ordering": true,
-        //        "info": true,
-        //        "autoWidth": false,
-        //        "responsive": true,
-        //        "columnDefs": [
-        //            { "orderable": false, "targets": 3 },
-        //            { "orderable": false, "targets": 5 }
-        //        ],
-        //        //"columnDefs": [
-        //        //    {
-        //        //        'targets': 0, // column index (start from 0)bb
-        //        //        'orderable': false, // set orderable false for selected columns
-        //        //    }],
-        //    });
-        //    t.on('order.dt search.dt', function () {
-        //        t.column(1, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-        //            cell.innerHTML = i + 1;
-        //        });
-        //    }).draw();
-        //});
-
-           //dropdown filters change events
-
-        $("#UserTypeId").change(function () {
-            GetUsersByDDLFilter();
-        });
-        $("#ddlOrderStatus").change(function () {
-            GetUsersByDDLFilter();
-
-        });
-
-        GetUsersByDDLFilter = function () {
-            var url = '/Order/GetOrdersByDDLFilter';
-            $.getJSON(url, { requestTypeValue: $("#ddlRequestType").val(), statusValue: $("#ddlOrderStatus").val() }, function (result) {
-                if (result.isValid === true && result.html !== null) {
-                    $("#grid_table").html(result.html);
-                }
-            });
-        }
-
-    </script>
-
+    <script src="~/js/user/user-list.js"></script>
 }
 
 

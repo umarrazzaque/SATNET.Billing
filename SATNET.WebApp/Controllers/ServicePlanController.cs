@@ -101,7 +101,7 @@ namespace SATNET.WebApp.Controllers
         private async Task<List<LookUpModel>> GetServicePlanTypeList()
         {
             List<LookUpModel> retListModel = new List<LookUpModel>();
-            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PlanType) });
+            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
             if (retList.Any())
             {
                 retListModel = _mapper.Map<List<LookUpModel>>(retList);

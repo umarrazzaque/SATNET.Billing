@@ -15,8 +15,8 @@ namespace SATNET.WebApp.Areas.Identity.Data
         [PersonalData, Required]
         public string LastName { get; set; }
         public string FullName { get { return $"{FirstName} {LastName}"; } }
-        public int UserTypeId { get; set; }
         public int CustomerId { get; set; }
+        public int UserTypeId { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }

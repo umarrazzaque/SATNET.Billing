@@ -117,7 +117,7 @@ namespace SATNET.WebApp.Controllers
         private async Task<List<LookUpModel>> GetPriceTierList()
         {
             List<LookUpModel> retListModel = new List<LookUpModel>();
-            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PriceTier) });
+            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
             if (retList.Any())
             {
                 retListModel = _mapper.Map<List<LookUpModel>>(retList);

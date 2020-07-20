@@ -141,13 +141,13 @@ namespace SATNET.WebApp.Controllers
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
 
             }
-            return customerTypeListModel;
+            return customerTypeListModel.Where(t=>t.Name != "Satnet").ToList();
         }
 
         private async Task<List<LookUpModel>> GetPriceTierList()
         {
             List<LookUpModel> customerTypeListModel = new List<LookUpModel>();
-            var retList = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.PriceTier) });
+            var retList = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
             if (retList.Any())
             {
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);

@@ -20,7 +20,19 @@ namespace SATNET.WebApp.Mappings
                 RequestTypeName = obj.RequestTypeName,
                 SubscriberName = obj.SubscriberName,
                 ServiceOrderDate = obj.CreatedOn,
-                StatusName = obj.StatusName
+                StatusName = obj.StatusName,
+                RequestTypeId = obj.RequestTypeId,
+                SubscriberArea = obj.SubscriberArea,
+                SubscriberCity = obj.SubscriberCity,
+                SubscriberEmail = obj.SubscriberEmail,
+                ServicePlanPrice=obj.ServicePlanPrice,
+                ServicePlanUnit = obj.ServicePlanUnit,
+                ServicePlanProRataPrice = obj.ServiceProRataPrice,
+                HardwareModel = obj.HardwareModel,
+                HardwarePrice = obj.HardwarePrice,
+                IPName = obj.IPName,
+                IPPrice=obj.IPPrice,
+                Total = obj.Total
             };
             return model;
         }
@@ -34,7 +46,8 @@ namespace SATNET.WebApp.Mappings
                 ServicePlanName = model.ServicePlanName,
                 RequestTypeName = model.RequestTypeName,
                 SubscriberName = model.SubscriberName,
-                StatusName = model.StatusName
+                StatusName = model.StatusName,
+                RequestTypeId = model.RequestTypeId
             };
             return obj;
         }

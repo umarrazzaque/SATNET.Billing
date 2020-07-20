@@ -18,7 +18,7 @@ namespace SATNET.Repository.Core
         {
             //_config = config;
             //_connection = new SqlConnection("Server=.\\SQLExpress;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");
-            
+
             UnitOfWork = new UnitOfWork();
             return UnitOfWork;
         }
