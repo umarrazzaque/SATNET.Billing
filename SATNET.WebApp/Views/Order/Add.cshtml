@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="col-lg-12 new-site">
-        <h5 class="title">Site Details</h5>
+        <h5 class="title">New Site Details</h5>
     </div>
     <div class="col-lg-3 new-site">
         <div class="position-relative form-group">
@@ -89,19 +89,19 @@
         </div>
     </div>
     @*<div class="col-lg-3 new-site">
-        <div class="position-relative form-group">
-            <label asp-for="Download"></label>
-            <input asp-for="Download" type="text" placeholder="Download" class="form-control text-input" />
-            <span asp-validation-for="Download" class="text-danger"></span>
+            <div class="position-relative form-group">
+                <label asp-for="Download"></label>
+                <input asp-for="Download" type="text" placeholder="Download" class="form-control text-input" />
+                <span asp-validation-for="Download" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3 new-site">
-        <div class="position-relative form-group">
-            <label asp-for="Upload"></label>
-            <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
-            <span asp-validation-for="Upload" class="text-danger"></span>
-        </div>
-    </div>*@
+        <div class="col-lg-3 new-site">
+            <div class="position-relative form-group">
+                <label asp-for="Upload"></label>
+                <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
+                <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+        </div>*@
     <div class="col-lg-12 new-site">
         <h5 class="title">Hardware Details</h5>
     </div>
@@ -112,6 +112,91 @@
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="HardwareId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Billing</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>Full HW Price - No Promotion</option>
+                <option>New Year Promotion - HW Free</option>
+                <option>Other</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Modem Model</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>MDM2210</option>
+                <option>MDM2510</option>
+                <option>MDM3310</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Modem Serial Number</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>9282900429995</option>
+                <option>9283000430893</option>
+                <option>9283000431202</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>MAC AIR Number</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>
+                    00:06:39:88:fa:17
+                </option>
+                <option>00:06:39:89:04:9d</option>
+                <option>00:06:39:88:fa:5f</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Antinna Size</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>1.0 M</option>
+                <option>1.2 M</option>
+                <option>1.8 M</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Antenna S/N</label>
+            <input type="text" placeholder="..." class="form-control" />
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Transceiver WATT</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>2W</option>
+                <option>3W</option>
+                <option>4W</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Transceiver S/N</label>
+            <select class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option>4518434101061</option>
+                <option>4518434100886</option>
+                <option>4518434101063</option>
+            </select>
         </div>
     </div>
     <div class="col-lg-12 new-site subscriber">

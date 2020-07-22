@@ -56,8 +56,8 @@ namespace SATNET.WebApp
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("SuperAdmin"));
-                //options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("SuperAdmin"));
+                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("Admin"));
+                //options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("Admin"));
             });
 
             // Auto Mapper Configurations

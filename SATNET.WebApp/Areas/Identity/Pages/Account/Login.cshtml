@@ -17,7 +17,7 @@
         <div class="form-group clearfix">
             <div class="checkbox-custom checkbox-inline pull-left">
                 @Html.EditorFor(model => model.Input.RememberMe, new { htmlAttributes = new { @type = "checkbox" } })
-                @Html.LabelFor(model => model.Input.RememberMe, new { @class = "sr-only" })
+                @Html.LabelFor(model => model.Input.RememberMe)
                 
             </div>
             <a class="pull-right" href="">Forgot password?</a>

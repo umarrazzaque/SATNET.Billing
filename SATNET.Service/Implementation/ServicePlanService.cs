@@ -73,7 +73,7 @@ namespace SATNET.Service.Implementation
         }
         public Task<StatusModel> Update(ServicePlan ServicePlan)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "ServicePlan/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/ServicePlan/Index" };
             try
             {
                 int retId = _ServicePlanRepository.Update(ServicePlan).Result;

@@ -15,8 +15,8 @@ $(function () {
                 break
             case '32'://Re-Activation
                 hideAllSections();
-                $(".new-site").show();
-                $(".subscriber").hide();
+                //$(".new-site").show();
+                //$(".subscriber").hide();
                 break
             case '3'://Upgrade
                 hideAllSections();

@@ -141,7 +141,7 @@ namespace SATNET.WebApp.Controllers
                 customerTypeListModel = _mapper.Map<List<LookUpModel>>(retList);
 
             }
-            return customerTypeListModel;
+            return customerTypeListModel.Where(t=>t.Name != "Satnet").ToList();
         }
 
         private async Task<List<LookUpModel>> GetPriceTierList()

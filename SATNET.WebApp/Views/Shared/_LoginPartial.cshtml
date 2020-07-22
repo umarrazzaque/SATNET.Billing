@@ -5,10 +5,16 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
+    string userFullName="";
+    IList<string> userRoles;
+    string userRole="";
     var user = await UserManager.GetUserAsync(User);
-    var userFullName = user.FirstName + ' ' + user.LastName;
-    var userRoles = await UserManager.GetRolesAsync(user);
-    var userRole = userRoles.FirstOrDefault();
+    if (user != null)
+    {
+        userFullName = user.FirstName + ' ' + user.LastName;
+        userRoles = await UserManager.GetRolesAsync(user);
+        userRole = userRoles.FirstOrDefault();
+    }
 }
 @if (SignInManager.IsSignedIn(User))
 {

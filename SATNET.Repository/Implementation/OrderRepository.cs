@@ -91,7 +91,15 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@DowngradeFromId", obj.DowngradeFromId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@DowngradeToId", obj.DowngradeToId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@InstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
+                    
+                    if (obj.InstallationDate == DateTime.MinValue)
+                    {
+                        paramsOrder.Add("@InstallationDate", DBNull.Value, DbType.DateTime, ParameterDirection.Input);
+                    }
+                    else
+                    {
+                        paramsOrder.Add("@InstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
+                    }
                     paramsOrder.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
                     //paramsOrder.Add("@Download", obj.Download, DbType.Int32, ParameterDirection.Input);
                     //paramsOrder.Add("@Upload", obj.Upload, DbType.Int32, ParameterDirection.Input);

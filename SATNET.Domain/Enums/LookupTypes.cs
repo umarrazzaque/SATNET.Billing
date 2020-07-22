@@ -14,6 +14,7 @@ namespace SATNET.Domain.Enums
         OrderStatus = 1005,
         ServicePlanUnit = 1006,
         SpeedUnit = 1007,
-        IPType = 1008
+        IPType = 1008,
+
     }
 }
