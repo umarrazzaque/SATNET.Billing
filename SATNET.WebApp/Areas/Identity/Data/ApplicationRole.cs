@@ -9,6 +9,7 @@ namespace SATNET.WebApp.Areas.Identity.Data
     public class ApplicationRole: IdentityRole<int>
     {
         public string Description { get; set; }
+        public int RoleType { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int UpdatedBy { get; set; }

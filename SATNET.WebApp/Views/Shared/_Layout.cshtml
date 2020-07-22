@@ -17,14 +17,12 @@
     @*<link href="./main.css?<?php echo date('l jS \of F Y h:i:s A'); ?>" rel="stylesheet">*@
     <!-- summernote -->
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/summernote/summernote-bs4.css">
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/fontawesome-free/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-
 
     <!-- Toastr -->
     <link rel="stylesheet" href="~/Themes/Default/Resources/plugins/toastr/toastr.min.css">
@@ -34,6 +32,9 @@
 
     <!-- jQuery -->
     <script src="~/Themes/QMSN/Resources/js/jquery/jquery.min.js"></script>
+
+    
+    <script src="~/Themes/QMSN/Resources/js/main.js"></script>
 
     <!-- custom css at project level -->
     <link href="~/css/custom.css" rel="stylesheet" />
@@ -145,85 +146,97 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index","ServicePlan")" class="">
-                                    <i class="metismenu-icon icofont-library"></i> Service Plan
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("Index","Hardware")" class="">
-                                    <i class="metismenu-icon icofont-wallet"></i> Hardware
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("Index","Site")" class="">
-                                    <i class="metismenu-icon icofont-air-ticket"></i> Site
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-air-ticket"></i> IP
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-air-ticket"></i> Token
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-air-ticket"></i> Promotion
-                                </a>
-                            </li>
-                            <li>
                                 <a href="@Url.Action("Index","Customer")" class="">
-                                    <i class="metismenu-icon icofont-racing-car"></i> Customer
+                                    <i class="metismenu-icon icofont-architecture-alt"></i> Customer
                                 </a>
                             </li>
-
-                            @*<li>
-            <a href="@Url.Action("Index","ServicePlanPrice")" class="">
-                <i class="metismenu-icon icofont-library"></i> Service Plan Prices
-            </a>
-        </li>*@
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
-                            {
-                                <li>
-                                    <a href="@Url.Action("Index", "User")" class="">
-                                        <i class="metismenu-icon icofont-search-user"></i> User
-                                    </a>
-                                </li>
-                            }
-
-
-
                             <li>
                                 <a href="" class="">
-                                    <i class="metismenu-icon icofont-file-document"></i> Price
+                                    <i class="metismenu-icon icofont-library"></i> Service Plan
                                     <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
                                 </a>
                                 <ul class="vertical-nav-menu">
                                     <li>
+                                        <a href="@Url.Action("Index","ServicePlan")" class="">
+                                            <i class="metismenu-icon icofont-library"></i> Manage Service Plans
+                                        </a>
                                         <a href="@Url.Action("Index","ServicePlanPrice")" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Service Plan
-                                        </a>
-                                        <a href="@String.Format("/{0}", "")" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Hardware
-                                        </a>
-                                        <a href="@String.Format("/{0}", "")" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> IP
-                                        </a>
-                                        <a href="@String.Format("/{0}", "")" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Token
+                                            <i class="metismenu-icon icofont-contrast"></i> Manage Service Pricelists
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="@String.Format("/{0}", "Order")" class="">
-                                    <i class="metismenu-icon icofont-contrast"></i> Service Order
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-wifi-router"></i> Hardware
+                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                </a>
+                                <ul class="vertical-nav-menu">
+                                    <li>
+                                        <a href="@Url.Action("Index","Hardware")" class="">
+                                            <i class="metismenu-icon icofont-library"></i> Manage Hardwares
+                                        </a>
+                                        <a href="#" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-network"></i> IP
+                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                </a>
+                                <ul class="vertical-nav-menu">
+                                    <li>
+                                        <a href="#" class="">
+                                            <i class="metismenu-icon icofont-library"></i> Manage IPs
+                                        </a>
+                                        <a href="#" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i>Manage IPs Pricelists
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-coins"></i> Token
+                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                </a>
+                                <ul class="vertical-nav-menu">
+                                    <li>
+                                        <a href="#" class="">
+                                            <i class="metismenu-icon icofont-library"></i> Manage Tokens
+                                        </a>
+                                        <a href="#" class="">
+                                            <i class="metismenu-icon icofont-contrast"></i>Manage Token Pricelists
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="" class="">
+                                    <i class="metismenu-icon icofont-sale-discount"></i> Promotion
                                 </a>
                             </li>
-
+                            <li>
+                                <a href="@Url.Action("Index","Site")" class="">
+                                    <i class="metismenu-icon icofont-site-map"></i> Site
+                                </a>
+                            </li>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "User")" class="">
+                                        <i class="metismenu-icon icofont-user"></i> User
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a href="@String.Format("/{0}", "Order")" class="">
+                                    <i class="metismenu-icon icofont-shopping-cart"></i> Service Order
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -310,26 +323,24 @@
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
-    <script src="~/Themes/Default/Resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/Themes/Default/Resources/plugins/moment/moment.min.js"></script>
+    @*<script src="~/Themes/Default/Resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+        <script src="~/Themes/Default/Resources/plugins/moment/moment.min.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="~/Themes/Default/Resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Summernote -->
     <script src="~/Themes/Default/Resources/plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="~/Themes/Default/Resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <script src="~/Themes/Default/Resources/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/Themes/Default/Resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="~/Themes/Default/Resources/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Themes/Default/Resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/Themes/Default/Resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <!-- Toastr -->
     <script src="~/Themes/Default/Resources/plugins//toastr/toastr.min.js"></script>
     <script src="~/Themes/QMSN/Resources/js/popper.min.js"></script>
-    <script src="~/Themes/QMSN/Resources/js/main.js"></script>
-    <script src="~/js/custom.js"></script>
 
+    <script src="~/js/custom.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
