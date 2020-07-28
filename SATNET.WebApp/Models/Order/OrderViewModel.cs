@@ -14,9 +14,14 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Customer Name")]
         public string CustomerName { get; set; }
         public string StatusName { get; set; }
+        [Required(ErrorMessage = "Site name is required")]
         public string SiteName { get; set; }
         [Required(ErrorMessage = "Site is required")]
         public int SiteId { get; set; }
+        [Required(ErrorMessage = "Site area is required")]
+        public string SiteArea { get; set; }
+        [Required(ErrorMessage = "Site city is required")]
+        public string SiteCity { get; set; }
         [DisplayName("Site")]
         public SelectList SiteSelectList { get; set; }
         [Required(ErrorMessage = "Request Type is required")]
@@ -99,6 +104,9 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Promotion")]
         public SelectList PromotionSelectList { get; set; }
         public int? PromotionId { get; set; }
+        public SelectList CustomerSelectList { get; set; }
+        [Required(ErrorMessage = "Customer is required")]
+        public int CustomerId { get; set; }
         public string Other { get; set; }
         public decimal Total { get; set; }
     }

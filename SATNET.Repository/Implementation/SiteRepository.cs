@@ -68,6 +68,7 @@ namespace SATNET.Repository.Implementation
             List<Site> sites = new List<Site>();
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
+            queryParameters.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);

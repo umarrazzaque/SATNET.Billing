@@ -46,9 +46,9 @@
                 <td> @Html.DisplayFor(modelItem => item.Status)</td>
                 <td class="text-center">
                     <div class="buttons">
-                        <a href="@String.Format("/{0}?id={1}", "Site/Edit", item.Id)" class="pl-1 pr-1">
+                        @*<a href="@String.Format("/{0}?id={1}", "Site/Edit", item.Id)" class="pl-1 pr-1">
                             <span class="fa fa-edit" aria-hidden="true"></span>
-                        </a>
+                        </a>*@
                         <a href="@String.Format("/{0}?id={1}", "Site/Details", item.Id)" class="pl-1 pr-1 right-pan">
                             <span class="fa fa-bars" aria-hidden="true"></span>
                         </a>

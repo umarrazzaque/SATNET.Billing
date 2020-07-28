@@ -42,6 +42,15 @@
             <span asp-validation-for="RequestTypeId" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-3 select-customer">
+        <div class="form-group">
+            <label>Customer</label>
+            <select asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="CustomerId" class="text-danger"></span>
+        </div>
+    </div>
     <div class="col-lg-3 select-site">
         <div class="form-group">
             <label asp-for="SiteSelectList"></label>
@@ -53,6 +62,27 @@
     </div>
     <div class="col-lg-12 new-site">
         <h5 class="title">New Site Details</h5>
+    </div>
+    <div class="col-lg-3 new-site site-name">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" asp-for="SiteName" class="form-control" readonly="readonly" />
+            <span asp-validation-for="SiteName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>City</label>
+            <input type="text" asp-for="SiteCity" class="form-control" />
+            <span asp-validation-for="SiteCity" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="form-group">
+            <label>Area</label>
+            <input type="text" asp-for="SiteArea" class="form-control" />
+            <span asp-validation-for="SiteArea" class="text-danger"></span>
+        </div>
     </div>
     <div class="col-lg-3 new-site">
         <div class="position-relative form-group">
@@ -102,10 +132,10 @@
                 <span asp-validation-for="Upload" class="text-danger"></span>
             </div>
         </div>*@
-    <div class="col-lg-12 new-site">
+    <div class="col-lg-12 hardware">
         <h5 class="title">Hardware Details</h5>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label asp-for="HardwareSelectList"></label>
             <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
@@ -114,7 +144,7 @@
             <span asp-validation-for="HardwareId" class="text-danger"></span>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Billing</label>
             <select class="form-control select2 text-input">
@@ -125,7 +155,7 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Modem Model</label>
             <select class="form-control select2 text-input">
@@ -136,7 +166,7 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Modem Serial Number</label>
             <select class="form-control select2 text-input">
@@ -147,7 +177,7 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>MAC AIR Number</label>
             <select class="form-control select2 text-input">
@@ -160,7 +190,7 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Antinna Size</label>
             <select class="form-control select2 text-input">
@@ -171,13 +201,13 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Antenna S/N</label>
             <input type="text" placeholder="..." class="form-control" />
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Transceiver WATT</label>
             <select class="form-control select2 text-input">
@@ -188,7 +218,7 @@
             </select>
         </div>
     </div>
-    <div class="col-lg-3 new-site">
+    <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Transceiver S/N</label>
             <select class="form-control select2 text-input">
@@ -333,7 +363,7 @@
 
 <input id="hdnUnitGb" type="hidden" value="(@ServiceUnit.GBPerMonth)" />
 <input id="hdnUnitMb" type="hidden" value="(@ServiceUnit.Mbps)" />
-
+<input id="hdnCustomerId" type="hidden" value="@ViewBag.CustomerId" />
 <!-- /.Main content -->
 
 @section scripts{
