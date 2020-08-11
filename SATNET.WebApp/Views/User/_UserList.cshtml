@@ -13,6 +13,7 @@
                 <th> Email</th>
                 <th> Roles </th>
                 <th>User Type</th>
+                <th>Customer Name</th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -29,17 +30,18 @@
                 <td> @item.UserName</td>
                 <td> @item.Email</td>
                 <td>
-            @if (item.Roles.Any())
-            {
-                <ul class="list-unstyled">
-                    @foreach (var role in item.Roles)
+                    @if (item.Roles.Any())
                     {
-                        <li>@role</li>
+                        <ul class="list-unstyled">
+                            @foreach (var role in item.Roles)
+                            {
+                                <li>@role</li>
+                            }
+                        </ul>
                     }
-                </ul>
-            }
-        </td>
+                </td>
                 <td> @item.UserTypeName</td>
+                <td> @item.CustomerName</td>
                 <td class="text-center">
                     <div class="buttons">
                         <a href="@String.Format("/{0}?id={1}", "User/Edit", item.Id)" class="pl-1 pr-1">

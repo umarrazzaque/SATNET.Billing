@@ -36,6 +36,7 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Service plan is required")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        public string DedicatedServicePlanName { get; set; }
         public string ServicePlanTypeName { get; set; }
         public string ServicePlanUnit { get; set; }
         public decimal ServicePlanPrice { get; set; }

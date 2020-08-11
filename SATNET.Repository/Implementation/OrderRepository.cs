@@ -115,11 +115,11 @@ namespace SATNET.Repository.Implementation
                     
                     if (obj.InstallationDate == DateTime.MinValue)
                     {
-                        paramsOrder.Add("@InstallationDate", DBNull.Value, DbType.DateTime, ParameterDirection.Input);
+                        paramsOrder.Add("@PlannedInstallationDate", DBNull.Value, DbType.DateTime, ParameterDirection.Input);
                     }
                     else
                     {
-                        paramsOrder.Add("@InstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
+                        paramsOrder.Add("@PlannedInstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
                     }
                     paramsOrder.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
                     //paramsOrder.Add("@Download", obj.Download, DbType.Int32, ParameterDirection.Input);

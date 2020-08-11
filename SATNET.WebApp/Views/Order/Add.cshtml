@@ -66,7 +66,7 @@
     <div class="col-lg-3 new-site site-name">
         <div class="form-group">
             <label>Name</label>
-            <input type="text" asp-for="SiteName" class="form-control" readonly="readonly" />
+            <input type="text" asp-for="SiteName" class="form-control"/>
             <span asp-validation-for="SiteName" class="text-danger"></span>
         </div>
     </div>
@@ -282,7 +282,7 @@
     <div class="col-lg-3 upgrade">
         <div class="position-relative form-group">
             <label asp-for="UpgradeFromSelectList"></label><span class="unit-upgrade"></span>
-            <select disabled asp-for="UpgradeFromId" asp-items="Model.UpgradeFromSelectList" class="form-control select2 text-input">
+            <select disabled asp-for="UpgradeFromId" asp-items="Model.UpgradeFromSelectList" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="UpgradeFromId" class="text-danger"></span>
@@ -291,7 +291,7 @@
     <div class="col-lg-3 upgrade">
         <div class="position-relative form-group">
             <label asp-for="UpgradeToSelectList"></label><span class="unit-upgrade"></span>
-            <select disabled asp-for="UpgradeToId" asp-items="Model.UpgradeToSelectList" class="form-control select2 text-input">
+            <select disabled asp-for="UpgradeToId" asp-items="Model.UpgradeToSelectList" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="UpgradeToId" class="text-danger"></span>
@@ -312,7 +312,7 @@
     <div class="col-lg-3 downgrade">
         <div class="position-relative form-group">
             <label asp-for="DowngradeFromSelectList"></label><span class="unit-downgrade"></span>
-            <select disabled asp-for="DowngradeFromId" asp-items="Model.DowngradeFromSelectList" class="form-control select2 text-input">
+            <select disabled asp-for="DowngradeFromId" asp-items="Model.DowngradeFromSelectList" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="DowngradeFromId" class="text-danger"></span>
@@ -321,7 +321,7 @@
     <div class="col-lg-3 downgrade">
         <div class="position-relative form-group">
             <label asp-for="DowngradeToSelectList"></label><span class="unit-downgrade"></span>
-            <select disabled asp-for="DowngradeToId" asp-items="Model.DowngradeToSelectList" class="form-control select2 text-input">
+            <select disabled asp-for="DowngradeToId" asp-items="Model.DowngradeToSelectList" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="DowngradeToId" class="text-danger"></span>
