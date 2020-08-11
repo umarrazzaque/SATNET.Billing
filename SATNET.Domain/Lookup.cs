@@ -9,5 +9,6 @@ namespace SATNET.Domain
         public string Name { get; set; }
         public string Description { get; set; }
         public int LookupTypeId { get; set; }
+        public string LookupTypeName { get; set; }
     }
 }

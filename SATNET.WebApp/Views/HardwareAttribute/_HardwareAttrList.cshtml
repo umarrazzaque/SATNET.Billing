@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.ServicePlanModel>
+﻿@model IEnumerable<SATNET.WebApp.Models.Lookup.LookUpModel>
 @{
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
@@ -13,12 +13,8 @@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.Name) </th>
-                <th> @Html.DisplayNameFor(model => model.PlanTypeId) </th>
-                <th> @Html.DisplayNameFor(model => model.DownloadMIR) </th>
-                <th> @Html.DisplayNameFor(model => model.UploadMIR) </th>
-                <th> @Html.DisplayNameFor(model => model.DownloadCIR)</th>
-                <th> @Html.DisplayNameFor(model => model.UploadCIR) </th>
-                <th> @Html.DisplayNameFor(model => model.BriefDescription) </th>
+                <th> @Html.DisplayNameFor(model => model.Description) </th>
+                <th> @Html.DisplayNameFor(model => model.LookupTypeName) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -38,21 +34,17 @@
                         @counter
                     </td>
                     <td> @Html.DisplayFor(modelItem => item.Name)</td>
-                    <td> @Html.DisplayFor(modelItem => item.PlanType)</td>
-                    <td> @Html.DisplayFor(modelItem => item.DownloadMIR)</td>
-                    <td> @Html.DisplayFor(modelItem => item.UploadMIR)</td>
-                    <td> @Html.DisplayFor(modelItem => item.DownloadCIR)</td>
-                    <td> @Html.DisplayFor(modelItem => item.UploadCIR)</td>
-                    <td> @Html.DisplayFor(modelItem => item.BriefDescription)</td>
+                    <td> @Html.DisplayFor(modelItem => item.Description)</td>
+                    <td> @Html.DisplayFor(modelItem => item.LookupTypeName)</td>
                     <td class="text-center">
                         <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "ServicePlan/Edit", item.Id)" class="pl-1 pr-1">
+                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Edit", item.Id)" class="pl-1 pr-1">
                                 <span class="fa fa-edit" aria-hidden="true"></span>
                             </a>
-                            <a href="@String.Format("/{0}?id={1}", "ServicePlan/Details", item.Id)" class="pl-1 pr-1 right-pan">
+                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Details", item.Id)" class="pl-1 pr-1 right-pan">
                                 <span class="fa fa-bars" aria-hidden="true"></span>
                             </a>
-                            <a href="@String.Format("/{0}?id={1}", "ServicePlan/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
                                data-toggle="modal" data-target="#modal-deleteConfirm">
                                 <span class="fa fa-trash" aria-hidden="true"></span>
                             </a>

@@ -18,7 +18,7 @@ namespace SATNET.Repository.Core
 
         public UnitOfWork()
         {
-            IDbConnection dbConnection = new SqlConnection("Server=.\\SQLExpress;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");
+            IDbConnection dbConnection = new SqlConnection("Server=.;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");
             _connection = dbConnection;
             OpenConnection();
         }
@@ -78,5 +78,9 @@ namespace SATNET.Repository.Core
 
         private IRepository<Site> _siteRepository;
         public IRepository<Site> Sites { get { return _siteRepository ?? (_siteRepository = new SiteRepository(this)); } }
+
+        private IRepository<Lookup> _lookupRepository;
+        public IRepository<Lookup> Lookups { get { return _lookupRepository ?? (_lookupRepository = new LookupRepository(this)); } }
+
     }
 }
