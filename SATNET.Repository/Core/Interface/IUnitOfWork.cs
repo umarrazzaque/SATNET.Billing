@@ -19,5 +19,6 @@ namespace SATNET.Repository.Core.Interface
         IRepository<ServicePlan> ServicePlans { get; }
         IRepository<ServicePlanPrice> ServicePlanPrices { get; }
         IRepository<Site> Sites { get; }
+        IRepository<Lookup> Lookups { get; }
     }
 }

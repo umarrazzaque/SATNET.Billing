@@ -60,6 +60,12 @@ namespace SATNET.WebApp
             {
                 options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("Admin"));
             });
+
+            //Session
+            //services.AddSession(options =>
+            //{
+            //    options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
+            //});
             //services.AddAuthorization(options => {
             //    options.AddPolicy("UserAccessPolicy", policy =>
             //    {
@@ -112,7 +118,7 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Promotion>, PromotionService>();
             services.AddScoped<IService<IP>, IPService>();
 
-            
+
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
             services.AddScoped<IRepository<ServicePlanPrice>, ServicePlanPriceRepository>();
@@ -124,8 +130,8 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Token>, TokenRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();
-            
-            
+
+
 
             //-------------Misc-----------
             //services.AddScoped<IRepository<Customer>, ResellerRepository>();
@@ -150,7 +156,7 @@ namespace SATNET.WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            //app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
