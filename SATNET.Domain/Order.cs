@@ -21,6 +21,13 @@ namespace SATNET.Domain
         public string SubscriberArea { get; set; }
         public string SubscriberNotes{ get; set; }
         public int HardwareId { get; set; }
+        public int BillingId { get; set; }
+        public int ModemModelId { get; set; }
+        public int ModemSrNoId { get; set; }
+        public int MacAirNoId { get; set; }
+        public int AntennaSizeId { get; set; }
+        public int TransceiverWATTId { get; set; }
+        public int TransceiverSrNoId { get; set; }
         public string HardwareModel { get; set; }
         public decimal HardwarePrice { get; set; }
         public int RequestTypeId { get; set; }

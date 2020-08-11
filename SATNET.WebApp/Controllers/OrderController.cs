@@ -90,6 +90,14 @@ namespace SATNET.WebApp.Controllers
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
+            model.BillingSelectList = new SelectList(hardwares, "Id", "Name");
+            model.ModemModelSelectList = new SelectList(hardwares, "Id", "Name");
+            model.ModemSrNoSelectList = new SelectList(hardwares, "Id", "Name");
+            model.MacAirNoSelectList = new SelectList(hardwares, "Id", "Name");
+            model.AntennaSizeSelectList = new SelectList(hardwares, "Id", "Name");
+            model.TransceiverWATTSelectList = new SelectList(hardwares, "Id", "Name");
+            model.TransceiverSrNoSelectList = new SelectList(hardwares, "Id", "ModemModel");
+            model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
             model.SiteSelectList = new SelectList(sites, "Id", "Name");
             model.TokenSelectList = new SelectList(tokens, "Id", "Name");
@@ -119,6 +127,11 @@ namespace SATNET.WebApp.Controllers
             {
                 SiteId = model.SiteId,
                 HardwareId = model.HardwareId,
+                BillingId = model.BillingId,
+                ModemModelId = model.ModemModelId,
+                ModemSrNoId = model.ModemSrNoId,
+                MacAirNoId = model.MacAirNoId,
+                
                 ServicePlanId = model.ServicePlanId,
                 RequestTypeId = model.RequestTypeId,
                 UpgradeFromId = model.UpgradeFromId,

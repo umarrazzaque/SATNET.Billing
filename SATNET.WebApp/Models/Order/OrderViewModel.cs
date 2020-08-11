@@ -46,6 +46,20 @@ namespace SATNET.WebApp.Models.Order
         public SelectList ServicePlanSelectList { get; set; }
         [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
+        public int BillingId { get; set; }
+        public SelectList BillingSelectList { get; set; }
+        public int ModemModelId { get; set; }
+        public SelectList ModemModelSelectList { get; set; }
+        public int ModemSrNoId { get; set; }
+        public SelectList ModemSrNoSelectList { get; set; }
+        public int MacAirNoId { get; set; }
+        public SelectList MacAirNoSelectList { get; set; }
+        public int AntennaSizeId { get; set; }
+        public SelectList AntennaSizeSelectList { get; set; }
+        public int TransceiverWATTId { get; set; }
+        public SelectList TransceiverWATTSelectList { get; set; }
+        public int TransceiverSrNoId { get; set; }
+        public SelectList TransceiverSrNoSelectList { get; set; }
         public string HardwareModel { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }

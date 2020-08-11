@@ -147,58 +147,46 @@
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Billing</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="BillingId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>Full HW Price - No Promotion</option>
-                <option>New Year Promotion - HW Free</option>
-                <option>Other</option>
             </select>
+            <span asp-validation-for="BillingId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Modem Model</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="ModemModelId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>MDM2210</option>
-                <option>MDM2510</option>
-                <option>MDM3310</option>
             </select>
+            <span asp-validation-for="ModemModelId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Modem Serial Number</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="ModemSrNoId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>9282900429995</option>
-                <option>9283000430893</option>
-                <option>9283000431202</option>
             </select>
+            <span asp-validation-for="ModemSrNoId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>MAC AIR Number</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="MacAirNoId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>
-                    00:06:39:88:fa:17
-                </option>
-                <option>00:06:39:89:04:9d</option>
-                <option>00:06:39:88:fa:5f</option>
             </select>
+            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Antinna Size</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="AntennaSizeId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>1.0 M</option>
-                <option>1.2 M</option>
-                <option>1.8 M</option>
             </select>
+            <span asp-validation-for="AntennaSizeId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
@@ -210,23 +198,19 @@
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Transceiver WATT</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="TransceiverWATTId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>2W</option>
-                <option>3W</option>
-                <option>4W</option>
             </select>
+            <span asp-validation-for="TransceiverWATTId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Transceiver S/N</label>
-            <select class="form-control select2 text-input">
+            <select asp-for="TransceiverSrNoId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
-                <option>4518434101061</option>
-                <option>4518434100886</option>
-                <option>4518434101063</option>
             </select>
+            <span asp-validation-for="TransceiverSrNoId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-12 new-site subscriber">
