@@ -5,13 +5,13 @@
 
 <!-- Main content -->
 @*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
-<form method="post" data-ajax="true" asp-controller="HardwareAttribute" asp-action="Add" data-ajax-method="post"
+<form method="post" data-ajax="true" asp-controller="HardwareAS" asp-action="Add" data-ajax-method="post"
       enctype="multipart/form-data" id="formAdd" autocomplete="off">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div>
-                    Add Modem Model
+                    Add Antenna Size
                     <div class="page-title-subheading">
                         Please fillout following form
                     </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "HardwareAttribute/Index")" class=" btn btn-danger">
+                    <a href="@String.Format("/{0}", "HardwareAS/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
                     <button type="submit" class="btn btn-default">Save Record</button>
@@ -31,16 +31,11 @@
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.HiddenFor(model=> model.LookUpModel.LookUpTypeId)
-        <div class="col-lg-6">
-            <div class="form-group">
-                @Html.Label("Hardware Attribute")
-                @Html.DropDownListFor(model => model.LookUpModel.LookUpTypeId, new SelectList(Model.LookupType as System.Collections.IEnumerable, "Id", "Name"), "-Select Hardware Attribute-", new { @class = "form-control select2 text-input", @disabled= true })
-            </div>
-        </div>
+        
         <div class="col-lg-6">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.LookUpModel.Name, new { })
-                @Html.EditorFor(model => model.LookUpModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem Model Name ", @type = "text" } })
+                @Html.EditorFor(model => model.LookUpModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Antenna Size ", @type = "text" } })
             </div>
         </div>
         <div class="col-lg-12">

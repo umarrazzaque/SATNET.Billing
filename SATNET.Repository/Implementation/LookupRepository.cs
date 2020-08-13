@@ -40,7 +40,14 @@ namespace SATNET.Repository.Implementation
 
         public async Task<int> Delete(int id, int deletedBy)
         {
-            throw new NotImplementedException();
+            var dbCon = UnitOfWork.Connection;
+            var queryParameters = new DynamicParameters();
+            queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
+            _ = await dbCon.ExecuteScalarAsync<int>("LookUpDelete", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            int result = Parse.ToInt32(queryParameters.Get<int>("@P_Return_ID"));
+            return result;
         }
 
         public async Task<Lookup> Get(int id)

@@ -7,14 +7,12 @@
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
-                <th class="text-center" width="30">
-                    <!-- <input type="checkbox"> -->
+                @*<th class="text-center" width="30">*@
                 </th>
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.Name) </th>
                 <th> @Html.DisplayNameFor(model => model.Description) </th>
-                <th> @Html.DisplayNameFor(model => model.LookupTypeName) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -26,7 +24,6 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td class="text-center"> <input type="checkbox"></td>
                     <td class="text-center text-muted">
                         @{
                             counter++;
@@ -35,16 +32,12 @@
                     </td>
                     <td> @Html.DisplayFor(modelItem => item.Name)</td>
                     <td> @Html.DisplayFor(modelItem => item.Description)</td>
-                    <td> @Html.DisplayFor(modelItem => item.LookupTypeName)</td>
                     <td class="text-center">
                         <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Edit", item.Id)" class="pl-1 pr-1">
+                            <a href="@String.Format("/{0}?id={1}", "HardwareMAN/Edit", item.Id)" class="pl-1 pr-1">
                                 <span class="fa fa-edit" aria-hidden="true"></span>
                             </a>
-                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Details", item.Id)" class="pl-1 pr-1 right-pan">
-                                <span class="fa fa-bars" aria-hidden="true"></span>
-                            </a>
-                            <a href="@String.Format("/{0}?id={1}", "HardwareAttribute/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                            <a href="@String.Format("/{0}?id={1}", "HardwareMAN/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
                                data-toggle="modal" data-target="#modal-deleteConfirm">
                                 <span class="fa fa-trash" aria-hidden="true"></span>
                             </a>

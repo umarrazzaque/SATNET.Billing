@@ -19,7 +19,7 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Add(Lookup obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HarwareAttribute/Index" };
+            var status = new StatusModel { IsSuccess = false};
             try
             {
                 int retId = -1;
@@ -53,9 +53,36 @@ namespace SATNET.Service.Implementation
             return Task.FromResult(status);
         }
 
-        public async Task<StatusModel> Delete(int id, int deletedBy)
+        public Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false };
+            try
+            {
+                int dRow = -1;
+                using (var uow = new UnitOfWorkFactory().Create())
+                {
+                    uow.BeginTransaction();
+                    dRow = uow.Lookups.Delete(recId, deletedBy).Result;
+                    if (dRow > 0)
+                    {
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Transaction completed successfully.";
+                    }
+                    else
+                    {
+                        status.ErrorCode = "An error occured while processing request.";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                status.ErrorCode = "Cannot delete record due to referential records.";
+            }
+            finally
+            {
+            }
+            return Task.FromResult(status);
         }
 
         public Task<Lookup> Get(int id)
@@ -90,7 +117,7 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Update(Lookup obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareAttribute/Index" };
+            var status = new StatusModel { IsSuccess = false};
             try
             {
                 int retId = -1;
