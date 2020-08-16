@@ -145,11 +145,11 @@
                                     <i class="metismenu-icon icofont-contrast"></i> Dashboard
                                 </a>
                             </li>
-                                <li>
-                                    <a href="@Url.Action("Index","Site")" class="">
-                                        <i class="metismenu-icon icofont-site-map"></i> Site Monitor
-                                    </a>
-                                </li>
+                            <li>
+                                <a href="@Url.Action("Index","Site")" class="">
+                                    <i class="metismenu-icon icofont-site-map"></i> Site Monitor
+                                </a>
+                            </li>
 
                             <li>
                                 <a href="@String.Format("/{0}", "Order")" class="">
@@ -162,6 +162,29 @@
                                     <a href="@Url.Action("Index", "Customer")" class="">
                                         <i class="metismenu-icon icofont-architecture-alt"></i> Customers
                                     </a>
+                                </li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-wifi-router"></i> Hardware
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+
+                                            @*<a href="@Url.Action("Index","Hardware")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Hardwares
+                                            </a>*@
+                                            <a href="@Url.Action("Index","HardwareAttribute")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Model
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareSerialNo")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Serial Number
+                                            </a>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a href="" class="">

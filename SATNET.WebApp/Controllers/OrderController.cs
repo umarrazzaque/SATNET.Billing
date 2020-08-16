@@ -83,6 +83,8 @@ namespace SATNET.WebApp.Controllers
             OrderViewModel model = new OrderViewModel();
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
+            var modemModels = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ModemModel) });
+            var modemSrNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ModemSrNo) });
             var hardwares = await _hardwareService.List(new Hardware());
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
@@ -91,8 +93,8 @@ namespace SATNET.WebApp.Controllers
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.BillingSelectList = new SelectList(hardwares, "Id", "Name");
-            model.ModemModelSelectList = new SelectList(hardwares, "Id", "Name");
-            model.ModemSrNoSelectList = new SelectList(hardwares, "Id", "Name");
+            model.ModemModelSelectList = new SelectList(modemModels, "Id", "Name");
+            model.ModemSrNoSelectList = new SelectList(modemSrNos, "Id", "Name");
             model.MacAirNoSelectList = new SelectList(hardwares, "Id", "Name");
             model.AntennaSizeSelectList = new SelectList(hardwares, "Id", "Name");
             model.TransceiverWATTSelectList = new SelectList(hardwares, "Id", "Name");
@@ -126,13 +128,16 @@ namespace SATNET.WebApp.Controllers
             var order = new Order()
             {
                 SiteId = model.SiteId,
-                HardwareId = model.HardwareId,
+                //HardwareId = model.HardwareId,
                 BillingId = model.BillingId,
                 ModemModelId = model.ModemModelId,
                 ModemSrNoId = model.ModemSrNoId,
                 MacAirNoId = model.MacAirNoId,
-                
+                AntennaSizeId = model.AntennaSizeId,
+                TransceiverWATTId = model.TransceiverWATTId,
+                TransceiverSrNoId = model.TransceiverSrNoId,
                 ServicePlanId = model.ServicePlanId,
+                DedicatedServicePlanName = model.DedicatedServicePlanName,
                 RequestTypeId = model.RequestTypeId,
                 UpgradeFromId = model.UpgradeFromId,
                 UpgradeToId = model.UpgradeToId,
@@ -188,6 +193,7 @@ namespace SATNET.WebApp.Controllers
             obj.PlanTypeId = string.IsNullOrEmpty(servicePlanTypeId) ? 0 : Convert.ToInt32(servicePlanTypeId);
 
             var servicePlans = await _servicePlanService.List(obj);
+            servicePlans.Insert(0, new ServicePlan() { Id = 0, Name = "Select" });
             return Json(new SelectList(servicePlans, "Id", "Name"));
         }
 

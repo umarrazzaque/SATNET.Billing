@@ -103,11 +103,31 @@ $(function () {
             });
         }
     });
+    $("#ServicePlanId").change(function () {
+        var servicePlanType = $("#ServicePlanTypeId").val();
+        if (servicePlanType == '14') {
+            var dedicatedPlanValue = $(this).val();
+            var dedicatedPlanText = $('#ServicePlanId option:selected').text();
+            if (dedicatedPlanValue > 0) {
+                if (dedicatedPlanText == 'Above 80') {
+                    $(".custom-dedicated-serviceplan").show();
+                    $(".dedicated-serviceplan").hide();
+                }
+                else {
+                    $(".dedicated-serviceplan").show();
+                    $(".custom-dedicated-serviceplan").hide();
+                    populateCustomDedicatedPlans(dedicatedPlanText);
+                }
+            }
+        }
+    });
 
 });
 
 hideAllSections = function () {
     $(".new-site").hide();
+    $(".dedicated-serviceplan").hide();
+    $(".custom-dedicated-serviceplan").hide();
     $(".upgrade").hide();
     $(".downgrade").hide();
     $(".token").hide();
@@ -288,6 +308,33 @@ removeUpgradeItem = function (servicePlanType) {
         $("#UpgradeFromId option:contains(Unlimited 30)").remove();
     }
 }
+
+populateCustomDedicatedPlans = function (dedicatedPlanText) {
+    var items = '';
+    if (dedicatedPlanText == '2 to 9') {
+        for (var i = 2; i <= 9; i++) {
+            items += "<option value='" + i + "'>" + i + "</option>";
+        }
+    }
+    else if (dedicatedPlanText == '10 to 19') {
+        for (var i = 10; i <= 19; i++) {
+            items += "<option value='" + i + "'>" + i + "</option>";
+        }
+    }
+    else if (dedicatedPlanText == '20 to 39') {
+        for (var i = 20; i <= 39; i++) {
+            items += "<option value='" + i + "'>" + i + "</option>";
+        }
+    }
+    else if (dedicatedPlanText == '40 to 79') {
+        for (var i = 40; i <= 79; i++) {
+            items += "<option value='" + i + "'>" + i + "</option>";
+        }
+    }
+    $("#DedicatedServicePlanName").empty();
+    $("#DedicatedServicePlanName").html(items);
+}
+
 
 
 

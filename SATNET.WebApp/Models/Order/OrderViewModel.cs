@@ -36,6 +36,7 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Service plan is required")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        [Required(ErrorMessage = "Dedicated service plan is required")]
         public string DedicatedServicePlanName { get; set; }
         public string ServicePlanTypeName { get; set; }
         public string ServicePlanUnit { get; set; }
@@ -46,18 +47,27 @@ namespace SATNET.WebApp.Models.Order
         public SelectList ServicePlanSelectList { get; set; }
         [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
+        [Required(ErrorMessage = "Hardware Billing is required")]
         public int BillingId { get; set; }
         public SelectList BillingSelectList { get; set; }
+        [Required(ErrorMessage = "Modem Model is required")]
         public int ModemModelId { get; set; }
         public SelectList ModemModelSelectList { get; set; }
+        [Required(ErrorMessage = "Modem Serial No is required")]
         public int ModemSrNoId { get; set; }
         public SelectList ModemSrNoSelectList { get; set; }
+        [Required(ErrorMessage = "Mac Air No is required")]
         public int MacAirNoId { get; set; }
         public SelectList MacAirNoSelectList { get; set; }
+        [Required(ErrorMessage = "Antenna size is required")]
         public int AntennaSizeId { get; set; }
         public SelectList AntennaSizeSelectList { get; set; }
+        [Required(ErrorMessage = "Antenna Serial No is required")]
+        public string AntennaSrNo { get; set; }
+        [Required(ErrorMessage = "Transceiver WATT is required")]
         public int TransceiverWATTId { get; set; }
         public SelectList TransceiverWATTSelectList { get; set; }
+        [Required(ErrorMessage = "Transceiver Serial No is required")]
         public int TransceiverSrNoId { get; set; }
         public SelectList TransceiverSrNoSelectList { get; set; }
         public string HardwareModel { get; set; }

@@ -84,9 +84,16 @@ namespace SATNET.Repository.Implementation
                         queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
                         queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
                         queryParameters.Add("@ServicePlanId", obj.ServicePlanId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@DedicatedServicePlanName", obj.DedicatedServicePlanName, DbType.String, ParameterDirection.Input);
                         queryParameters.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
                         queryParameters.Add("@P_SubscriberId", obj.SubscriberId, DbType.Int32, ParameterDirection.Input);
-                        queryParameters.Add("@P_HardwareId", obj.HardwareId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@ModemModelId", obj.ModemModelId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@ModemSrNoId", obj.ModemSrNoId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@MacAirNoId", obj.MacAirNoId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@BillingId", obj.BillingId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@TransceiverSrNoId", obj.TransceiverSrNoId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@TransceiverWATTId", obj.TransceiverWATTId, DbType.Int32, ParameterDirection.Input);
+                        queryParameters.Add("@AntennaSizeId", obj.AntennaSizeId, DbType.Int32, ParameterDirection.Input);
                         queryParameters.Add("@P_StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
                         queryParameters.Add("@P_Name", obj.SiteName, DbType.String, ParameterDirection.Input);
                         queryParameters.Add("@P_City", obj.SiteCity, DbType.String, ParameterDirection.Input);
@@ -129,6 +136,7 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@PromotionId", obj.PromotionId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@SiteCity", obj.SiteCity, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SiteArea", obj.SiteArea, DbType.String, ParameterDirection.Input);
+                    paramsOrder.Add("@DedicatedServicePlanName", obj.DedicatedServicePlanName, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberName", obj.SubscriberName, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberCity", obj.SubscriberCity, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberEmail", obj.SubscriberEmail, DbType.String, ParameterDirection.Input);

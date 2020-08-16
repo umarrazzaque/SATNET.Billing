@@ -18,8 +18,8 @@ namespace SATNET.Repository.Core
 
         public UnitOfWork()
         {
-            IDbConnection dbConnection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local
-            //IDbConnection dbConnection = new SqlConnection("Server=tcp:satnetbilling.database.windows.net,1433;Initial Catalog=SatnetBilling;Persist Security Info=False;User ID=usat;Password=Password01@@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");//azure
+            //IDbConnection dbConnection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local
+            IDbConnection dbConnection = new SqlConnection("Server=tcp:satnetbilling.database.windows.net,1433;Initial Catalog=SatnetBilling;Persist Security Info=False;User ID=usat;Password=Password01@@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");//azure
             _connection = dbConnection;
             OpenConnection();
         }
@@ -79,5 +79,8 @@ namespace SATNET.Repository.Core
 
         private IRepository<Site> _siteRepository;
         public IRepository<Site> Sites { get { return _siteRepository ?? (_siteRepository = new SiteRepository(this)); } }
+
+        private IRepository<Lookup> _lookuoRepository;
+        public IRepository<Lookup> Lookups { get { return _lookuoRepository ?? (_lookuoRepository = new LookupRepository(this)); } }
     }
 }

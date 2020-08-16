@@ -39,6 +39,7 @@ namespace SATNET.Domain
         public DateTime InstallationDate { get; set; }
         public int ServicePlanTypeId { get; set; }
         public string ServicePlanTypeName { get; set; }
+        public string DedicatedServicePlanName { get; set; }
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
         public decimal ServicePlanPrice { get; set; }
