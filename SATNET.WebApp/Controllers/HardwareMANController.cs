@@ -24,7 +24,7 @@ namespace SATNET.WebApp.Controllers
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.ModemSrNo;
+            activeHardwareAttribute = HardwareAttributes.MACAirNo;
             _responseUrl = "/HardwareMAN/Index";
         }
         public async Task<IActionResult> Index()
