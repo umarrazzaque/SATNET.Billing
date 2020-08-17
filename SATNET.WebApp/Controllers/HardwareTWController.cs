@@ -1,47 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
+using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models.Lookup;
-using Microsoft.AspNetCore.Http.Extensions;
-using SATNET.Service;
 
 namespace SATNET.WebApp.Controllers
 {
-    public class HardwareSerialNoController : Controller
+    public class HardwareTWController : BaseController
     {
-        private string _hardwareAttr = "";
-        const string HardwareAttrType = "_HardwareAttributeType";
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
         private readonly HardwareAttributes activeHardwareAttribute;
-
-        public HardwareSerialNoController(IMapper mapper, IService<Lookup> lookUpService)
+        private readonly string _responseUrl;
+        public HardwareTWController(IMapper mapper, IService<Lookup> lookUpService)
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.ModemSrNo;
+            activeHardwareAttribute = HardwareAttributes.TransceiverWATT;
+            _responseUrl = "/HardwareTW/Index";
         }
-        public async Task<IActionResult> Index(string hardwareAttr)
+        public async Task<IActionResult> Index()
         {
-            //string reqURL = Request.GetDisplayUrl();
-            //var res = reqURL.Split("/");
-            //byte[] activeHardwareAttrTypeB = Encoding.ASCII.GetBytes(hardwareAttr);
-            //HttpContext.Session.Set(HardwareAttrType, activeHardwareAttrTypeB);
-            return View(await GetHardwareAttrList());
+            return View(await GetHardwareTWList());
         }
 
         public IActionResult Add()
         {
-            var resultModel = new CreateLookUpModel() { 
-                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(activeHardwareAttribute) },
-                LookupType = GetLookTypeList()
+            var resultModel = new CreateLookUpModel()
+            {
+                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(activeHardwareAttribute) }
             };
             return View(resultModel);
         }
@@ -49,7 +43,7 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateLookUpModel retModel)
         {
-            var statusModel = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareSerialNo/Index" };
+            var statusModel = new StatusModel { IsSuccess = false, ResponseUrl = _responseUrl };
             if (ModelState.IsValid)
             {
                 Lookup obj = _mapper.Map<Lookup>(retModel.LookUpModel);
@@ -59,7 +53,7 @@ namespace SATNET.WebApp.Controllers
             {
                 statusModel.ErrorCode = "Error occured see entity validation errors.";
             }
-            statusModel.ResponseUrl = "/HardwareSerialNo/Index";
+            statusModel.ResponseUrl = _responseUrl;
             return Json(statusModel);
 
         }
@@ -68,8 +62,7 @@ namespace SATNET.WebApp.Controllers
         {
             var resultModel = new CreateLookUpModel()
             {
-                LookUpModel = _mapper.Map<LookUpModel>(await _lookUpService.Get(id)),
-                LookupType = GetLookTypeList()
+                LookUpModel = _mapper.Map<LookUpModel>(await _lookUpService.Get(id))
             };
             return View(resultModel);
         }
@@ -78,10 +71,18 @@ namespace SATNET.WebApp.Controllers
         {
             Lookup obj = _mapper.Map<Lookup>(retModel.LookUpModel);
             var statusModel = await _lookUpService.Update(obj);
-            statusModel.ResponseUrl = "/HardwareSerialNo/Index";
+            statusModel.ResponseUrl = _responseUrl;
             return Json(statusModel);
         }
-        public async Task<List<LookUpModel>> GetHardwareAttrList()
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            //1  as loged in user id
+            var statusModel = _lookUpService.Delete(id, 1).Result;
+            statusModel.Html = RenderViewToString(this, "Index", await GetHardwareTWList());
+            return Json(statusModel);
+        }
+        public async Task<List<LookUpModel>> GetHardwareTWList()
         {
             var retList = new List<LookUpModel>();
             var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(activeHardwareAttribute) });
@@ -90,15 +91,6 @@ namespace SATNET.WebApp.Controllers
                 retList = _mapper.Map<List<LookUpModel>>(serviceResult);
             }
             return retList;
-        }
-        private List<LookUpTypeModel> GetLookTypeList()
-        {
-            List<LookUpTypeModel> lookupTypeList = new List<LookUpTypeModel>
-            {
-                new LookUpTypeModel { Id = 1010, Name = "Modem Model"},
-                new LookUpTypeModel { Id = 1011, Name = "Modem Serial No"}
-            };
-            return lookupTypeList;
         }
     }
 }
