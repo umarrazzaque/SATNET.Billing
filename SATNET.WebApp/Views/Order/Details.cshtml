@@ -93,10 +93,13 @@
                                         <h3>
                                             Hardware
                                         </h3>
-                                        @Model.HardwareModel
+                                        @if (Model.ModemModel != null)
+                                        {
+                                            <span>HW - KIT -</span> @Model.ModemModel <span>-</span> @Model.TransceiverWATT <span>-</span> @Model.AntennaSize;
+                                        }
                                     </td>
-                                    <td class="unit">$ @Model.HardwarePrice</td>
-                                    <td class="total">$ @Model.HardwarePrice</td>
+                                    <td class="unit">$ </td>
+                                    <td class="total">$ </td>
                                 </tr>
                                 <tr>
                                     <td class="no">3</td>
