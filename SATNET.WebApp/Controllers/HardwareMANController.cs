@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models.Lookup;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SATNET.WebApp.Controllers
 {
-    
+
     public class HardwareMANController : BaseController
     {
         private readonly IService<Lookup> _lookUpService;
