@@ -134,5 +134,8 @@ namespace SATNET.WebApp.Models.Order
         public int CustomerId { get; set; }
         public string Other { get; set; }
         public decimal Total { get; set; }
+        public string ModemModel { get; set; }
+        public string TransceiverWATT { get; set; }
+        public string AntennaSize { get; set; }
     }
 }

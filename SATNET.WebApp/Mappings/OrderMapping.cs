@@ -32,7 +32,10 @@ namespace SATNET.WebApp.Mappings
                 HardwarePrice = obj.HardwarePrice,
                 IPName = obj.IPName,
                 IPPrice=obj.IPPrice,
-                Total = obj.Total
+                Total = obj.Total,
+ModemModel = obj.ModemModel,
+TransceiverWATT=obj.TransceiverWATT,
+AntennaSize = obj.AntennaSize
             };
             return model;
         }

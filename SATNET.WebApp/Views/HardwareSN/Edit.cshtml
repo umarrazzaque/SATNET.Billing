@@ -38,13 +38,13 @@
                     @Html.DropDownListFor(model => model.LookUpModel.LookUpTypeId, new SelectList(Model.LookupType as System.Collections.IEnumerable, "Id", "Name"), "-Select Hardware Attribute-", new { @class = "form-control select2 text-input", @disabled = true })
                 </div>
             </div>*@
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.LookUpModel.Name, new { })
                     @Html.EditorFor(model => model.LookUpModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Modem Serial Number ", @type = "text" } })
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-5">
                 <div class="position-relative form-group">
                     @Html.LabelFor(model => model.LookUpModel.Description, new { })
                     @Html.EditorFor(model => model.LookUpModel.Description, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Description", @type = "text" } })
