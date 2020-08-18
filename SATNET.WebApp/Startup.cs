@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
@@ -53,17 +54,23 @@ namespace SATNET.WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
+                //.AddClaimsPrincipalFactory<MyUserClaimsPrincipalFactory>();  //for custom claims
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("Admin"));
-                //options.AddPolicy("UserEditPolicy", policy => policy.RequireRole("Admin"));
             });
 
             //Session
             //services.AddSession(options =>
             //{
             //    options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
+            //});
+            //services.AddAuthorization(options => {
+            //    options.AddPolicy("UserAccessPolicy", policy =>
+            //    {
+            //        policy.RequireClaim(ClaimTypes.Role, "Admin");
+            //    });
             //});
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>

@@ -11,6 +11,7 @@ using SATNET.Domain.Enums;
 using SATNET.Service;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Areas.Identity.Data;
+using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Models;
 using SATNET.WebApp.Models.Lookup;
 
@@ -138,8 +139,11 @@ namespace SATNET.WebApp.Controllers
             //PackageModelList packageList = new PackageModelList();
             //packageList.MenuModel = SetLayoutContent(heading: "Site",subHeading: "Listing");
 
+            var user = await _userManager.GetUserAsync(User);
+            int customerId = Utilities.TryInt32Parse(user.CustomerId);
+
             var retList = new List<SiteModel>();
-            var serviceResult = await _siteService.List(new Site());
+            var serviceResult = await _siteService.List(new Site() { CustomerId = customerId});
             if (serviceResult.Any())
             {
                 retList = _mapper.Map<List<SiteModel>>(serviceResult);

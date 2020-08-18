@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
 using SATNET.Service.Interface;
+using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Mappings;
 using SATNET.WebApp.Models;
@@ -20,6 +24,7 @@ namespace SATNET.WebApp.Controllers
     [Authorize]
     public class OrderController : BaseController
     {
+        private readonly IService<Customer> _customerService;
         private readonly IService<Order> _orderService;
         private readonly IService<Lookup> _lookupService;
         private readonly IService<Hardware> _hardwareService;
@@ -29,10 +34,13 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Promotion> _promotionService;
         private readonly IService<IP> _ipService;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
-            , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper)
+        public OrderController(IService<Customer> customerService, IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
+            , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper
+            , UserManager<ApplicationUser> userManager)
         {
+            _customerService = customerService;
             _orderService = orderService;
             _hardwareService = hardwareService;
             _servicePlanService = servicePlanService;
@@ -42,6 +50,7 @@ namespace SATNET.WebApp.Controllers
             _promotionService = promotionService;
             _ipService = ipService;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -52,7 +61,7 @@ namespace SATNET.WebApp.Controllers
             ViewBag.OrderStatusSelectList = new SelectList(orderStatuses, "Id", "Name");
 
             List<OrderViewModel> model = new List<OrderViewModel>();
-            var serviceResult = await _orderService.List(new Order());
+            var serviceResult = await _orderService.List(new Order() { CustomerId = await GetCustomerId() });
             if (serviceResult.Any())
             {
                 model = OrderMapping.GetListViewModel(serviceResult);
@@ -62,10 +71,20 @@ namespace SATNET.WebApp.Controllers
         }
         public async Task<IActionResult> Add()
         {
+            Customer customer = new Customer();
+            List<Customer> customers = new List<Customer>();
+            List<Site> sites = new List<Site>();
+            var customerId = await GetCustomerId();
+            if (customerId == 0)//true, satnet user
+            {
+                customers = await _customerService.List(new Customer());
+            }
+            ViewBag.CustomerId = customerId;
             OrderViewModel model = new OrderViewModel();
-            var sites = await _siteService.List(new Site());
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
+            var modemModels = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ModemModel) });
+            var modemSrNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ModemSrNo) });
             var hardwares = await _hardwareService.List(new Hardware());
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
@@ -73,23 +92,52 @@ namespace SATNET.WebApp.Controllers
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
+            model.BillingSelectList = new SelectList(hardwares, "Id", "Name");
+            model.ModemModelSelectList = new SelectList(modemModels, "Id", "Name");
+            model.ModemSrNoSelectList = new SelectList(modemSrNos, "Id", "Name");
+            model.MacAirNoSelectList = new SelectList(hardwares, "Id", "Name");
+            model.AntennaSizeSelectList = new SelectList(hardwares, "Id", "Name");
+            model.TransceiverWATTSelectList = new SelectList(hardwares, "Id", "Name");
+            model.TransceiverSrNoSelectList = new SelectList(hardwares, "Id", "ModemModel");
+            model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
             model.SiteSelectList = new SelectList(sites, "Id", "Name");
             model.TokenSelectList = new SelectList(tokens, "Id", "Name");
             model.PromotionSelectList = new SelectList(promotions, "Id", "Name");
             model.IPSelectList = new SelectList(ips, "Id", "Name");
-            model.CustomerName = "Satnet Customer";
+            model.CustomerSelectList = new SelectList(customers, "Id", "Name");
+            if (customerId > 0)//true, customer
+            {
+                customer = await _customerService.Get(customerId);
+                model.CustomerName = customer.Name;
+                //model.SiteName = GetLoggedInUserCustomerName3(customer.Name).ToUpper() + GetNumber(GetSiteCount() + 1);
+            }
 
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Add(OrderViewModel model)
         {
-            var result = await _orderService.Add(new Order()
+            int customerId = 0;
+            string siteName = "";
+            customerId = model.CustomerId == 0 ? await GetCustomerId() : model.CustomerId;
+            if (model.SiteId == 0)
+            {
+                siteName = model.SiteName + GetNumber(GetSiteCount(customerId) + 1);
+            }
+            var order = new Order()
             {
                 SiteId = model.SiteId,
-                HardwareId = model.HardwareId,
+                //HardwareId = model.HardwareId,
+                BillingId = model.BillingId,
+                ModemModelId = model.ModemModelId,
+                ModemSrNoId = model.ModemSrNoId,
+                MacAirNoId = model.MacAirNoId,
+                AntennaSizeId = model.AntennaSizeId,
+                TransceiverWATTId = model.TransceiverWATTId,
+                TransceiverSrNoId = model.TransceiverSrNoId,
                 ServicePlanId = model.ServicePlanId,
+                DedicatedServicePlanName = model.DedicatedServicePlanName,
                 RequestTypeId = model.RequestTypeId,
                 UpgradeFromId = model.UpgradeFromId,
                 UpgradeToId = model.UpgradeToId,
@@ -107,13 +155,19 @@ namespace SATNET.WebApp.Controllers
                 SubscriberCity = model.SubscriberCity,
                 SubscriberEmail = model.SubscriberEmail,
                 SubscriberName = model.SubscriberName,
-                SubscriberNotes = model.SubscriberNotes
-            });
+                SubscriberNotes = model.SubscriberNotes,
+                SiteCity = model.SiteCity,
+                SiteName = model.SiteId > 0 ? model.SiteName : siteName,
+                SiteArea = model.SiteArea,
+                CustomerId = customerId
+            };
+
+            var result = await _orderService.Add(order);
             if (result.IsSuccess)
             {
                 return RedirectToAction("Index");
             }
-            var status = new StatusModel { IsSuccess = false,ErrorDescription=result.ErrorDescription };
+            var status = new StatusModel { IsSuccess = false, ErrorDescription = result.ErrorDescription };
             //status.Html = RenderViewToString(this, "Index", await GetOrderList());
             return Json(status);
 
@@ -139,7 +193,8 @@ namespace SATNET.WebApp.Controllers
             obj.PlanTypeId = string.IsNullOrEmpty(servicePlanTypeId) ? 0 : Convert.ToInt32(servicePlanTypeId);
 
             var servicePlans = await _servicePlanService.List(obj);
-            return Json(new SelectList(servicePlans, "Id", "Name"));            
+            servicePlans.Insert(0, new ServicePlan() { Id = 0, Name = "Select" });
+            return Json(new SelectList(servicePlans, "Id", "Name"));
         }
 
         [HttpGet]
@@ -151,5 +206,76 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> GetProposedSiteName(int customerId)
+        {
+            string siteName = "";
+            if (customerId > 0)
+            {
+                var customer = await _customerService.Get(customerId);
+                siteName = GetLoggedInUserCustomerName3(customer.Name).ToUpper() + GetNumber(GetSiteCount(customerId) + 1);
+            }
+            return Json(new { siteName });
+        }
+        private string GetLoggedInUserCustomerName3(string customerName)
+        {
+            int maxLength = customerName.Length >= 3 ? 3 : customerName.Length;
+            var ret = customerName.Substring(0, maxLength);
+            return ret;
+        }
+        private string GetNumber(int to)
+        {
+            var oneZero = "0";
+            var twoZero = "00";
+            var retValue = "";
+            if (to < 10)
+            {
+                retValue = twoZero + to;
+            }
+            else if (to >= 10 && to < 99)
+            {
+                retValue = oneZero + to; 
+            }
+            else if (to >= 100 && to < 1000)
+            {
+                retValue = oneZero + to;
+            }
+            return retValue;
+        }
+        private int GetSiteCount(int customerId)
+        {
+            int totalCount = 1;
+            var serviceResult = _siteService.List(new Site() { CustomerId = customerId, Flag = "GET_SITE_COUNT" }).Result;
+            if (serviceResult.Any())
+            {
+                totalCount = serviceResult.FirstOrDefault().RecordsCount;
+            }
+            return totalCount;
+        }
+        private async Task<int> GetCustomerId()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return Utilities.TryInt32Parse(user.CustomerId);
+        }
+        public async Task<IActionResult> GetSites(int customerId, List<int> statusIds)
+        {
+            Site site = new Site()
+            {
+                CustomerId = customerId,
+                StatusIds = statusIds
+            };
+            
+            
+            var sites = await _siteService.List(site);
+            sites.Insert(0, new Site() { Id = 0, Name = "Select" });
+            return Json(new SelectList(sites, "Id", "Name"));
+        }
+        public async Task<IActionResult> GetSiteDetails(int siteId)
+        {
+            var site = await _siteService.Get(siteId);
+            //return Json(new { area = site.Area, city = site.City, ipid = site.IPId, subscribername=site.SubscriberName, subscriberarea = site.SubscriberArea,
+            //subscriberemail = site.SubscriberEmail, subscribercity=site.SubscriberCity, subscribernotes = site.SubscriberNotes});
+            return Json(site);
+
+        }
     }
 }

@@ -68,12 +68,27 @@ namespace SATNET.Repository.Implementation
             List<Site> sites = new List<Site>();
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
+            queryParameters.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
-            var result = await dbCon.QueryAsync<Site>("SiteList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
-            sites = result.ToList();
+            if (obj.StatusIds != null && obj.StatusIds.Count > 0)
+            {
+                foreach (var statusId in obj.StatusIds)
+                {
+                    queryParameters.Add("@StatusId", statusId, DbType.Int32, ParameterDirection.Input);
+                    var result = await dbCon.QueryAsync<Site>("SiteList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+                    sites = result.ToList();
+                    sites.Union(sites);
+                }
+            }
+            else
+            {
+                var result = await dbCon.QueryAsync<Site>("SiteList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+                sites = result.ToList();
+            }
+            
             return sites;
         }
 

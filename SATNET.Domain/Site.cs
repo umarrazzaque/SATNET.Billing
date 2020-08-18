@@ -10,7 +10,16 @@ namespace SATNET.Domain
         public string CustomerName { get; set; }
         public int? SubscriberId { get; set; }
         public string SubscriberName { get; set; }
+        public string SubscriberCity { get; set; }
+        public string SubscriberArea { get; set; }
+        public string SubscriberEmail { get; set; }
+        public string SubscriberNotes { get; set; }
+        public int IPId { get; set; }
+        public int ServicePlanId { get; set; }
+        public int ServicePlanTypeId { get; set; }
+        public string IPName { get; set; }
         public int StatusId { get; set; }
+        public List<int> StatusIds { get; set; }
         public string Status { get; set; }
         public string Name { get; set; }
         public string City { get; set; }

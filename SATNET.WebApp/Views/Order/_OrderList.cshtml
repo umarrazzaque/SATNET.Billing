@@ -22,6 +22,7 @@
         </thead>
 
         <tbody>
+
             @{
                 int counter = 0;
             }
@@ -38,8 +39,8 @@
                     <td> @item.SiteName</td>
                     <td> @item.RequestTypeName</td>
                     <td> @item.SubscriberName</td>
-                    <td>@item.ServiceOrderDate</td>>
-                    <td>@item.StatusName</td>>
+                    <td>@item.ServiceOrderDate</td>
+                    <td>@item.StatusName</td>
                     <td class="text-center">
                         <div class="buttons">
                             @*<a href="@String.Format("/{0}?id={1}", "Order/Edit", @item.Id)" class="pl-1 pr-1 edit-pan">

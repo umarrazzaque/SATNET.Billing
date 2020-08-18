@@ -14,9 +14,14 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Customer Name")]
         public string CustomerName { get; set; }
         public string StatusName { get; set; }
+        [Required(ErrorMessage = "Site name is required")]
         public string SiteName { get; set; }
         [Required(ErrorMessage = "Site is required")]
         public int SiteId { get; set; }
+        [Required(ErrorMessage = "Site area is required")]
+        public string SiteArea { get; set; }
+        [Required(ErrorMessage = "Site city is required")]
+        public string SiteCity { get; set; }
         [DisplayName("Site")]
         public SelectList SiteSelectList { get; set; }
         [Required(ErrorMessage = "Request Type is required")]
@@ -31,6 +36,8 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Service plan is required")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        [Required(ErrorMessage = "Dedicated service plan is required")]
+        public string DedicatedServicePlanName { get; set; }
         public string ServicePlanTypeName { get; set; }
         public string ServicePlanUnit { get; set; }
         public decimal ServicePlanPrice { get; set; }
@@ -40,6 +47,29 @@ namespace SATNET.WebApp.Models.Order
         public SelectList ServicePlanSelectList { get; set; }
         [Required(ErrorMessage = "Hardware is required")]
         public int HardwareId { get; set; }
+        [Required(ErrorMessage = "Hardware Billing is required")]
+        public int BillingId { get; set; }
+        public SelectList BillingSelectList { get; set; }
+        [Required(ErrorMessage = "Modem Model is required")]
+        public int ModemModelId { get; set; }
+        public SelectList ModemModelSelectList { get; set; }
+        [Required(ErrorMessage = "Modem Serial No is required")]
+        public int ModemSrNoId { get; set; }
+        public SelectList ModemSrNoSelectList { get; set; }
+        [Required(ErrorMessage = "Mac Air No is required")]
+        public int MacAirNoId { get; set; }
+        public SelectList MacAirNoSelectList { get; set; }
+        [Required(ErrorMessage = "Antenna size is required")]
+        public int AntennaSizeId { get; set; }
+        public SelectList AntennaSizeSelectList { get; set; }
+        [Required(ErrorMessage = "Antenna Serial No is required")]
+        public string AntennaSrNo { get; set; }
+        [Required(ErrorMessage = "Transceiver WATT is required")]
+        public int TransceiverWATTId { get; set; }
+        public SelectList TransceiverWATTSelectList { get; set; }
+        [Required(ErrorMessage = "Transceiver Serial No is required")]
+        public int TransceiverSrNoId { get; set; }
+        public SelectList TransceiverSrNoSelectList { get; set; }
         public string HardwareModel { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }
@@ -99,6 +129,9 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Promotion")]
         public SelectList PromotionSelectList { get; set; }
         public int? PromotionId { get; set; }
+        public SelectList CustomerSelectList { get; set; }
+        [Required(ErrorMessage = "Customer is required")]
+        public int CustomerId { get; set; }
         public string Other { get; set; }
         public decimal Total { get; set; }
     }

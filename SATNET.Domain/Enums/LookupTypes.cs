@@ -15,6 +15,7 @@ namespace SATNET.Domain.Enums
         ServicePlanUnit = 1006,
         SpeedUnit = 1007,
         IPType = 1008,
-
+        ModemModel = 1010,
+        ModemSrNo = 1011,
     }
 }

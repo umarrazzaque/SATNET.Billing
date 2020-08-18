@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -44,7 +43,6 @@
 <body>
     @using Microsoft.AspNetCore.Authorization
     @inject IAuthorizationService AuthorizationService
-    @using SATNET.Domain.Enums
     <div class="app-container app-theme-white body-tabs-shadow1 fixed-sidebar fixed-header fixed-footer">
         <!-- Top Header -->
         <div class="app-header">
@@ -148,116 +146,107 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index","Customer")" class="">
-                                    <i class="metismenu-icon icofont-architecture-alt"></i> Customer
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-library"></i> Service Plan
-                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
-                                </a>
-                                <ul class="vertical-nav-menu">
-                                    <li>
-                                        <a href="@Url.Action("Index","ServicePlan")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Service Plans
-                                        </a>
-                                        <a href="@Url.Action("Index","ServicePlanPrice")" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Manage Service Pricelists
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-wifi-router"></i> Hardware
-                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
-                                </a>
-                                <ul class="vertical-nav-menu">
-                                    <li>
-
-                                        <a href="@Url.Action("Index","Hardware")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Hardwares
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareMM")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Modem Model
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareSN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Modem Serial Number
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareMAN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage MAC Air Numner
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareAS")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Antenna Size
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareTW")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Transceiver WATT
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareTSN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Transceiver Serial Number
-                                        </a>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-network"></i> IP
-                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
-                                </a>
-                                <ul class="vertical-nav-menu">
-                                    <li>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage IPs
-                                        </a>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i>Manage IPs Pricelists
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-coins"></i> Token
-                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
-                                </a>
-                                <ul class="vertical-nav-menu">
-                                    <li>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Tokens
-                                        </a>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i>Manage Token Pricelists
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-sale-discount"></i> Promotion
-                                </a>
-                            </li>
-                            <li>
                                 <a href="@Url.Action("Index","Site")" class="">
-                                    <i class="metismenu-icon icofont-site-map"></i> Site
+                                    <i class="metismenu-icon icofont-site-map"></i> Site Monitor
                                 </a>
                             </li>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "UserAccessPolicy")).Succeeded)
+
+                            <li>
+                                <a href="@String.Format("/{0}", "Order")" class="">
+                                    <i class="metismenu-icon icofont-shopping-cart"></i> Service Orders
+                                </a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
                             {
+                                <li>
+                                    <a href="@Url.Action("Index", "Customer")" class="">
+                                        <i class="metismenu-icon icofont-architecture-alt"></i> Customers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-wifi-router"></i> Hardware
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+
+                                            @*<a href="@Url.Action("Index","Hardware")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Hardwares
+                                            </a>*@
+                                            <a href="@Url.Action("Index","HardwareAttribute")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Model
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareSerialNo")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Serial Number
+                                            </a>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-library"></i> Service Plan
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+                                            <a href="@Url.Action("Index", "ServicePlan")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Service Plans
+                                            </a>
+                                            <a href="@Url.Action("Index", "ServicePlanPrice")" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i> Manage Service Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-network"></i> IP
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage IPs
+                                            </a>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i>Manage IPs Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-coins"></i> Token
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Tokens
+                                            </a>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i>Manage Token Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-sale-discount"></i> Promotion
+                                    </a>
+                                </li>
+
                                 <li>
                                     <a href="@Url.Action("Index", "User")" class="">
                                         <i class="metismenu-icon icofont-user"></i> User
                                     </a>
                                 </li>
                             }
-                            <li>
-                                <a href="@String.Format("/{0}", "Order")" class="">
-                                    <i class="metismenu-icon icofont-shopping-cart"></i> Service Order
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
