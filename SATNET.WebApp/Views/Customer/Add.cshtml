@@ -33,32 +33,42 @@
         <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.CustomerModel.Name, new { })
-                @Html.EditorFor(model => model.CustomerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name", @type = "text" } })
+                @Html.EditorFor(model => model.CustomerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @required="required", @placeholder = "Name", @type = "text" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="col-lg-3">
+        @*<div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(model => model.CustomerModel.TypeId, new { })
                 @Html.DropDownListFor(model => model.CustomerModel.TypeId, new SelectList(Model.CustomerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Customer Type-", new { @class = "form-control select2 text-input" })
             </div>
-        </div>
+        </div>*@
         <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(model => model.CustomerModel.PriceTierId, new { })
                 @Html.DropDownListFor(model => model.CustomerModel.PriceTierId, new SelectList(Model.PriceTier as System.Collections.IEnumerable, "Id", "Name"), "-Select Price Tier-", new { @class = "form-control select2 text-input" })
-                
+                @Html.ValidationMessageFor(model => model.CustomerModel.PriceTierId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.CustomerModel.Code, new { })
-                @Html.EditorFor(model => model.CustomerModel.Code, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Code", @type = "text" } })
+                @Html.EditorFor(model => model.CustomerModel.Code, new { htmlAttributes = new { @class = "form-control text-input" , @placeholder = "Code", @type = "text" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.CustomerModel.ShortName, new { })
+                @Html.EditorFor(model => model.CustomerModel.ShortName, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Short Name", @type = "text" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.ShortName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.CustomerModel.Email, new { })
                 @Html.EditorFor(model => model.CustomerModel.Email, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Email", @type = "text" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.Email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-lg-3">
@@ -71,6 +81,7 @@
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.CustomerModel.ContactNumber, new { })
                 @Html.EditorFor(model => model.CustomerModel.ContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Contact", @type = "type" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.ContactNumber, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>

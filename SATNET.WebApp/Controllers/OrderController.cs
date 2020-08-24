@@ -74,7 +74,7 @@ namespace SATNET.WebApp.Controllers
             Customer customer = new Customer();
             List<Customer> customers = new List<Customer>();
             List<Site> sites = new List<Site>();
-            var customerId = await GetCustomerId();
+            var customerId = await GetCustomerId();//Loggedin user customer Id
             if (customerId == 0)//true, satnet user
             {
                 customers = await _customerService.List(new Customer());
@@ -216,7 +216,7 @@ namespace SATNET.WebApp.Controllers
             if (customerId > 0)
             {
                 var customer = await _customerService.Get(customerId);
-                siteName = GetLoggedInUserCustomerName3(customer.Name).ToUpper() + GetNumber(GetSiteCount(customerId) + 1);
+                siteName = GetLoggedInUserCustomerName3(customer.Code).ToUpper() + GetNumber(GetSiteCount(customerId) + 1);
             }
             return Json(new { siteName });
         }

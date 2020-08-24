@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 using SATNET.Repository.Interface;
 using SATNET.Repository.Implementation;
 using SATNET.Repository.Core;
+using System.Data.SqlClient;
 
 namespace SATNET.Service.Implementation
 {
     public class CustomerService : IService<Customer>
     {
-
+        private readonly ExceptionService _exceptionService;
         public CustomerService()
         {
-
+            _exceptionService = new ExceptionService();
         }
         public Task<StatusModel> Add(Customer obj)
         {
@@ -43,7 +44,7 @@ namespace SATNET.Service.Implementation
             catch (Exception e)
             {
                 status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
+                status.ErrorCode = _exceptionService.HandleException(e).ErrorCode;
                 status.ErrorDescription = e.Message;
             }
             return Task.FromResult(status);

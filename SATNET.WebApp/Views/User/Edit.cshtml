@@ -28,25 +28,16 @@
                 <div class="form-group">
                     <label>User Type</label>
                     <select asp-for="UserTypeId" asp-items="Model.UserTypeSelectList" class="form-control select2 text-input">
-                        <option value="" hidden disabled>Select</option>
+                        <option value="">-Select Users Type-</option>
                     </select>
                     <span asp-validation-for="UserTypeId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>Price Tier</label>
-                    <select asp-for="PriceTierId" asp-items="Model.PriceTierSelectList" class="form-control select2 text-input">
-                        <option value="" hidden disabled>Select</option>
-                    </select>
-                    <span asp-validation-for="PriceTierId" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group">
                     <label>Customer</label>
                     <select asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
-                        <option value="" hidden disabled>Select</option>
+                        <option value="" hidden disabled selected>-Select Customer-</option>
                     </select>
                     <span asp-validation-for="CustomerId" class="text-danger"></span>
                 </div>
@@ -55,7 +46,7 @@
                 <div class="form-group">
                     <label>Roles</label>
                     <select asp-for="RoleName" asp-items="Model.RoleSelectList" class="form-control select2 text-input">
-                        <option value="" hidden disabled selected>Select</option>
+                        <option value="" hidden disabled selected>-Select Role-</option>
                     </select>
                 </div>
             </div>
@@ -101,22 +92,7 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-            @* <div class="col-lg-3 new-site">
-                <div class="position-relative form-group">
-                    <div class="form-group">
-                        <label class="lable-control">Select Role</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" value="Admin" id="radioAdmin" asp-for="Roles">
-                        <label class="form-check-label" for="radioAdmin">Admin</label>
-                    </div>
-                    <!-- Material inline 2 -->
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" value="User" id="radioUser" asp-for="Roles">
-                        <label class="form-check-label" for="radioUser">User</label>
-                    </div>
-                </div>
-            </div>*@
+            
         </div>
         <input type="hidden" asp-for="Id" />
         <input id="hdnUserTypeId" type="hidden" asp-for="UserTypeId" />

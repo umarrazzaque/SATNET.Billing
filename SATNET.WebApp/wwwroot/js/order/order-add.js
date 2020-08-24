@@ -10,6 +10,13 @@ $(function () {
     hideAllSections();
     if (_customerId != 0) {
         $(".select-customer").hide();
+        //Standard User
+        if (_customerId > 0) {
+            var url = '/Order/GetProposedSiteName';
+            $.getJSON(url, { customerId: _customerId }, function (result) {
+                $("#SiteName").val(result.siteName);
+            });
+        }
     }
     $("#RequestTypeId").change(function () {
         var requestTypeId = $("#RequestTypeId").val();
@@ -70,14 +77,18 @@ $(function () {
         }
     });
     $("#CustomerId").change(function () {
+        console.log($('#CustomerId').val());
         var customerDDLId = $(this).val();
         var requestTypeId = $("#RequestTypeId").val();
-        //if (_customerId == 0 && customerDDLId > 0) {//satnet user
-        //    var url = '/Order/GetProposedSiteName';
-        //    $.getJSON(url, { customerId: $(this).val() }, function (result) {
-        //        $("#SiteName").val(result.siteName);
-        //    });
-        //}
+
+        //Satnet User
+        if (_customerId == 0 && customerDDLId > 0) {//satnet user
+            var url = '/Order/GetProposedSiteName';
+            $.getJSON(url, { customerId: $(this).val() }, function (result) {
+                $("#SiteName").val(result.siteName);
+            });
+        }
+        
         if (customerDDLId > 0 && requestTypeId > 0 && requestTypeId != '1') {
             getSites(requestTypeId, customerDDLId);
         }

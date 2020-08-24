@@ -9,8 +9,7 @@
         <thead>
             <tr>
                 <th> Full Name</th>
-                <th> Username </th>
-                <th> Email</th>
+                <th> User name </th>
                 <th> Roles </th>
                 <th>User Type</th>
                 <th>Customer Name</th>
@@ -27,8 +26,7 @@
                 }*@
             <tr>
                 <td> @item.FullName</td>
-                <td> @item.UserName</td>
-                <td> @item.Email</td>
+                <td> @item.UserName - {@item.Email}</td>
                 <td>
                     @if (item.Roles.Any())
                     {
