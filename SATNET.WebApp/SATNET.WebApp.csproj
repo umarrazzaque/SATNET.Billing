@@ -5,6 +5,10 @@
     <UserSecretsId>c0f3e5f6-054c-4434-9138-35327e042230</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Migrations\20200601153105_CustomUserData.cs" />
     <Compile Remove="Migrations\20200601153105_CustomUserData.Designer.cs" />

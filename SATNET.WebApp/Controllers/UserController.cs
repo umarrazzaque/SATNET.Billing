@@ -28,7 +28,7 @@ namespace SATNET.WebApp.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        public UserController(IService<User> userService, UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,
+        public UserController(IService<User> userService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, IService<Lookup> lookupService, IService<Customer> customerService)
         {
             _userService = userService;
@@ -40,18 +40,19 @@ namespace SATNET.WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
+            var customerTypes = GetCustomerTypes();
             ViewBag.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
 
             return View(await GetUsers());
         }
+
         public async Task<IActionResult> Add()
         {
             UserViewModel model = new UserViewModel();
-            var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
+            var customerTypes = GetCustomerTypes();
             var priceTiers = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
 
-            model.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
+            model.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name", "-Select User Type-");
             model.PriceTierSelectList = new SelectList(priceTiers, "Id", "Name");
 
             return View(model);
@@ -68,28 +69,36 @@ namespace SATNET.WebApp.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.Contact,
-                    CreatedBy=1,
-                    CreatedOn=System.DateTime.Now,
-                    IsDeleted=false,
-                    CustomerId=model.CustomerId,
+                    CreatedBy = 1,
+                    CreatedOn = DateTime.Now,
+                    IsDeleted = false,
+                    CustomerId = model.CustomerId,
                     UserTypeId = model.UserTypeId
                 };
                 //creating user
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    //adding user role
-                    if (!string.IsNullOrEmpty(model.RoleName))
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
                     {
-                        var role = model.RoleName;
-                        await _userManager.AddToRoleAsync(user, role);
+                        //adding user role
+                        if (!string.IsNullOrEmpty(model.RoleName))
+                        {
+                            var role = model.RoleName;
+                            await _userManager.AddToRoleAsync(user, role);
+                        }
+                        return RedirectToAction("Index");
                     }
-                    return RedirectToAction("Index");
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-                foreach (var error in result.Errors)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+
                 }
+
             }
             return RedirectToAction("Add");
             //return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
@@ -103,12 +112,12 @@ namespace SATNET.WebApp.Controllers
                     $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             var roleResult = _userManager.GetRolesAsync(user);
-            int customerPriceTierId = 0;
-            if (user.CustomerId != 0)
-            {
-                var customer = await _customerService.Get(user.CustomerId);
-                customerPriceTierId = customer.PriceTierId;
-            }
+            //int customerPriceTierId = 0;
+            //if (user.CustomerId != 0)
+            //{
+            //    var customer = await _customerService.Get(user.CustomerId);
+            //    customerPriceTierId = customer.PriceTierId;
+            //}
             UserEditViewModel model = new UserEditViewModel()
             {
                 Id = user.Id,
@@ -119,19 +128,18 @@ namespace SATNET.WebApp.Controllers
                 Email = user.Email,
                 CustomerId = user.CustomerId,
                 UserTypeId = user.UserTypeId,
-                PriceTierId = customerPriceTierId,
                 RoleName = roleResult.Result.FirstOrDefault()
             };
-            var customers = await _customerService.List(new Customer() { PriceTierId= customerPriceTierId });
-            var customerTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
-            var priceTiers = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
+            var customersList = await _customerService.List(new Customer());
+            var userTypes = GetCustomerTypes();
+            
+            int roleTypeId = model.UserTypeId == Convert.ToInt32(UserType.Satnet) ? 
+                Convert.ToInt32(UserRoles.Satnet) : 
+                (model.UserTypeId == Convert.ToInt32(UserType.Customer) ? Convert.ToInt32(UserRoles.Reseller) : 0);
+            var roles = _roleManager.Roles.Where(r => r.RoleType == roleTypeId).ToList();
 
-            int typeId = model.UserTypeId==24 ? 33 : (model.UserTypeId == 16 ? 34 : 0);
-            var roles = _roleManager.Roles.Where(r => r.RoleType == typeId).ToList();
-
-            model.UserTypeSelectList = new SelectList(customerTypes, "Id", "Name");
-            model.PriceTierSelectList = new SelectList(priceTiers, "Id", "Name");
-            model.CustomerSelectList= new SelectList(customers, "Id", "Name");
+            model.UserTypeSelectList = new SelectList(userTypes, "Id", "Name");
+            model.CustomerSelectList = new SelectList(customersList, "Id", "Name");
             model.RoleSelectList = new SelectList(roles, "Name", "Name");
 
             return View(model);
@@ -184,7 +192,7 @@ namespace SATNET.WebApp.Controllers
         }
         public async Task<IActionResult> Delete(int id)
         {
-            var status = new StatusModel { IsSuccess = false, ErrorDescription="" };
+            var status = new StatusModel { IsSuccess = false, ErrorDescription = "" };
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(id.ToString());
@@ -193,13 +201,13 @@ namespace SATNET.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     status.IsSuccess = true;
-                    status.Html = RenderViewToString(this, "Index", await GetUsers());                   
+                    status.Html = RenderViewToString(this, "Index", await GetUsers());
                 }
                 else
                 {
                     foreach (var error in result.Errors)
                     {
-                        status.ErrorDescription += error.Description+"\n";
+                        status.ErrorDescription += error.Description + "\n";
                     }
                 }
             }
@@ -219,7 +227,7 @@ namespace SATNET.WebApp.Controllers
         {
             List<UserViewModel> model = new List<UserViewModel>();
             User obj = new User();
-            obj.UserTypeId= string.IsNullOrEmpty(userTypeId) ? 0 : Convert.ToInt32(userTypeId);
+            obj.UserTypeId = string.IsNullOrEmpty(userTypeId) ? 0 : Convert.ToInt32(userTypeId);
 
             var svcResult = await _userService.List(obj);
             if (svcResult.Any())
@@ -237,12 +245,20 @@ namespace SATNET.WebApp.Controllers
             var svcResult = await _customerService.List(obj);
             return Json(new SelectList(svcResult, "Id", "Name"));
         }
+
         public IActionResult GetRoles(string type)
         {
             int typeId = string.IsNullOrEmpty(type) ? 0 : Convert.ToInt32(type);
 
             var roles = _roleManager.Roles.Where(r => r.RoleType == typeId).ToList();
             return Json(new SelectList(roles, "Name", "Name"));
+        }
+
+        private List<Lookup> GetCustomerTypes()
+        {
+            var customerTypes = _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerType) });
+            customerTypes.Result.RemoveAt(1);
+            return customerTypes.Result;
         }
 
     }

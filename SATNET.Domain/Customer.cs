@@ -8,6 +8,7 @@ namespace SATNET.Domain
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        public string ShortName { get; set; }
         public int TypeId { get; set; }
         public string CustomerType { get; set; }
         public int PriceTierId { get; set; }
