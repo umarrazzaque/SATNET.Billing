@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
@@ -14,6 +15,7 @@ using SATNET.WebApp.Models.Lookup;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize(Policy = "AdminPolicy")]
     public class ServicePlanController : BaseController
     {
         private readonly IService<ServicePlan> _servicePlanService;

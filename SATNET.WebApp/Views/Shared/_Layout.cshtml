@@ -145,17 +145,20 @@
                                     <i class="metismenu-icon icofont-contrast"></i> Dashboard
                                 </a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Index","Site")" class="">
-                                    <i class="metismenu-icon icofont-site-map"></i> Site Monitor
-                                </a>
-                            </li>
+                            @if (!User.IsInRole("Logistics"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "Site")" class="">
+                                        <i class="metismenu-icon icofont-site-map"></i> Site Monitor
+                                    </a>
+                                </li>
 
                             <li>
                                 <a href="@String.Format("/{0}", "Order")" class="">
                                     <i class="metismenu-icon icofont-shopping-cart"></i> Service Orders
                                 </a>
                             </li>
+                            }
                             @if (User.IsInRole("Admin"))
                             {
                                 <li>
@@ -163,41 +166,41 @@
                                         <i class="metismenu-icon icofont-architecture-alt"></i> Customers
                                     </a>
                                 </li>
-                                                            <li>
-                                <a href="" class="">
-                                    <i class="metismenu-icon icofont-wifi-router"></i> Hardware
-                                    <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
-                                </a>
-                                <ul class="vertical-nav-menu">
-                                    <li>
+                                <li>
+                                    <a href="" class="">
+                                        <i class="metismenu-icon icofont-wifi-router"></i> Hardware
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
 
-                                        @*<a href="@Url.Action("Index","Hardware")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Hardwares
-                                        </a>*@
-                                        <a href="@Url.Action("Index","HardwareMM")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Modem Model
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareSN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Modem Serial Number
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareMAN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage MAC Air Numner
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareAS")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Antenna Size
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareTW")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Transceiver WATT
-                                        </a>
-                                        <a href="@Url.Action("Index","HardwareTSN")" class="">
-                                            <i class="metismenu-icon icofont-library"></i> Manage Transceiver Serial Number
-                                        </a>
-                                        <a href="#" class="">
-                                            <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                            @*<a href="@Url.Action("Index","Hardware")" class="">
+                                                    <i class="metismenu-icon icofont-library"></i> Manage Hardwares
+                                                </a>*@
+                                            <a href="@Url.Action("Index","HardwareMM")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Model
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareSN")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Modem Serial Number
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareMAN")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage MAC Air Numner
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareAS")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Antenna Size
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareTW")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Transceiver WATT
+                                            </a>
+                                            <a href="@Url.Action("Index","HardwareTSN")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Manage Transceiver Serial Number
+                                            </a>
+                                            <a href="#" class="">
+                                                <i class="metismenu-icon icofont-contrast"></i> Manage Hardware Pricelists
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a href="" class="">
                                         <i class="metismenu-icon icofont-library"></i> Service Plan
@@ -335,6 +338,112 @@
                 <!-- /.modal-content -->
             </div>
         </div>
+
+        <div class="modal" id="modal-orderdetails">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Service Order Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <b>Order Number</b>
+                        <p id="pOrderNo"></p>
+                        <hr />
+                        <b>Request Type</b>
+                        <p id="pRequestType"></p>
+                        <hr />
+                        <b>Customer Name</b>
+                        <p id="pCustomerName"></p>
+                        <hr />
+                        <b>Site Name</b>
+                        <p id="pSiteName"></p>
+                        @*<hr>
+                            <div id="divActivation">
+                                <h6>New Site Details</h6>
+                                <hr>
+                                <p id="pSiteName"></p>
+                                <p id="pSiteCity"></p>
+                                <p id="pSiteArea"></p>
+                                <p id="pSiteInstallationDate"></p>
+                                <p id="pSiteServicePlan"></p>
+                                <p id="pSiteIP"></p>
+                                <h6>Hardware</h6>
+                                <hr>
+                                <p id="pHardwareMacAirNo"></p>
+                                <h6>Subscriber</h6>
+                                <p id="pSubscrberName"></p>
+                                <p id="pSubscriberCity"></p>
+                                <p id="pSubscriberEmail"></p>
+                                <p id="pSubscriberArea"></p>
+                                <p id="pSubscriberNotes"></p>
+                            </div>
+                            <div id="divReActivation">
+                                <h6>Re Activation</h6>
+                                <p></p>
+                            </div>
+                            <div id="divDowngrade">
+                                <h6>Downgrade</h6>
+                                <p></p>
+                            </div>
+                            <div id="divUpgrade">
+                                <h6>Upgrade</h6>
+                                <p></p>
+                            </div>*@
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        <div class="modal" id="modal-rejectOrderConfirm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Reject Service Order</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please specify reason.</p>
+                        <textarea id="txtRejectReason" rows="5" cols="63"></textarea>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info" id="btnRejectOrder" data-dismiss="modal">Proceed</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        <div class="modal" id="modal-rejectreason">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Reason for Service Order Rejection</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+
     </div>
 
     <!-- ./wrapper -->
@@ -363,7 +472,6 @@
     <script src="~/Themes/QMSN/Resources/js/popper.min.js"></script>
 
     <script src="~/js/custom.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

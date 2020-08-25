@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
@@ -17,6 +18,7 @@ using SATNET.WebApp.Models.Lookup;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize(Policy = "ReadOnlySitePolicy")]
     public class SiteController : BaseController
     {
         private readonly IService<Site> _siteService;

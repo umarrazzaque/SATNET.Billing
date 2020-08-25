@@ -11,9 +11,11 @@ namespace SATNET.WebApp.Models.Order
 {
     public class OrderViewModel: BaseModel
     {
+        public string OrderNumber { get; set; }
         [DisplayName("Customer Name")]
         public string CustomerName { get; set; }
         public string StatusName { get; set; }
+        public int StatusId { get; set; }
         [Required(ErrorMessage = "Site name is required")]
         public string SiteName { get; set; }
         [Required(ErrorMessage = "Site is required")]
@@ -137,5 +139,7 @@ namespace SATNET.WebApp.Models.Order
         public string ModemModel { get; set; }
         public string TransceiverWATT { get; set; }
         public string AntennaSize { get; set; }
+        public string RejectReason { get; set; }
+
     }
 }

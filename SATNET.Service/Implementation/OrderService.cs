@@ -75,11 +75,57 @@ namespace SATNET.Service.Implementation
         }
         public async Task<StatusModel> Update(Order order)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
+            try
+            {
+                int retId = await _orderRepository.Update(order);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Order updated successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in updating the record.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing the request.";
+                status.ErrorDescription = e.Message;
+            }
+            finally
+            {
+
+            }
+            return status;
         }
         public async Task<StatusModel> Delete(int id, int deletedBy)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
+            try
+            {
+                int dRow = await _orderRepository.Delete(id, deletedBy);
+                if (dRow > 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Service order has been cancelled successfully.";
+                }
+                else
+                {
+                    status.ErrorCode = "An error occured while processing request.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.ErrorCode = "An error occured while processing request.";
+            }
+            finally
+            {
+            }
+            return status;
         }
 
         private decimal CalculateProRataPrice(Order obj)

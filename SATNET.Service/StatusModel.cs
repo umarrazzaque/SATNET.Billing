@@ -12,5 +12,6 @@ namespace SATNET.Service
         public bool IsSuccess { get; set; }
         public string Html { get; set; }
         public string ResponseUrl { get; set; }
+        public bool IsReload { get; set; }
     }
 }

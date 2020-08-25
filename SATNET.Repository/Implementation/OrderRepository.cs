@@ -154,13 +154,35 @@ namespace SATNET.Repository.Implementation
             }
             return orderId;
         }
-        public async Task<int> Update(Order order)
+        public async Task<int> Update(Order obj)
         {
-            throw new NotImplementedException();
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
+
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@RejectReason", obj.RejectReason, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
+                int result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
         public async Task<int> Delete(int id, int deletedBy)
         {
-            throw new NotImplementedException();
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
+
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
+                var result = await con.ExecuteScalarAsync<int>("OrderDelete", queryParameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
 
     }

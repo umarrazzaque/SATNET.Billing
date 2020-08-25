@@ -19,7 +19,7 @@ using SATNET.WebApp.Models.User;
 
 namespace SATNET.WebApp.Controllers
 {
-    [Authorize(Policy = "UserAccessPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public class UserController : BaseController
     {
         private readonly IService<User> _userService;

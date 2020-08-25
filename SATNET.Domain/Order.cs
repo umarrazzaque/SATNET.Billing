@@ -6,6 +6,7 @@ namespace SATNET.Domain
 {
     public class Order : BaseEntity
     {
+        public string OrderNumber { get; set; }
         public int SiteId { get; set; }
         public int CustomerId { get; set; }
         public string SiteName { get; set; }
@@ -58,5 +59,6 @@ namespace SATNET.Domain
         public string ModemModel { get; set; }
         public string TransceiverWATT { get; set; }
         public string AntennaSize { get; set; }
+        public string RejectReason { get; set; }
     }
 }

@@ -11,9 +11,11 @@ using SATNET.Service;
 using Microsoft.AspNetCore.Mvc;
 using HttpGetAttribute = System.Web.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize(Policy = "AdminPolicy")]
     //[RoutePrefix("HelloSerial")]
     public class HardwareSNController : BaseController
     {

@@ -58,7 +58,10 @@ namespace SATNET.WebApp
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserAccessPolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("ManageServiceOrderPolicy", policy=>policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations"));
+                options.AddPolicy("ReadOnlyServiceOrderPolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management","Accounting","NOC"));
+                options.AddPolicy("ReadOnlySitePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
             });
 
             //Session

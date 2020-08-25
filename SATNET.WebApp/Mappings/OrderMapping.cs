@@ -15,6 +15,7 @@ namespace SATNET.WebApp.Mappings
             OrderViewModel model = new OrderViewModel()
             {
                 Id = obj.Id,
+                OrderNumber = obj.OrderNumber,
                 SiteName = obj.SiteName,
                 ServicePlanName = obj.ServicePlanName,
                 RequestTypeName = obj.RequestTypeName,
@@ -35,7 +36,10 @@ namespace SATNET.WebApp.Mappings
                 Total = obj.Total,
 ModemModel = obj.ModemModel,
 TransceiverWATT=obj.TransceiverWATT,
-AntennaSize = obj.AntennaSize
+AntennaSize = obj.AntennaSize,
+StatusId = obj.StatusId,
+CustomerId=obj.CustomerId,
+RejectReason = string.IsNullOrEmpty(obj.RejectReason) ? "Not Available":obj.RejectReason
             };
             return model;
         }

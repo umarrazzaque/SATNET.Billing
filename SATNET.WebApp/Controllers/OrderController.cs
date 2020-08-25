@@ -52,6 +52,7 @@ namespace SATNET.WebApp.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
+        [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> Index()
         {
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
@@ -69,6 +70,7 @@ namespace SATNET.WebApp.Controllers
 
             return View(model);
         }
+        [Authorize(Policy = "ManageServiceOrderPolicy")]
         public async Task<IActionResult> Add()
         {
             Customer customer = new Customer();
@@ -120,6 +122,7 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Policy = "ManageServiceOrderPolicy")]
         public async Task<IActionResult> Add(OrderViewModel model)
         {
             int customerId = 0;
@@ -202,6 +205,7 @@ namespace SATNET.WebApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> Details(int id)
         {
             var svcResult = await _orderService.Get(id);
@@ -281,5 +285,51 @@ namespace SATNET.WebApp.Controllers
             return Json(site);
 
         }
+        [HttpGet]
+        public async Task<IActionResult> Action(int id,int statusId, string rejectReason)
+        {
+            var status = new StatusModel();
+            var result = await _orderService.Update(new Order { Id = id, StatusId = statusId, RejectReason=rejectReason });
+            if (result.IsSuccess)
+            {
+                status.IsSuccess = true;
+                status.IsReload = true;
+            }
+            else
+            {
+                status.IsSuccess = false;
+                status.IsReload = false;
+                status.ErrorDescription = "Some error occurred while processing the request.";
+            }
+            return Json(status);
+        }
+        [Authorize(Policy = "ManageServiceOrderPolicy")]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var result = await _orderService.Delete(id, Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var status = new StatusModel();
+            if (result.IsSuccess)
+            {
+                status.IsSuccess = true;
+                status.IsReload = true;
+            }
+            else
+            {
+                status.IsSuccess = false;
+                status.IsReload = false;
+                status.ErrorDescription = "Some error occurred while processing the request.";
+            }
+            return Json(status);
+
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
+        public async Task<IActionResult> ViewOrder(int id)
+        {
+            var svcResult = await _orderService.Get(id);
+            return Json(svcResult);
+        }
+
     }
 }

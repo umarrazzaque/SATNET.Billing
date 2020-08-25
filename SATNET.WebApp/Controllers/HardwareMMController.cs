@@ -10,9 +10,11 @@ using SATNET.Domain.Enums;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Models.Lookup;
 using SATNET.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize(Policy = "AdminPolicy")]
     public class HardwareMMController : BaseController
     {
         private readonly IService<Lookup> _lookUpService;

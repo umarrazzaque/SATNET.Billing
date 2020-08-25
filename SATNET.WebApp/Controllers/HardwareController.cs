@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
 using SATNET.Service;
@@ -11,6 +12,7 @@ using SATNET.WebApp.Models;
 
 namespace SATNET.WebApp.Controllers
 {
+    [Authorize(Policy = "AdminPolicy")]
     public class HardwareController : BaseController
     {
         private readonly IService<Hardware> _hardwareService;

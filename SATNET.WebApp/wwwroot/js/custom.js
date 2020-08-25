@@ -131,6 +131,9 @@ function Layout() {
                     else {
                         Layout.ShowMessage(data.errorCode, 'Error Message', 2);
                     }
+                    if (data.isReload === true) {
+                        location.reload();
+                    }
                     $("#MainContents").html(data.html);
                 },
                 error: function () {
