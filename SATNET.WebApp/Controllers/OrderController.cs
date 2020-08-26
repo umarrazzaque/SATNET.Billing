@@ -130,7 +130,11 @@ namespace SATNET.WebApp.Controllers
             customerId = model.CustomerId == 0 ? await GetCustomerId() : model.CustomerId;
             if (model.SiteId == 0)
             {
-                siteName = model.SiteName + GetNumber(GetSiteCount(customerId) + 1);
+                var customer = await _customerService.Get(customerId);
+                siteName = GetProposedSiteNameImp(customerId, customer.Code);
+            }
+            else if (!model.SiteName.Equals("")) {
+                siteName = model.SiteName;
             }
             var order = new Order()
             {
@@ -220,14 +224,20 @@ namespace SATNET.WebApp.Controllers
             if (customerId > 0)
             {
                 var customer = await _customerService.Get(customerId);
-                siteName = GetLoggedInUserCustomerName3(customer.Code).ToUpper() + GetNumber(GetSiteCount(customerId) + 1);
+                siteName = GetProposedSiteNameImp(customerId, customer.Code);
             }
             return Json(new { siteName });
         }
-        private string GetLoggedInUserCustomerName3(string customerName)
+        private string GetProposedSiteNameImp(int customerId, string customerCode)
         {
-            int maxLength = customerName.Length >= 3 ? 3 : customerName.Length;
-            var ret = customerName.Substring(0, maxLength);
+            string siteName = (customerCode.Equals("") || customerCode == null ?
+                "XXX" : Get3LetterString(customerCode.ToUpper())) + GetNumber(GetSiteCount(customerId) + 1);
+            return siteName;
+        }
+        private string Get3LetterString(string input)
+        {
+            int maxLength = input.Length >= 3 ? 3 : input.Length;
+            var ret = input.Substring(0, maxLength);
             return ret;
         }
         private string GetNumber(int to)
