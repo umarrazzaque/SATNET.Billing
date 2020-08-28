@@ -25,6 +25,8 @@
 
     //dropdown filters change events
 
+    $('#ddlOrderStatus').val(20);
+
     $(".filters select").change(function () {
         GetOrdersByDDLFilter();
     });
@@ -106,12 +108,21 @@
 });
 
 GetOrdersByDDLFilter = function () {
-    var url = '/Order/GetOrdersByDDLFilter';
-    $.getJSON(url, { requestTypeValue: $("#ddlRequestType").val(), statusValue: $("#ddlOrderStatus").val() }, function (result) {
-        if (result.isValid === true && result.html !== null) {
-            $("#grid_table").html(result.html);
-        }
-    });
+    $.ajax(
+        {
+            url: '/Order/GetOrdersByDDLFilter',
+            data: { statusValue: $("#ddlOrderStatus").val()},
+            type: 'get',
+            dataType: "html",
+            success: function (html) {
+                if (html !== null) {
+                    $("#BodyContent").html(html);
+                }
+            },
+            error: function () {
+                alert('Error occurred while processing the request.');
+            }
+        });
 }
 
 orderAction = function (orderId, statusId, reason) {

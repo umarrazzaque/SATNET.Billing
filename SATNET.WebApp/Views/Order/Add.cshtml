@@ -18,7 +18,7 @@
                     <a href="@String.Format("/{0}", "Order/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save Record</button>
+                    <button type="submit" class="btn btn-default">Submit Order</button>
                 </div>
             </div>
         </div>
@@ -60,6 +60,15 @@
             <span asp-validation-for="SiteId" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label>Schedule Date</label>
+            <select asp-for="ScheduleDateId" asp-items="Model.ScheduleDateSelectList" class="form-control select2 text-input">
+                <option value="0" selected>Select</option>
+            </select>
+            <span asp-validation-for="ScheduleDateId" class="text-danger"></span>
+        </div>
+    </div>
     <div class="col-lg-12 new-site">
         <h5 class="title">New Site Details</h5>
     </div>
@@ -73,15 +82,16 @@
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label>City</label>
-            <input type="text" asp-for="SiteCity" class="form-control" />
-            <span asp-validation-for="SiteCity" class="text-danger"></span>
+            <select asp-for="SiteCityId" asp-items="Model.SiteCitySelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="SiteCityId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label>Area</label>
-            <input type="text" asp-for="SiteArea" class="form-control" />
-            <span asp-validation-for="SiteArea" class="text-danger"></span>
+            <input type="text" asp-for="SiteArea" class="form-control" readonly="readonly" />
         </div>
     </div>
     <div class="col-lg-3 new-site">
@@ -109,6 +119,12 @@
             <span asp-validation-for="ServicePlanId" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-3 pro-rata-gb">
+        <div class="form-group">
+            <label>Pro Rata (GB) </label>
+            <input id="txtProRataGB" type="text" class="form-control" readonly="readonly" />
+        </div>
+    </div>
     <div class="col-lg-3 dedicated-serviceplan">
         <div class="form-group">
             <label>Dedicated Service Plan(Mbps)</label>
@@ -123,6 +139,15 @@
             <label>Dedicated Service Plan(Mbps)</label>
             <input type="text" asp-for="DedicatedServicePlanName" placeholder="..." class="form-control" />
             <span asp-validation-for="DedicatedServicePlanName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 new-site">
+        <div class="position-relative form-group">
+            <label asp-for="PromotionSelectList"></label>
+            <select asp-for="PromotionId" asp-items="Model.PromotionSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="PromotionId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 new-site">
@@ -338,15 +363,6 @@
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="TokenId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-3 token">
-        <div class="position-relative form-group">
-            <label asp-for="PromotionSelectList"></label>
-            <select asp-for="PromotionId" asp-items="Model.PromotionSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="PromotionId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-12 other">

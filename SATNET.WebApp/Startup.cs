@@ -120,7 +120,7 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Token>, TokenService>();
             services.AddScoped<IService<Promotion>, PromotionService>();
             services.AddScoped<IService<IP>, IPService>();
-
+            services.AddScoped<IService<City>, CityService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
@@ -133,7 +133,7 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Token>, TokenRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();
-
+            services.AddScoped<IRepository<City>, CityRepository>();
 
 
             //-------------Misc-----------

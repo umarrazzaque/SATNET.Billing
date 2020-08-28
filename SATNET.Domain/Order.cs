@@ -11,6 +11,7 @@ namespace SATNET.Domain
         public int CustomerId { get; set; }
         public string SiteName { get; set; }
         public string SiteCity { get; set; }
+        public int SiteCityId { get; set; }
         public string SiteArea { get; set; }
         public string CustomerName { get; set; }
         public int StatusId { get; set; }
@@ -60,5 +61,6 @@ namespace SATNET.Domain
         public string TransceiverWATT { get; set; }
         public string AntennaSize { get; set; }
         public string RejectReason { get; set; }
+        public int ScheduleDateId { get; set; }
     }
 }

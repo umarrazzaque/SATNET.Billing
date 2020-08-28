@@ -131,6 +131,10 @@ namespace SATNET.WebApp.Models.Order
         [DisplayName("Promotion")]
         public SelectList PromotionSelectList { get; set; }
         public int? PromotionId { get; set; }
+        public SelectList SiteCitySelectList { get; set; }
+        [Required(ErrorMessage = "City is required")]
+        public int SiteCityId { get; set; }
+        public int SiteAreaId { get; set; }
         public SelectList CustomerSelectList { get; set; }
         [Required(ErrorMessage = "Customer is required")]
         public int CustomerId { get; set; }
@@ -140,6 +144,8 @@ namespace SATNET.WebApp.Models.Order
         public string TransceiverWATT { get; set; }
         public string AntennaSize { get; set; }
         public string RejectReason { get; set; }
-
+        public SelectList ScheduleDateSelectList { get; set; }
+        [Required(ErrorMessage = "Schedule date is required")]
+        public int ScheduleDateId { get; set; }
     }
 }

@@ -19,7 +19,7 @@
                 <th>Order Number</th>
                 <th> Site </th>
                 <th> Request Type </th>
-                <th> Subscriber</th>
+                <th> Scheduled Date</th>
                 <th> Order Date </th>
                 <th> Status </th>
                 <th class="text-center"> </th>
@@ -65,7 +65,7 @@
                                 if (item.StatusId == 20)
                                 {
                                     // display accept/reject buttons for USAT Admin
-                                    <a href="#" data-id="@item.Id" data-action="Accept" title="Accept Service Order" class="pl-1 pr-1 order-action">
+                                    <a href="#" data-id="@item.Id" data-action="Accept" title="Complete Service Order" class="pl-1 pr-1 order-action">
                                         <span class="metismenu-icon icofont-tick-mark" aria-hidden="true"></span>
                                     </a>
                                     <a href="#" data-id="@item.Id" data-action="Reject" title="Reject Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-rejectOrderConfirm">

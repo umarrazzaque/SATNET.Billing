@@ -35,18 +35,18 @@
 
     <div class="filters">
         <div class="row">
-            <div class="col-lg-2">
+            @*<div class="col-lg-2">
                 <div class="position-relative form-group">
                     <select id="ddlRequestType" type="select" class="form-control" asp-items="ViewBag.RequestTypeSelectList">
                         <option value="" selected>Request Type</option>
                     </select>
                 </div>
-            </div>
+            </div>*@
 
             <div class="col-lg-2">
                 <div class="position-relative form-group">
                     <select id="ddlOrderStatus" type="select" class="form-control" asp-items="ViewBag.OrderStatusSelectList">
-                        <option value="" selected>Status</option>
+                        <option value="" selected>All</option>
                     </select>
                 </div>
             </div>
@@ -64,5 +64,5 @@
 
 
 @section scripts{
-    <script src="~/js/order/order-list.js"></script>
+    <script src="~/js/order/order-list.js?2.0"></script>
 }

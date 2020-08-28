@@ -17,5 +17,6 @@ namespace SATNET.Domain.Enums
         IPType = 1008,
         ModemModel = 1010,
         ModemSrNo = 1011,
+        ScheduleDate = 1017
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualBasic;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
@@ -33,12 +34,13 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Token> _tokenService;
         private readonly IService<Promotion> _promotionService;
         private readonly IService<IP> _ipService;
+        private readonly IService<City> _cityService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public OrderController(IService<Customer> customerService, IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
             , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper
-            , UserManager<ApplicationUser> userManager)
+            , UserManager<ApplicationUser> userManager, IService<City> cityService)
         {
             _customerService = customerService;
             _orderService = orderService;
@@ -51,18 +53,19 @@ namespace SATNET.WebApp.Controllers
             _ipService = ipService;
             _mapper = mapper;
             _userManager = userManager;
+            _cityService = cityService;
         }
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> Index()
         {
-            var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
+            //var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var orderStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderStatus) });
 
-            ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
+            //ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             ViewBag.OrderStatusSelectList = new SelectList(orderStatuses, "Id", "Name");
 
             List<OrderViewModel> model = new List<OrderViewModel>();
-            var serviceResult = await _orderService.List(new Order() { CustomerId = await GetCustomerId() });
+            var serviceResult = await _orderService.List(new Order() { CustomerId = await GetCustomerId(), StatusId=20 });
             if (serviceResult.Any())
             {
                 model = OrderMapping.GetListViewModel(serviceResult);
@@ -83,6 +86,8 @@ namespace SATNET.WebApp.Controllers
             }
             ViewBag.CustomerId = customerId;
             OrderViewModel model = new OrderViewModel();
+            var cities = await _cityService.List(new City());
+            var scheduleDates = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ScheduleDate) });
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
             var modemModels = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.ModemModel) });
@@ -98,6 +103,7 @@ namespace SATNET.WebApp.Controllers
             var ips = await _ipService.List(new IP());
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
+            model.ScheduleDateSelectList= new SelectList(scheduleDates, "Id", "Name");
             //model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
             model.BillingSelectList = new SelectList(hardwareBillings, "Id", "Name");
             model.ModemModelSelectList = new SelectList(modemModels, "Id", "Name");
@@ -112,6 +118,8 @@ namespace SATNET.WebApp.Controllers
             model.PromotionSelectList = new SelectList(promotions, "Id", "Name");
             model.IPSelectList = new SelectList(ips, "Id", "Name");
             model.CustomerSelectList = new SelectList(customers, "Id", "Name");
+            model.SiteCitySelectList = new SelectList(cities, "Id", "Name");
+
             if (customerId > 0)//true, customer
             {
                 customer = await _customerService.Get(customerId);
@@ -163,10 +171,12 @@ namespace SATNET.WebApp.Controllers
                 SubscriberEmail = model.SubscriberEmail,
                 SubscriberName = model.SubscriberName,
                 SubscriberNotes = model.SubscriberNotes,
-                SiteCity = model.SiteCity,
+                //SiteCity = model.SiteCity,
                 SiteName = model.SiteId > 0 ? model.SiteName : siteName,
-                SiteArea = model.SiteArea,
-                CustomerId = customerId
+                //SiteArea = model.SiteArea,
+                CustomerId = customerId,
+                SiteCityId = model.SiteCityId,
+                ScheduleDateId = model.ScheduleDateId
             };
 
             var result = await _orderService.Add(order);
@@ -180,11 +190,11 @@ namespace SATNET.WebApp.Controllers
 
         }
 
-        public async Task<IActionResult> GetOrdersByDDLFilter(string requestTypeValue, string statusValue)
+        public async Task<IActionResult> GetOrdersByDDLFilter(string statusValue)
         {
             List<OrderViewModel> model = new List<OrderViewModel>();
             Order obj = new Order();
-            obj.RequestTypeId = string.IsNullOrEmpty(requestTypeValue) ? 0 : Convert.ToInt32(requestTypeValue);
+            //obj.RequestTypeId = string.IsNullOrEmpty(requestTypeValue) ? 0 : Convert.ToInt32(requestTypeValue);
             obj.StatusId = string.IsNullOrEmpty(statusValue) ? 0 : Convert.ToInt32(statusValue);
 
             var serviceResult = await _orderService.List(obj);
@@ -192,7 +202,8 @@ namespace SATNET.WebApp.Controllers
             {
                 model = OrderMapping.GetListViewModel(serviceResult);
             }
-            return Json(new { isValid = true, html = RenderViewToString(this, "_OrderList", model) });
+            //return Json(new { isValid = true, html = RenderViewToString(this, "_OrderList", model) });
+            return PartialView("_OrderList", model);
         }
         public async Task<IActionResult> GetServicePlansByType(string servicePlanTypeId)
         {
@@ -329,6 +340,30 @@ namespace SATNET.WebApp.Controllers
         {
             var svcResult = await _orderService.Get(id);
             return Json(svcResult);
+        }
+
+        public async Task<IActionResult> GetCityArea(int cityId)
+        {
+            var city = await _cityService.Get(cityId);
+            return Json(new
+            {
+                areaname = city.AreaName
+            });
+        }
+
+        public async Task<IActionResult> GetProRataGB(string monthlyQuota, DateTime installationDate)
+        {
+            int quota = Convert.ToInt32(monthlyQuota);
+            int installationMonth = DateAndTime.Month(installationDate);
+            int installationDay = DateAndTime.Day(installationDate);
+            int daysPerMonth = DateTime.DaysInMonth(2020, installationMonth);
+            int remainingDays = daysPerMonth - installationDay + 1;
+            decimal proRataQuotaGB = (quota / 30) * remainingDays;
+
+            return Json(new
+            {
+                proRataQuotaGB = proRataQuotaGB
+            });
         }
 
     }
