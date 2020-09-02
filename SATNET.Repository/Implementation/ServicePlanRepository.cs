@@ -23,6 +23,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_TypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_PlanValidity", obj.PlanValidity, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_DownloadMIR", obj.DownloadMIR, DbType.Decimal, ParameterDirection.Input);
             queryParameters.Add("@P_UploadMIR", obj.UploadMIR, DbType.Decimal, ParameterDirection.Input);
             queryParameters.Add("@P_DownloadCIR", obj.DownloadCIR, DbType.Decimal, ParameterDirection.Input);
@@ -71,6 +72,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_TypeId", obj.PlanTypeId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_PlanValidity", obj.PlanValidity, DbType.String, ParameterDirection.Input);  
             queryParameters.Add("@P_DownloadMIR", obj.DownloadMIR, DbType.Decimal, ParameterDirection.Input);
             queryParameters.Add("@P_UploadMIR", obj.UploadMIR, DbType.Decimal, ParameterDirection.Input);
             queryParameters.Add("@P_DownloadCIR", obj.DownloadCIR, DbType.Decimal, ParameterDirection.Input);
