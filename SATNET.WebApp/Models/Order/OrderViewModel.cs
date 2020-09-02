@@ -14,6 +14,7 @@ namespace SATNET.WebApp.Models.Order
         public string OrderNumber { get; set; }
         [DisplayName("Customer Name")]
         public string CustomerName { get; set; }
+        public string CustomerShortName { get; set; }
         public string StatusName { get; set; }
         public int StatusId { get; set; }
         [Required(ErrorMessage = "Site name is required")]
@@ -138,6 +139,7 @@ namespace SATNET.WebApp.Models.Order
         public SelectList CustomerSelectList { get; set; }
         [Required(ErrorMessage = "Customer is required")]
         public int CustomerId { get; set; }
+        public string CustomerCode { get; set; }
         public string Other { get; set; }
         public decimal Total { get; set; }
         public string ModemModel { get; set; }
@@ -147,5 +149,9 @@ namespace SATNET.WebApp.Models.Order
         public SelectList ScheduleDateSelectList { get; set; }
         [Required(ErrorMessage = "Schedule date is required")]
         public int ScheduleDateId { get; set; }
+        public string ScheduleDateName { get; set; }
+        public SelectList HardwareConditionSelectList { get; set; }
+        [Required(ErrorMessage = "Hardware condition is required")]
+        public int HardwareConditionId { get; set; }
     }
 }

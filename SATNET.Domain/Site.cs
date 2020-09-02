@@ -22,10 +22,15 @@ namespace SATNET.Domain
         public List<int> StatusIds { get; set; }
         public string Status { get; set; }
         public string Name { get; set; }
+        public int CityId { get; set; }
+        public int AreaId { get; set; }
         public string City { get; set; }
         public string Area { get; set; }
         public string  Subscriber{ get; set; }
         public DateTime ActivationDate { get; set; }
         public DateTime LastActivationDate { get; set; }
+        public int MacAirNoId { get; set; }
+        public int PromotionId { get; set; }
+        public int HardwareConditionId { get; set; }
     }
 }

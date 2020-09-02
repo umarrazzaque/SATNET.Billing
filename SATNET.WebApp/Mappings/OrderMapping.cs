@@ -39,6 +39,9 @@ TransceiverWATT=obj.TransceiverWATT,
 AntennaSize = obj.AntennaSize,
 StatusId = obj.StatusId,
 CustomerId=obj.CustomerId,
+CustomerShortName=obj.CustomerShortName,
+CustomerCode = obj.CustomerCode,
+ScheduleDateName=obj.ScheduleDateName,
 RejectReason = string.IsNullOrEmpty(obj.RejectReason) ? "Not Available":obj.RejectReason
             };
             return model;

@@ -3,6 +3,7 @@ var unitMb;
 var _customerId;
 
 $(function () {
+
     unitGb = $("#hdnUnitGb").val();
     unitMb = $("#hdnUnitMb").val();
     _customerId = $("#hdnCustomerId").val();
@@ -28,12 +29,12 @@ $(function () {
     if (_customerId != 0) {
         $(".select-customer").hide();
         //Standard User
-        if (_customerId > 0) {
-            var url = '/Order/GetProposedSiteName';
-            $.getJSON(url, { customerId: _customerId }, function (result) {
-                $("#SiteName").val(result.siteName);
-            });
-        }
+        //if (_customerId > 0) {
+        //    var url = '/Order/GetProposedSiteName';
+        //    $.getJSON(url, { customerId: _customerId }, function (result) {
+        //        $("#SiteName").val(result.siteName);
+        //    });
+        //}
     }
     $("#RequestTypeId").change(function () {
         var requestTypeId = $("#RequestTypeId").val();
@@ -45,16 +46,22 @@ $(function () {
                 $(".hardware").show();
                 $(".site-name").show();
                 $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
                 break
             case '2':// Termination
                 $(".select-site").show();
                 $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
                 break
             case '32'://Re-Activation
                 $(".select-site").show();
                 $(".new-site").show();
+                $(".hardware").show();
+                $("#MacAirNoId").prop("disabled", true);
+                $("#HardwareConditionId").prop("disabled", true);
+                $("#PromotionId").prop("disabled", true);
                 $(".site-name").hide();
                 $("#ScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
@@ -102,6 +109,8 @@ $(function () {
         }
     });
     $(".service-plantype").change(function () {
+        $('#txtProRataGB').text('');
+        $('.pro-rata-gb').hide();
         var type = $(this).val();
         var section = $(this).data('section');
         if (type != "") {
@@ -130,7 +139,7 @@ $(function () {
             var url = '/Order/GetSiteDetails';
             $.getJSON(url, { siteId: $(this).val() }, function (result) {
                 if (result != null) {
-                    $("#SiteCity").val(result.city);
+                    $("#SiteCityId").val(result.cityId);
                     $("#SiteArea").val(result.area);
                     $("#ServicePlanTypeId").val(result.servicePlanTypeId);
                     if (result.servicePlanTypeId > 0) {
@@ -138,10 +147,13 @@ $(function () {
                     }
                     $("#IPId").val(result.ipId);
                     $("#SubscriberName").val(result.subscriberName);
-                    $("#SubscriberCity").val(result.subscriberCity);
-                    $("#SubscriberEmail").val(result.subscriberEmail);
-                    $("#SubscriberArea").val(result.subscriberArea);
-                    $("#SubscriberNotes").val(result.subscriberNotes);
+                    $("#MacAirNoId").val(result.macAirNoId);
+                    $("#HardwareConditionId").val(result.hardwareConditionId);
+                    $("#PromotionId").val(result.promotionId);
+                    //$("#SubscriberCity").val(result.subscriberCity);
+                    //$("#SubscriberEmail").val(result.subscriberEmail);
+                    //$("#SubscriberArea").val(result.subscriberArea);
+                    //$("#SubscriberNotes").val(result.subscriberNotes);
                 }
             });
         }
@@ -173,7 +185,7 @@ $(function () {
                     showProRataGB(quotaPlanText, installationDate)
                 }
                 else {
-                    alert('Select plan installation date to see pro rata quota GB.');
+                    //alert('Select plan installation date to see pro rata quota GB.');
                 }
             }
         }
@@ -187,11 +199,19 @@ $(function () {
             showProRataGB(quotaPlanText, installationDate)
         }
     });
-
     $("#SiteCityId").change(function () {
         var cityId = $(this).val();
         if (cityId > 0) {
             getArea(cityId);
+        }
+    });
+    $("#HardwareConditionId").change(function () {
+        var conditionId = $(this).val();
+        if (conditionId == 61) { //used
+            $("#PromotionId option[value='2']").prop("disabled", true);
+        }
+        else {
+            $("#PromotionId option[value='2']").prop("disabled", false);
         }
     });
 });
@@ -214,6 +234,7 @@ getServicePlansByType = function (type, section) {
     var url = '/Order/GetServicePlansByType';
     $.getJSON(url, { servicePlanTypeId: type }, function (result) {
         var items = '';
+        items += "<option value=''>Select</option>";
         $.each(result, function (i, plan) {
             items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
         });
@@ -290,6 +311,7 @@ getSites = function (requestTypeId, customerId) {
             });
             $("#SiteId").empty();
             $("#SiteId").html(items);
+            $("#SiteId").prepend("<option value=''>Select</option>").val('');
         }
     });
 }
@@ -348,10 +370,14 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
 }
 
 resetFields = function () {
+    $("#CustomerId").val('');
+    $("#SiteId").val('');
+    $("#SiteCityId").val('');
+    $("#SiteId").empty();
     $("#SiteCity").val('');
     $("#SiteArea").val('');
-    $(".service-plantype").val(0);
-    $(".service-plan").val(0);
+    $(".service-plantype").val('');
+    $(".service-plan").val('');
     $(".service-plan").empty();
     $("#IPId").val(0);
     $("#SubscriberName").val('');
@@ -432,6 +458,8 @@ showProRataGB = function (quotaPlanText, installationDate) {
         }
     });
 }
+
+
 
 
 

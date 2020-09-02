@@ -13,11 +13,12 @@
         <thead>
             <tr>
                 @*<th class="text-center" width="30">
-                         <input type="checkbox">
-                    </th>*@
+             <input type="checkbox">
+        </th>*@
                 @*<th class="text-center">#</th>*@
                 <th>Order Number</th>
                 <th> Site </th>
+                <th> Customer </th>
                 <th> Request Type </th>
                 <th> Scheduled Date</th>
                 <th> Order Date </th>
@@ -43,8 +44,9 @@
                         </td>*@
                     <td><a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails" data-toggle="modal" data-target="#modal-orderdetails">@item.OrderNumber</a> </td>
                     <td> @item.SiteName</td>
+                    <td>@item.CustomerShortName</td>
                     <td> @item.RequestTypeName</td>
-                    <td> @item.SubscriberName</td>
+                    <td> @item.ScheduleDateName</td>
                     <td>@item.ServiceOrderDate</td>
                     <td>
                         @if (item.StatusId == 22)
@@ -65,7 +67,7 @@
                                 if (item.StatusId == 20)
                                 {
                                     // display accept/reject buttons for USAT Admin
-                                    <a href="#" data-id="@item.Id" data-action="Accept" title="Complete Service Order" class="pl-1 pr-1 order-action">
+                                    <a href="#" data-id="@item.Id" data-action="Accept" data-customerid="@item.CustomerId" data-customercode="@item.CustomerCode" title="Complete Service Order" class="pl-1 pr-1 order-action">
                                         <span class="metismenu-icon icofont-tick-mark" aria-hidden="true"></span>
                                     </a>
                                     <a href="#" data-id="@item.Id" data-action="Reject" title="Reject Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-rejectOrderConfirm">

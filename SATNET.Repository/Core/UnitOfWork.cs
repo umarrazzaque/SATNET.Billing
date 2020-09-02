@@ -35,8 +35,14 @@ namespace SATNET.Repository.Core
 
         private void OpenConnection()
         {
-            if (_connection.State == ConnectionState.Closed) { _connection.Open(); }
-            else { _connection.Open(); }   
+            if (_connection.State == ConnectionState.Closed) 
+            { 
+                _connection.Open(); 
+            }
+            //else 
+            //{ 
+            //    _connection.Open(); 
+            //}
         }
 
         public void BeginTransaction()
@@ -72,8 +78,8 @@ namespace SATNET.Repository.Core
         public IRepository<Customer> Customers { get { return _customerRepository ?? (_customerRepository = new CustomerRepository(this)); } }
 
         private IRepository<ServicePlan> _serviceRepository;
-        public IRepository<ServicePlan> ServicePlans { get { return _serviceRepository ?? (_serviceRepository = new ServicePlanRepository(this));  } }
-        
+        public IRepository<ServicePlan> ServicePlans { get { return _serviceRepository ?? (_serviceRepository = new ServicePlanRepository(this)); } }
+
         private IRepository<ServicePlanPrice> _servicePlanPriceRepository;
         public IRepository<ServicePlanPrice> ServicePlanPrices { get { return _servicePlanPriceRepository ?? (_servicePlanPriceRepository = new ServicePlanPriceRepository(this)); } }
 

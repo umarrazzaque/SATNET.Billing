@@ -90,28 +90,14 @@ namespace SATNET.WebApp.Controllers
             var scheduleDates = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ScheduleDate) });
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
-            var modemModels = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.ModemModel) });
-            var modemSrNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.ModemSrNo) });
-            var hardwareBillings = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.ModemSrNo) });
-            var hardwareMacAirNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.MACAirNo) });
-            var hardwareAntennaSizes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.AntennaSize) });
-            var hardwareTransWATTs = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.TransceiverWATT) });
-            var hardwareTransSrNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.TransceiverSrNo) });
-            //var hardwares = await _hardwareService.List(new Hardware());
+            var hardwareConditions = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.HardwareCondition) });
+            var macAirNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.MACAirNo) });
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
             var ips = await _ipService.List(new IP());
 
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.ScheduleDateSelectList= new SelectList(scheduleDates, "Id", "Name");
-            //model.HardwareSelectList = new SelectList(hardwares, "Id", "ModemModel");
-            model.BillingSelectList = new SelectList(hardwareBillings, "Id", "Name");
-            model.ModemModelSelectList = new SelectList(modemModels, "Id", "Name");
-            model.ModemSrNoSelectList = new SelectList(modemSrNos, "Id", "Name");
-            model.MacAirNoSelectList = new SelectList(hardwareMacAirNos, "Id", "Name");
-            model.AntennaSizeSelectList = new SelectList(hardwareAntennaSizes, "Id", "Name");
-            model.TransceiverWATTSelectList = new SelectList(hardwareTransWATTs, "Id", "Name");
-            model.TransceiverSrNoSelectList = new SelectList(hardwareTransSrNos, "Id", "Name");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
             model.SiteSelectList = new SelectList(sites, "Id", "Name");
             model.TokenSelectList = new SelectList(tokens, "Id", "Name");
@@ -119,7 +105,8 @@ namespace SATNET.WebApp.Controllers
             model.IPSelectList = new SelectList(ips, "Id", "Name");
             model.CustomerSelectList = new SelectList(customers, "Id", "Name");
             model.SiteCitySelectList = new SelectList(cities, "Id", "Name");
-
+            model.HardwareConditionSelectList = new SelectList(hardwareConditions, "Id", "Name");
+            model.MacAirNoSelectList= new SelectList(macAirNos, "Id", "Name");
             if (customerId > 0)//true, customer
             {
                 customer = await _customerService.Get(customerId);
@@ -136,25 +123,19 @@ namespace SATNET.WebApp.Controllers
             int customerId = 0;
             string siteName = "";
             customerId = model.CustomerId == 0 ? await GetCustomerId() : model.CustomerId;
-            if (model.SiteId == 0)
-            {
-                var customer = await _customerService.Get(customerId);
-                siteName = GetProposedSiteNameImp(customerId, customer.Code);
-            }
-            else if (!model.SiteName.Equals("")) {
-                siteName = model.SiteName;
-            }
+
             var order = new Order()
             {
                 SiteId = model.SiteId,
                 //HardwareId = model.HardwareId,
-                BillingId = model.BillingId,
-                ModemModelId = model.ModemModelId,
-                ModemSrNoId = model.ModemSrNoId,
+                //BillingId = model.BillingId,
+                //ModemModelId = model.ModemModelId,
+                //ModemSrNoId = model.ModemSrNoId,
                 MacAirNoId = model.MacAirNoId,
-                AntennaSizeId = model.AntennaSizeId,
-                TransceiverWATTId = model.TransceiverWATTId,
-                TransceiverSrNoId = model.TransceiverSrNoId,
+                HardwareConditionId = model.HardwareConditionId,
+                //AntennaSizeId = model.AntennaSizeId,
+                //TransceiverWATTId = model.TransceiverWATTId,
+                //TransceiverSrNoId = model.TransceiverSrNoId,
                 ServicePlanId = model.ServicePlanId,
                 DedicatedServicePlanName = model.DedicatedServicePlanName,
                 RequestTypeId = model.RequestTypeId,
@@ -162,13 +143,13 @@ namespace SATNET.WebApp.Controllers
                 UpgradeToId = model.UpgradeToId,
                 DowngradeFromId = model.DowngradeFromId,
                 DowngradeToId = model.DowngradeToId,
-                CreatedBy = 1,
+                CreatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 InstallationDate = model.InstallationDate,
                 IPId = model.IPId,
                 TokenId = model.TokenId,
                 PromotionId = model.PromotionId,
-                Download = model.Download,
-                Upload = model.Upload,
+                //Download = model.Download,
+                //Upload = model.Upload,
                 Other = model.Other,
                 SubscriberArea = model.SubscriberArea,
                 SubscriberCity = model.SubscriberCity,
@@ -176,7 +157,7 @@ namespace SATNET.WebApp.Controllers
                 SubscriberName = model.SubscriberName,
                 SubscriberNotes = model.SubscriberNotes,
                 //SiteCity = model.SiteCity,
-                SiteName = model.SiteId > 0 ? model.SiteName : siteName,
+                //SiteName = model.SiteId > 0 ? model.SiteName : siteName,
                 //SiteArea = model.SiteArea,
                 CustomerId = customerId,
                 SiteCityId = model.SiteCityId,
@@ -215,7 +196,6 @@ namespace SATNET.WebApp.Controllers
             obj.PlanTypeId = string.IsNullOrEmpty(servicePlanTypeId) ? 0 : Convert.ToInt32(servicePlanTypeId);
 
             var servicePlans = await _servicePlanService.List(obj);
-            servicePlans.Insert(0, new ServicePlan() { Id = 0, Name = "Select" });
             return Json(new SelectList(servicePlans, "Id", "Name"));
         }
 
@@ -295,7 +275,6 @@ namespace SATNET.WebApp.Controllers
             
             
             var sites = await _siteService.List(site);
-            sites.Insert(0, new Site() { Id = 0, Name = "Select" });
             return Json(new SelectList(sites, "Id", "Name"));
         }
         public async Task<IActionResult> GetSiteDetails(int siteId)
@@ -309,8 +288,14 @@ namespace SATNET.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Action(int id,int statusId, string rejectReason)
         {
+            string siteName = "";
             var status = new StatusModel();
-            var result = await _orderService.Update(new Order { Id = id, StatusId = statusId, RejectReason=rejectReason });
+            var order = await _orderService.Get(id);
+            if (order.RequestTypeId == 1)
+            {
+                siteName = GetProposedSiteNameImp(order.CustomerId, order.CustomerCode);
+            }
+            var result = await _orderService.Update(new Order { Id = id, StatusId = statusId, RejectReason=rejectReason, SiteName=siteName });
             if (result.IsSuccess)
             {
                 status.IsSuccess = true;

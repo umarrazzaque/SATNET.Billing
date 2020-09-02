@@ -29,5 +29,11 @@ namespace SATNET.Domain
         public String SortOrder { get; set; }
 
         public int RecordsCount { get; set; }
+        public string ErrorNumber { get; set; }
+        public string ErrorSeverity { get; set; }
+        public string ErrorState { get; set; }
+        public string ErrorProcedure { get; set; }
+        public string ErrorLine { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

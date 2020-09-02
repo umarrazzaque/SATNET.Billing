@@ -11,6 +11,7 @@ namespace SATNET.Domain.Enums
         MACAirNo = 1012,
         AntennaSize = 1013,
         TransceiverWATT = 1014,
-        TransceiverSrNo = 1015
+        TransceiverSrNo = 1015,
+        HardwareCondition=1018
     }
 }

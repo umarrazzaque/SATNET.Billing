@@ -65,51 +65,6 @@ namespace SATNET.Repository.Implementation
                 
                 try
                 {
-                    //if (obj.RequestTypeId == 1 && !string.IsNullOrEmpty(obj.SubscriberName) && !string.IsNullOrEmpty(obj.SubscriberCity))
-                    //{
-                    //    int subscriberId = 0;
-                    //    int siteId = 0;
-                    //    obj.StatusId = 35; //InActive
-                    //    var paramsSubs = new DynamicParameters();
-
-                    //    paramsSubs.Add("@Name", obj.SubscriberName, DbType.String, ParameterDirection.Input);
-                    //    paramsSubs.Add("@City", obj.SubscriberCity, DbType.String, ParameterDirection.Input);
-                    //    paramsSubs.Add("@Area", obj.SubscriberArea, DbType.String, ParameterDirection.Input);
-                    //    paramsSubs.Add("@Email", obj.SubscriberEmail, DbType.String, ParameterDirection.Input);
-                    //    paramsSubs.Add("@Notes", obj.SubscriberNotes, DbType.String, ParameterDirection.Input);
-                    //    paramsSubs.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                    //    subscriberId = await con.ExecuteScalarAsync<int>("SubscriberInsert", paramsSubs, transaction, commandType: CommandType.StoredProcedure);
-                    //    obj.SubscriberId = subscriberId;
-                    //    var queryParameters = new DynamicParameters();
-                    //    queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                    //    queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@ServicePlanId", obj.ServicePlanId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@DedicatedServicePlanName", obj.DedicatedServicePlanName, DbType.String, ParameterDirection.Input);
-                    //    queryParameters.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@P_SubscriberId", obj.SubscriberId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@ModemModelId", obj.ModemModelId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@ModemSrNoId", obj.ModemSrNoId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@MacAirNoId", obj.MacAirNoId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@BillingId", obj.BillingId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@TransceiverSrNoId", obj.TransceiverSrNoId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@TransceiverWATTId", obj.TransceiverWATTId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@AntennaSizeId", obj.AntennaSizeId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@P_StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
-                    //    queryParameters.Add("@P_Name", obj.SiteName, DbType.String, ParameterDirection.Input);
-                    //    queryParameters.Add("@P_City", obj.SiteCity, DbType.String, ParameterDirection.Input);
-                    //    queryParameters.Add("@P_Area", obj.SiteArea, DbType.String, ParameterDirection.Input);
-                    //    //queryParameters.Add("@P_Subscriber", obj.Subscriber, DbType.String, ParameterDirection.Input);
-                    //    queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                    //    int retResult = await con.ExecuteScalarAsync<int>("SiteAddOrUpdate", queryParameters,transaction, commandType: CommandType.StoredProcedure);
-                    //    siteId = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
-                    //    obj.SiteId = siteId;
-
-                    //    //var paramsSite = new DynamicParameters();
-                    //    //paramsSite.Add("@Id", obj.SiteId, DbType.Int32, ParameterDirection.Input);
-                    //    //paramsSite.Add("@SubscriberId", subscriberId, DbType.Int32, ParameterDirection.Input);
-                    //    //var siteResult = await con.ExecuteScalarAsync<int>("SiteUpdateSubscriber", paramsSite, transaction, commandType: CommandType.StoredProcedure);
-                    //}
-
                     var paramsOrder = new DynamicParameters();
                     paramsOrder.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
@@ -130,11 +85,15 @@ namespace SATNET.Repository.Implementation
                         paramsOrder.Add("@PlannedInstallationDate", obj.InstallationDate, DbType.DateTime, ParameterDirection.Input);
                     }
                     paramsOrder.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@ScheduleDateId", obj.ScheduleDateId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@MacAirNoId", obj.MacAirNoId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@HardwareConditionId", obj.HardwareConditionId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@PromotionId", obj.PromotionId, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@SiteCity", obj.SiteCity, DbType.String, ParameterDirection.Input);
-                    paramsOrder.Add("@SiteArea", obj.SiteArea, DbType.String, ParameterDirection.Input);
+                    paramsOrder.Add("@SiteCityId", obj.SiteCityId, DbType.Int32, ParameterDirection.Input);
+                    //paramsOrder.Add("@SiteCity", obj.SiteCity, DbType.String, ParameterDirection.Input);
+                    //paramsOrder.Add("@SiteArea", obj.SiteArea, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@DedicatedServicePlanName", obj.DedicatedServicePlanName, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberName", obj.SubscriberName, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberCity", obj.SubscriberCity, DbType.String, ParameterDirection.Input);
@@ -155,19 +114,31 @@ namespace SATNET.Repository.Implementation
         }
         public async Task<int> Update(Order obj)
         {
+            int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
 
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@RejectReason", obj.RejectReason, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                int result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, commandType: CommandType.StoredProcedure);
-                return result;
+                var updateTransaction = con.BeginTransaction();
+
+                try
+                {
+                    var queryParameters = new DynamicParameters();
+                    queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
+                    queryParameters.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
+                    queryParameters.Add("@RejectReason", obj.RejectReason, DbType.String, ParameterDirection.Input);
+                    queryParameters.Add("@SiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
+                    queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
+                    result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, updateTransaction, commandType: CommandType.StoredProcedure);
+                    updateTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    updateTransaction.Rollback();
+                }
             }
+            return result;
         }
         public async Task<int> Delete(int id, int deletedBy)
         {

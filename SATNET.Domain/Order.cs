@@ -9,11 +9,13 @@ namespace SATNET.Domain
         public string OrderNumber { get; set; }
         public int SiteId { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerCode { get; set; }
         public string SiteName { get; set; }
         public string SiteCity { get; set; }
         public int SiteCityId { get; set; }
         public string SiteArea { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerShortName { get; set; }
         public int StatusId { get; set; }
         public string StatusName { get; set; }
         public int? SubscriberId { get; set; }
@@ -62,5 +64,7 @@ namespace SATNET.Domain
         public string AntennaSize { get; set; }
         public string RejectReason { get; set; }
         public int ScheduleDateId { get; set; }
+        public string ScheduleDateName { get; set; }
+        public int HardwareConditionId { get; set; }
     }
 }

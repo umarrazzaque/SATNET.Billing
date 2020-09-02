@@ -64,21 +64,29 @@
         <div class="form-group">
             <label>Schedule Date</label>
             <select asp-for="ScheduleDateId" asp-items="Model.ScheduleDateSelectList" class="form-control select2 text-input">
-                <option value="0" selected>Select</option>
+                <option value="" selected>Select</option>
             </select>
+            <input type="hidden" asp-for="ScheduleDateId" id="hdnScheduleDateId"/>
             <span asp-validation-for="ScheduleDateId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-12 new-site">
         <h5 class="title">New Site Details</h5>
     </div>
-    <div class="col-lg-3 new-site site-name">
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" asp-for="SiteName" class="form-control" readonly="readonly" />
-            <span asp-validation-for="SiteName" class="text-danger"></span>
+    <div class="col-lg-3 new-site subscriber">
+        <div class="position-relative form-group">
+            <label>Subscriber Name</label>
+            <input asp-for="SubscriberName" type="text" placeholder="..." class="form-control" />
+            <span asp-validation-for="SubscriberName" class="text-danger"></span>
         </div>
     </div>
+    @*<div class="col-lg-3 new-site site-name">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" asp-for="SiteName" class="form-control" readonly="readonly" />
+                <span asp-validation-for="SiteName" class="text-danger"></span>
+            </div>
+        </div>*@
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label>City</label>
@@ -113,7 +121,7 @@
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label asp-for="ServicePlanSelectList"></label><span class="unit-serviceplan"></span>
-            <select disabled asp-for="ServicePlanId" asp-items="Model.ServicePlanSelectList" class="form-control select2 text-input">
+            <select disabled asp-for="ServicePlanId" asp-items="Model.ServicePlanSelectList" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanId" class="text-danger"></span>
@@ -143,15 +151,6 @@
     </div>
     <div class="col-lg-3 new-site">
         <div class="position-relative form-group">
-            <label asp-for="PromotionSelectList"></label>
-            <select asp-for="PromotionId" asp-items="Model.PromotionSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="PromotionId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-3 new-site">
-        <div class="position-relative form-group">
             <label asp-for="IPSelectList"></label>
             <select asp-for="IPId" asp-items="Model.IPSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
@@ -176,42 +175,6 @@
     <div class="col-lg-12 hardware">
         <h5 class="title">Hardware Details</h5>
     </div>
-    @*<div class="col-lg-3 hardware">
-            <div class="form-group">
-                <label asp-for="HardwareSelectList"></label>
-                <select asp-for="HardwareId" asp-items="Model.HardwareSelectList" class="form-control select2 text-input">
-                    <option value="" hidden disabled selected>Select</option>
-                </select>
-                <span asp-validation-for="HardwareId" class="text-danger"></span>
-            </div>
-        </div>*@
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Billing</label>
-            <select asp-for="BillingId" asp-items="Model.BillingSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="BillingId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Modem Model</label>
-            <select asp-for="ModemModelId" asp-items="Model.ModemModelSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="ModemModelId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Modem Serial Number</label>
-            <select asp-for="ModemSrNoId" asp-items="Model.ModemSrNoSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="ModemSrNoId" class="text-danger"></span>
-        </div>
-    </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>MAC AIR Number</label>
@@ -223,76 +186,63 @@
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
-            <label>Antinna Size</label>
-            <select asp-for="AntennaSizeId" asp-items="Model.AntennaSizeSelectList" class="form-control select2 text-input">
+            <label>Condition</label>
+            <select asp-for="HardwareConditionId" asp-items="Model.HardwareConditionSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="AntennaSizeId" class="text-danger"></span>
+            <span asp-validation-for="HardwareConditionId" class="text-danger"></span>
         </div>
     </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Antenna S/N</label>
-            <input type="text" asp-for="AntennaSrNo" placeholder="..." class="form-control" />
-            <span asp-validation-for="AntennaSrNo" class="text-danger"></span>
-        </div>
+    <div class="col-lg-12 new-site">
+        <h5 class="title">Promotion</h5>
     </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Transceiver WATT</label>
-            <select asp-for="TransceiverWATTId" asp-items="Model.TransceiverWATTSelectList" class="form-control select2 text-input">
+    <div class="col-lg-3 new-site">
+        <div class="position-relative form-group">
+            <label asp-for="PromotionSelectList"></label>
+            <select asp-for="PromotionId" asp-items="Model.PromotionSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="TransceiverWATTId" class="text-danger"></span>
+            <span asp-validation-for="PromotionId" class="text-danger"></span>
         </div>
     </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>Transceiver S/N</label>
-            <select asp-for="TransceiverSrNoId" asp-items="Model.TransceiverSrNoSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="TransceiverSrNoId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-12 new-site subscriber">
+    @*<div class="col-lg-12 new-site subscriber">
 
-        <h5 class="title">Subscriber Details</h5>
-    </div>
-    <div class="col-lg-3 new-site subscriber">
-        <div class="position-relative form-group">
-            <label asp-for="SubscriberName"></label>
-            <input asp-for="SubscriberName" type="text" placeholder="..." class="form-control" />
-            <span asp-validation-for="SubscriberName" class="text-danger"></span>
+            <h5 class="title">Subscriber Details</h5>
         </div>
-    </div>
-    <div class="col-lg-3 new-site subscriber">
-        <div class="position-relative form-group">
-            <label asp-for="SubscriberCity"></label>
-            <input asp-for="SubscriberCity" type="text" placeholder="..." class="form-control" />
-            <span asp-validation-for="SubscriberCity" class="text-danger"></span>
+        <div class="col-lg-3 new-site subscriber">
+            <div class="position-relative form-group">
+                <label asp-for="SubscriberName"></label>
+                <input asp-for="SubscriberName" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberName" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3 new-site subscriber">
-        <div class="position-relative form-group">
-            <label asp-for="SubscriberEmail"></label>
-            <input asp-for="SubscriberEmail" type="text" placeholder="..." class="form-control" />
-            <span asp-validation-for="SubscriberEmail" class="text-danger"></span>
+        <div class="col-lg-3 new-site subscriber">
+            <div class="position-relative form-group">
+                <label asp-for="SubscriberCity"></label>
+                <input asp-for="SubscriberCity" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberCity" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3 new-site subscriber">
-        <div class="position-relative form-group">
-            <label asp-for="SubscriberArea"></label>
-            <input asp-for="SubscriberArea" type="text" placeholder="..." class="form-control" />
-            <span asp-validation-for="SubscriberArea" class="text-danger"></span>
+        <div class="col-lg-3 new-site subscriber">
+            <div class="position-relative form-group">
+                <label asp-for="SubscriberEmail"></label>
+                <input asp-for="SubscriberEmail" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberEmail" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3 new-site subscriber">
-        <div class="position-relative form-group">
-            <label asp-for="SubscriberNotes"></label>
-            <input asp-for="SubscriberNotes" type="text" placeholder="..." class="form-control" />
+        <div class="col-lg-3 new-site subscriber">
+            <div class="position-relative form-group">
+                <label asp-for="SubscriberArea"></label>
+                <input asp-for="SubscriberArea" type="text" placeholder="..." class="form-control" />
+                <span asp-validation-for="SubscriberArea" class="text-danger"></span>
+            </div>
         </div>
-    </div>
+        <div class="col-lg-3 new-site subscriber">
+            <div class="position-relative form-group">
+                <label asp-for="SubscriberNotes"></label>
+                <input asp-for="SubscriberNotes" type="text" placeholder="..." class="form-control" />
+            </div>
+        </div>*@
     <div class="col-lg-12 upgrade">
         <h5 class="title">Upgrade</h5>
     </div>
