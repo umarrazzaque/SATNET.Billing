@@ -14,9 +14,12 @@ namespace SATNET.WebApp.Models
         {
 
         }
-        [DisplayName("Service Plan")]
+        [DisplayName("Plan Name")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        [DisplayName("Plan Type")]
+        public int PlanTypeId { get; set; }
+        public string PlanType { get; set; }
         [DisplayName("Price Tier")]
         public int PriceTierId { get; set; }
         public string PriceTierName { get; set; }
@@ -31,10 +34,12 @@ namespace SATNET.WebApp.Models
         {
             ServicePlanPriceModel = new ServicePlanPriceModel();
             ServicePlanList = new List<ServicePlanModel>();
+            ServicePlanTypeList = new List<LookUpModel>();
             PriceTierList = new List<LookUpModel>();
         }
         public ServicePlanPriceModel ServicePlanPriceModel { get; set; }
         public List<ServicePlanModel> ServicePlanList { get; set; }
+        public List<LookUpModel> ServicePlanTypeList { get; set; }
         public List<LookUpModel> PriceTierList { get; set; }
     }
 }

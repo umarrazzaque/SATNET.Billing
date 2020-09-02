@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SATNET.Repository.Core
 {
-    public class UnitOfWorkFactory
+    public class UnitOfWorkFactory 
     {
         private readonly IConfiguration _config;
         private IDbConnection _connection = null;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
@@ -42,6 +43,7 @@ namespace SATNET.WebApp.Controllers
             {
                 ServicePlanPriceModel = new ServicePlanPriceModel(),
                 ServicePlanList = GetServicePlanList().Result,
+                ServicePlanTypeList = GetServicePlanTypeList().Result,
                 PriceTierList = GetPriceTierList().Result
             };
             return View(resultModel);
@@ -105,6 +107,7 @@ namespace SATNET.WebApp.Controllers
             }
             return retList;
         }
+        #region Service Plan 
         public async Task<List<ServicePlanModel>> GetServicePlanList()
         {
             var retList = new List<ServicePlanModel>();
@@ -115,7 +118,28 @@ namespace SATNET.WebApp.Controllers
             }
             return retList;
         }
+        public async Task<IActionResult> GetFilteredServicePlan(string planTypeId)
+        {
+            ServicePlan obj = new ServicePlan();
+            obj.PlanTypeId = string.IsNullOrEmpty(planTypeId) ? 0 : Convert.ToInt32(planTypeId);
 
+            var svcResult = await _servicePlanService.List(obj);
+            return Json(new SelectList(svcResult, "Id", "Name"));
+        }
+        #endregion
+
+        public async Task<List<LookUpModel>> GetServicePlanTypeList()
+        {
+            List<LookUpModel> retListModel = new List<LookUpModel>();
+            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
+            if (retList.Any())
+            {
+                retListModel = _mapper.Map<List<LookUpModel>>(retList);
+
+            }
+            return retListModel;
+        }
+        #region Price List
         private async Task<List<LookUpModel>> GetPriceTierList()
         {
             List<LookUpModel> retListModel = new List<LookUpModel>();
@@ -127,6 +151,26 @@ namespace SATNET.WebApp.Controllers
             }
             return retListModel;
         }
+        public async Task<IActionResult> GetFilteredPlanPrice(string servicePlanId)
+        {
+            ServicePlan obj = new ServicePlan();
+            obj.PlanTypeId = string.IsNullOrEmpty(servicePlanId) ? 0 : Convert.ToInt32(servicePlanId);
+            
+            var svcResult = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
+            //var serviceResult = await _servicePlanPriceService.List(new ServicePlanPrice { });
+            //if (serviceResult.Any())
+            //{
+            //    //retList = _mapper.Map<List<ServicePlanPriceModel>>(serviceResult);
+            //}
+            //var servicePlanPrice = GetServicePlanPriceList().Result;
+            //foreach (var item in servicePlanPrice)
+            //{
+                
+            //    //svcResult.Remove(;
+            //}
+            return Json(new SelectList(svcResult, "Id", "Name"));
+        }
+        #endregion
 
     }
 }

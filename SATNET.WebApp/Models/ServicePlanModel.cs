@@ -14,6 +14,7 @@ namespace SATNET.WebApp.Models
         {
 
         }
+        [DisplayName("Plan Name")]
         public string Name { get; set; }
         [DisplayName("Plan Type")]
         public int PlanTypeId { get; set; }
@@ -26,6 +27,7 @@ namespace SATNET.WebApp.Models
         public decimal DownloadCIR { get; set; }
         [DisplayName("Upload CIR")]
         public decimal UploadCIR { get; set; }
+        public string PlanValidity { get; set; }
     }
     public class CreateServicePlanModel : BaseModel
     {

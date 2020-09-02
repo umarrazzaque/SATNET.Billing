@@ -3,6 +3,15 @@
  * ------------------
  * Use this file to add theme specific js 
  */
+
+var PLAN_TYPE = new Map();
+PLAN_TYPE.set('Quota', '12');
+PLAN_TYPE.set('Unlimited', '13');
+PLAN_TYPE.set('Dedicated', '14');
+PLAN_TYPE.set('Hybrid', '53');
+
+var PLAN_VALIDITY = 'GB/Mth';
+
 function Layout() {
 }
 

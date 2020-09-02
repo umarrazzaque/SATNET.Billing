@@ -22,7 +22,7 @@
                     <a href="@String.Format("/{0}", "Customer/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save Record</button>
+                    <button type="submit" class="btn btn-default">Save Customer</button>
                 </div>
             </div>
         </div>
@@ -33,28 +33,8 @@
         <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.CustomerModel.Name, new { })
-                @Html.EditorFor(model => model.CustomerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @required="required", @placeholder = "Name", @type = "text" } })
+                @Html.EditorFor(model => model.CustomerModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @required = "required", @placeholder = "Name", @type = "text" } })
                 @Html.ValidationMessageFor(model => model.CustomerModel.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @*<div class="col-lg-3">
-            <div class="form-group">
-                @Html.LabelFor(model => model.CustomerModel.TypeId, new { })
-                @Html.DropDownListFor(model => model.CustomerModel.TypeId, new SelectList(Model.CustomerType as System.Collections.IEnumerable, "Id", "Name"), "-Select Customer Type-", new { @class = "form-control select2 text-input" })
-            </div>
-        </div>*@
-        <div class="col-lg-3">
-            <div class="form-group">
-                @Html.LabelFor(model => model.CustomerModel.PriceTierId, new { })
-                @Html.DropDownListFor(model => model.CustomerModel.PriceTierId, new SelectList(Model.PriceTier as System.Collections.IEnumerable, "Id", "Name"), "-Select Price Tier-", new { @class = "form-control select2 text-input" })
-                @Html.ValidationMessageFor(model => model.CustomerModel.PriceTierId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="position-relative form-group">
-                @Html.LabelFor(model => model.CustomerModel.Code, new { })
-                @Html.EditorFor(model => model.CustomerModel.Code, new { htmlAttributes = new { @class = "form-control text-input" , @placeholder = "Code", @type = "text" } })
-                @Html.ValidationMessageFor(model => model.CustomerModel.Code, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-lg-3">
@@ -66,7 +46,21 @@
         </div>
         <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.CustomerModel.Email, new { })
+                @Html.LabelFor(model => model.CustomerModel.Code, new { })
+                @Html.EditorFor(model => model.CustomerModel.Code, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Code", @type = "text" } })
+                @Html.ValidationMessageFor(model => model.CustomerModel.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerModel.PriceTierId, new { })
+                @Html.DropDownListFor(model => model.CustomerModel.PriceTierId, new SelectList(Model.PriceTier as System.Collections.IEnumerable, "Id", "Name"), "-Select Price Tier-", new { @class = "form-control select2 text-input" })
+                @Html.ValidationMessageFor(model => model.CustomerModel.PriceTierId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                @Html.Label("Accounting Email")
                 @Html.EditorFor(model => model.CustomerModel.Email, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Email", @type = "text" } })
                 @Html.ValidationMessageFor(model => model.CustomerModel.Email, "", new { @class = "text-danger" })
             </div>
@@ -77,13 +71,6 @@
                 @Html.EditorFor(model => model.CustomerModel.Address, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Address", @type = "text" } })
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="position-relative form-group">
-                @Html.LabelFor(model => model.CustomerModel.ContactNumber, new { })
-                @Html.EditorFor(model => model.CustomerModel.ContactNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Contact", @type = "type" } })
-                @Html.ValidationMessageFor(model => model.CustomerModel.ContactNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
     </div>
 </form>
 
@@ -92,5 +79,5 @@
 
 <script language="javascript" type="text/javascript">
     //$.validator.unobtrusive.parse('#formAdd');
-
+    @*@await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")*@
 </script>

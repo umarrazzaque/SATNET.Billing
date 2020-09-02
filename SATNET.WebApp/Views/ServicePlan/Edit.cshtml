@@ -21,7 +21,7 @@
                     <a href="@String.Format("/{0}", "ServicePlan/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save Record</button>
+                    <button type="submit" class="btn btn-default">Save Service Plan</button>
                 </div>
             </div>
         </div>
@@ -32,15 +32,21 @@
         @Html.HiddenFor(model => model.ServicePlanModel.Id)
 
         <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ServicePlanModel.PlanTypeId, new { })
+                @Html.DropDownListFor(model => model.ServicePlanModel.PlanTypeId, new SelectList(Model.PlanType as System.Collections.IEnumerable, "Id", "Name"), "-Select Service Plan Type-", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-3">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.ServicePlanModel.Name, new { })
                 @Html.EditorFor(model => model.ServicePlanModel.Name, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Name", @type = "text" } })
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ServicePlanModel.PlanTypeId, new { })
-                @Html.DropDownListFor(model => model.ServicePlanModel.PlanTypeId, new SelectList(Model.PlanType as System.Collections.IEnumerable, "Id", "Name"), "-Select Service Plan Type-", new { @class = "form-control select2 text-input" })
+        <div class="col-lg-3 plan-validity">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.ServicePlanModel.PlanValidity, new { })
+                @Html.EditorFor(model => model.ServicePlanModel.PlanValidity, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "GB/Mth", @type = "text", @readonly = "readonly" } })
             </div>
         </div>
         <div class="col-lg-3">
@@ -71,8 +77,7 @@
 </form>
 
 <!-- /.Main content -->
-
-<script language="javascript" type="text/javascript">
-    //$.validator.unobtrusive.parse('#formAdd');
-
-</script>
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script src="~/js/service-plan/service-plan.js"></script>
+}

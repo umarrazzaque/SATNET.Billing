@@ -14,11 +14,9 @@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.Name) </th>
+                <th> @Html.DisplayNameFor(model => model.ShortName) </th>
                 <th> @Html.DisplayNameFor(model => model.PriceTierName) </th>
                 <th> @Html.DisplayNameFor(model => model.Code) </th>
-                <th> @Html.DisplayNameFor(model => model.Email)</th>
-                <th> @Html.DisplayNameFor(model => model.Address) </th>
-                <th> @Html.DisplayNameFor(model => model.ContactNumber) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -38,11 +36,9 @@
                     @counter
                 </td>
                 <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                <td> @Html.DisplayFor(modelItem => item.ShortName)</td>
                 <td> @Html.DisplayFor(modelItem => item.PriceTierName)</td>
                 <td> @Html.DisplayFor(modelItem => item.Code)</td>
-                <td> @Html.DisplayFor(modelItem => item.Email)</td>
-                <td> @Html.DisplayFor(modelItem => item.Address)</td>
-                <td> @Html.DisplayFor(modelItem => item.ContactNumber)</td>
                 <td class="text-center">
                     <div class="buttons">
                         <a href="@String.Format("/{0}?id={1}", "Customer/Edit", item.Id)" class="pl-1 pr-1">

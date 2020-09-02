@@ -7,15 +7,11 @@
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
-                <th class="text-center" width="30">
-                    <!-- <input type="checkbox"> -->
-                </th>
                 <th class="text-center">#</th>
                 <th> @Html.DisplayNameFor(model => model.ServicePlanId) </th>
+                <th> @Html.DisplayNameFor(model => model.PlanTypeId) </th>
                 <th> @Html.DisplayNameFor(model => model.PriceTierId) </th>
                 <th> @Html.DisplayNameFor(model => model.Price) </th>
-                <th> @Html.DisplayNameFor(model => model.Markup)</th>
-                <th> @Html.DisplayNameFor(model => model.MarkupPercent) </th>
                 <th> @Html.DisplayNameFor(model => model.BriefDescription) </th>
                 <th class="text-center"> Actions </th>
             </tr>
@@ -28,7 +24,6 @@
             @foreach (var item in Model)
             {
             <tr>
-                <td class="text-center"> <input type="checkbox"></td>
                 <td class="text-center text-muted">
                     @{
                         counter++;
@@ -36,10 +31,9 @@
                     @counter
                 </td>
                 <td> @Html.DisplayFor(modelItem => item.ServicePlanName)</td>
+                <td> @Html.DisplayFor(modelItem => item.PlanType)</td>
                 <td> @Html.DisplayFor(modelItem => item.PriceTierName)</td>
                 <td> @Html.DisplayFor(modelItem => item.Price)</td>
-                <td> @Html.DisplayFor(modelItem => item.Markup)</td>
-                <td> @Html.DisplayFor(modelItem => item.MarkupPercent)</td>
                 <td> @Html.DisplayFor(modelItem => item.BriefDescription)</td>
                 <td class="text-center">
                     <div class="buttons">

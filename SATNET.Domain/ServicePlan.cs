@@ -14,5 +14,6 @@ namespace SATNET.Domain
         public decimal UploadMIR { get; set; }
         public decimal DownloadCIR { get; set; }
         public decimal UploadCIR { get; set; }
+        public string PlanValidity { get; set; }
     }
 }

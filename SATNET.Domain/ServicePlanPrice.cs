@@ -9,6 +9,8 @@ namespace SATNET.Domain
     {
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        public int PlanTypeId { get; set; }
+        public string PlanType { get; set; }
         public int PriceTierId { get; set; }
         public string PriceTierName { get; set; }
         public decimal Price { get; set; }

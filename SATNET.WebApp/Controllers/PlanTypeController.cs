@@ -15,29 +15,27 @@ using SATNET.WebApp.Models.Lookup;
 namespace SATNET.WebApp.Controllers
 {
     [Authorize(Policy = "AdminPolicy")]
-    public class HardwareTSNController : BaseController
+    public class PlanTypeController : BaseController
     {
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
-        private readonly HardwareAttributes activeHardwareAttribute;
         private readonly string _responseUrl;
-        public HardwareTSNController(IMapper mapper, IService<Lookup> lookUpService)
+        public PlanTypeController(IMapper mapper, IService<Lookup> lookUpService)
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.TransceiverSrNo;
-            _responseUrl = "/HardwareTSN/Index";
+            _responseUrl = "/PlanType/Index";
         }
         public async Task<IActionResult> Index()
         {
-            return View(await GetHardwareTSNList());
+            return View(await GetPlanTypeList());
         }
 
         public IActionResult Add()
         {
             var resultModel = new CreateLookUpModel()
             {
-                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(activeHardwareAttribute) }
+                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) }
             };
             return View(resultModel);
         }
@@ -81,13 +79,13 @@ namespace SATNET.WebApp.Controllers
         {
             //1  as loged in user id
             var statusModel = _lookUpService.Delete(id, 1).Result;
-            statusModel.Html = RenderViewToString(this, "Index", await GetHardwareTSNList());
+            statusModel.Html = RenderViewToString(this, "Index", await GetPlanTypeList());
             return Json(statusModel);
         }
-        public async Task<List<LookUpModel>> GetHardwareTSNList()
+        public async Task<List<LookUpModel>> GetPlanTypeList()
         {
             var retList = new List<LookUpModel>();
-            var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(activeHardwareAttribute) });
+            var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
             if (serviceResult.Any())
             {
                 retList = _mapper.Map<List<LookUpModel>>(serviceResult);

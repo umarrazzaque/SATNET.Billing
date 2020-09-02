@@ -241,7 +241,6 @@ namespace SATNET.WebApp.Controllers
             Customer obj = new Customer();
             obj.TypeId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(customerTypeId);
             obj.PriceTierId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(priceTierId);
-
             var svcResult = await _customerService.List(obj);
             return Json(new SelectList(svcResult, "Id", "Name"));
         }
