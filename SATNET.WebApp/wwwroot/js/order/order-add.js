@@ -76,7 +76,8 @@ $(function () {
                 $(".downgrade").show();
                 $(".select-site").show();
                 $("#ScheduleDateId").val(59);
-                $("#ScheduleDateId").prop("disabled", false);
+                $("#ScheduleDateId").prop("disabled", true);
+                $("#downgrade-note").show();
                 break
             case '5':// Token Top up
                 $(".token").show();
@@ -148,12 +149,6 @@ $(function () {
                     $("#IPId").val(result.ipId);
                     $("#SubscriberName").val(result.subscriberName);
                     $("#MacAirNoId").val(result.macAirNoId);
-                    $("#HardwareConditionId").val(result.hardwareConditionId);
-                    $("#PromotionId").val(result.promotionId);
-                    //$("#SubscriberCity").val(result.subscriberCity);
-                    //$("#SubscriberEmail").val(result.subscriberEmail);
-                    //$("#SubscriberArea").val(result.subscriberArea);
-                    //$("#SubscriberNotes").val(result.subscriberNotes);
                 }
             });
         }
@@ -227,7 +222,7 @@ hideAllSections = function () {
     $(".other").hide();
     $(".select-site").hide();
     $(".hardware").hide();
-
+    $("#downgrade-note").hide();
 }
 
 getServicePlansByType = function (type, section) {
@@ -282,7 +277,6 @@ setPlanUnit = function (span, type) {
 getSites = function (requestTypeId, customerId) {
     var statusIds = [];
     switch (requestTypeId) {
-        case '2':// Termination
         case '3'://Upgrade
         case '4'://Downgrade
         case '5':// Token Top up
@@ -297,6 +291,11 @@ getSites = function (requestTypeId, customerId) {
         case '32'://Re-Activation
             //list all terminated sites
             statusIds.push(19);
+            break
+        case '2':// Termination
+            //list all active,locked sites
+            statusIds.push(17);
+            statusIds.push(18);
             break
         default:
     }
@@ -341,30 +340,32 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             setPlanUnit($(".unit-serviceplan"), servicePlanType);
             $("#ServicePlanId").val(servicePlanId);
         }
-        //else if (requestTypeId == "4") {
-        //    $("#DowngradeFromId").empty();
-        //    $("#DowngradeToId").empty();
-        //    $("#DowngradeFromId").html(items);
-        //    $("#DowngradeToId").html(items);
-        //    $("#DowngradeFromId").prop("disabled", false);
-        //    $("#DowngradeToId").prop("disabled", false);
-        //    setPlanUnit($(".unit-downgrade"), servicePlanType);
-        //    $("#ServicePlanTypeId").val(servicePlanType);
-        //    $("#DowngradeFromId").val(servicePlanId);
-        //    removeHighestValue(type);
-        //}
-        //else if (requestTypeId == "3") {
-        //    $("#UpgradeFromId").empty();
-        //    $("#UpgradeToId").empty();
-        //    $("#UpgradeFromId").html(items);
-        //    $("#UpgradeToId").html(items);
-        //    $("#UpgradeFromId").prop("disabled", false);
-        //    $("#UpgradeToId").prop("disabled", false);
-        //    setPlanUnit($(".unit-upgrade"), servicePlanType);
-        //    $("#ServicePlanTypeId").val(servicePlanType);
-        //    $("#UpgradeFromId").val(servicePlanId);
-        //    removeLowestValue(type);
-        //}
+        else if (requestTypeId == "4") {
+            $("#DowngradeFromId").empty();
+            $("#DowngradeToId").empty();
+            $("#DowngradeFromId").html(items);
+            $("#DowngradeToId").html(items);
+            $("#DowngradeToId").prop("disabled", false);
+            setPlanUnit($(".unit-downgrade"), servicePlanType);
+            $("#downgradeServicePlanType").val(servicePlanType);
+            $("#DowngradeFromId").val(servicePlanId);
+            $("#downgradeServicePlanType").prop("disabled", true);
+            $("#DowngradeFromId").prop("disabled", true);
+            removeDowngradeItem(servicePlanType, servicePlanId);
+        }
+        else if (requestTypeId == "3") {
+            $("#UpgradeFromId").empty();
+            $("#UpgradeToId").empty();
+            $("#UpgradeFromId").html(items);
+            $("#UpgradeToId").html(items);
+            $("#UpgradeToId").prop("disabled", false);
+            setPlanUnit($(".unit-upgrade"), servicePlanType);
+            $("#upgradeServicePlanType").val(servicePlanType);
+            $("#UpgradeFromId").val(servicePlanId);
+            $("#upgradeServicePlanType").prop("disabled", true);
+            $("#UpgradeFromId").prop("disabled", true);
+            removeUpgradeItem(servicePlanType, servicePlanId);
+        }
     });
 
 }
@@ -398,14 +399,33 @@ removeDowngradeItem = function (servicePlanType) {
     }
 }
 
-removeUpgradeItem = function (servicePlanType) {
+removeUpgradeItem = function (servicePlanType, servicePlanValue) {
     if (servicePlanType == 12) {//quota
-        $("#UpgradeToId option:contains(15)").remove();
-        $("#UpgradeFromId option:contains(1000)").remove();
+        $("#UpgradeToId > option").each(function () {
+            var currentText = this.text;
+            var existingText = $("#UpgradeFromId option:selected").text();
+            var currentNo = parseInt(currentText);
+            var existingNo = parseInt(existingText);
+            if (currentNo <= existingNo) {
+                $('#UpgradeToId option:eq(' + this.index + ')').remove();
+            }
+        });
     }
     else if (servicePlanType == 13) {//unlimited
         $("#UpgradeToId option:contains(Unlimited 5)").remove();
         $("#UpgradeFromId option:contains(Unlimited 30)").remove();
+        var priceValue = "Valvet ($100)";
+        console.log(/\d+/g.exec(priceValue)[0]);
+
+        $("#UpgradeToId > option").each(function () {
+            var currentText = /\d+/g.exec(this.text)[0];
+            var existingText = /\d+/g.exec($("#UpgradeFromId option:selected").text())[0];
+            var currentNo = parseInt(currentText);
+            var existingNo = parseInt(existingText);
+            if (currentNo <= existingNo) {
+                $('#UpgradeToId option:eq(' + this.index + ')').remove();
+            }
+        });
     }
 }
 

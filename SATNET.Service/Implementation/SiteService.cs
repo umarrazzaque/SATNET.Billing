@@ -4,6 +4,7 @@ using SATNET.Repository.Interface;
 using SATNET.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,28 +12,27 @@ namespace SATNET.Service.Implementation
 {
     public class SiteService : IService<Site>
     {
-        
-        public Task<StatusModel> Add(Site obj)
+
+        public async Task<StatusModel> Add(Site obj)
         {
+            var uow = new UnitOfWorkFactory().Create();
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
             try
             {
                 int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+
+                uow.BeginTransaction();
+                retId = await uow.Sites.Add(obj);
+                if (retId != 0)
                 {
-                    uow.BeginTransaction();
-                    retId = uow.Sites.Add(obj).Result;
-                    if (retId != 0)
-                    {
-                        uow.SaveChanges();
-                        status.IsSuccess = true;
-                        status.ErrorCode = "Record insert successfully.";
-                    }
-                    else
-                    {
-                        status.IsSuccess = false;
-                        status.ErrorCode = "Error in inserting the record.";
-                    }
+                    uow.SaveChanges();
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record insert successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in inserting the record.";
                 }
             }
             catch (Exception e)
@@ -43,31 +43,30 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-
+                uow.Connection.Close();
             }
-            return Task.FromResult(status);
+            return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
+            var uow = new UnitOfWorkFactory().Create();
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
             try
             {
                 int dRow = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+
+                uow.BeginTransaction();
+                dRow = await uow.Sites.Delete(recId, deletedBy);
+                if (dRow > 0)
                 {
-                    uow.BeginTransaction();
-                    dRow = uow.Sites.Delete(recId, deletedBy).Result;
-                    if (dRow > 0)
-                    {
-                        uow.SaveChanges();
-                        status.IsSuccess = true;
-                        status.ErrorCode = "Transaction completed successfully.";
-                    }
-                    else
-                    {
-                        status.ErrorCode = "An error occured while processing request.";
-                    }
+                    uow.SaveChanges();
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Transaction completed successfully.";
+                }
+                else
+                {
+                    status.ErrorCode = "An error occured while processing request.";
                 }
             }
             catch (Exception e)
@@ -76,22 +75,21 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
+                uow.Connection.Close();
             }
-            return Task.FromResult(status);
+            return status;
         }
 
-        public Task<Site> Get(int id)
+        public async Task<Site> Get(int id)
         {
+            var uow = new UnitOfWorkFactory().Create();
             var retModel = new Site();
             try
             {
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
-                    retModel = uow.Sites.Get(id).Result;
-                    if (retModel.Id != 0)
-                    {
 
-                    }
+                retModel = await uow.Sites.Get(id);
+                if (retModel == null || retModel.Id != 0)
+                {
                 }
             }
             catch (Exception e)
@@ -100,49 +98,51 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-
+                uow.Connection.Close();
             }
-            return Task.FromResult(retModel);
+            return retModel;
         }
 
-        public Task<List<Site>> List(Site obj)
+        public async Task<List<Site>> List(Site obj)
         {
+            var uow = new UnitOfWorkFactory().Create();
             List<Site> retList = new List<Site>();
             try
             {
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
-                    retList = uow.Sites.List(obj).Result;
-                }
+
+                retList = await uow.Sites.List(obj);
+
             }
             catch (Exception e)
             {
 
             }
-            return Task.FromResult(retList);
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return retList;
         }
 
-        public Task<StatusModel> Update(Site obj)
+        public async Task<StatusModel> Update(Site obj)
         {
+            var uow = new UnitOfWorkFactory().Create();
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Site/Index" };
             try
             {
                 int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+                uow.BeginTransaction();
+                retId = await uow.Sites.Update(obj);
+                if (retId != 0)
                 {
-                    uow.BeginTransaction();
-                    retId = uow.Sites.Update(obj).Result;
-                    if (retId != 0)
-                    {
-                        uow.SaveChanges();
-                        status.IsSuccess = true;
-                        status.ErrorCode = "Record update successfully.";
-                    }
-                    else
-                    {
-                        status.IsSuccess = false;
-                        status.ErrorCode = "Error in updating the record.";
-                    }
+                    uow.SaveChanges();
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record update successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in updating the record.";
                 }
             }
             catch (Exception e)
@@ -150,8 +150,12 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing request.";
                 status.ErrorDescription = e.Message;
-            }   
-            return Task.FromResult(status);
+            }
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return status;
         }
     }
 }

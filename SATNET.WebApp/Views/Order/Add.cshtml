@@ -66,7 +66,7 @@
             <select asp-for="ScheduleDateId" asp-items="Model.ScheduleDateSelectList" class="form-control select2 text-input">
                 <option value="" selected>Select</option>
             </select>
-            <input type="hidden" asp-for="ScheduleDateId" id="hdnScheduleDateId"/>
+            <input type="hidden" asp-for="ScheduleDateId" id="hdnScheduleDateId" />
             <span asp-validation-for="ScheduleDateId" class="text-danger"></span>
         </div>
     </div>
@@ -249,7 +249,7 @@
     <div class="col-lg-3 upgrade">
         <div class="form-group">
             <label asp-for="ServicePlanTypeSelectList"></label>
-            <select asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="upgrade" class="form-control select2 text-input service-plantype">
+            <select id="upgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="upgrade" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -279,7 +279,7 @@
     <div class="col-lg-3 downgrade">
         <div class="form-group">
             <label asp-for="ServicePlanTypeSelectList"></label>
-            <select asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="downgrade" class="form-control select2 text-input service-plantype">
+            <select id="downgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="downgrade" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -301,6 +301,11 @@
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="DowngradeToId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-12 downgrade">
+        <div class="position-relative form-group">
+            <label id="downgrade-note" style="display:none; color:red;">Note:- Downgrades are executed on last date of the month</label>
         </div>
     </div>
     <div class="col-lg-12 token">

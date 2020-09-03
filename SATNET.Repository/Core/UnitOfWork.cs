@@ -44,7 +44,6 @@ namespace SATNET.Repository.Core
             //    _connection.Open(); 
             //}
         }
-
         public void BeginTransaction()
         {
             _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
