@@ -146,6 +146,7 @@ namespace SATNET.WebApp.Controllers
                 CreatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 InstallationDate = model.InstallationDate,
                 IPId = model.IPId,
+                ChangeIPId = model.ChangeIPId,
                 TokenId = model.TokenId,
                 PromotionId = model.PromotionId,
                 //Download = model.Download,
@@ -161,7 +162,9 @@ namespace SATNET.WebApp.Controllers
                 //SiteArea = model.SiteArea,
                 CustomerId = customerId,
                 SiteCityId = model.SiteCityId,
-                ScheduleDateId = model.ScheduleDateId
+                ScheduleDateId = model.ScheduleDateId,
+                ChangeServicePlanId = model.ChangeServicePlanId,
+                NewMacAirNoId = model.NewMacAirNoId
             };
 
             var result = await _orderService.Add(order);

@@ -1,7 +1,7 @@
 ﻿@model SATNET.WebApp.Models.Order.OrderViewModel
 @using SATNET.Domain.Enums
 
-<form method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
+<form id="formServiceOrder" method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
       enctype="multipart/form-data" autocomplete="off">
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -155,7 +155,6 @@
             <select asp-for="IPId" asp-items="Model.IPSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="IPId" class="text-danger"></span>
         </div>
     </div>
     @*<div class="col-lg-3 new-site">
@@ -330,6 +329,78 @@
             <span asp-validation-for="Other" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-12 change-ip">
+        <h5 class="title">Change IP</h5>
+    </div>
+    <div class="col-lg-3 change-ip">
+        <div class="position-relative form-group">
+            <label>IP Plan</label>
+            <select id="ipPlan" asp-items="Model.IPSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 change-ip">
+        <div class="position-relative form-group">
+            <label>IP Change To</label>
+            <select id="ipChangeTo" asp-for="ChangeIPId" asp-items="Model.IPSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="ChangeIPId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-12 change-serviceplan">
+        <h5 class="title">Change Plan</h5>
+    </div>
+    <div class="col-lg-3 change-serviceplan">
+        <div class="form-group">
+            <label>Service Type</label>
+            <select id="currentServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="newsite" class="form-control select2 text-input service-plantype">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 change-serviceplan">
+        <div class="form-group">
+            <label>Change To</label>
+            <select id="changeToServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="change-service-plan" class="form-control select2 text-input service-plantype">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 change-serviceplan">
+        <div class="form-group">
+            <label>Service Plan</label><span class="unit-serviceplan"></span>
+            <select id="selectChangeServicePlan" asp-for="ChangeServicePlanId" class="form-control select2 text-input service-plan">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="ChangeServicePlanId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-12 modem-swap">
+        <h5 class="title">Hardware Details</h5>
+    </div>
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>Current MAC AIR Number</label>
+            <select id="currentMacAirNo" asp-items="Model.MacAirNoSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>New MAC AIR Number</label>
+            <select asp-for="NewMacAirNoId" asp-items="Model.MacAirNoSelectList" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
+        </div>
+    </div>
+
 </div>
 </form>
 

@@ -82,6 +82,8 @@ namespace SATNET.WebApp.Models.Order
 
         [DisplayName("IP")]
         public int? IPId { get; set; }
+        [Required(ErrorMessage = "Change To IP is required")]
+        public int ChangeIPId { get; set; }
         public string IPName { get; set; }
         public decimal IPPrice { get; set; }
         public DateTime ServiceOrderDate { get; set; }
@@ -140,6 +142,7 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Customer is required")]
         public int CustomerId { get; set; }
         public string CustomerCode { get; set; }
+        [Required(ErrorMessage = "Other field is required")]
         public string Other { get; set; }
         public decimal Total { get; set; }
         public string ModemModel { get; set; }
@@ -153,5 +156,10 @@ namespace SATNET.WebApp.Models.Order
         public SelectList HardwareConditionSelectList { get; set; }
         [Required(ErrorMessage = "Hardware condition is required")]
         public int HardwareConditionId { get; set; }
+        [Required(ErrorMessage = "Change Service plan to is required")]
+        public int ChangeServicePlanId { get; set; }
+        [Required(ErrorMessage = "New Mac Air No is required")]
+        public int NewMacAirNoId { get; set; }
+
     }
 }

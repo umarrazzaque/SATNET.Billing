@@ -87,6 +87,7 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@ScheduleDateId", obj.ScheduleDateId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@ChangeIPId", obj.ChangeIPId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@MacAirNoId", obj.MacAirNoId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@HardwareConditionId", obj.HardwareConditionId, DbType.Int32, ParameterDirection.Input);
@@ -101,6 +102,8 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@SubscriberArea", obj.SubscriberArea, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@SubscriberNotes", obj.SubscriberNotes, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@Other", obj.Other, DbType.String, ParameterDirection.Input);
+                    paramsOrder.Add("@ChangeServicePlanId", obj.ChangeServicePlanId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@NewMacAirNoId", obj.NewMacAirNoId, DbType.Int32, ParameterDirection.Input);
                     orderId = await con.ExecuteScalarAsync<int>("OrderInsert", paramsOrder, transaction, commandType: CommandType.StoredProcedure);
 
                     transaction.Commit();

@@ -50,6 +50,7 @@ namespace SATNET.Domain
         public decimal ServiceProRataPrice { get; set; }
         public string ServicePlanUnit { get; set; }
         public int? IPId { get; set; }
+        public int ChangeIPId { get; set; }
         public string IPName { get; set; }
         public decimal IPPrice { get; set; }
         public DateTime ServiceOrderDate { get; set; }
@@ -66,5 +67,7 @@ namespace SATNET.Domain
         public int ScheduleDateId { get; set; }
         public string ScheduleDateName { get; set; }
         public int HardwareConditionId { get; set; }
+        public int ChangeServicePlanId { get; set; }
+        public int NewMacAirNoId { get; set; }
     }
 }

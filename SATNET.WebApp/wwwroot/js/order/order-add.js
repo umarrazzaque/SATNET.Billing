@@ -37,6 +37,10 @@ $(function () {
         //}
     }
     $("#RequestTypeId").change(function () {
+        // on/off validation rules according to business logic
+        $('#SiteId').rules('add', {
+            required: true   // overwrite an existing rule
+        });
         var requestTypeId = $("#RequestTypeId").val();
         hideAllSections();
         resetFields();
@@ -64,6 +68,7 @@ $(function () {
                 $("#PromotionId").prop("disabled", true);
                 $(".site-name").hide();
                 $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
                 break
             case '3'://Upgrade
@@ -76,6 +81,7 @@ $(function () {
                 $(".downgrade").show();
                 $(".select-site").show();
                 $("#ScheduleDateId").val(59);
+                $("#hdnScheduleDateId").val(59);
                 $("#ScheduleDateId").prop("disabled", true);
                 $("#downgrade-note").show();
                 break
@@ -83,6 +89,7 @@ $(function () {
                 $(".token").show();
                 $(".select-site").show();
                 $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
                 break
             case '6':// lock
@@ -97,6 +104,32 @@ $(function () {
                 $(".other").show();
                 $(".select-site").show();
                 $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
+                $("#ScheduleDateId").prop("disabled", true);
+                // on/off validation rules according to business logic
+                $('#SiteId').rules('add', {
+                    required: false   // overwrite an existing rule
+                });
+                break
+            case '68':// Change IP
+                $(".change-ip").show();
+                $(".select-site").show();
+                $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58); //schedule date now
+                $("#ScheduleDateId").prop("disabled", true);
+                break
+            case '67':// Change Plan
+                $(".change-serviceplan").show();
+                $(".select-site").show();
+                $("#ScheduleDateId").val(59);
+                $("#hdnScheduleDateId").val(59); //schedule date end of month
+                $("#ScheduleDateId").prop("disabled", true);
+                break
+            case '69':// Modem Swap
+                $(".modem-swap").show();
+                $(".select-site").show();
+                $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58); //schedule date now
                 $("#ScheduleDateId").prop("disabled", true);
                 break
             default:
@@ -140,15 +173,26 @@ $(function () {
             var url = '/Order/GetSiteDetails';
             $.getJSON(url, { siteId: $(this).val() }, function (result) {
                 if (result != null) {
+                    var requestTypeId = $("#RequestTypeId").val();
                     $("#SiteCityId").val(result.cityId);
                     $("#SiteArea").val(result.area);
                     $("#ServicePlanTypeId").val(result.servicePlanTypeId);
                     if (result.servicePlanTypeId > 0) {
-                        populateServicePlan(result.servicePlanTypeId, result.servicePlanId, $("#RequestTypeId").val());
+                        populateServicePlan(result.servicePlanTypeId, result.servicePlanId, requestTypeId);
                     }
                     $("#IPId").val(result.ipId);
                     $("#SubscriberName").val(result.subscriberName);
                     $("#MacAirNoId").val(result.macAirNoId);
+                    $('#ipChangeTo').empty();
+                    var $options = $("#IPId > option").clone();
+                    $('#ipChangeTo').append($options);
+                    $("#ipPlan").val(result.ipId);
+                    $("#ipPlan").prop("disabled", true);
+                    $("#ipChangeTo option[value=" + result.ipId + "]").remove();
+                    $("#currentServicePlanType").val(result.servicePlanTypeId);
+                    $("#currentServicePlanType").prop("disabled", true);
+                    $("#currentMacAirNo").val(result.macAirNoId);
+                    $("#currentMacAirNo").prop("disabled", true);
                 }
             });
         }
@@ -209,6 +253,7 @@ $(function () {
             $("#PromotionId option[value='2']").prop("disabled", false);
         }
     });
+
 });
 
 hideAllSections = function () {
@@ -223,6 +268,9 @@ hideAllSections = function () {
     $(".select-site").hide();
     $(".hardware").hide();
     $("#downgrade-note").hide();
+    $(".change-ip").hide();
+    $(".change-serviceplan").hide();
+    $(".modem-swap").hide();
 }
 
 getServicePlansByType = function (type, section) {
@@ -258,6 +306,10 @@ getServicePlansByType = function (type, section) {
             $("#UpgradeToId").prop("disabled", false);
             setPlanUnit($(".unit-upgrade"), type);
             removeUpgradeItem(type);
+        } else if (section == "change-service-plan") {
+            $("#selectChangeServicePlan").empty();
+            $("#selectChangeServicePlan").html(items);
+            setPlanUnit($(".unit-upgrade"), type);
         }
     });
 }
