@@ -66,7 +66,7 @@
     $('#ServicePlanPriceModel_ServicePlanId').change(function () {
         var servicePlanId = $('#ServicePlanPriceModel_ServicePlanId').val();
         var url = '/ServicePlanPrice/GetFilteredPlanPrice';
-        $.getJSON(url, {servicePlanId: servicePlanId  }, function (result) {
+        $.getJSON(url, { servicePlanId: servicePlanId, mode: 'add' }, function (result) {
             console.log(result);
             var items = '';
             items += "<option value=''>-Select Price Tier-</option>";
@@ -88,7 +88,7 @@
             alert();
             return;
         }
-        
+
         var url = '/ServicePlanPrice/GetFilteredServicePlan';
         $.getJSON(url, { planTypeId: planTypeId }, function (result) {
             console.log(result);

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,9 +41,9 @@ namespace SATNET.WebApp.Controllers
             var resultModel = new CreateServicePlanPriceModel()
             {
                 ServicePlanPriceModel = new ServicePlanPriceModel(),
-                ServicePlanList = GetServicePlanList().Result,
+                //ServicePlanList = GetServicePlanList().Result,
                 ServicePlanTypeList = GetServicePlanTypeList().Result,
-                PriceTierList = GetPriceTierList().Result
+                //PriceTierList = GetPriceTierList().Result
             };
             return View(resultModel);
         }
@@ -67,11 +66,13 @@ namespace SATNET.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            ServicePlanPriceModel obj = _mapper.Map<ServicePlanPriceModel>(await _servicePlanPriceService.Get(id));
             var resultModel = new CreateServicePlanPriceModel()
             {
-                ServicePlanPriceModel = _mapper.Map<ServicePlanPriceModel>(await _servicePlanPriceService.Get(id)),
-                ServicePlanList = GetServicePlanList().Result,
-                PriceTierList = GetPriceTierList().Result
+                ServicePlanPriceModel = obj,
+                ServicePlanTypeList = GetServicePlanTypeList().Result,
+                ServicePlanList = GetServicePlanList().Result.ToList().Where(sp => sp.PlanTypeId == obj.PlanTypeId).ToList(),
+                PriceTierList = GetPriceTierList(obj.ServicePlanId.ToString(), "edit", obj.PriceTierId).Result
             };
             return View(resultModel);
         }
@@ -97,6 +98,7 @@ namespace SATNET.WebApp.Controllers
             status.Html = RenderViewToString(this, "Index", await GetServicePlanPriceList());
             return Json(status);
         }
+        #region Main List
         public async Task<List<ServicePlanPriceModel>> GetServicePlanPriceList()
         {
             var retList = new List<ServicePlanPriceModel>();
@@ -106,6 +108,18 @@ namespace SATNET.WebApp.Controllers
                 retList = _mapper.Map<List<ServicePlanPriceModel>>(serviceResult);
             }
             return retList;
+        }
+        #endregion
+        public async Task<List<LookUpModel>> GetServicePlanTypeList()
+        {
+            List<LookUpModel> retListModel = new List<LookUpModel>();
+            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
+            if (retList.Any())
+            {
+                retListModel = _mapper.Map<List<LookUpModel>>(retList);
+
+            }
+            return retListModel;
         }
         #region Service Plan 
         public async Task<List<ServicePlanModel>> GetServicePlanList()
@@ -127,47 +141,39 @@ namespace SATNET.WebApp.Controllers
             return Json(new SelectList(svcResult, "Id", "Name"));
         }
         #endregion
-
-        public async Task<List<LookUpModel>> GetServicePlanTypeList()
-        {
-            List<LookUpModel> retListModel = new List<LookUpModel>();
-            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
-            if (retList.Any())
-            {
-                retListModel = _mapper.Map<List<LookUpModel>>(retList);
-
-            }
-            return retListModel;
-        }
         #region Price List
-        private async Task<List<LookUpModel>> GetPriceTierList()
+        private async Task<List<LookUpModel>> GetPriceTierList(string servicePlanId, string mode, int priceTierId)
         {
-            List<LookUpModel> retListModel = new List<LookUpModel>();
-            var retList = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
-            if (retList.Any())
-            {
-                retListModel = _mapper.Map<List<LookUpModel>>(retList);
 
+            var svcResult = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
+            var servicePPListBySP = await _servicePlanPriceService.List(new ServicePlanPrice
+            {
+                Flag = "GET_BY_SERVICE_PLAN",
+                SearchBy = "SPP.ServicePlanId",
+                Keyword = string.IsNullOrEmpty(servicePlanId) ? "0" : servicePlanId
+            });
+            foreach (var servicePP in servicePPListBySP)
+            {
+                var item = svcResult.SingleOrDefault(i => i.Id == servicePP.PriceTierId);
+                if (item != null)
+                {
+                    if (!(mode.Equals("edit") && item.Id == priceTierId))
+                    {
+                        svcResult.Remove(item);
+                    }
+                }
+            }
+            List<LookUpModel> retListModel = new List<LookUpModel>();
+            if (svcResult.Any())
+            {
+                retListModel = _mapper.Map<List<LookUpModel>>(svcResult);
             }
             return retListModel;
         }
-        public async Task<IActionResult> GetFilteredPlanPrice(string servicePlanId)
+        public async Task<IActionResult> GetFilteredPlanPrice(string servicePlanId, string mode, string priceTierId)
         {
-            ServicePlan obj = new ServicePlan();
-            obj.PlanTypeId = string.IsNullOrEmpty(servicePlanId) ? 0 : Convert.ToInt32(servicePlanId);
-            
-            var svcResult = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.CustomerPriceTier) });
-            //var serviceResult = await _servicePlanPriceService.List(new ServicePlanPrice { });
-            //if (serviceResult.Any())
-            //{
-            //    //retList = _mapper.Map<List<ServicePlanPriceModel>>(serviceResult);
-            //}
-            //var servicePlanPrice = GetServicePlanPriceList().Result;
-            //foreach (var item in servicePlanPrice)
-            //{
-                
-            //    //svcResult.Remove(;
-            //}
+            var svcResult = await GetPriceTierList(servicePlanId, mode,
+            string.IsNullOrEmpty(priceTierId) ? 0 : Convert.ToInt32(priceTierId));
             return Json(new SelectList(svcResult, "Id", "Name"));
         }
         #endregion

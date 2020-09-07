@@ -65,10 +65,14 @@ namespace SATNET.WebApp
             });
 
             //Session
-            //services.AddSession(options =>
-            //{
-            //    options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
-            //});
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             //services.AddAuthorization(options => {
             //    options.AddPolicy("UserAccessPolicy", policy =>
             //    {
@@ -159,7 +163,7 @@ namespace SATNET.WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
-            //app.UseSession();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
