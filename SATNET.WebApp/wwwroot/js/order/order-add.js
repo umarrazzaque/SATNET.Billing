@@ -15,13 +15,23 @@ $(function () {
     var day = dtToday.getDate();
     var year = dtToday.getFullYear();
 
+    var maxMonth = maxDate.getMonth() + 1;
+    var maxDay = maxDate.getDate();
+    var maxYear = maxDate.getFullYear();
+
     if (month < 10)
         month = '0' + month.toString();
     if (day < 10)
         day = '0' + day.toString();
 
+    if (maxMonth < 10)
+        maxMonth = '0' + maxMonth.toString();
+    if (maxDay < 10)
+        maxDay = '0' + maxDay.toString();
+
     var minDate = year + '-' + month + '-' + day;
-    console.log(maxDate);
+    var maxDate = maxYear + '-' + maxMonth + '-' + maxDay;
+
     $('#InstallationDate').attr('min', minDate);
     $('#InstallationDate').attr('max', maxDate);
 
@@ -74,7 +84,7 @@ $(function () {
             case '3'://Upgrade
                 $(".upgrade").show();
                 $(".select-site").show();
-                $("#ScheduleDateId").val(0);
+                $("#ScheduleDateId").val('');
                 $("#ScheduleDateId").prop("disabled", false);
                 break
             case '4'://Downgrade
@@ -94,10 +104,12 @@ $(function () {
                 break
             case '6':// lock
                 $(".select-site").show();
+                $("#ScheduleDateId").val('');
+                $("#ScheduleDateId").prop("disabled", false);
                 break
             case '7':// Unlock
                 $(".select-site").show();
-                $("#ScheduleDateId").val(0);
+                $("#ScheduleDateId").val('');
                 $("#ScheduleDateId").prop("disabled", false);
                 break
             case '8':// Other
@@ -147,22 +159,21 @@ $(function () {
         $('.pro-rata-gb').hide();
         var type = $(this).val();
         var section = $(this).data('section');
-        if (type != "") {
+        if (type != "" && section != 'downgrade' && section != 'upgrade') {
             getServicePlansByType(type, section);
         }
     });
     $("#CustomerId").change(function () {
-        console.log($('#CustomerId').val());
         var customerDDLId = $(this).val();
         var requestTypeId = $("#RequestTypeId").val();
 
-        //Satnet User
-        if (_customerId == 0 && customerDDLId > 0) {//satnet user
-            var url = '/Order/GetProposedSiteName';
-            $.getJSON(url, { customerId: $(this).val() }, function (result) {
-                $("#SiteName").val(result.siteName);
-            });
-        }
+        ////Satnet User
+        //if (_customerId == 0 && customerDDLId > 0) {//satnet user
+        //    var url = '/Order/GetProposedSiteName';
+        //    $.getJSON(url, { customerId: $(this).val() }, function (result) {
+        //        $("#SiteName").val(result.siteName);
+        //    });
+        //}
         
         if (customerDDLId > 0 && requestTypeId > 0 && requestTypeId != '1') {
             getSites(requestTypeId, customerDDLId);
@@ -189,8 +200,6 @@ $(function () {
                     $("#ipPlan").val(result.ipId);
                     $("#ipPlan").prop("disabled", true);
                     $("#ipChangeTo option[value=" + result.ipId + "]").remove();
-                    $("#currentServicePlanType").val(result.servicePlanTypeId);
-                    $("#currentServicePlanType").prop("disabled", true);
                     $("#currentMacAirNo").val(result.macAirNoId);
                     $("#currentMacAirNo").prop("disabled", true);
                 }
@@ -418,6 +427,16 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             $("#UpgradeFromId").prop("disabled", true);
             removeUpgradeItem(servicePlanType, servicePlanId);
         }
+        else if (requestTypeId == "67") {
+            $("#currentServicePlanType").val(servicePlanType);
+            $("#currentServicePlanType").prop("disabled", true);
+            $("#selectCurrentServicePlan").empty();
+            $("#selectCurrentServicePlan").html(items);
+            $("#selectCurrentServicePlan").val(servicePlanId);
+
+
+            //setPlanUnit($(".unit-upgrade"), servicePlanType);
+        }
     });
 
 }
@@ -442,16 +461,33 @@ resetFields = function () {
 
 removeDowngradeItem = function (servicePlanType) {
     if (servicePlanType == 12) {//quota
-        $("#DowngradeToId option:contains(1000)").remove();
-        $("#DowngradeFromId option:contains(15)").remove();
+        $("#DowngradeToId > option").each(function () {
+            var currentText = this.text;
+            var existingText = $("#DowngradeFromId option:selected").text();
+            var currentNo = parseInt(currentText);
+            var existingNo = parseInt(existingText);
+            if (currentNo >= existingNo) {
+                $('#DowngradeToId option:eq(' + this.index + ')').remove();
+            }
+        });
     }
     else if (servicePlanType == 13) {//unlimited
-        $("#DowngradeToId option:contains(Unlimited 20)").remove();
-        $("#DowngradeFromId option:contains(Unlimited 5)").remove();
+        var priceValue = "Valvet ($100)";
+        console.log(/\d+/g.exec(priceValue)[0]);
+
+        $("#DowngradeToId > option").each(function () {
+            var currentText = /\d+/g.exec(this.text)[0];
+            var existingText = /\d+/g.exec($("#DowngradeFromId option:selected").text())[0];
+            var currentNo = parseInt(currentText);
+            var existingNo = parseInt(existingText);
+            if (currentNo >= existingNo) {
+                $('#DowngradeToId option:eq(' + this.index + ')').remove();
+            }
+        });
     }
 }
 
-removeUpgradeItem = function (servicePlanType, servicePlanValue) {
+removeUpgradeItem = function (servicePlanType) {
     if (servicePlanType == 12) {//quota
         $("#UpgradeToId > option").each(function () {
             var currentText = this.text;
@@ -464,8 +500,6 @@ removeUpgradeItem = function (servicePlanType, servicePlanValue) {
         });
     }
     else if (servicePlanType == 13) {//unlimited
-        $("#UpgradeToId option:contains(Unlimited 5)").remove();
-        $("#UpgradeFromId option:contains(Unlimited 30)").remove();
         var priceValue = "Valvet ($100)";
         console.log(/\d+/g.exec(priceValue)[0]);
 

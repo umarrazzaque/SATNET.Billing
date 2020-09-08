@@ -356,7 +356,7 @@ namespace SATNET.WebApp.Controllers
             int installationDay = DateAndTime.Day(installationDate);
             int daysPerMonth = DateTime.DaysInMonth(2020, installationMonth);
             int remainingDays = daysPerMonth - installationDay + 1;
-            decimal proRataQuotaGB = (quota / 30) * remainingDays;
+            decimal proRataQuotaGB = (quota * remainingDays)/30;
 
             return Json(new
             {

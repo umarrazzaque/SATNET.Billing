@@ -248,7 +248,7 @@
     <div class="col-lg-3 upgrade">
         <div class="form-group">
             <label asp-for="ServicePlanTypeSelectList"></label>
-            <select id="upgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="upgrade" class="form-control select2 text-input service-plantype">
+            <select disabled id="upgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="upgrade" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -257,7 +257,7 @@
     <div class="col-lg-3 upgrade">
         <div class="position-relative form-group">
             <label asp-for="UpgradeFromSelectList"></label><span class="unit-upgrade"></span>
-            <select disabled asp-for="UpgradeFromId" asp-items="Model.UpgradeFromSelectList" class="form-control select2 text-input service-plan">
+            <select disabled asp-for="UpgradeFromId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="UpgradeFromId" class="text-danger"></span>
@@ -266,7 +266,7 @@
     <div class="col-lg-3 upgrade">
         <div class="position-relative form-group">
             <label asp-for="UpgradeToSelectList"></label><span class="unit-upgrade"></span>
-            <select disabled asp-for="UpgradeToId" asp-items="Model.UpgradeToSelectList" class="form-control select2 text-input service-plan">
+            <select disabled asp-for="UpgradeToId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="UpgradeToId" class="text-danger"></span>
@@ -278,7 +278,7 @@
     <div class="col-lg-3 downgrade">
         <div class="form-group">
             <label asp-for="ServicePlanTypeSelectList"></label>
-            <select id="downgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="downgrade" class="form-control select2 text-input service-plantype">
+            <select disabled id="downgradeServicePlanType" asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="downgrade" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -287,7 +287,7 @@
     <div class="col-lg-3 downgrade">
         <div class="position-relative form-group">
             <label asp-for="DowngradeFromSelectList"></label><span class="unit-downgrade"></span>
-            <select disabled asp-for="DowngradeFromId" asp-items="Model.DowngradeFromSelectList" class="form-control select2 text-input service-plan">
+            <select disabled asp-for="DowngradeFromId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="DowngradeFromId" class="text-danger"></span>
@@ -296,7 +296,7 @@
     <div class="col-lg-3 downgrade">
         <div class="position-relative form-group">
             <label asp-for="DowngradeToSelectList"></label><span class="unit-downgrade"></span>
-            <select disabled asp-for="DowngradeToId" asp-items="Model.DowngradeToSelectList" class="form-control select2 text-input service-plan">
+            <select disabled asp-for="DowngradeToId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="DowngradeToId" class="text-danger"></span>
@@ -322,10 +322,10 @@
     <div class="col-lg-12 other">
         <h5 class="title">Other</h5>
     </div>
-    <div class="col-lg-3 other">
+    <div class="col-lg-12 other">
         <div class="position-relative form-group">
             <label>Specify</label>
-            <input asp-for="Other" type="text" placeholder="..." class="form-control" />
+            <textarea asp-for="Other" type="text" placeholder="..." class="form-control" rows="3"></textarea>
             <span asp-validation-for="Other" class="text-danger"></span>
         </div>
     </div>
@@ -354,8 +354,8 @@
     </div>
     <div class="col-lg-3 change-serviceplan">
         <div class="form-group">
-            <label>Service Type</label>
-            <select id="currentServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="newsite" class="form-control select2 text-input service-plantype">
+            <label>Current Service Plan Type</label>
+            <select disabled id="currentServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="newsite" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -363,7 +363,15 @@
     </div>
     <div class="col-lg-3 change-serviceplan">
         <div class="form-group">
-            <label>Change To</label>
+            <label>Current Service Plan</label><span class="unit-serviceplan"></span>
+            <select disabled id="selectCurrentServicePlan" class="form-control select2 text-input service-plan">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-3 change-serviceplan">
+        <div class="form-group">
+            <label>Change Service Plan Type To</label>
             <select id="changeToServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="change-service-plan" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
@@ -372,7 +380,7 @@
     </div>
     <div class="col-lg-3 change-serviceplan">
         <div class="form-group">
-            <label>Service Plan</label><span class="unit-serviceplan"></span>
+            <label>Change Service Plan To</label><span class="unit-serviceplan"></span>
             <select id="selectChangeServicePlan" asp-for="ChangeServicePlanId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
