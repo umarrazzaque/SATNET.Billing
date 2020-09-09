@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -64,12 +65,12 @@ namespace SATNET.WebApp.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
+                    UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.Contact,
-                    CreatedBy = 1,
+                    CreatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedOn = DateTime.Now,
                     IsDeleted = false,
                     CustomerId = model.CustomerId,
@@ -123,9 +124,9 @@ namespace SATNET.WebApp.Controllers
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                UserName = user.UserName,
+                //UserName = user.UserName,
                 Contact = user.PhoneNumber,
-                Email = user.Email,
+                Email = user.UserName,
                 CustomerId = user.CustomerId,
                 UserTypeId = user.UserTypeId,
                 RoleName = roleResult.Result.FirstOrDefault()
@@ -151,11 +152,10 @@ namespace SATNET.WebApp.Controllers
             {
                 var user = await _userManager.FindByIdAsync(model.Id.ToString());
 
-                user.Email = model.Email;
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.PhoneNumber = model.Contact;
-                user.UpdatedBy = 1;
+                user.UpdatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
                 user.UpdatedOn = DateTime.Now;
                 user.CustomerId = model.CustomerId;
                 user.UserTypeId = model.UserTypeId;

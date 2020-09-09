@@ -42,7 +42,7 @@
                             }
                             @counter
                         </td>*@
-                    <td><a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails" data-toggle="modal" data-target="#modal-orderdetails">@item.OrderNumber</a> </td>
+                    <td><a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.OrderNumber</a> </td>
                     <td> @item.SiteName</td>
                     <td>@item.CustomerShortName</td>
                     <td> @item.RequestTypeName</td>
@@ -74,13 +74,13 @@
                                         <span class="metismenu-icon icofont-close" aria-hidden="true"></span>
                                     </a>
                                 }
-                                else if (item.StatusId == 21)
+                                @*else if (item.StatusId == 21)
                                 {
                                     // display invoice link for customer reseller accounts
                                     <a href="@String.Format("/{0}?id={1}", "Order/Details", @item.Id)" title="View Invoice" class="pl-1 pr-1">
                                         <span class="metismenu-icon icofont-bill" aria-hidden="true"></span>
                                     </a>
-                                }
+                                }*@
                             }
                             else if (User.IsInRole("Reseller Accounting"))
                             {

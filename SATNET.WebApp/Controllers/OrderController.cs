@@ -336,8 +336,14 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> ViewOrder(int id)
         {
-            var svcResult = await _orderService.Get(id);
-            return Json(svcResult);
+            OrderViewModel model = new OrderViewModel();
+            var serviceResult = await _orderService.Get(id);
+            if (serviceResult != null)
+            {
+                model = OrderMapping.GetViewModel(serviceResult);
+            }
+
+            return View("Detail/Activation");
         }
 
         public async Task<IActionResult> GetCityArea(int cityId)

@@ -16,7 +16,7 @@ namespace SATNET.WebApp.Mappings
                 Id = obj.Id,
                 FirstName = obj.FirstName,
                 LastName = obj.LastName,
-                UserName = obj.UserName,
+                //UserName = obj.UserName,
                 Email = obj.Email,
                 Contact = obj.Contact,
                 CustomerId = obj.CustomerId,

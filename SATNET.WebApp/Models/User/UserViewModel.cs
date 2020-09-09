@@ -20,9 +20,9 @@ namespace SATNET.WebApp.Models.User
         public string LastName { get; set; }
         [DisplayName("Full Name")]
         public string FullName { get { return FirstName + " " + LastName; } }
-        [DisplayName("User Name")]
-        [Required(ErrorMessage = "Please enter username")]
-        public string UserName { get; set; }
+        //[DisplayName("User Name")]
+        //[Required(ErrorMessage = "Please enter username")]
+        //public string UserName { get; set; }
         [DisplayName("Email")]
         [Required(ErrorMessage = "Please enter email address")]
         [EmailAddress]

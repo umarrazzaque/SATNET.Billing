@@ -37,46 +37,46 @@
         $("#modal-deleteConfirm .modal-body p").html('Are you sure you want to cancel the service order?');
     });
 
-    $(document).on("click", 'a.orderdetails', function (e) {
-        e.preventDefault();
-        var href = $(this).attr("href");
-        $.ajax(
-            {
-                url: href,
-                type: 'get',
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    $('#pOrderNo').html(data.orderNumber);
-                    $('#pRequestType').html(data.requestTypeName);
-                    $('#pCustomerName').html(data.customerName);
-                    $('#pSiteName').html(data.siteName);
-                    //hideAllSections();
-                    //switch (data.requestTypeId) {
-                    //    case 1://Activation
-                    //        $("#divActivation").show();
-                    //        $('#pSiteName').html('<b>Name:</b> ' + data.siteName);
-                    //        $('#pSiteCity').html('<b>City:</b> ' + data.siteCity);
-                    //        $('#pSiteArea').html('<b>Area:</b> ' + data.siteArea);
-                    //        $('#pSiteInstallationDate').html('<b>Installation Date:</b> ' + data.installationDate);
-                    //        break
-                    //    case 32://Re-Activation
-                    //        $("#divReActivation").show();
-                    //        break
-                    //    case 3://Upgrade
-                    //        $("#divUpgrade").show();
-                    //        break
-                    //    case 4://Downgrade
-                    //        $("#divDowngrade").show();
-                    //        break
-                    //    default:
-                    //}
-                },
-                error: function () {
-                    alert('Error on clicking service order');
-                }
-            });
-    });
+    //$(document).on("click", 'a.orderdetails', function (e) {
+    //    e.preventDefault();
+    //    var href = $(this).attr("href");
+    //    $.ajax(
+    //        {
+    //            url: href,
+    //            type: 'get',
+    //            dataType: "json",
+    //            success: function (data) {
+    //                console.log(data);
+    //                $('#pOrderNo').html(data.orderNumber);
+    //                $('#pRequestType').html(data.requestTypeName);
+    //                $('#pCustomerName').html(data.customerName);
+    //                $('#pSiteName').html(data.siteName);
+    //                //hideAllSections();
+    //                //switch (data.requestTypeId) {
+    //                //    case 1://Activation
+    //                //        $("#divActivation").show();
+    //                //        $('#pSiteName').html('<b>Name:</b> ' + data.siteName);
+    //                //        $('#pSiteCity').html('<b>City:</b> ' + data.siteCity);
+    //                //        $('#pSiteArea').html('<b>Area:</b> ' + data.siteArea);
+    //                //        $('#pSiteInstallationDate').html('<b>Installation Date:</b> ' + data.installationDate);
+    //                //        break
+    //                //    case 32://Re-Activation
+    //                //        $("#divReActivation").show();
+    //                //        break
+    //                //    case 3://Upgrade
+    //                //        $("#divUpgrade").show();
+    //                //        break
+    //                //    case 4://Downgrade
+    //                //        $("#divDowngrade").show();
+    //                //        break
+    //                //    default:
+    //                //}
+    //            },
+    //            error: function () {
+    //                alert('Error on clicking service order');
+    //            }
+    //        });
+    //});
 
     $(document).on("click", 'a.order-action', function (e) {
         e.preventDefault();

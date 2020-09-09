@@ -19,10 +19,9 @@ namespace SATNET.WebApp.Models.User
         [DisplayName("Last Name")]
         [Required(ErrorMessage = "Please enter last name")]
         public string LastName { get; set; }
-        [DisplayName("User Name")]
-        public string UserName { get; set; }
+        //[DisplayName("User Name")]
+        //public string UserName { get; set; }
         [DisplayName("Email")]
-        [Required(ErrorMessage = "Please enter email address")]
         [EmailAddress]
         public string Email { get; set; }
         [DisplayName("Contact")]

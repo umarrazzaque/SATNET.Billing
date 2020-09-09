@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SATNET.Domain;
@@ -56,7 +57,7 @@ namespace SATNET.WebApp.Controllers
                     Email = resellerModel.Email,
                     Address = resellerModel.Address,
                     ContactNumber = resellerModel.ContactNumber,
-                    CreatedBy = 1
+                    CreatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier))
                 }).Result;
             }
             else
@@ -106,7 +107,7 @@ namespace SATNET.WebApp.Controllers
                 Email = resellerModel.Email,
                 Address = resellerModel.Address,
                 ContactNumber = resellerModel.ContactNumber,
-                CreatedBy = 1
+                CreatedBy = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier))
             }).Result;
             status.Html = RenderViewToString(this, "Index", await GetResellersList());
             return Json(status);
