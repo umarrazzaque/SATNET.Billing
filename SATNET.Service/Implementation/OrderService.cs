@@ -23,12 +23,12 @@ namespace SATNET.Service.Implementation
             try
             {
                 retModel = await _orderRepository.Get(id);
-                if (retModel.Id != 0)
-                {
-                    //retModel.ServiceProRataPrice = CalculateProRataPrice(retModel);
-                    //retModel.Total = retModel.ServiceProRataPrice + retModel.HardwarePrice + retModel.IPPrice;
-                    //retModel.ServicePlanUnit = SetServicePlanUnit(retModel.ServicePlanTypeId);
-                }
+                //if (retModel != null && retModel.Id != 0)
+                //{
+                //    retModel.ServiceProRataPrice = CalculateProRataPrice(retModel);
+                //    retModel.Total = retModel.ServiceProRataPrice + retModel.HardwarePrice + retModel.IPPrice;
+                //    retModel.ServicePlanUnit = SetServicePlanUnit(retModel.ServicePlanTypeId);
+                //}
             }
             catch (Exception e)
             {

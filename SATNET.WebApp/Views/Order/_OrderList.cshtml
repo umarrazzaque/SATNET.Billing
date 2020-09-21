@@ -42,7 +42,17 @@
                             }
                             @counter
                         </td>*@
-                    <td><a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.OrderNumber</a> </td>
+                    <td>
+                        @if (item.StatusId != 21)
+                        {
+                            <a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.OrderNumber</a>
+
+                        }
+                        else
+                        {
+                            @item.OrderNumber
+                        }
+                    </td>
                     <td> @item.SiteName</td>
                     <td>@item.CustomerShortName</td>
                     <td> @item.RequestTypeName</td>

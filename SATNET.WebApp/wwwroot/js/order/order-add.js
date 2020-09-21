@@ -200,8 +200,12 @@ $(function () {
                     $("#ipPlan").val(result.ipId);
                     $("#ipPlan").prop("disabled", true);
                     $("#ipChangeTo option[value=" + result.ipId + "]").remove();
+                    $('#NewMacAirNoId').empty();
+                    var $options = $("#MacAirNoId > option").clone();
+                    $('#NewMacAirNoId').append($options);
                     $("#currentMacAirNo").val(result.macAirNoId);
                     $("#currentMacAirNo").prop("disabled", true);
+                    $("#NewMacAirNoId option[value=" + result.macAirNoId + "]").remove();
                 }
             });
         }
@@ -224,13 +228,15 @@ $(function () {
             }
         }
         else if (servicePlanType == '12') {
+            $('.pro-rata-gb').hide();
+            $('#txtProRataGB').text('');
             var quotaPlanValue = $(this).val();
             if (quotaPlanValue > 0) {
                 var quotaPlanText = $('#ServicePlanId option:selected').text();
                 var installationDate = $('#InstallationDate').val();
                 if (installationDate != '') {
                     $('.pro-rata-gb').show();
-                    showProRataGB(quotaPlanText, installationDate)
+                    showProRataGB(quotaPlanText, installationDate, '#txtProRataGB')
                 }
                 else {
                     //alert('Select plan installation date to see pro rata quota GB.');
@@ -240,11 +246,24 @@ $(function () {
     });
     $("#InstallationDate").change(function () {
         var installationDate = $(this).val();
+        var quotaPlanType = $('#ServicePlanTypeId').val();
         var quotaPlanValue = $('#ServicePlanId').val();
         var quotaPlanText = $('#ServicePlanId option:selected').text();
-        if (installationDate != '' && quotaPlanValue > 0) {
+        if (installationDate != '' && quotaPlanValue > 0 && quotaPlanType == 12) {
             $('.pro-rata-gb').show();
-            showProRataGB(quotaPlanText, installationDate)
+            showProRataGB(quotaPlanText, installationDate, '#txtProRataGB')
+        }
+    });
+    $("#ScheduleDateId").change(function () {
+        $('.upgrade-pro-rata-gb').hide();
+        $('#txtUpgradeProRataGB').text('');
+        var scheduleDate = $(this).val();
+        var quotaPlanType = $('#upgradeServicePlanType').val();
+        var quotaPlanValue = $('#UpgradeToId').val();
+        var quotaPlanText = $('#UpgradeToId option:selected').text();
+        if (scheduleDate == 58 && quotaPlanValue > 0 && quotaPlanType == 12) {// 58:now, 12:quota
+            $('.upgrade-pro-rata-gb').show();
+            showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB')
         }
     });
     $("#SiteCityId").change(function () {
@@ -262,14 +281,32 @@ $(function () {
             $("#PromotionId option[value='2']").prop("disabled", false);
         }
     });
-
+    $("#UpgradeToId").change(function () {
+        $('.upgrade-pro-rata-gb').hide();
+        $('#txtUpgradeProRataGB').text('');
+        var quotaPlanText = $('#UpgradeToId option:selected').text();
+        if ($(this).val() != '' && $("#upgradeServicePlanType").val() == 12 && $("#ScheduleDateId").val()==58) { //for quota plan and schedule date now display pro-rata quota
+            $('.upgrade-pro-rata-gb').show();
+            showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
+        }
+    });
 });
 
+getDateToday = function(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    return today;
+}
 hideAllSections = function () {
     $(".new-site").hide();
     $(".dedicated-serviceplan").hide();
     $(".custom-dedicated-serviceplan").hide();
     $(".pro-rata-gb").hide();
+    $(".upgrade-pro-rata-gb").hide();
     $(".upgrade").hide();
     $(".downgrade").hide();
     $(".token").hide();
@@ -391,6 +428,7 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
     var url = '/Order/GetServicePlansByType';
     $.getJSON(url, { servicePlanTypeId: servicePlanType }, function (result) {
         var items = '';
+        items += "<option value=''>Select</option>";
         $.each(result, function (i, plan) {
             items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
         });
@@ -433,7 +471,10 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             $("#selectCurrentServicePlan").empty();
             $("#selectCurrentServicePlan").html(items);
             $("#selectCurrentServicePlan").val(servicePlanId);
-
+            $('#changeToServicePlanType').empty();
+            var $options = $("#ServicePlanTypeId > option").clone();
+            $('#changeToServicePlanType').append($options);
+            $("#changeToServicePlanType option[value=" + servicePlanType + "]").remove();
 
             //setPlanUnit($(".unit-upgrade"), servicePlanType);
         }
@@ -553,13 +594,13 @@ getArea = function (cityId) {
     });
 }
 
-showProRataGB = function (quotaPlanText, installationDate) {
+showProRataGB = function (quotaPlanText, installationDate, textBox) {
     $.ajax({
         url: '/Order/GetProRataGB',
         data: { monthlyQuota: quotaPlanText, installationDate: installationDate },
         success: function (result) {
             if (result != null) {
-                $('#txtProRataGB').val(result.proRataQuotaGB);
+                $(textBox).val(result.proRataQuotaGB);
             }
         }
     });

@@ -39,12 +39,17 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Service plan is required")]
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        public string CurrentSpTypeName { get; set; }
+        public string CurrentSpName { get; set; }
+        public string ChangeSpTypeName { get; set; }
+        public string ChangeSpName { get; set; }
         [Required(ErrorMessage = "Dedicated service plan is required")]
         public string DedicatedServicePlanName { get; set; }
         public string ServicePlanTypeName { get; set; }
         public string ServicePlanUnit { get; set; }
         public decimal ServicePlanPrice { get; set; }
         public decimal ServicePlanProRataPrice { get; set; }
+        public decimal ProRataQuota { get; set; }
 
         [DisplayName("Service Plan")]
         public SelectList ServicePlanSelectList { get; set; }
@@ -61,6 +66,9 @@ namespace SATNET.WebApp.Models.Order
         public SelectList ModemSrNoSelectList { get; set; }
         [Required(ErrorMessage = "Mac Air No is required")]
         public int MacAirNoId { get; set; }
+        public string MacAirNo { get; set; }
+        public string NewMacAirNo { get; set; }
+        public string Promotion { get; set; }
         public SelectList MacAirNoSelectList { get; set; }
         [Required(ErrorMessage = "Antenna size is required")]
         public int AntennaSizeId { get; set; }
@@ -85,6 +93,7 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Change To IP is required")]
         public int ChangeIPId { get; set; }
         public string IPName { get; set; }
+        public string CurrentIPName { get; set; }
         public decimal IPPrice { get; set; }
         public DateTime ServiceOrderDate { get; set; }
         [DisplayName("Download")]
@@ -113,6 +122,8 @@ namespace SATNET.WebApp.Models.Order
         public string SubscriberNotes { get; set; }
         [Required(ErrorMessage = "Upgrade From is required")]
         public int? UpgradeFromId { get; set; }
+        public string UpgradeToTypeName { get; set; }
+        public string UpgradeToName { get; set; }
         [DisplayName("Upgrade From")]
         public SelectList UpgradeFromSelectList { get; set; }
         [Required(ErrorMessage = "Upgrade To is required")]
@@ -121,6 +132,8 @@ namespace SATNET.WebApp.Models.Order
         public int? UpgradeToId { get; set; }
         [Required(ErrorMessage = "Downgrade From is required")]
         public int? DowngradeFromId { get; set; }
+        public string DowngradeToTypeName { get; set; }
+        public string DowngradeToName { get; set; }
         [DisplayName("Downgrade From")]
         public SelectList DowngradeFromSelectList { get; set; }
         [DisplayName("Downgrade To")]
@@ -129,6 +142,7 @@ namespace SATNET.WebApp.Models.Order
         public int? DowngradeToId { get; set; }
         [Required(ErrorMessage = "Token is required")]
         public int? TokenId { get; set; }
+        public string Token { get; set; }
         [DisplayName("Token(GB)")]
         public SelectList TokenSelectList { get; set; }
         [DisplayName("Promotion")]

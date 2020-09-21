@@ -1,0 +1,82 @@
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div>
+                Order Details
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <div class="d-inline-block dropdown">
+                <a href="@String.Format("/{0}", "Order/Index")" class=" btn btn-danger">
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Order Number:</label>
+            <label>@Model.OrderNumber</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Request Type:</label>
+            <label>@Model.RequestTypeName</label>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Status:</label>
+            <label>@Model.StatusName</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Customer:</label>
+            <label>@Model.CustomerName</label>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Schedule Date:</label>
+            <label>@Model.ScheduleDateName</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Order Date:</label>
+            <label>@Model.CreatedOn</label>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Order By:</label>
+            <label>@Model.CreatedByName</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Order By Role:</label>
+            <label>@Model.CreatedByRole</label>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Site Name:</label>
+            <label>@Model.SiteName</label>
+        </div>
+    </div>
+</div>

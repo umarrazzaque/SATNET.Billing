@@ -17,7 +17,9 @@ namespace SATNET.WebApp.Mappings
                 Id = obj.Id,
                 OrderNumber = obj.OrderNumber,
                 SiteName = obj.SiteName,
+                ServicePlanTypeName = obj.ServicePlanTypeName,
                 ServicePlanName = obj.ServicePlanName,
+                ServicePlanTypeId = obj.ServicePlanTypeId,
                 RequestTypeName = obj.RequestTypeName,
                 SubscriberName = obj.SubscriberName,
                 ServiceOrderDate = obj.CreatedOn,
@@ -42,7 +44,29 @@ CustomerId=obj.CustomerId,
 CustomerShortName=obj.CustomerShortName,
 CustomerCode = obj.CustomerCode,
 ScheduleDateName=obj.ScheduleDateName,
-RejectReason = string.IsNullOrEmpty(obj.RejectReason) ? "Not Available":obj.RejectReason
+RejectReason = string.IsNullOrEmpty(obj.RejectReason) ? "Not Available":obj.RejectReason,
+CustomerName = obj.CustomerName,
+SiteCity = obj.SiteCity,
+SiteArea = obj.SiteArea,
+InstallationDate = obj.InstallationDate,
+Promotion = obj.Promotion,
+MacAirNo = obj.MacAirNo,
+CurrentIPName = obj.CurrentIPName,
+CurrentSpName = obj.CurrentSpName,
+CurrentSpTypeName = obj.CurrentSpTypeName,
+ChangeSpName = obj.ChangeSpName,
+ChangeSpTypeName = obj.ChangeSpTypeName,
+DowngradeToTypeName = obj.DowngradeToTypeName,
+DowngradeToName=obj.DowngradeToName,
+UpgradeToTypeName=obj.UpgradeToTypeName,
+UpgradeToName=obj.UpgradeToName,
+Token = obj.Token,
+NewMacAirNo = obj.NewMacAirNo,
+Other = obj.Other,
+CreatedOn = obj.CreatedOn,
+CreatedByName=obj.CreatedByName,
+CreatedByRole=obj.CreatedByRole,
+ProRataQuota = obj.ProRataQuota
             };
             return model;
         }
@@ -57,7 +81,9 @@ RejectReason = string.IsNullOrEmpty(obj.RejectReason) ? "Not Available":obj.Reje
                 RequestTypeName = model.RequestTypeName,
                 SubscriberName = model.SubscriberName,
                 StatusName = model.StatusName,
-                RequestTypeId = model.RequestTypeId
+                RequestTypeId = model.RequestTypeId,
+                ProRataQuota = model.ProRataQuota,
+                ServicePlanTypeId=model.ServicePlanTypeId
             };
             return obj;
         }
