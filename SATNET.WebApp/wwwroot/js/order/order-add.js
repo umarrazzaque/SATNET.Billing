@@ -62,6 +62,9 @@ $(function () {
                 $("#ScheduleDateId").val(58);
                 $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
+                $("#MacAirNoId").prop("disabled", false);
+                $("#HardwareConditionId").prop("disabled", false);
+                $("#PromotionId").prop("disabled", false);
                 break
             case '2':// Termination
                 $(".select-site").show();

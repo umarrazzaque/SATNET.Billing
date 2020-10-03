@@ -1,0 +1,56 @@
+﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
+
+<div id="MainContents">
+    @await Html.PartialAsync("Detail/_Common")
+    <div class="row">
+        <div class="col-md-12">
+            <div class="invoice overflow-auto">
+                <div style="min-width: 600px">
+                    @await Html.PartialAsync("Detail/_CommonHeader")
+                    <main>
+                        @await Html.PartialAsync("Detail/_CommonHeader2", Model)
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th class="no">#</th>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="no">1</td>
+                                    <td class="text-left">
+                                        <h3>
+                                            Token Top Up To:
+                                        </h3>
+                                        <span>@Model.Token GB</span>
+                                    </td>
+                                    <td class="unit">$ @Model.TokenPrice</td>
+                                    <td class="total">
+                                        $ @Model.TokenPrice
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>GRAND TOTAL</td>
+                                    <td>$ @Model.Total</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="thanks">Thank you!</div>
+                    </main>
+                    <footer>
+                        Invoice was created on a computer and is valid without the signature and seal.
+                    </footer>
+                </div>
+                <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+

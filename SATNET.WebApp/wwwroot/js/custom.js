@@ -16,7 +16,17 @@ function Layout() {
 }
 
 (function ($) {
+    $("ul").on("click",".metismenu li a", function (e) {
+   
+        console.log('menu item clicked');
+        //removing the previous selected menu state
+        $('.metismenu li').find('a.active').removeClass('active');
+        //adding the state for this parent menu
+        $(this).addClass('active');
+    });
     $(document).ready(function () {
+        
+        
         $(document).ready(function () {
 
             //localStorage.clear();   // Uncomment to clear ALL storage.

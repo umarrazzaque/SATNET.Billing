@@ -17,6 +17,9 @@ namespace SATNET.Domain
         public int IPId { get; set; }
         public int ServicePlanId { get; set; }
         public int ServicePlanTypeId { get; set; }
+        public string ServicePlan { get; set; }
+        public string ServicePlanType { get; set; }
+        public string Promotion { get; set; }
         public string IPName { get; set; }
         public int StatusId { get; set; }
         public List<int> StatusIds { get; set; }
@@ -26,9 +29,9 @@ namespace SATNET.Domain
         public int AreaId { get; set; }
         public string City { get; set; }
         public string Area { get; set; }
-        public string  Subscriber{ get; set; }
         public DateTime ActivationDate { get; set; }
         public DateTime LastActivationDate { get; set; }
+        public DateTime NextBillingDate { get; set; }
         public int MacAirNoId { get; set; }
         public int PromotionId { get; set; }
         public int HardwareConditionId { get; set; }

@@ -60,6 +60,7 @@ namespace SATNET.Domain
         public decimal ServicePlanPrice { get; set; }
         public decimal ServiceProRataPrice { get; set; }
         public decimal ProRataQuota { get; set; }
+        public decimal UpgradeToProRataQuota { get; set; }
         public string ServicePlanUnit { get; set; }
         public int? IPId { get; set; }
         public int ChangeIPId { get; set; }

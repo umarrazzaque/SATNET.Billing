@@ -76,7 +76,7 @@ namespace SATNET.WebApp.Controllers
                     viewName = "Detail/Downgrade";
                     break;
                 case 5://Token Top up
-                    viewName = "Detail/TokenTopUp";
+                    viewName = "Detail/Token";
                     break;
                 case 6://Lock
                     viewName = "Detail/Lock";

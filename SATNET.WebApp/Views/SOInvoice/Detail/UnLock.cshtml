@@ -1,5 +1,27 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
 
+@{ decimal servicePlanPrice;
+    decimal ipPrice;
+
+    if (Model.ProRataPrice == 0)
+    {
+        servicePlanPrice = Model.ServicePlanPrice;
+
+    }
+    else
+    {
+        servicePlanPrice = Model.ProRataPrice;
+    }
+    if (Model.IPProRataPrice == 0)
+    {
+        ipPrice = Model.IPPrice;
+    }
+    else
+    {
+        ipPrice = Model.IPProRataPrice;
+    }
+}
+
 <div id="MainContents">
     @await Html.PartialAsync("Detail/_Common")
     <div class="row">
@@ -28,33 +50,18 @@
                                         <span>Type: </span>@Model.ServicePlanType
                                         <span>, Plan: @Model.ServicePlan @Model.ServicePlanUnit</span>
 
-                                        @if (Model.ServicePlanTypeId == 12)
+                                        @if (Model.ServicePlanTypeId == 12 && Model.ProRataQuota != "")
                                         {
                                             <span>, Pro-Rata Quota: @Model.ProRataQuota GB</span>
                                         }
                                     </td>
                                     <td class="unit">$ @Model.ServicePlanPrice</td>
                                     <td class="total">
-                                        $ @Model.ProRataPrice
+                                        $ @servicePlanPrice
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="no">2</td>
-                                    <td class="text-left">
-                                        <h3>
-                                            Hardware
-                                        </h3>
-                                        <span>NA</span>
-                                        @*@if (Model.ModemModel != null)
-                        {
-                            <span>HW - KIT -</span> @Model.ModemModel <span>-</span> @Model.TransceiverWATT <span>-</span> @Model.AntennaSize;
-                        }*@
-                                    </td>
-                                    <td class="unit">$ </td>
-                                    <td class="total">$ </td>
-                                </tr>
-                                <tr>
-                                    <td class="no">3</td>
                                     <td class="text-left">
                                         <h3>
                                             IP
@@ -62,20 +69,20 @@
                                         @Model.IP
                                     </td>
                                     <td class="unit">$ @Model.IPPrice</td>
-                                    <td class="total">$ @Model.IPProRataPrice</td>
+                                    <td class="total">$ @ipPrice</td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 @*<tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">SUBTOTAL</td>
-                    <td>$0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">TAX 25%</td>
-                    <td>$0.00</td>
-                </tr>*@
+                                        <td colspan="2"></td>
+                                        <td colspan="2">SUBTOTAL</td>
+                                        <td>$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">TAX 25%</td>
+                                        <td>$0.00</td>
+                                    </tr>*@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td>GRAND TOTAL</td>
@@ -85,9 +92,9 @@
                         </table>
                         <div class="thanks">Thank you!</div>
                         @*<div class="notices">
-            <div>NOTICE:</div>
-            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
-        </div>*@
+                                <div>NOTICE:</div>
+                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                            </div>*@
                     </main>
                     <footer>
                         Invoice was created on a computer and is valid without the signature and seal.

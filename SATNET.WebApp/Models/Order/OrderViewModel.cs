@@ -50,6 +50,7 @@ namespace SATNET.WebApp.Models.Order
         public decimal ServicePlanPrice { get; set; }
         public decimal ServicePlanProRataPrice { get; set; }
         public decimal ProRataQuota { get; set; }
+        public decimal UpgradeToProRataQuota { get; set; }
 
         [DisplayName("Service Plan")]
         public SelectList ServicePlanSelectList { get; set; }

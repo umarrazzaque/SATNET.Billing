@@ -8,7 +8,7 @@
                 <div style="min-width: 600px">
                     @await Html.PartialAsync("Detail/_CommonHeader")
                     <main>
-                        @await Html.PartialAsync("Detail/_CommonHeader2", Model)
+                        @await Html.PartialAsync("Detail/_CommonHeader2",Model)
                         <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
@@ -23,7 +23,7 @@
                                     <td class="no">1</td>
                                     <td class="text-left">
                                         <h3>
-                                            Service Plan
+                                           Upgrade Service Plan To
                                         </h3>
                                         <span>Type: </span>@Model.ServicePlanType
                                         <span>, Plan: @Model.ServicePlan @Model.ServicePlanUnit</span>
@@ -38,44 +38,8 @@
                                         $ @Model.ProRataPrice
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="no">2</td>
-                                    <td class="text-left">
-                                        <h3>
-                                            Hardware
-                                        </h3>
-                                        <span>NA</span>
-                                        @*@if (Model.ModemModel != null)
-                        {
-                            <span>HW - KIT -</span> @Model.ModemModel <span>-</span> @Model.TransceiverWATT <span>-</span> @Model.AntennaSize;
-                        }*@
-                                    </td>
-                                    <td class="unit">$ </td>
-                                    <td class="total">$ </td>
-                                </tr>
-                                <tr>
-                                    <td class="no">3</td>
-                                    <td class="text-left">
-                                        <h3>
-                                            IP
-                                        </h3>
-                                        @Model.IP
-                                    </td>
-                                    <td class="unit">$ @Model.IPPrice</td>
-                                    <td class="total">$ @Model.IPProRataPrice</td>
-                                </tr>
                             </tbody>
                             <tfoot>
-                                @*<tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">SUBTOTAL</td>
-                    <td>$0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">TAX 25%</td>
-                    <td>$0.00</td>
-                </tr>*@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td>GRAND TOTAL</td>
@@ -84,10 +48,6 @@
                             </tfoot>
                         </table>
                         <div class="thanks">Thank you!</div>
-                        @*<div class="notices">
-            <div>NOTICE:</div>
-            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
-        </div>*@
                     </main>
                     <footer>
                         Invoice was created on a computer and is valid without the signature and seal.

@@ -25,13 +25,20 @@ namespace SATNET.WebApp.Mappings
                 ServicePlan=obj.ServicePlan,
                 ServicePlanPrice = obj.ServicePlanPrice,
                 ProRataPrice = obj.ProRataPrice,
+                IPProRataPrice = obj.IPProRataPrice,
                 ProRataQuota = obj.ProRataQuota,
                 ServicePlanUnit = obj.ServicePlanUnit,
                 SiteArea = obj.SiteArea,
                 SiteCity = obj.SiteCity,
+                SiteName = obj.SiteName,
                 SubscriberName = obj.SubscriberName,
                 SubscriberEmail=obj.SubscriberEmail,
-                RequestTypeId = obj.RequestTypeId
+                RequestTypeId = obj.RequestTypeId,
+                ServicePlanTypeId = obj.ServicePlanTypeId,
+                ServicePlanType = obj.ServicePlanType,
+                CreatedOn = obj.CreatedOn,
+                Token = obj.Token,
+                TokenPrice = obj.TokenPrice
             };
             return model;
         }

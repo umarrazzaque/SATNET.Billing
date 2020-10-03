@@ -127,15 +127,8 @@ namespace SATNET.WebApp.Controllers
             var order = new Order()
             {
                 SiteId = model.SiteId,
-                //HardwareId = model.HardwareId,
-                //BillingId = model.BillingId,
-                //ModemModelId = model.ModemModelId,
-                //ModemSrNoId = model.ModemSrNoId,
                 MacAirNoId = model.MacAirNoId,
                 HardwareConditionId = model.HardwareConditionId,
-                //AntennaSizeId = model.AntennaSizeId,
-                //TransceiverWATTId = model.TransceiverWATTId,
-                //TransceiverSrNoId = model.TransceiverSrNoId,
                 ServicePlanId = model.ServicePlanId,
                 DedicatedServicePlanName = model.DedicatedServicePlanName,
                 RequestTypeId = model.RequestTypeId,
@@ -149,23 +142,19 @@ namespace SATNET.WebApp.Controllers
                 ChangeIPId = model.ChangeIPId,
                 TokenId = model.TokenId,
                 PromotionId = model.PromotionId,
-                //Download = model.Download,
-                //Upload = model.Upload,
                 Other = model.Other,
                 SubscriberArea = model.SubscriberArea,
                 SubscriberCity = model.SubscriberCity,
                 SubscriberEmail = model.SubscriberEmail,
                 SubscriberName = model.SubscriberName,
                 SubscriberNotes = model.SubscriberNotes,
-                //SiteCity = model.SiteCity,
-                //SiteName = model.SiteId > 0 ? model.SiteName : siteName,
-                //SiteArea = model.SiteArea,
                 CustomerId = customerId,
                 SiteCityId = model.SiteCityId,
                 ScheduleDateId = model.ScheduleDateId,
                 ChangeServicePlanId = model.ChangeServicePlanId,
                 NewMacAirNoId = model.NewMacAirNoId,
-                ProRataQuota = model.ProRataQuota
+                ProRataQuota = model.ProRataQuota,
+                UpgradeToProRataQuota = model.UpgradeToProRataQuota
             };
 
             var result = await _orderService.Add(order);
