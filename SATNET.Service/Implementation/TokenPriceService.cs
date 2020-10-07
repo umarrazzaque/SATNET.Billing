@@ -6,22 +6,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace SATNET.Service.Implementation
 {
-    public class IPService : IService<IP>
+    public class TokenPriceService : IService<TokenPrice>
     {
-        private readonly IRepository<IP> _ipRepository;
-        public IPService(IRepository<IP> ipRepository)
+        private readonly IRepository<TokenPrice> _tokenPriceRepository;
+        public TokenPriceService(IRepository<TokenPrice> tokenPriceRepository)
         {
-            _ipRepository = ipRepository;
+            _tokenPriceRepository = tokenPriceRepository;
         }
-        public async Task<IP> Get(int id)
+        public async Task<TokenPrice> Get(int id)
         {
-            var retModel = new IP();
+            var retModel = new TokenPrice();
             try
             {
-                retModel = await _ipRepository.Get(id);
+                retModel = await _tokenPriceRepository.Get(id);
                 if (retModel.Id != 0)
                 {
 
@@ -37,17 +36,24 @@ namespace SATNET.Service.Implementation
             }
             return retModel;
         }
-        public async Task<List<IP>> List(IP obj)
+        public async Task<List<TokenPrice>> List(TokenPrice obj)
         {
-            return await _ipRepository.List(obj);
+            return await _tokenPriceRepository.List(obj);
         }
-        public async Task<StatusModel> Add(IP obj)
+        public async Task<StatusModel> Add(TokenPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/TokenPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Add(obj);
+                var tokens = await _tokenPriceRepository.List(new TokenPrice() { TokenId = obj.TokenId, PriceTierId=obj.PriceTierId });
+                if (tokens.Count > 0)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Token Price already exists.";
+                    return status;
+                }
+                retId = await _tokenPriceRepository.Add(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -69,15 +75,14 @@ namespace SATNET.Service.Implementation
             {
             }
             return status;
-
         }
-        public async Task<StatusModel> Update(IP obj)
+        public async Task<StatusModel> Update(TokenPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/TokenPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Add(obj);
+                retId = await _tokenPriceRepository.Add(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -102,11 +107,11 @@ namespace SATNET.Service.Implementation
         }
         public async Task<StatusModel> Delete(int id, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/TokenPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Delete(id, deletedBy);
+                retId = await _tokenPriceRepository.Delete(id, deletedBy);
                 if (retId >= 0)
                 {
                     status.IsSuccess = true;
@@ -129,6 +134,5 @@ namespace SATNET.Service.Implementation
             }
             return status;
         }
-
     }
 }

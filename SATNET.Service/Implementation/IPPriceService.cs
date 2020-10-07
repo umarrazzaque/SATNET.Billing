@@ -6,22 +6,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace SATNET.Service.Implementation
 {
-    public class IPService : IService<IP>
+    public class IPPriceService : IService<IPPrice>
     {
-        private readonly IRepository<IP> _ipRepository;
-        public IPService(IRepository<IP> ipRepository)
+        private readonly IRepository<IPPrice> _ippRepository;
+        public IPPriceService(IRepository<IPPrice> ippRepository)
         {
-            _ipRepository = ipRepository;
+            _ippRepository = ippRepository;
         }
-        public async Task<IP> Get(int id)
+        public async Task<IPPrice> Get(int id)
         {
-            var retModel = new IP();
+            var retModel = new IPPrice();
             try
             {
-                retModel = await _ipRepository.Get(id);
+                retModel = await _ippRepository.Get(id);
                 if (retModel.Id != 0)
                 {
 
@@ -37,17 +36,24 @@ namespace SATNET.Service.Implementation
             }
             return retModel;
         }
-        public async Task<List<IP>> List(IP obj)
+        public async Task<List<IPPrice>> List(IPPrice obj)
         {
-            return await _ipRepository.List(obj);
+            return await _ippRepository.List(obj);
         }
-        public async Task<StatusModel> Add(IP obj)
+        public async Task<StatusModel> Add(IPPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IPPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Add(obj);
+                var priceLists = await _ippRepository.List(new IPPrice() { IPId = obj.IPId, PriceTierId = obj.PriceTierId });
+                if (priceLists.Count > 0)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Price for this IP and price tier already exists.";
+                    return status;
+                }
+                retId = await _ippRepository.Add(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -71,13 +77,13 @@ namespace SATNET.Service.Implementation
             return status;
 
         }
-        public async Task<StatusModel> Update(IP obj)
+        public async Task<StatusModel> Update(IPPrice obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IPPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Add(obj);
+                retId = await _ippRepository.Add(obj);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -102,11 +108,11 @@ namespace SATNET.Service.Implementation
         }
         public async Task<StatusModel> Delete(int id, int deletedBy)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IP/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/IPPrice/Index" };
             try
             {
                 int retId = -1;
-                retId = await _ipRepository.Delete(id, deletedBy);
+                retId = await _ippRepository.Delete(id, deletedBy);
                 if (retId >= 0)
                 {
                     status.IsSuccess = true;
@@ -129,6 +135,5 @@ namespace SATNET.Service.Implementation
             }
             return status;
         }
-
     }
 }

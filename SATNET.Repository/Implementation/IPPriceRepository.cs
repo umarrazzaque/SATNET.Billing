@@ -13,18 +13,18 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class IPRepository : IRepository<IP>
+    public class IPPriceRepository : IRepository<IPPrice>
     {
         private readonly IConfiguration _config;
         private readonly string _connectionString;
-        public IPRepository(IConfiguration config)
+        public IPPriceRepository(IConfiguration config)
         {
             _config = config;
             _connectionString = _config.GetConnectionString("DefaultConnection");
         }
-        public async Task<IP> Get(int id)
+        public async Task<IPPrice> Get(int id)
         {
-            var iP = new IP();
+            var iP = new IPPrice();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
@@ -32,55 +32,53 @@ namespace SATNET.Repository.Implementation
 
                 var parms = new DynamicParameters();
                 parms.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
-                iP = await con.QueryFirstOrDefaultAsync<IP>("IPGet", parms, commandType: CommandType.StoredProcedure);
+                iP = await con.QueryFirstOrDefaultAsync<IPPrice>("IPPriceGet", parms, commandType: CommandType.StoredProcedure);
             }
             return iP;
         }
-        public async Task<List<IP>> List(IP obj)
+        public async Task<List<IPPrice>> List(IPPrice obj)
         {
-            var tokens = new List<IP>();
+            var prices = new List<IPPrice>();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
-
-                var result = await con.QueryAsync<IP>("IPList", commandType: CommandType.StoredProcedure);
-                tokens = result.ToList();
+                var parms = new DynamicParameters();
+                parms.Add("@@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@@PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                var result = await con.QueryAsync<IPPrice>("IPPriceList", parms,commandType: CommandType.StoredProcedure);
+                prices = result.ToList();
             }
-            return tokens;
+            return prices;
         }
-        public async Task<int> Add(IP obj)
+        public async Task<int> Add(IPPrice obj)
         {
             int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@Name", obj.Name, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@Subnet", obj.Subnet, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@IPs", obj.IPs, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@Hosts", obj.Hosts, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@IPTypeId", obj.IPTypeId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@Price", obj.Price, DbType.Decimal, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                int retResult = await con.ExecuteScalarAsync<int>("IPAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
+                int retResult = await con.ExecuteScalarAsync<int>("IPPriceAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
                 result = Parse.ToInt32(queryParameters.Get<int>("@Id"));
             }
             return result;
         }
-        public async Task<int> Update(IP obj)
+        public async Task<int> Update(IPPrice obj)
         {
             int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@Name", obj.Name, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@Subnet", obj.Subnet, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@IPs", obj.IPs, DbType.Int32, ParameterDirection.Input);
-                queryParameters.Add("@Hosts", obj.Hosts, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@IPTypeId", obj.IPTypeId, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@Price", obj.Price, DbType.Decimal, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                await con.ExecuteScalarAsync<int>("IPAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
+                int retResult = await con.ExecuteScalarAsync<int>("IPPriceAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
                 result = Parse.ToInt32(queryParameters.Get<int>("@Id"));
             }
             return result;
@@ -93,10 +91,9 @@ namespace SATNET.Repository.Implementation
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
-                result = await con.ExecuteScalarAsync<int>("IPDelete", queryParameters, commandType: CommandType.StoredProcedure);
+                result = await con.ExecuteScalarAsync<int>("IPPriceDelete", queryParameters, commandType: CommandType.StoredProcedure);
             }
             return result;
         }
-
     }
 }

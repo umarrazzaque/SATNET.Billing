@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.IP.IPViewModel>
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                <th style="width:90%">Name</th>
+                <th style="width:10%" class="text-center"> Actions </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                    <td class="text-center">
+                        <div class="buttons">
+                            <a href="@String.Format("/{0}?id={1}", "IP/Edit", item.Id)" class="pl-1 pr-1">
+                                    <span class="fa fa-edit" aria-hidden="true"></span>
+                                </a>
+                            <a href="@String.Format("/{0}?id={1}", "IP/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                                   data-toggle="modal" data-target="#modal-deleteConfirm">
+                                    <span class="fa fa-trash" aria-hidden="true"></span>
+                                </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>

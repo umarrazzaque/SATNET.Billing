@@ -13,18 +13,18 @@ using System.Threading.Tasks;
 
 namespace SATNET.Repository.Implementation
 {
-    public class TokenRepository : IRepository<Token>
+    public class TokenPriceRepository : IRepository<TokenPrice>
     {
         private readonly IConfiguration _config;
         private readonly string _connectionString;
-        public TokenRepository(IConfiguration config)
+        public TokenPriceRepository(IConfiguration config)
         {
             _config = config;
             _connectionString = _config.GetConnectionString("DefaultConnection");
         }
-        public async Task<Token> Get(int id)
+        public async Task<TokenPrice> Get(int id)
         {
-            var token = new Token();
+            var token = new TokenPrice();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
@@ -32,40 +32,42 @@ namespace SATNET.Repository.Implementation
 
                 var parms = new DynamicParameters();
                 parms.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
-                token = await con.QueryFirstOrDefaultAsync<Token>("TokenGet", parms, commandType: CommandType.StoredProcedure);
+                token = await con.QueryFirstOrDefaultAsync<TokenPrice>("TokenPriceGet", parms, commandType: CommandType.StoredProcedure);
             }
             return token;
         }
-        public async Task<List<Token>> List(Token obj)
+        public async Task<List<TokenPrice>> List(TokenPrice obj)
         {
-            var tokens = new List<Token>();
+            var tokens = new List<TokenPrice>();
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     con.Open();
                 var parms = new DynamicParameters();
-                parms.Add("@Name", obj.Name, DbType.String, ParameterDirection.Input);
-                var result = await con.QueryAsync<Token>("TokenList",parms, commandType: CommandType.StoredProcedure);
+                parms.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                var result = await con.QueryAsync<TokenPrice>("TokenPriceList", parms, commandType: CommandType.StoredProcedure);
                 tokens = result.ToList();
             }
             return tokens;
         }
-        public async Task<int> Add(Token obj)
+        public async Task<int> Add(TokenPrice obj)
         {
             int result = 0;
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-                queryParameters.Add("@Name", obj.Name, DbType.String, ParameterDirection.Input);
-                queryParameters.Add("@Validity", obj.Validity, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@PriceTierId", obj.PriceTierId, DbType.Int32, ParameterDirection.Input);
+                queryParameters.Add("@Price", obj.Price, DbType.Decimal, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                int retResult = await con.ExecuteScalarAsync<int>("TokenAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
+                int retResult = await con.ExecuteScalarAsync<int>("TokenPriceAddOrUpdate", queryParameters, commandType: CommandType.StoredProcedure);
                 result = Parse.ToInt32(queryParameters.Get<int>("@Id"));
             }
             return result;
         }
-        public async Task<int> Update(Token obj)
+        public async Task<int> Update(TokenPrice obj)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +79,7 @@ namespace SATNET.Repository.Implementation
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
                 queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
-                result = await con.ExecuteScalarAsync<int>("TokenDelete", queryParameters, commandType: CommandType.StoredProcedure);
+                result = await con.ExecuteScalarAsync<int>("TokenPriceDelete", queryParameters, commandType: CommandType.StoredProcedure);
             }
             return result;
         }
