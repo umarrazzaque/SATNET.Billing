@@ -1,0 +1,52 @@
+﻿@model SATNET.WebApp.Models.CreditNoteViewModel
+
+<div id="MainContents">
+    @await Html.PartialAsync("Detail/_Common")
+    <div class="row">
+        <div class="col-md-12">
+            <div class="invoice overflow-auto">
+                <div style="min-width: 600px">
+                    @await Html.PartialAsync("Detail/_CommonHeader")
+                    <main>
+                        @await Html.PartialAsync("Detail/_CommonHeader2", Model)
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-left">
+                                        @Model.Details
+                                    </td>
+                                    <td class="total">
+                                        $ @Model.Amount
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>TOTAL</td>
+                                    <td>$ @Model.Amount</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="thanks">Thank you!</div>
+                        @*<div class="notices">
+                                <div>NOTICE:</div>
+                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                            </div>*@
+                    </main>
+                    <footer>
+                        Credit note was created on a computer and is valid without the signature and seal.
+                    </footer>
+                </div>
+                <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+

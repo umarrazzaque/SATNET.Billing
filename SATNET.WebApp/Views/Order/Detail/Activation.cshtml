@@ -1,61 +1,99 @@
-﻿<div class="app-page-title">
-    <div class="page-title-wrapper">
-        <div class="page-title-heading">
-            <div>
-                Order Details
-            </div>
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+@await Html.PartialAsync("Detail/_Common", Model)
+<div class="row so-detail-heading">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Activation Details</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Subscriber Name:</label>
+            <label>@Model.SubscriberName</label>
         </div>
-        <div class="page-title-actions">
-            <div class="d-inline-block dropdown">
-                <a href="@String.Format("/{0}", "Order/Index")" class=" btn btn-danger">
-                    Back
-                </a>
-            </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">City:</label>
+            <label>@Model.SiteCity</label>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-2">
-        <p class="font-weight-bold">Order Number:</p>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Area:</label>
+            <label>@Model.SiteArea</label>
+        </div>
     </div>
-    <div class="col-md-8">
-        <p>SO-ABC-12345</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-2">
-        <p class="font-weight-bold">Request Type:</p>
-    </div>
-    <div class="col-md-8">
-        <p>Activation</p>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Planned Installation Date:</label>
+            <label>@Model.InstallationDate</label>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-2">
-        <p class="font-weight-bold">Customer Name:</p>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan Type:</label>
+            <label>@Model.ServicePlanTypeName</label>
+        </div>
     </div>
-    <div class="col-md-8">
-        <p>Muhammad Enterprises</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-2">
-        <p class="font-weight-bold">Site Name:</p>
-    </div>
-    <div class="col-md-8">
-        <p>AZX12345</p>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan:</label>
+            <label>@Model.ServicePlanName <span class="font-weight-bold" id="spanProRataQuota">, Pro-Rata Quota(GB): <span class="font-weight-normal">@Model.ProRataQuota</span> </span></label>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-2">
-        <p class="font-weight-bold">Schedule Date:</p>
+
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">IP:</label>
+            <label>@Model.IPName</label>
+        </div>
     </div>
-    <div class="col-md-8">
-        <p>AZX12345</p>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Hardware:</label>
+            <label>@Model.MacAirNo</label>
+        </div>
     </div>
 </div>
-<div class="col-lg-12 new-site">
-    <h4>New Site Details</h4>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Promotion:</label>
+            <label>@Model.Promotion</label>
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('#spanProRataQuota').hide();
+            var requestTypeId = @Html.Raw(Json.Serialize(Model.RequestTypeId));
+            var servicePlanTypeId = @Html.Raw(Json.Serialize(Model.ServicePlanTypeId));
+            if (requestTypeId == 1) {
+                $('.so-detail-heading label').text('Activation Details')
+            }
+            else if (requestTypeId == 32) {
+                $('.so-detail-heading label').text('Re-Activation Details')
+            }
+                if (servicePlanTypeId == 12) {
+                    $('#spanProRataQuota').show();
+            }
+            else {
+                    $('#spanProRataQuota').hide();
+            }
+        });
+
+    </script>
+
+}
 
 

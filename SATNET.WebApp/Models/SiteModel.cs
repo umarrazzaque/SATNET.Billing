@@ -20,6 +20,7 @@ namespace SATNET.WebApp.Models
         public string CustomerName { get; set; }
         [DisplayName("Subscriber")]
         public int? SubscriberId { get; set; }
+        [DisplayName("Subscriber")]
         public string SubscriberName { get; set; }
         [DisplayName("Status")]
         public int StatusId { get; set; }
@@ -27,9 +28,16 @@ namespace SATNET.WebApp.Models
         public string Name { get; set; }
         public string City { get; set; }
         public string Area { get; set; }
-        public string Subscriber { get; set; }
-        [DisplayName("ActivationDate")]
+        [DisplayName("Planned Activation Date")]
         public DateTime ActivationDate { get; set; }
+        [DisplayName("Next Billing Date")]
+        public DateTime NextBillingDate { get; set; }
+        [DisplayName("Service Plan")]
+        public string ServicePlan { get; set; }
+        [DisplayName("Service Plan Type")]
+        public string ServicePlanType { get; set; }
+        [DisplayName("Promotion")]
+        public string Promotion { get; set; }
     }
 
     public class CreateSiteModel

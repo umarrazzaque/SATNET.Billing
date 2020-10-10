@@ -1,0 +1,61 @@
+﻿@model SATNET.WebApp.Models.CreditNoteViewModel
+@{
+    ViewData["Title"] = "Edit Credit Note";
+}
+
+<form id="formAdd" method="post" data-ajax="true" asp-controller="CreditNote" asp-action="Edit" data-ajax-method="post" enctype="multipart/form-data" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Update Credit Note
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "CreditNote/Index")" class=" btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Update Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Invoice</label>
+                <select asp-for="InvoiceId" asp-items="Model.InvoiceSelectList" class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>Select</option>
+                </select>
+                <span asp-validation-for="InvoiceId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label class="lable-control">Details</label>
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="position-relative form-group">
+                <label class="lable-control">Amount</label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" asp-for="Id" />
+</form>
+
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}
+
+
+
+
+

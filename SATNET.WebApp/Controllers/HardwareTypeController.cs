@@ -58,7 +58,6 @@ namespace SATNET.WebApp.Controllers
             }
             statusModel.ResponseUrl = _responseUrl;
             return Json(statusModel);
-
         }
         //[Route("Edit")]
         [HttpGet]

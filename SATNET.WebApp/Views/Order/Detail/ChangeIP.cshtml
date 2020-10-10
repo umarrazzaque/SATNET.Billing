@@ -1,0 +1,37 @@
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+@await Html.PartialAsync("Detail/_Common", Model)
+
+<div class="row so-detail-heading">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Change IP Details</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Current</label>
+    </div>
+</div>
+
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">IP:</label>
+            <label>@Model.CurrentIPName</label>
+        </div>
+    </div>
+    </div>
+
+<div class="row so-detail-row">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Change To</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">IP:</label>
+            <label>@Model.IPName</label>
+        </div>
+    </div>
+</div>

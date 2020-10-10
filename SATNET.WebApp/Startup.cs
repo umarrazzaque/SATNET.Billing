@@ -60,7 +60,8 @@ namespace SATNET.WebApp
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("ManageServiceOrderPolicy", policy=>policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations"));
-                options.AddPolicy("ReadOnlyServiceOrderPolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management","Accounting","NOC"));
+                options.AddPolicy("ReadOnlyServiceOrderPolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
+                options.AddPolicy("ReadOnlySOInvoicePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting"));
                 options.AddPolicy("ReadOnlySitePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
             });
 
@@ -127,6 +128,11 @@ namespace SATNET.WebApp
             services.AddScoped<IService<City>, CityService>();
             services.AddScoped<IService<HardwareComponent>, HardwareComponentService>();
             services.AddScoped<IService<HardwareKit>, HardwareKitService>();
+            services.AddScoped<IService<SOInvoice>, SOInvoiceService>();
+            services.AddScoped<IService<IP>, IPService>();
+            services.AddScoped<IService<IPPrice>, IPPriceService>();
+            services.AddScoped<IService<TokenPrice>, TokenPriceService>();
+            services.AddScoped<IService<CreditNote>, CreditNoteService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
@@ -144,6 +150,11 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<HardwareKit>, HardwareKitRepository>();
 
 
+            services.AddScoped<IRepository<SOInvoice>, SOInvoiceRepository>();
+            services.AddScoped<IRepository<IP>, IPRepository>();
+            services.AddScoped<IRepository<IPPrice>, IPPriceRepository>();
+            services.AddScoped<IRepository<TokenPrice>, TokenPriceRepository>();
+            services.AddScoped<IRepository<CreditNote>, CreditNoteRepository>();
             //-------------Misc-----------
             //services.AddScoped<IRepository<Customer>, ResellerRepository>();
             //services.AddScoped<IService<Customer>, ResellerService>();

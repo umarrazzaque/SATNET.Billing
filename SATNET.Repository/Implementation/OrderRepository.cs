@@ -104,6 +104,8 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@Other", obj.Other, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@ChangeServicePlanId", obj.ChangeServicePlanId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@NewMacAirNoId", obj.NewMacAirNoId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@ProRataQuota", obj.ProRataQuota, DbType.String, ParameterDirection.Input);
+                    paramsOrder.Add("@UpgradeToProRataQuota", obj.UpgradeToProRataQuota, DbType.String, ParameterDirection.Input);
                     orderId = await con.ExecuteScalarAsync<int>("OrderInsert", paramsOrder, transaction, commandType: CommandType.StoredProcedure);
 
                     transaction.Commit();

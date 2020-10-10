@@ -17,23 +17,122 @@ namespace SATNET.Service.Implementation
         }
         public async Task<Token> Get(int id)
         {
-            throw new NotImplementedException();
+            var retModel = new Token();
+            try
+            {
+                retModel = await _tokenRepository.Get(id);
+                if (retModel.Id != 0)
+                {
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+
+            }
+            return retModel;
         }
         public async Task<List<Token>> List(Token obj)
         {
             return await _tokenRepository.List(obj);
         }
-        public async Task<StatusModel> Add(Token Token)
+        public async Task<StatusModel> Add(Token obj)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Token/Index" };
+            try
+            {
+                int retId = -1;
+                var tokens = await _tokenRepository.List(new Token() { Name = obj.Name });
+                if (tokens.Count > 0)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Token already exists.";
+                    return status;
+                }
+                retId = await _tokenRepository.Add(obj);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record inserted successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in inserting the record.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing request.";
+                status.ErrorDescription = e.Message;
+            }
+            finally
+            {
+            }
+            return status;
         }
-        public async Task<StatusModel> Update(Token Token)
+        public async Task<StatusModel> Update(Token obj)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Token/Index" };
+            try
+            {
+                int retId = -1;
+                retId = await _tokenRepository.Add(obj);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record updated successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in updating the record.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing request.";
+                status.ErrorDescription = e.Message;
+            }
+            finally
+            {
+            }
+            return status;
         }
         public async Task<StatusModel> Delete(int id, int deletedBy)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Token/Index" };
+            try
+            {
+                int retId = -1;
+                retId = await _tokenRepository.Delete(id, deletedBy);
+                if (retId >= 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Record deleted successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in deleting the record.";
+                }
+            }
+            catch (Exception e)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "An error occured while processing request.";
+                status.ErrorDescription = e.Message;
+            }
+            finally
+            {
+            }
+            return status;
         }
 
     }

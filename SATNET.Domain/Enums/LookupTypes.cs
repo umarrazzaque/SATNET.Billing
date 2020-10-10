@@ -18,6 +18,7 @@ namespace SATNET.Domain.Enums
         ModemModel = 1010,
         ModemSrNo = 1011,
         ScheduleDate = 1017,
-        HardwareType = 1020
+        HardwareType = 1020,
+        InvoiceStatus= 1019
     }
 }

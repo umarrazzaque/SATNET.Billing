@@ -29,6 +29,9 @@ namespace SATNET.Domain
         public int ModemModelId { get; set; }
         public int ModemSrNoId { get; set; }
         public int MacAirNoId { get; set; }
+        public string MacAirNo { get; set; }
+        public string NewMacAirNo { get; set; }
+        public string Promotion { get; set; }
         public int AntennaSizeId { get; set; }
         public int TransceiverWATTId { get; set; }
         public int TransceiverSrNoId { get; set; }
@@ -38,25 +41,37 @@ namespace SATNET.Domain
         public string RequestTypeName { get; set; }
         public int? UpgradeFromId { get; set; }
         public int? UpgradeToId { get; set; }
+        public string UpgradeToTypeName { get; set; }
+        public string UpgradeToName { get; set; }
         public int? DowngradeFromId { get; set; }
         public int? DowngradeToId { get; set; }
+        public string DowngradeToTypeName { get; set; }
+        public string DowngradeToName { get; set; }
         public DateTime InstallationDate { get; set; }
         public int ServicePlanTypeId { get; set; }
         public string ServicePlanTypeName { get; set; }
         public string DedicatedServicePlanName { get; set; }
         public int ServicePlanId { get; set; }
         public string ServicePlanName { get; set; }
+        public string CurrentSpTypeName { get; set; }
+        public string CurrentSpName { get; set; }
+        public string ChangeSpTypeName { get; set; }
+        public string ChangeSpName { get; set; }
         public decimal ServicePlanPrice { get; set; }
         public decimal ServiceProRataPrice { get; set; }
+        public decimal ProRataQuota { get; set; }
+        public decimal UpgradeToProRataQuota { get; set; }
         public string ServicePlanUnit { get; set; }
         public int? IPId { get; set; }
         public int ChangeIPId { get; set; }
         public string IPName { get; set; }
+        public string CurrentIPName { get; set; }
         public decimal IPPrice { get; set; }
         public DateTime ServiceOrderDate { get; set; }
         public int? Download { get; set; }
         public int? Upload { get; set; }
         public int? TokenId { get; set; }
+        public string Token { get; set; }
         public int? PromotionId { get; set; }
         public string Other { get; set; }
         public decimal Total { get; set; }

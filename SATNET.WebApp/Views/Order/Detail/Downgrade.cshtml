@@ -1,0 +1,47 @@
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+@await Html.PartialAsync("Detail/_Common", Model)
+
+<div class="row so-detail-heading">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Downgrade Details</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Downgrade From</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan Type:</label>
+            <label>@Model.CurrentSpTypeName</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan:</label>
+            <label>@Model.CurrentSpName</label>
+        </div>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Downgrade To</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan Type:</label>
+            <label>@Model.DowngradeToTypeName</label>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            <label class="font-weight-bold">Service Plan:</label>
+            <label>@Model.DowngradeToName</label>
+        </div>
+    </div>
+</div>

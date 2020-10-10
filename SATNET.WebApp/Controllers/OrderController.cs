@@ -127,15 +127,8 @@ namespace SATNET.WebApp.Controllers
             var order = new Order()
             {
                 SiteId = model.SiteId,
-                //HardwareId = model.HardwareId,
-                //BillingId = model.BillingId,
-                //ModemModelId = model.ModemModelId,
-                //ModemSrNoId = model.ModemSrNoId,
                 MacAirNoId = model.MacAirNoId,
                 HardwareConditionId = model.HardwareConditionId,
-                //AntennaSizeId = model.AntennaSizeId,
-                //TransceiverWATTId = model.TransceiverWATTId,
-                //TransceiverSrNoId = model.TransceiverSrNoId,
                 ServicePlanId = model.ServicePlanId,
                 DedicatedServicePlanName = model.DedicatedServicePlanName,
                 RequestTypeId = model.RequestTypeId,
@@ -149,22 +142,19 @@ namespace SATNET.WebApp.Controllers
                 ChangeIPId = model.ChangeIPId,
                 TokenId = model.TokenId,
                 PromotionId = model.PromotionId,
-                //Download = model.Download,
-                //Upload = model.Upload,
                 Other = model.Other,
                 SubscriberArea = model.SubscriberArea,
                 SubscriberCity = model.SubscriberCity,
                 SubscriberEmail = model.SubscriberEmail,
                 SubscriberName = model.SubscriberName,
                 SubscriberNotes = model.SubscriberNotes,
-                //SiteCity = model.SiteCity,
-                //SiteName = model.SiteId > 0 ? model.SiteName : siteName,
-                //SiteArea = model.SiteArea,
                 CustomerId = customerId,
                 SiteCityId = model.SiteCityId,
                 ScheduleDateId = model.ScheduleDateId,
                 ChangeServicePlanId = model.ChangeServicePlanId,
-                NewMacAirNoId = model.NewMacAirNoId
+                NewMacAirNoId = model.NewMacAirNoId,
+                ProRataQuota = model.ProRataQuota,
+                UpgradeToProRataQuota = model.UpgradeToProRataQuota
             };
 
             var result = await _orderService.Add(order);
@@ -298,7 +288,7 @@ namespace SATNET.WebApp.Controllers
             {
                 siteName = GetProposedSiteNameImp(order.CustomerId, order.CustomerCode);
             }
-            var result = await _orderService.Update(new Order { Id = id, StatusId = statusId, RejectReason=rejectReason, SiteName=siteName });
+            var result = await _orderService.Update(new Order { Id = id, StatusId = statusId, RejectReason=rejectReason, SiteName=siteName, UpdatedBy= Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier)) });
             if (result.IsSuccess)
             {
                 status.IsSuccess = true;
@@ -336,14 +326,52 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> ViewOrder(int id)
         {
+            string viewName = "";
             OrderViewModel model = new OrderViewModel();
             var serviceResult = await _orderService.Get(id);
             if (serviceResult != null)
             {
                 model = OrderMapping.GetViewModel(serviceResult);
             }
+            switch (serviceResult.RequestTypeId)
+            {
+                case 1: //Activation
+                case 32://Re-Activation
+                    viewName = "Detail/Activation";
+                    break;
 
-            return View("Detail/Activation");
+                case 2://Termination
+                    viewName = "Detail/Termination";
+                    break;
+                case 3://Upgrade
+                    viewName = "Detail/Upgrade";
+                    break;
+                case 4://Downgrade
+                    viewName = "Detail/Downgrade";
+                    break;
+                case 5://Token Top up
+                    viewName = "Detail/TokenTopUp";
+                    break;
+                case 6://Lock
+                    viewName = "Detail/Lock";
+                    break;
+                case 7://UnLock
+                    viewName = "Detail/Unlock";
+                    break;
+                case 8://Other
+                    viewName = "Detail/Other";
+                    break;
+                case 67://Change Plan
+                    viewName = "Detail/ChangePlan";
+                    break;
+                case 68://Change IP
+                    viewName = "Detail/ChangeIP";
+                    break;
+                case 69://Modem Swap
+                    viewName = "Detail/ModemSwap";
+                    break;
+            }
+            return View(viewName, model);
         }
 
         public async Task<IActionResult> GetCityArea(int cityId)

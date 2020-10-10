@@ -33,7 +33,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_City", obj.City, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_Area", obj.Area, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_Subscriber", obj.Subscriber, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_Subscriber", obj.SubscriberName, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
             int retResult = await dbCon.ExecuteScalarAsync<int>("SiteAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
@@ -103,7 +103,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_City", obj.City, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_Area", obj.Area, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_Subscriber", obj.Subscriber, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_Subscriber", obj.SubscriberName, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
             int retResult = await dbCon.ExecuteScalarAsync<int>("SiteAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));

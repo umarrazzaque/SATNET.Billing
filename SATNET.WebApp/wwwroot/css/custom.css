@@ -4,3 +4,15 @@
 table tbody tr td ul {
     margin: auto;
 }
+.row.so-detail-row{
+    height:30px;
+}
+.row.so-detail-row label{
+    font-size: 13px;
+}
+.row.so-detail-heading {
+    height: 30px;
+    margin-bottom:20px;
+    margin-top:20px;
+}
+

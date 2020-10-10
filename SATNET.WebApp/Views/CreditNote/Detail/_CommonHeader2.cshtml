@@ -1,0 +1,15 @@
+﻿@model SATNET.WebApp.Models.CreditNoteViewModel
+
+<div class="row contacts">
+    <div class="col invoice-to">
+        <div class="text-gray-light">CREDIT NOTE FOR:</div>
+        <h3 class="to">@Model.SiteName, @Model.SubscriberName</h3>
+        <div class="address">@Model.SiteCity , @Model.SiteArea</div>
+    </div>
+    <div class="col invoice-details">
+        <h3 class="invoice-id">@Model.CreditNoteNumber</h3>
+        <div class="address">Invoice Number: @Model.InvoiceNumber</div>
+        <div class="date">Date of Invoice: @Model.InvoiceDate.ToShortDateString()</div>
+        <div class="date">Date of Credit Note: @Model.CreditNoteDate.ToShortDateString()</div>
+    </div>
+</div>

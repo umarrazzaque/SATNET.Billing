@@ -1,0 +1,16 @@
+﻿@model SATNET.WebApp.Models.Order.OrderViewModel
+
+@await Html.PartialAsync("Detail/_Common", Model)
+<div class="row so-detail-heading">
+    <div class="col-lg-12">
+        <label class="title font-weight-bold">Other Details</label>
+    </div>
+</div>
+<div class="row so-detail-row">
+    <div class="col-lg-10">
+        <div class="form-group">
+            <label class="font-weight-bold">Other:</label>
+            <label>@Model.Other</label>
+        </div>
+    </div>
+</div>

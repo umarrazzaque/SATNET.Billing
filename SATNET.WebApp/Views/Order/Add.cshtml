@@ -7,16 +7,13 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div>
-                    Add Service Order
-                    <div class="page-title-subheading">
-                        Please fillout following form
-                    </div>
+                    Add Service Order 
                 </div>
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
                     <a href="@String.Format("/{0}", "Order/Index")" class=" btn btn-danger">
-                        Cancel
+                        Back
                     </a>
                     <button type="submit" class="btn btn-default">Submit Order</button>
                 </div>
@@ -129,8 +126,8 @@
     </div>
     <div class="col-lg-3 pro-rata-gb">
         <div class="form-group">
-            <label>Pro Rata (GB) </label>
-            <input id="txtProRataGB" type="text" class="form-control" readonly="readonly" />
+            <label>Pro-Rata Quota(GB) </label>
+            <input asp-for="ProRataQuota" id="txtProRataGB" type="text" class="form-control" readonly="readonly" />
         </div>
     </div>
     <div class="col-lg-3 dedicated-serviceplan">
@@ -272,6 +269,12 @@
             <span asp-validation-for="UpgradeToId" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-3 upgrade-pro-rata-gb">
+        <div class="form-group">
+            <label>Pro-Rata Quota(GB) </label>
+            <input asp-for="UpgradeToProRataQuota" id="txtUpgradeProRataGB" type="text" class="form-control txtProRataGB" readonly="readonly" />
+        </div>
+    </div>
     <div class="col-lg-12 downgrade">
         <h5 class="title">Downgrade</h5>
     </div>
@@ -325,7 +328,7 @@
     <div class="col-lg-12 other">
         <div class="position-relative form-group">
             <label>Specify</label>
-            <textarea asp-for="Other" type="text" placeholder="..." class="form-control" rows="3"></textarea>
+            <textarea asp-for="Other" type="text" class="form-control" rows="3"></textarea>
             <span asp-validation-for="Other" class="text-danger"></span>
         </div>
     </div>
@@ -334,7 +337,7 @@
     </div>
     <div class="col-lg-3 change-ip">
         <div class="position-relative form-group">
-            <label>IP Plan</label>
+            <label>Current IP Plan</label>
             <select id="ipPlan" asp-items="Model.IPSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
@@ -342,7 +345,7 @@
     </div>
     <div class="col-lg-3 change-ip">
         <div class="position-relative form-group">
-            <label>IP Change To</label>
+            <label>Change IP Plan To</label>
             <select id="ipChangeTo" asp-for="ChangeIPId" asp-items="Model.IPSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
