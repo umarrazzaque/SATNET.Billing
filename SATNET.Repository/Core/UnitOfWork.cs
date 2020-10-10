@@ -18,7 +18,7 @@ namespace SATNET.Repository.Core
 
         public UnitOfWork()
         {
-            IDbConnection dbConnection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local
+            IDbConnection dbConnection = new SqlConnection("Server=.;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local
             //IDbConnection dbConnection = new SqlConnection("Server=tcp:satnetbilling.database.windows.net,1433;Initial Catalog=SatnetBilling;Persist Security Info=False;User ID=usat;Password=Password01@@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");//azure
             _connection = dbConnection;
             OpenConnection();
@@ -85,7 +85,12 @@ namespace SATNET.Repository.Core
         private IRepository<Site> _siteRepository;
         public IRepository<Site> Sites { get { return _siteRepository ?? (_siteRepository = new SiteRepository(this)); } }
 
-        private IRepository<Lookup> _lookuoRepository;
-        public IRepository<Lookup> Lookups { get { return _lookuoRepository ?? (_lookuoRepository = new LookupRepository(this)); } }
+        private IRepository<Lookup> _lookupRepository;
+        public IRepository<Lookup> Lookups { get { return _lookupRepository ?? (_lookupRepository = new LookupRepository(this)); } }
+        
+        private IRepository<HardwareComponent> _hardwareComponentRepository;
+        public IRepository<HardwareComponent> HardwareComponents { get { return _hardwareComponentRepository ?? (_hardwareComponentRepository = new HardwareComponentRepository(this)); } }
+        private IRepository<HardwareKit> _hardwareKitRepository;
+        public IRepository<HardwareKit> HardwareKits { get { return _hardwareKitRepository ?? (_hardwareKitRepository = new HardwareKitRepository(this)); } }
     }
 }

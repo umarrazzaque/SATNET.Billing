@@ -63,21 +63,21 @@
 <script language="javascript" type="text/javascript">
     //$.validator.unobtrusive.parse('#formAdd');
 
-    $('#ServicePlanPriceModel_ServicePlanId').change(function () {
-        var servicePlanId = $('#ServicePlanPriceModel_ServicePlanId').val();
-        var url = '/ServicePlanPrice/GetFilteredPlanPrice';
-        $.getJSON(url, { servicePlanId: servicePlanId, mode: 'add' }, function (result) {
-            console.log(result);
-            var items = '';
-            items += "<option value=''>-Select Price Tier-</option>";
-            $.each(result, function (i, plan) {
-                items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+        $('#ServicePlanPriceModel_ServicePlanId').change(function () {
+            var servicePlanId = $('#ServicePlanPriceModel_ServicePlanId').val();
+            var url = '/ServicePlanPrice/GetFilteredPlanPrice';
+            $.getJSON(url, { servicePlanId: servicePlanId, mode: 'add' }, function (result) {
+                console.log(result);
+                var items = '';
+                items += "<option value=''>-Select Price Tier-</option>";
+                $.each(result, function (i, plan) {
+                    items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+                });
+                $('#ServicePlanPriceModel_PriceTierId').removeAttr('disabled');
+                $('#ServicePlanPriceModel_PriceTierId').empty();
+                $('#ServicePlanPriceModel_PriceTierId').html(items);
             });
-            $('#ServicePlanPriceModel_PriceTierId').removeAttr('disabled');
-            $('#ServicePlanPriceModel_PriceTierId').empty();
-            $('#ServicePlanPriceModel_PriceTierId').html(items);
         });
-    });
     $('#ServicePlanPriceModel_PlanTypeId').change(function () {
         var planTypeId = $('#ServicePlanPriceModel_PlanTypeId').val();
         if (planTypeId === '') {

@@ -19,13 +19,13 @@ namespace SATNET.WebApp.Controllers
     {
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
-        private readonly HardwareAttributes activeHardwareAttribute;
+        private readonly HardwareType activeHardwareAttribute;
         private readonly string _responseUrl;
         public HardwareASController(IMapper mapper, IService<Lookup> lookUpService)
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.AntennaSize;
+            activeHardwareAttribute = HardwareType.AntennaSize;
             _responseUrl = "/HardwareAS/Index";
         }
 

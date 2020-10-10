@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 @*<th class="text-center" width="30">
-                </th>*@
+        </th>*@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.Name) </th>
@@ -37,10 +37,10 @@
                     @*<td> @Html.DisplayFor(modelItem => item.LookupTypeName)</td>*@
                     <td class="text-center">
                         <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "HardwareMM/Edit", item.Id)" class="pl-1 pr-1">
+                            <a href="@String.Format("/{0}?id={1}", "HardwareType/Edit", item.Id)" class="pl-1 pr-1">
                                 <span class="fa fa-edit" aria-hidden="true"></span>
                             </a>
-                            <a href="@String.Format("/{0}?id={1}", "HardwareMM/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                            <a href="@String.Format("/{0}?id={1}", "HardwareType/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
                                data-toggle="modal" data-target="#modal-deleteConfirm">
                                 <span class="fa fa-trash" aria-hidden="true"></span>
                             </a>

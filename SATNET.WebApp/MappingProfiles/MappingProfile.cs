@@ -24,6 +24,9 @@ namespace SATNET.WebApp.MappingProfiles
             CreateMap<ServicePlanPrice, ServicePlanPriceModel>().ReverseMap();
             CreateMap<Hardware, HardwareModel>().ReverseMap();
             CreateMap<Lookup, LookUpModel>().ReverseMap();
+            
+            CreateMap<HardwareComponent, HardwareComponentModel>().ReverseMap();
+            CreateMap<HardwareKit, HardwareKitModel>().ReverseMap();
         }
     }
 }

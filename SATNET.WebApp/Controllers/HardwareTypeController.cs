@@ -17,19 +17,17 @@ namespace SATNET.WebApp.Controllers
 {
     [Authorize(Policy = "AdminPolicy")]
     //[RoutePrefix("HelloSerial")]
-    public class HardwareSNController : BaseController
+    public class HardwareTypeController : BaseController
     {
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
-        private readonly HardwareAttributes activeHardwareAttribute;
         private readonly string _responseUrl;
 
-        public HardwareSNController(IMapper mapper, IService<Lookup> lookUpService)
+        public HardwareTypeController(IMapper mapper, IService<Lookup> lookUpService)
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.ModemSrNo;
-            _responseUrl = "/HardwareSN/Index";
+            _responseUrl = "/HardwareType/Index";
         }
         //[Route("HelloSerial/Index")]
         public async Task<IActionResult> Index()
@@ -40,7 +38,7 @@ namespace SATNET.WebApp.Controllers
         public IActionResult Add()
         {
             var resultModel = new CreateLookUpModel() { 
-                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(activeHardwareAttribute) }
+                LookUpModel = new LookUpModel() { LookUpTypeId = Convert.ToInt32(LookupTypes.HardwareType) }
             };
             return View(resultModel);
         }
@@ -92,7 +90,7 @@ namespace SATNET.WebApp.Controllers
         public async Task<List<LookUpModel>> GetHardwareSNList()
         {
             var retList = new List<LookUpModel>();
-            var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(activeHardwareAttribute) });
+            var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType) });
             if (serviceResult.Any())
             {
                 retList = _mapper.Map<List<LookUpModel>>(serviceResult);

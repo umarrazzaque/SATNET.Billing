@@ -90,8 +90,8 @@ namespace SATNET.WebApp.Controllers
             var scheduleDates = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ScheduleDate) });
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
-            var hardwareConditions = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.HardwareCondition) });
-            var macAirNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareAttributes.MACAirNo) });
+            var hardwareConditions = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareType.HardwareCondition) });
+            var macAirNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareType.MACAirNo) });
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
             var ips = await _ipService.List(new IP());
