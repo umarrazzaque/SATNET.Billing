@@ -25,7 +25,7 @@ namespace SATNET.WebApp.Controllers
         {
             return View(await GetTokenList());
         }
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             return View(new TokenViewModel());
         }

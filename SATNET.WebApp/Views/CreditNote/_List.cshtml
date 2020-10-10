@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.CreditNoteViewModel>
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                <th style="width:15%">Credit Note Number</th>
+                <th style="width:15%">Invoice Number</th>
+                <th style="width:50%">Comments</th>
+                <th style="width:10%">Amount</th>
+                <th style="width:10%" class="text-center"> Actions </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td> @item.CreditNoteNumber</td>
+                <td> @item.InvoiceNumber</td>
+                <td> @item.Details</td>
+                <td> @item.Amount</td>
+                <td class="text-center">
+                    <div class="buttons">
+                        <a href="@String.Format("/{0}?id={1}", "CreditNote/Details", item.Id)" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-bars" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "CreditNote/Edit", item.Id)" class="pl-1 pr-1">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "CreditNote/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                           data-toggle="modal" data-target="#modal-deleteConfirm">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>
