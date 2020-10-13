@@ -16,9 +16,10 @@ namespace SATNET.Domain.Enums
 
 
         #region Hardware Types
-        Modem = 74,
-        AntennaMeter = 75,
-        Kit = 80
+        Modem = 79,
+        AntennaMeter = 81,
+        Kit = 80,
+        Spare = 83
         #endregion
     }
 }

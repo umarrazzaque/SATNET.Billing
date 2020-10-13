@@ -133,6 +133,8 @@ namespace SATNET.WebApp
             services.AddScoped<IService<IPPrice>, IPPriceService>();
             services.AddScoped<IService<TokenPrice>, TokenPriceService>();
             services.AddScoped<IService<CreditNote>, CreditNoteService>();
+            services.AddScoped<IService<HardwareComponentPrice>, HardwareComponentPriceService>();
+            services.AddScoped<IService<HardwareComponentRegistration>, HardwareComponentRegistrationService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
@@ -155,6 +157,8 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<IPPrice>, IPPriceRepository>();
             services.AddScoped<IRepository<TokenPrice>, TokenPriceRepository>();
             services.AddScoped<IRepository<CreditNote>, CreditNoteRepository>();
+            services.AddScoped<IRepository<HardwareComponentPrice>, HardwareComponentPriceRepository>();
+            services.AddScoped<IRepository<HardwareComponentRegistration>, HardwareComponentRegistrationRepository>();
             //-------------Misc-----------
             //services.AddScoped<IRepository<Customer>, ResellerRepository>();
             //services.AddScoped<IService<Customer>, ResellerService>();

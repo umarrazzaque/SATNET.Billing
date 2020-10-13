@@ -32,7 +32,7 @@ namespace SATNET.WebApp.Controllers
         //[Route("HelloSerial/Index")]
         public async Task<IActionResult> Index()
         {
-            return View(await GetHardwareSNList());
+            return View(await GetHardwareTypeList());
         }
         //[Route("Add")]
         public IActionResult Add()
@@ -83,10 +83,10 @@ namespace SATNET.WebApp.Controllers
         {
             //1  as loged in user id
             var statusModel = _lookUpService.Delete(id, 1).Result;
-            statusModel.Html = RenderViewToString(this, "Index", await GetHardwareSNList());
+            statusModel.Html = RenderViewToString(this, "Index", await GetHardwareTypeList());
             return Json(statusModel);
         }
-        public async Task<List<LookUpModel>> GetHardwareSNList()
+        public async Task<List<LookUpModel>> GetHardwareTypeList()
         {
             var retList = new List<LookUpModel>();
             var serviceResult = await _lookUpService.List(new Lookup { LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType) });

@@ -22,7 +22,6 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<HardwareComponent> _hardwareComponentService;
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
-        private readonly HardwareType activeHardwareAttribute;
         private readonly string _responseUrl;
 
         public HardwareKitController(IMapper mapper, IService<Lookup> lookUpService, IService<HardwareKit> hardwareKitService,
@@ -32,7 +31,6 @@ namespace SATNET.WebApp.Controllers
             _hardwareComponentService = hardwareComponentService;
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareType.ModemModel;
             _responseUrl = "/HardwareKit/Index";
         }
         public async Task<IActionResult> Index()
@@ -79,7 +77,7 @@ namespace SATNET.WebApp.Controllers
         {
             var resultModel = new CreateHardwareKitModel()
             {
-                HardwareKitModel = new HardwareKitModel(),
+                HardwareKitModel = _mapper.Map< HardwareKitModel> (_hardwareKitService.Get(id).Result),
                 ModemModels = _mapper.Map<List<HardwareComponentModel>>(_hardwareComponentService.List(new HardwareComponent()
                 {
                     Flag = "GET_BY_HARDWARE_TYPE",

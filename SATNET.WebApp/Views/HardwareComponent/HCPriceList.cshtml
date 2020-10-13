@@ -1,0 +1,145 @@
+﻿@model SATNET.WebApp.Models.Hardware.CreateHardwareComponentPriceModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+    <form method="post" data-ajax="true" asp-controller="HardwareComponent" asp-action="HCPriceList" data-ajax-method="post"
+          enctype="multipart/form-data" id="formAdd" autocomplete="off">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div>
+                        Hardware Component Pricing
+                    </div>
+                </div>
+                <div class="page-title-actions">
+                    <div class="d-inline-block dropdown">
+                        <a href="@String.Format("/{0}", "HardwareComponent/Index")" class=" btn btn-danger">
+                            Back
+                        </a>
+                        @*<button type="submit" class="btn btn-default">Save Hardware Component</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(model => model.HardwareComponentModel.Id)
+            <div class="col-lg-12">
+                <h5 class="title">Hardware Component Details</h5>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="font-weight-bold">Component Name:</label>
+                    <label>@Model.HardwareComponentModel.HCValue</label>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="font-weight-bold">Hardware Type:</label>
+                    <label>@Model.HardwareComponentModel.HardwareType</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <h5 class="title">Hardware Component Pricing Detail</h5>
+                <div class="page-title-subheading">
+                    Please fillout following form
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.HardwareComponentPriceModel.PriceTierId, new { })
+                                    @Html.DropDownListFor(model => model.HardwareComponentPriceModel.PriceTierId, new SelectList(Model.PriceTierList as System.Collections.IEnumerable, "Id", "Name"), "--SELECT PRICE TIER--", new { @class = "form-control select2 text-input" })
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="position-relative form-group">
+                                    @Html.LabelFor(model => model.HardwareComponentPriceModel.Price, new { })
+                                    @Html.EditorFor(model => model.HardwareComponentPriceModel.Price, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Price", @type = "number" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-title-actions">
+                            <div class="d-inline-block dropdown">
+                                <button type="submit" class="btn btn-default">Save Hardware Component Price</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h5 class="title">Hardware Component Pricing List</h5>
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+                    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th> @Html.DisplayNameFor(model => model.HardwareComponentPriceModel.HCValue) </th>
+                                <th> @Html.DisplayNameFor(model => model.HardwareComponentPriceModel.PriceTierId) </th>
+                                <th> @Html.DisplayNameFor(model => model.HardwareComponentPriceModel.Price) </th>
+                                <th class="text-center"> Actions </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int counter = 0;
+                            }
+                            @foreach (var item in Model.HardwareComponentPriceList)
+                            {
+                                <tr>
+                                    <td class="text-center text-muted">
+                                        @{
+                                            counter++;
+                                        }
+                                        @counter
+                                    </td>
+                                    <td> @Html.DisplayFor(modelItem => item.HCValue)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.PriceTierName)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.Price)</td>
+                                    <td class="text-center">
+                                        <div class="buttons">
+                                            @*<a href="@String.Format("/{0}?id={1}", "HardwareComponent/Edit", item.Id)" class="pl-1 pr-1">
+                                                <span class="fa fa-edit" aria-hidden="true"></span>
+                                            </a>
+                                            <a href="@String.Format("/{0}?id={1}", "HardwareComponent/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                                               data-toggle="modal" data-target="#modal-deleteConfirm">
+                                                <span class="fa fa-trash" aria-hidden="true"></span>
+                                            </a>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    //$.validator.unobtrusive.parse('#formAdd');
+    
+    
+</script>

@@ -29,9 +29,9 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_SerialNumber", obj.SerialNumber, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_HardwareComponentId", obj.HardwareComponentId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
-            queryParameters.Add("@P_IsRegistered", obj.IsRegistered, DbType.Int16, ParameterDirection.Input);
+            queryParameters.Add("@P_IsRegistered", obj.IsRegistered, DbType.Boolean, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-            int retResult = await dbCon.ExecuteScalarAsync<int>("HCRegistrationAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            int retResult = await dbCon.ExecuteScalarAsync<int>("HardCompRegAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
             return result;
         }
@@ -44,7 +44,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
-            int retResult = await dbCon.ExecuteScalarAsync<int>("HCRegistrationDelete", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            int retResult = await dbCon.ExecuteScalarAsync<int>("HardCompRegDelete", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Return_ID"));
             return result;
         }
@@ -55,21 +55,20 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
-            retObj = await dbCon.QueryFirstOrDefaultAsync<HardwareComponentRegistration>("HCRegistrationGet", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            retObj = await dbCon.QueryFirstOrDefaultAsync<HardwareComponentRegistration>("HardCompRegGet", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             return retObj;
         }
 
         public async Task<List<HardwareComponentRegistration>> List(HardwareComponentRegistration obj)
         {
-            List<HardwareComponentRegistration> retList = new List<HardwareComponentRegistration>();
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
-            var result = await dbCon.QueryAsync<HardwareComponentRegistration>("HCRegistrationList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
-            retList = result.ToList();
+            var result = await dbCon.QueryAsync<HardwareComponentRegistration>("HardCompRegList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            List<HardwareComponentRegistration> retList = result.ToList();
             return retList;
         }
 
@@ -85,7 +84,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_IsRegistered", obj.IsRegistered, DbType.Int16, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-            int retResult = await dbCon.ExecuteScalarAsync<int>("HCRegistrationAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            int retResult = await dbCon.ExecuteScalarAsync<int>("HardCompRegAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
             return result;
         }

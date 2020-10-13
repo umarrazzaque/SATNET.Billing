@@ -22,5 +22,7 @@ namespace SATNET.Repository.Core.Interface
         IRepository<Lookup> Lookups { get; }
         IRepository<HardwareComponent> HardwareComponents { get; }
         IRepository<HardwareKit> HardwareKits { get; }
+        IRepository<HardwareComponentPrice> HardwareComponentPrices { get; }
+        IRepository<HardwareComponentRegistration> HardwareComponentRegistrations { get; }
     }
 }

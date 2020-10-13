@@ -11,5 +11,6 @@ namespace SATNET.Domain
         public string HCValue { get; set; }
         public int? HCSpareTypeId { get; set; }
         public string HCSpareType { get; set; }
+        public int? KitId { get; set; }
     }
 }

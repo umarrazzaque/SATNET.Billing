@@ -35,4 +35,6 @@ namespace SATNET.WebApp.Models
         public List<LookUpModel> HardwareTypes { get; set; }
         public List<LookUpModel> SpareTypes { get; set; }
     }
+
+    
 }

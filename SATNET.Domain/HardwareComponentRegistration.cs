@@ -13,5 +13,6 @@ namespace SATNET.Domain
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public bool IsRegistered { get; set; }
+        public string [] SerialNumbers { get; set; }
     }
 }

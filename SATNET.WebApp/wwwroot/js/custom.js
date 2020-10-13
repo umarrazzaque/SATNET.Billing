@@ -13,7 +13,7 @@ PLAN_TYPE.set('Hybrid', '53');
 var PLAN_VALIDITY = 'GB/Mth';
 
 var HARD_TYPE = new Map();
-HARD_TYPE.set('Spare', '77');
+HARD_TYPE.set('Spare', '83');
 function Layout() {
 }
 

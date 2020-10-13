@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.Lookup.LookUpModel>
+﻿@model IEnumerable<SATNET.WebApp.Models.Hardware.HardwareComponentRegistrationModel>
 
 <div>
 
@@ -7,7 +7,7 @@
             <div class="page-title-heading">
 
                 <div>
-                    Hardware Type
+                    Hardware Component Registration
                     <div class="page-title-subheading">
                     </div>
                 </div>
@@ -24,8 +24,8 @@
                             <button type="button" tabindex="0" class="dropdown-item">Print</button>
                         </div>
                     </div>
-                    <a href="@String.Format("/{0}", "HardwareType/Add")" class=" btn btn-default">
-                        Add Hardware Type
+                    <a href="@String.Format("/{0}", "HardwareComponentRegistration/Add")" class=" btn btn-default">
+                        Add Hardware Component Registration
                     </a>
                 </div>
             </div>
@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_HardwareTypeList", Model)
+                @await Html.PartialAsync("_HardCompRegList", Model)
             </div>
             
 
@@ -61,7 +61,7 @@
             "columnDefs": [
                 { "orderable": false, "targets": 0 },
                 { "orderable": false, "targets": 1 },
-                { "orderable": false, "targets": 9 }
+                { "orderable": false, "targets": 8 }
             ],
             //"columnDefs": [
             //    {
@@ -70,7 +70,7 @@
             //    }],
         });
         t.on('order.dt search.dt', function () {
-            t.column(1, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();

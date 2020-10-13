@@ -1,0 +1,179 @@
+﻿@model SATNET.WebApp.Models.Hardware.CreateHardwareComponentRegistrationModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+<form method="post" data-ajax="true" asp-controller="HardwareComponentRegistration" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Hardware Component Registration
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "HardwareComponentRegistration/Index")" class=" btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Hardware Component Registration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(model => model.HardwareComponentRegistrationModel.SerialNumbers)
+        <div class="col-lg-4">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HardwareTypeId, new { })
+                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareTypeId, new SelectList(Model.HardwareTypes as System.Collections.IEnumerable, "Id", "Name"), "--SELECT HARDWARE TYPE--", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new { })
+                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new SelectList(Model.HardwareComponentList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT HARDWARE COMPONENT--", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HCRegistrationNumber, new { })
+                @Html.EditorFor(model => model.HardwareComponentRegistrationModel.HCRegistrationNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Registration Number", @type = "text" } })
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
+                <div class="input-group mb-3">
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "M.A.C Address", @type = "text" } })
+                    <div class="input-group-append">
+                        <button class="btn-info add_mac_address" type="button">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h5 class="title">Hardware Registration MAC Addresses List</h5>
+        </div>
+        <div class="col-lg-12">
+            <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+                <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th> @Html.DisplayName("MAC Address") </th>
+                            <th class="text-center"> Actions </th>
+                        </tr>
+                    </thead>
+                    <tbody id="reg_table_body">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    //$.validator.unobtrusive.parse('#formAdd');
+    var mac_address_array = [];
+    var edit_flag = -1;
+    var edit_record_index = -1;
+    $('#HardwareComponentRegistrationModel_HardwareTypeId').change(function () {
+        var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId').val();
+        $.ajax({
+            url: '/HardwareComponentRegistration/GetHardwareComponetByHardwareType',
+            type: "POST",
+            data: { hardware_type_id: hardware_type },
+            dataType: "json",
+            error: function (response) {
+            },
+            success: function (response) {
+                payment_filter_list = response;
+                console.log(response);
+                var options = "<option value'>--SELECT HARDWARE COMPONENT--</option>";
+                //"<option value=''>--SELECT " + retModel.Column + "--</option>";
+                $.each(response, function (i, plan) {
+                    options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
+                });
+                $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
+            }
+        });
+    });
+    $(document).on('click', '.add_mac_address', function () {
+        var mac_address_item = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
+        console.log(mac_address_item);
+        if (!(mac_address_array.indexOf(mac_address_item) > -1)) {
+            if (edit_flag == 1) {
+                mac_address_array[edit_record_index] = mac_address_item;
+            }
+            else {
+                mac_address_array.push(mac_address_item);
+            }
+            load_table(mac_address_array);
+            reset_config();
+        }
+        else {
+
+        }
+    });
+    $(document).on('click', '.row_edit', function () {
+        var record_value = $(this).attr('data-val');
+        edit_record_index = mac_address_array.indexOf(record_value);
+        edit_flag = 1;
+        $('#HardwareComponentRegistrationModel_SerialNumber').val(record_value);
+    });
+    $(document).on('click', '.row_delete', function () {
+        var record_value = $(this).attr('data-val');
+        mac_address_array = mac_address_array.filter(e => e !== record_value); // will return ['A', 'C']
+        load_table(mac_address_array);
+        reset_config();
+    });
+    function reset_config() {
+        $('#HardwareComponentRegistrationModel_SerialNumber').val('');
+        edit_flag = edit_record_index = -1;
+    }
+    function load_table(record_array) {
+        var rows = '';
+        $.each(record_array, function (i, item) {
+            rows += add_row(item, i+1);
+        });
+        $("#reg_table_body > tbody").html("");
+        $('#reg_table_body').html(rows);
+        $('#HardwareComponentRegistrationModel_SerialNumbers').val('');
+        $('#HardwareComponentRegistrationModel_SerialNumbers').val(record_array);
+    }
+    function add_row(col_value, record_count) {
+        var row = '<tr id=' + col_value + '>' +
+            '<td class="text-center text-muted">' + record_count + '</td>' +
+            '<td> ' + col_value + '</td>' +
+            '<td class="text-center">' +
+            '<div class="buttons">' +
+            '<a href="#" data-val=' + col_value + ' class="pl-1 pr-1 row_edit">' +
+            '<span class="fa fa-edit" aria-hidden="true"></span>' +
+            '</a>' +
+            '<a href="#" data-val=' + col_value + ' class="pl-1 pr-1 row_delete">' +
+            '<span class="fa fa-trash" aria-hidden="true"></span>' +
+            '</a>' +
+            '</div>' +
+            '</td>' +
+            '</tr>';
+        return row;
+    }
+    
+</script>

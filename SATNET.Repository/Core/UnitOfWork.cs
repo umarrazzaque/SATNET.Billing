@@ -92,5 +92,10 @@ namespace SATNET.Repository.Core
         public IRepository<HardwareComponent> HardwareComponents { get { return _hardwareComponentRepository ?? (_hardwareComponentRepository = new HardwareComponentRepository(this)); } }
         private IRepository<HardwareKit> _hardwareKitRepository;
         public IRepository<HardwareKit> HardwareKits { get { return _hardwareKitRepository ?? (_hardwareKitRepository = new HardwareKitRepository(this)); } }
+        private IRepository<HardwareComponentPrice> _hardwareComponentPriceRepository;
+        public IRepository<HardwareComponentPrice> HardwareComponentPrices { get { return _hardwareComponentPriceRepository ?? (_hardwareComponentPriceRepository = new HardwareComponentPriceRepository(this)); } }
+        private IRepository<HardwareComponentRegistration> _hardwareComponentRegistrationRepository;
+        public IRepository<HardwareComponentRegistration> HardwareComponentRegistrations { get { return _hardwareComponentRegistrationRepository ?? (_hardwareComponentRegistrationRepository = new HardwareComponentRegistrationRepository(this)); } }
+
     }
 }

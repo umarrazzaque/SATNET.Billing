@@ -26,6 +26,7 @@ namespace SATNET.Service.Implementation
                         HardwareComponent hcObj = new HardwareComponent()
                         {
                             HardwareTypeId = Convert.ToInt32( HardwareType.Kit),
+                            KitId = retId,
                             HCValue = obj.KitName
                         };
                         retId = uow.HardwareComponents.Add(hcObj).Result;
@@ -126,7 +127,7 @@ namespace SATNET.Service.Implementation
 
         public Task<StatusModel> Update(HardwareKit obj)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareKit/Index" };
+            var status = new StatusModel { IsSuccess = false, ErrorCode = "Error in updating the record.", ResponseUrl = "/HardwareKit/Index" };
             try
             {
                 int retId = -1;
@@ -136,9 +137,27 @@ namespace SATNET.Service.Implementation
                     retId = uow.HardwareKits.Update(obj).Result;
                     if (retId != 0)
                     {
-                        uow.SaveChanges();
-                        status.IsSuccess = true;
-                        status.ErrorCode = "Record update successfully.";
+                        var hardCompList = uow.HardwareComponents.List(new HardwareComponent()
+                        {
+                            SearchBy = "HC.KITID",
+                            Keyword = retId.ToString()//0321-5836090
+                        }).Result;
+                        if (hardCompList.Count > 0)
+                        {
+                            var hcObj = hardCompList[0];
+                            hcObj.HCValue = obj.KitName;
+                            if (hcObj != null)
+                            {
+                                retId = uow.HardwareComponents.Update(hcObj).Result;
+                            }
+                            if (retId != 0)
+                            {
+                                uow.SaveChanges();
+                                status.IsSuccess = true;
+                                status.ErrorCode = "Record update successfully.";
+                            }
+                        }
+                        
                     }
                     else
                     {
