@@ -37,13 +37,7 @@ namespace SATNET.WebApp.Controllers
             var invoiceStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.InvoiceStatus) });
 
             ViewBag.InvoiceStatusSelectList = new SelectList(invoiceStatuses, "Id", "Name");
-
-            List<SOInvoiceViewModel> model = new List<SOInvoiceViewModel>();
-            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = 71 });//71:Due
-            if (serviceResult.Any())
-            {
-                model = SOInvoiceMapping.GetListViewModel(serviceResult);
-            }
+            var model = await GetInvoiceList(71);
 
             return View(model);
         }
@@ -107,5 +101,21 @@ namespace SATNET.WebApp.Controllers
             return Utilities.TryInt32Parse(user.CustomerId);
         }
 
+        public async Task<IActionResult> FilterInvoiceList(int statusId)
+        {
+            var model = await GetInvoiceList(statusId);
+            return PartialView("_List", model);
+        }
+
+        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int statusId) 
+        {
+            List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
+            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = statusId });
+            if (serviceResult.Any())
+            {
+                objList = SOInvoiceMapping.GetListViewModel(serviceResult);
+            }
+            return objList;
+        }
     }
 }
