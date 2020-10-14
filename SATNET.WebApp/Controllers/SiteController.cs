@@ -19,16 +19,15 @@ using SATNET.WebApp.Models.Lookup;
 namespace SATNET.WebApp.Controllers
 {
     [Authorize(Policy = "ReadOnlySitePolicy")]
-    public class SiteController : BaseController
+    public class SiteController : Base2Controller
     {
         private readonly IService<Site> _siteService;
         private readonly IService<Lookup> _lookUpService;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        public SiteController(IService<Site> siteService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Lookup> lookUpService)
+        public SiteController(IService<Site> siteService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Lookup> lookUpService
+            , IService<Customer> customerService) : base(customerService, userManager)
         {
             _siteService = siteService;
-            _userManager = userManager;
             _mapper = mapper;
             _lookUpService = lookUpService;
         }
@@ -141,8 +140,7 @@ namespace SATNET.WebApp.Controllers
             //PackageModelList packageList = new PackageModelList();
             //packageList.MenuModel = SetLayoutContent(heading: "Site",subHeading: "Listing");
 
-            var user = await _userManager.GetUserAsync(User);
-            int customerId = Utilities.TryInt32Parse(user.CustomerId);
+            int customerId = await GetCustomerId();
 
             var retList = new List<SiteModel>();
             var serviceResult = await _siteService.List(new Site() { CustomerId = customerId});

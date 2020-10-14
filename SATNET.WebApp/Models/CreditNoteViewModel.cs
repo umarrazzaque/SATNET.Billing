@@ -26,6 +26,6 @@ namespace SATNET.WebApp.Models
         public string SiteArea { get; set; }
         public DateTime CreditNoteDate { get; set; }
         public DateTime InvoiceDate { get; set; }
-
+        public SelectList CustomerSelectList { get; set; }
     }
 }
