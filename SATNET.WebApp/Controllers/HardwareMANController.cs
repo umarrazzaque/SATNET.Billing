@@ -19,13 +19,13 @@ namespace SATNET.WebApp.Controllers
     {
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
-        private readonly HardwareAttributes activeHardwareAttribute;
+        private readonly HardwareType activeHardwareAttribute;
         private readonly string _responseUrl;
         public HardwareMANController(IMapper mapper, IService<Lookup> lookUpService)
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareAttributes.MACAirNo;
+            activeHardwareAttribute = HardwareType.MACAirNo;
             _responseUrl = "/HardwareMAN/Index";
         }
         public async Task<IActionResult> Index()

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SATNET.Domain.Enums
 {
-    public enum HardwareAttributes
+    public enum HardwareType
     {
         ModemModel = 1010,
         ModemSrNo = 1011,
@@ -12,6 +12,14 @@ namespace SATNET.Domain.Enums
         AntennaSize = 1013,
         TransceiverWATT = 1014,
         TransceiverSrNo = 1015,
-        HardwareCondition=1018
+        HardwareCondition=1018,
+
+
+        #region Hardware Types
+        Modem = 79,
+        AntennaMeter = 81,
+        Kit = 80,
+        Spare = 83
+        #endregion
     }
 }

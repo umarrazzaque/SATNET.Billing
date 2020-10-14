@@ -66,6 +66,10 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@LookupTypeId", obj.LookupTypeId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
             var result = await dbCon.QueryAsync<Lookup>("LookupList", queryParameters, commandType: CommandType.StoredProcedure, transaction: UnitOfWork.Transaction);
             lookups = result.ToList();
             return lookups;

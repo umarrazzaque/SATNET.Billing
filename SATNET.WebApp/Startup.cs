@@ -126,11 +126,15 @@ namespace SATNET.WebApp
             services.AddScoped<IService<Promotion>, PromotionService>();
             services.AddScoped<IService<IP>, IPService>();
             services.AddScoped<IService<City>, CityService>();
+            services.AddScoped<IService<HardwareComponent>, HardwareComponentService>();
+            services.AddScoped<IService<HardwareKit>, HardwareKitService>();
             services.AddScoped<IService<SOInvoice>, SOInvoiceService>();
             services.AddScoped<IService<IP>, IPService>();
             services.AddScoped<IService<IPPrice>, IPPriceService>();
             services.AddScoped<IService<TokenPrice>, TokenPriceService>();
             services.AddScoped<IService<CreditNote>, CreditNoteService>();
+            services.AddScoped<IService<HardwareComponentPrice>, HardwareComponentPriceService>();
+            services.AddScoped<IService<HardwareComponentRegistration>, HardwareComponentRegistrationService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
@@ -144,11 +148,17 @@ namespace SATNET.WebApp
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Lookup>, LookupRepository>();
             services.AddScoped<IRepository<City>, CityRepository>();
+            services.AddScoped<IRepository<HardwareComponent>, HardwareComponentRepository>();
+            services.AddScoped<IRepository<HardwareKit>, HardwareKitRepository>();
+
+
             services.AddScoped<IRepository<SOInvoice>, SOInvoiceRepository>();
             services.AddScoped<IRepository<IP>, IPRepository>();
             services.AddScoped<IRepository<IPPrice>, IPPriceRepository>();
             services.AddScoped<IRepository<TokenPrice>, TokenPriceRepository>();
             services.AddScoped<IRepository<CreditNote>, CreditNoteRepository>();
+            services.AddScoped<IRepository<HardwareComponentPrice>, HardwareComponentPriceRepository>();
+            services.AddScoped<IRepository<HardwareComponentRegistration>, HardwareComponentRegistrationRepository>();
             //-------------Misc-----------
             //services.AddScoped<IRepository<Customer>, ResellerRepository>();
             //services.AddScoped<IService<Customer>, ResellerService>();

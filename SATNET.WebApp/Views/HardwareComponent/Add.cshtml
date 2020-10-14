@@ -1,0 +1,79 @@
+﻿@model SATNET.WebApp.Models.CreateHardwareComponentModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+<form method="post" data-ajax="true" asp-controller="HardwareComponent" asp-action="Add" data-ajax-method="post"
+      enctype="multipart/form-data" id="formAdd" autocomplete="off">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    Add Hardware Component
+                    <div class="page-title-subheading">
+                        Please fillout following form
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="@String.Format("/{0}", "HardwareComponent/Index")" class=" btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-default">Save Hardware Component</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="col-lg-5">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentModel.HardwareTypeId, new { })
+                @Html.DropDownListFor(model => model.HardwareComponentModel.HardwareTypeId, new SelectList(Model.HardwareTypes as System.Collections.IEnumerable, "Id", "Name"), "--Select Hardware Type", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-5 spare-type">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentModel.HCSpareTypeId, new { })
+                @Html.DropDownListFor(model => model.HardwareComponentModel.HCSpareTypeId, new SelectList(Model.SpareTypes as System.Collections.IEnumerable, "Id", "Name"), "--Select Spare Type", new { @class = "form-control select2 text-input" })
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentModel.HCValue, new { })
+                @Html.EditorFor(model => model.HardwareComponentModel.HCValue, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Component Value", @type = "text" } })
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- /.Main content -->
+
+<script language="javascript" type="text/javascript">
+    //$.validator.unobtrusive.parse('#formAdd');
+    $(document).ready(function () {
+        if ($('#HardwareComponentModel_HardwareTypeId').val() === HARD_TYPE.get('Spare')) {
+            $('.spare-type').show();
+        }
+        else {
+            $('.spare-type').hide();
+        }
+    });
+    $('#HardwareComponentModel_HardwareTypeId').change(function () {
+        console.log($('#HardwareComponentModel_HardwareTypeId').val() + ':' + HARD_TYPE.get('Spare'));
+        if ($('#HardwareComponentModel_HardwareTypeId').val() === HARD_TYPE.get('Spare')) {
+            $('.spare-type').show();
+        }
+        else {
+            $('.spare-type').hide();
+        }
+        $('#HardwareComponentModel_HCSpareTypeId').val('');
+    });
+    
+</script>
