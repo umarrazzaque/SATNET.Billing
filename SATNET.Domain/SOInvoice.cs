@@ -34,5 +34,9 @@ namespace SATNET.Domain
         public string IP { get; set; }
         public string Token { get; set; }
         public decimal TokenPrice { get; set; }
+        public DateTime? PlannedInstallationDate { get; set; }
+        public int? Validity { get; set; }
+        public decimal ServicePlanTotal { get; set; }
+        public decimal PromotionRebate { get; set; }
     }
 }
