@@ -18,16 +18,16 @@ namespace SATNET.Service.Implementation
         {
             _exceptionService = new ExceptionService();
         }
-        public Task<StatusModel> Add(Customer obj)
+        public async Task<StatusModel> Add(Customer obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            int retId = -1;
+            var uow = new UnitOfWorkFactory().Create();
             try
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
+
                     uow.BeginTransaction();
-                    retId = uow.Customers.Add(obj).Result;
+                    retId = await uow.Customers.Add(obj);
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -39,7 +39,7 @@ namespace SATNET.Service.Implementation
                         status.IsSuccess = false;
                         status.ErrorCode = "Error in inserting the record.";
                     }
-                }
+
             }
             catch (Exception e)
             {
@@ -47,19 +47,24 @@ namespace SATNET.Service.Implementation
                 status.ErrorCode = _exceptionService.HandleException(e).ErrorCode;
                 status.ErrorDescription = e.Message;
             }
-            return Task.FromResult(status);
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            int dRow = -1;
+            var uow = new UnitOfWorkFactory().Create();
             try
             {
-                int dRow = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
+
+
                     uow.BeginTransaction();
-                    dRow = uow.Customers.Delete(recId, deletedBy).Result;
+                    dRow = await uow.Customers.Delete(recId, deletedBy);
                     if (dRow > 0)
                     {
                         uow.SaveChanges();
@@ -70,29 +75,34 @@ namespace SATNET.Service.Implementation
                     {
                         status.ErrorCode = "An error occured while processing request.";
                     }
-                }
+
             }
             catch (Exception e)
             {
                 status.ErrorCode = "Cannot delete record due to referential records.";
             }
-            return Task.FromResult(status);
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return status;
         }
 
-        public Task<Customer> Get(int id)
+        public async Task<Customer> Get(int id)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
             var retModel = new Customer();
+            var uow = new UnitOfWorkFactory().Create();
             try
             {
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
-                    retModel = uow.Customers.Get(id).Result;
+                
+                
+                    retModel = await uow.Customers.Get(id);
                     if (retModel.Id != 0)
                     {
 
                     }
-                }
+                
             }
             catch (Exception e)
             {
@@ -100,38 +110,44 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-
+                uow.Connection.Close();
             }
-            return Task.FromResult(retModel);
+            return retModel;
         }
 
 
-        public Task<List<Customer>> List(Customer obj)
+        public async Task<List<Customer>> List(Customer obj)
         {
             List<Customer> retList = new List<Customer>();
+            var uow = new UnitOfWorkFactory().Create();
             try
             {
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
-                    retList = uow.Customers.List(obj).Result;
-                }
+               
+             
+                    retList = await uow.Customers.List(obj);
+             
             }
             catch (Exception e)
             {
 
             }
-            return Task.FromResult(retList);
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return retList;
         }
-        public Task<StatusModel> Update(Customer obj)
+        public async Task<StatusModel> Update(Customer obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Customer/Index" };
+            int retId = -1;
+            var uow = new UnitOfWorkFactory().Create();
             try
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
+
+               
                     uow.BeginTransaction();
-                    retId = uow.Customers.Update(obj).Result;
+                    retId = await uow.Customers.Update(obj);
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -143,7 +159,7 @@ namespace SATNET.Service.Implementation
                         status.IsSuccess = false;
                         status.ErrorCode = "Error in updating the record.";
                     }
-                }
+                
             }
             catch (Exception e)
             {
@@ -153,9 +169,9 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-
+                uow.Connection.Close();
             }
-            return Task.FromResult(status);
+            return status;
         }
     }
 }

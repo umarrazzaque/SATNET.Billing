@@ -32,6 +32,10 @@ namespace SATNET.Repository.Implementation
                 var parms = new DynamicParameters();
                 parms.Add("@Id", id, DbType.Int32, ParameterDirection.Input);
                 invoice = await con.QueryFirstOrDefaultAsync<SOInvoice>("InvoiceSOGet", parms, commandType: CommandType.StoredProcedure);
+                var parms2 = new DynamicParameters();
+                parms2.Add("@InvoiceId", id, DbType.Int32, ParameterDirection.Input);
+                var invoiceItems = await con.QueryAsync<SOInvoiceItem>("InvoiceItemList", parms2, commandType: CommandType.StoredProcedure);
+                invoice.InvoiceItems = invoiceItems.ToList();
             }
             return invoice;
         }

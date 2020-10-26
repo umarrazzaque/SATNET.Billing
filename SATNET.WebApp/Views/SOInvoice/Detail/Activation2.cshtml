@@ -1,17 +1,5 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
 
-@{
-    DateTime plannedDate = Model.ScheduleDate.Value;
-    int plannedDay = plannedDate.Day;
-    int plannedMonth = plannedDate.Month;
-    int plannedYear = plannedDate.Year;
-    int daysInPlannedMonth = DateTime.DaysInMonth(plannedYear, plannedMonth);
-    string month = plannedDate.ToString("MMM");
-    decimal ipRate = Model.IPPrice / daysInPlannedMonth;
-    decimal servicePlanRate = Model.ServicePlanPrice / daysInPlannedMonth;
-    ipRate = Decimal.Round(ipRate, 1, MidpointRounding.ToPositiveInfinity);
-    servicePlanRate = Decimal.Round(servicePlanRate, 1, MidpointRounding.ToPositiveInfinity);
-}
 
 <div id="MainContents">
     @await Html.PartialAsync("Detail/_Common")
@@ -33,29 +21,24 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var item in Model.InvoiceItems)
+                                {
                                 <tr>
                                     <td class="text-left">
-                                        <span>@Model.ServicePlan @Model.ServicePlanUnit Prorata</span>
+                                        <span>@item.Item</span>
                                     </td>
-                                    <td class="text-left">Subscription from @plannedDay - @daysInPlannedMonth @month</td>
-                                    <td class="unit">@servicePlanRate</td>
-                                    <td class="unit">@Model.ServicePlanPrice</td>
-                                    <td class="total">@Model.ProRataPrice</td>
+                                    <td class="text-left">@item.Description</td>
+                                    <td class="unit">@item.Unit</td>
+                                    <td class="unit">@item.Rate</td>
+                                    @if (item.ItemTypeId == 88)
+                                    {
+                                        <td class="total">- @item.Amount</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="total">@item.Amount</td>
+                                    }
                                 </tr>
-                                @if (Model.IPProRataPrice > 0)
-                                {
-                                    <tr>
-                                        <td class="text-left">
-                                            @Model.IP Prorata
-                                        </td>
-                                        <td class="text-left">
-                                            Subscription from @plannedDay - @daysInPlannedMonth @month
-                                        </td>
-                                        <td class="unit">@ipRate</td>
-                                        <td class="unit">@Model.IPPrice</td>
-                                        <td class="total">@Model.IPProRataPrice</td>
-                                    </tr>
-
                                 }
                             </tbody>
                             <tfoot>

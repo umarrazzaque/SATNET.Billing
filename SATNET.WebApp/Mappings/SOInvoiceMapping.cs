@@ -42,7 +42,8 @@ namespace SATNET.WebApp.Mappings
                 PlannedInstallationDate = obj.PlannedInstallationDate,
                 Validity = obj.Validity,
                 ServicePlanTotal=obj.ServicePlanTotal,
-                PromotionRebate = obj.PromotionRebate
+                PromotionRebate = obj.PromotionRebate,
+                ScheduleDate=obj.ScheduleDate
             };
             return model;
         }
