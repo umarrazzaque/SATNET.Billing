@@ -3,6 +3,134 @@ var unitMb;
 var _customerId;
 
 $(function () {
+    var mySelect = $('#CustomerId').selectpicker({
+
+        // text for no selection
+        noneSelectedText: 'Nothing selected',
+
+        // text for no result
+        noneResultsText: 'No results matched {0}',
+
+        // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
+        // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+        // The function must return a string.
+        countSelectedText: function (numSelected, numTotal) {
+            return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+        },
+
+        // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
+        // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+        // If a string is used, the same text is used for both the element and the optgroup.
+        maxOptionsText: function (numAll, numGroup) {
+            return [
+                (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
+                (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
+            ];
+        },
+
+        // Text for Select All button
+        selectAllText: 'Select All',
+
+        // Text for Deselect All button
+        deselectAllText: 'Deselect All',
+
+        // Shows done button
+        doneButton: false,
+
+        // Text for done button
+        doneButtonText: 'Close',
+
+        // custom separator
+        multipleSeparator: ', ',
+
+        // button styles
+        styleBase: 'btn',
+        style: 'btn-default',
+
+        // dropdown size
+        size: 'auto',
+
+        // dropdown title
+        title: null,
+
+        // 'values' | 'static' | 'count' | 'count > x'
+        selectedTextFormat: 'values',
+
+        // dropdown width
+        width: false,
+
+        // e.g., container: 'body' | '.main-body'
+        container: false,
+
+        // hide disabled options
+        hideDisabled: false,
+
+        // shows sub text
+        showSubtext: false,
+
+        // shows icon
+        showIcon: true,
+
+        // shows content
+        showContent: true,
+
+        // auto dropup
+        dropupAuto: true,
+
+        // shows dropdown header
+        header: false,
+
+        // live search options
+        liveSearch: true,
+        liveSearchPlaceholder: null,
+        liveSearchNormalize: false,
+        liveSearchStyle: 'contains',
+
+        // enables Select All / Deselect All box
+        actionsBox: false,
+
+        // icons
+        iconBase: 'glyphicon',
+        tickIcon: 'glyphicon-ok',
+
+        // shows checkmark on selected option
+        showTick: false,
+
+        // custom template
+        template: {
+            caret: '<span class="caret"></span>'
+        },
+
+        // string | array | function
+        maxOptions: false,
+
+        // enables the device's native menu for select menus
+        mobile: false,
+
+        // treats the tab character like the enter or space characters within the selectpicker dropdown.
+        selectOnTab: false,
+
+        // Align the menu to the right instead of the left.
+        dropdownAlignRight: false,
+
+        // e.g. [top, right, bottom, left]
+        windowPadding: 0
+
+    });
+
+    // Sets the selected value
+    mySelect.selectpicker('val', 'JQuery');
+    mySelect.selectpicker('val', ['jQuery', 'Script']);
+
+    // Selects all items
+    mySelect.selectpicker('selectAll');
+
+    // Clears all
+    mySelect.selectpicker('deselectAll');
+
+    // Re-render
+    mySelect.selectpicker('render');
+
 
     unitGb = $("#hdnUnitGb").val();
     unitMb = $("#hdnUnitMb").val();
@@ -293,6 +421,7 @@ $(function () {
             showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
         }
     });
+
 });
 
 getDateToday = function(){

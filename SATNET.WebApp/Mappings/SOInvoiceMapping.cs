@@ -38,7 +38,12 @@ namespace SATNET.WebApp.Mappings
                 ServicePlanType = obj.ServicePlanType,
                 CreatedOn = obj.CreatedOn,
                 Token = obj.Token,
-                TokenPrice = obj.TokenPrice
+                TokenPrice = obj.TokenPrice,
+                PlannedInstallationDate = obj.PlannedInstallationDate,
+                Validity = obj.Validity,
+                ServicePlanTotal=obj.ServicePlanTotal,
+                PromotionRebate = obj.PromotionRebate,
+                ScheduleDate=obj.ScheduleDate
             };
             return model;
         }

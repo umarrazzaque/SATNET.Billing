@@ -21,23 +21,21 @@ using SATNET.WebApp.Models.User;
 namespace SATNET.WebApp.Controllers
 {
     [Authorize(Policy = "AdminPolicy")]
-    public class UserController : BaseController
+    public class UserController : Base2Controller
     {
         private readonly IService<User> _userService;
         private readonly IService<Lookup> _lookupService;
-        private readonly IService<Customer> _customerService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         public UserController(IService<User> userService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager, IService<Lookup> lookupService, IService<Customer> customerService)
+            RoleManager<ApplicationRole> roleManager, IService<Lookup> lookupService, IService<Customer> customerService):base(customerService,userManager)
         {
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _lookupService = lookupService;
-            _customerService = customerService;
         }
         public async Task<IActionResult> Index()
         {
@@ -131,7 +129,7 @@ namespace SATNET.WebApp.Controllers
                 UserTypeId = user.UserTypeId,
                 RoleName = roleResult.Result.FirstOrDefault()
             };
-            var customersList = await _customerService.List(new Customer());
+            var customersList = await GetCustomerList(new Customer());
             var userTypes = GetCustomerTypes();
             
             int roleTypeId = model.UserTypeId == Convert.ToInt32(UserType.Satnet) ? 
@@ -241,7 +239,7 @@ namespace SATNET.WebApp.Controllers
             Customer obj = new Customer();
             obj.TypeId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(customerTypeId);
             obj.PriceTierId = string.IsNullOrEmpty(customerTypeId) ? 0 : Convert.ToInt32(priceTierId);
-            var svcResult = await _customerService.List(obj);
+            var svcResult = await GetCustomerList(obj);
             return Json(new SelectList(svcResult, "Id", "Name"));
         }
 

@@ -33,8 +33,8 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="position-relative form-group">
-                    <select id="ddlOrderStatus" type="select" class="form-control" asp-items="ViewBag.InvoiceStatusSelectList">
-                        <option value="" selected>All</option>
+                    <select id="ddlInvoiceStatus" type="select" class="form-control" asp-items="ViewBag.InvoiceStatusSelectList">
+                        <option value="0" selected>All</option>
                     </select>
                 </div>
             </div>
@@ -52,5 +52,35 @@
 
 
 @section scripts{
-    @*<script src="~/js/order/order-list.js?2.0"></script>*@
+    <script type="text/javascript">
+        $(function () {
+            $('#ddlInvoiceStatus').val(71);
+            $(".filters select").change(function () {
+                var statusId = $(this).val();
+                GetInvoiceList(statusId);
+
+            });
+
+        });
+
+GetInvoiceList = function (statusId) {
+                $.ajax(
+                    {
+                        url: '/SOInvoice/FilterInvoiceList',
+                        data: { statusId: statusId },
+                        type: 'get',
+                        dataType: "html",
+                        success: function (html) {
+                            if (html !== null) {
+                                $("#BodyContent").html(html);
+                            }
+                        },
+                        error: function () {
+                            alert('Error occurred while processing the request.');
+                        }
+                    });
+            }
+
+
+    </script>
 }

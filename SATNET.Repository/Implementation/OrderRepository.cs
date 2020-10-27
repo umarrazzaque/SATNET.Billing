@@ -125,7 +125,7 @@ namespace SATNET.Repository.Implementation
                 if (con.State == ConnectionState.Closed)
                     con.Open();
 
-                var updateTransaction = con.BeginTransaction();
+                //var updateTransaction = con.BeginTransaction();
 
                 try
                 {
@@ -135,12 +135,10 @@ namespace SATNET.Repository.Implementation
                     queryParameters.Add("@RejectReason", obj.RejectReason, DbType.String, ParameterDirection.Input);
                     queryParameters.Add("@SiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
                     queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-                    result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, updateTransaction, commandType: CommandType.StoredProcedure);
-                    updateTransaction.Commit();
+                    result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, commandType: CommandType.StoredProcedure);
                 }
                 catch (Exception e)
                 {
-                    updateTransaction.Rollback();
                 }
             }
             return result;

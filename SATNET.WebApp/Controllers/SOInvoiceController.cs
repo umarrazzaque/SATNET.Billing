@@ -18,16 +18,16 @@ using SATNET.WebApp.Models.Invoice;
 namespace SATNET.WebApp.Controllers
 {
     [Authorize]
-    public class SOInvoiceController : BaseController
+    public class SOInvoiceController : Base2Controller
     {
         private readonly IService<SOInvoice> _invoiceService;
+        private readonly IService<Site> _siteService;
         private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public SOInvoiceController(IService<SOInvoice> invoiceService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public SOInvoiceController(IService<SOInvoice> invoiceService, IService<Site> siteService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Customer> customerService) : base(customerService,userManager)
         {
+            _siteService = siteService;
             _invoiceService = invoiceService;
-            _userManager = userManager;
             _mapper = mapper;
             _lookupService = lookupService;
         }
@@ -37,13 +37,7 @@ namespace SATNET.WebApp.Controllers
             var invoiceStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.InvoiceStatus) });
 
             ViewBag.InvoiceStatusSelectList = new SelectList(invoiceStatuses, "Id", "Name");
-
-            List<SOInvoiceViewModel> model = new List<SOInvoiceViewModel>();
-            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = 71 });//71:Due
-            if (serviceResult.Any())
-            {
-                model = SOInvoiceMapping.GetListViewModel(serviceResult);
-            }
+            var model = await GetInvoiceList(71);
 
             return View(model);
         }
@@ -57,20 +51,20 @@ namespace SATNET.WebApp.Controllers
             var serviceResult = await _invoiceService.Get(id);
             if (serviceResult != null)
             {
-                model = SOInvoiceMapping.GetViewModel(serviceResult);
+                model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
             }
             switch (serviceResult.RequestTypeId)
             {
                 case 1: //Activation
                 case 32://Re-Activation
-                    viewName = "Detail/Activation";
+                    viewName = "Detail/Activation2";
                     break;
 
                 case 2://Termination
                     viewName = "Detail/Termination";
                     break;
                 case 3://Upgrade
-                    viewName = "Detail/Upgrade";
+                    viewName = "Detail/Upgrade2";
                     break;
                 case 4://Downgrade
                     viewName = "Detail/Downgrade";
@@ -100,12 +94,42 @@ namespace SATNET.WebApp.Controllers
             return View(viewName, model);
         }
 
-
-        private async Task<int> GetCustomerId()
+        public async Task<IActionResult> FilterInvoiceList(int statusId)
         {
-            var user = await _userManager.GetUserAsync(User);
-            return Utilities.TryInt32Parse(user.CustomerId);
+            var model = await GetInvoiceList(statusId);
+            return PartialView("_List", model);
         }
+
+        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int statusId) 
+        {
+            List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
+            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = statusId });
+            if (serviceResult.Any())
+            {
+                objList = SOInvoiceMapping.GetListViewModel(serviceResult);
+            }
+            return objList;
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
+        public async Task<IActionResult> Report()
+        {
+            var customerList = await GetCustomerList(new Customer());
+            ViewBag.CustomerList = new SelectList(customerList, "Id", "Name");
+            return View("Report/Index");
+        }
+
+        //public async Task<IActionResult> GetSiteLedger(int customerId)
+        //{
+        //    var sites = await _siteService.List(new Site() { CustomerId = customerId });
+        //    foreach (var s in sites)
+        //    {
+        //        var siteLedger = 
+        //    }
+            
+        //    return PartialView("_List", model);
+        //}
 
     }
 }

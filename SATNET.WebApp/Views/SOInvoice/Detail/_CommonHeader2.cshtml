@@ -9,7 +9,7 @@
     <div class="col invoice-details">
         <h3 class="invoice-id">@Model.InvoiceNumber</h3>
         <div class="address">Order Number: @Model.OrderNumber</div>
-        <div class="date">Date of Invoice: @Model.CreatedOn.Value.ToShortDateString()</div>
+        <div class="date">Invoice Date: @Model.CreatedOn.Value.ToShortDateString()</div>
         <div class="date">Due Date: @Model.DueDate.ToShortDateString()</div>
     </div>
 </div>

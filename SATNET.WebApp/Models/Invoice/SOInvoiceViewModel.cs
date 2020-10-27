@@ -35,6 +35,22 @@ namespace SATNET.WebApp.Models.Invoice
         public SelectList InvoiceStatusSelectList { get; set; }
         public string Token { get; set; }
         public decimal TokenPrice { get; set; }
+        public DateTime? PlannedInstallationDate { get; set; }
+        public int? Validity { get; set; }
+        public decimal ServicePlanTotal { get; set; }
+        public decimal PromotionRebate { get; set; }
+        public DateTime? ScheduleDate { get; set; }
+        public List<SOInvoiceItemViewModel> InvoiceItems { get; set; }
+    }
+    public class SOInvoiceItemViewModel :BaseModel
+    {
 
+        public int InvoiceId { get; set; }
+        public int ItemTypeId { get; set; }
+        public string Item { get; set; }
+        public string Description { get; set; }
+        public decimal Unit { get; set; }
+        public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
     }
 }

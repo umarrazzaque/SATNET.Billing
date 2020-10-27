@@ -8,9 +8,7 @@
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
-                <th class="text-center" width="30">
-                    <!-- <input type="checkbox"> -->
-                </th>
+                @*<th class="text-center" width="30"></th>*@
                 <th class="text-center">#</th>
                 <th> @Html.DisplayNameFor(model => model.CustomerId) </th>
                 <th> @Html.DisplayNameFor(model => model.SubscriberId) </th>
@@ -30,7 +28,7 @@
             @foreach (var item in Model)
             {
             <tr>
-                <td class="text-center"> <input type="checkbox"></td>
+                @*<td class="text-center"> <input type="checkbox"></td>*@
                 <td class="text-center text-muted">
                     @{
                         counter++;

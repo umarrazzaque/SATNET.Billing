@@ -16,17 +16,16 @@ using System.Threading.Tasks;
 
 namespace SATNET.WebApp.Controllers
 {
-    public class CreditNoteController : BaseController
+    public class CreditNoteController : Base2Controller
     {
         private readonly IService<CreditNote> _creditnoteService;
         private readonly IService<SOInvoice> _invoiceService;
         private readonly string _responseUrl;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public CreditNoteController(IService<CreditNote> creditnoteService, UserManager<ApplicationUser> userManager, IService<SOInvoice> invoiceService)
+        public CreditNoteController(IService<CreditNote> creditnoteService, UserManager<ApplicationUser> userManager, IService<SOInvoice> invoiceService
+            ,IService<Customer> customerService) : base(customerService, userManager)  
         {
             _creditnoteService = creditnoteService;
             _invoiceService = invoiceService;
-            _userManager = userManager;
             _responseUrl = "/CreditNote/Index";
         }
         public async Task<IActionResult> Index()
@@ -35,9 +34,21 @@ namespace SATNET.WebApp.Controllers
         }
         public async Task<IActionResult> Add()
         {
+            var customerId = await GetCustomerId();
             var model = new CreditNoteViewModel();
-            var invoices = await _invoiceService.List(new SOInvoice() { CustomerId=await GetCustomerId()});
-            model.InvoiceSelectList = new SelectList(invoices, "Id", "InvoiceNumber");
+            model.CustomerId = customerId;
+            if (customerId == 0)
+            {
+                var objList = await GetCustomerList(new Customer());
+                ViewBag.CustomerList = objList;
+                model.CustomerSelectList = new SelectList(objList, "Id", "Name");
+            }
+            else
+            {
+                var invoices = await _invoiceService.List(new SOInvoice() { CustomerId = customerId });
+                model.InvoiceSelectList = new SelectList(invoices, "Id", "InvoiceNumber");
+            }
+
             return View(model);
         }
         [HttpPost]
@@ -101,11 +112,10 @@ namespace SATNET.WebApp.Controllers
             }
             return retList;
         }
-        private async Task<int> GetCustomerId()
+        public async Task<IActionResult> GetInvoiceList(int customerId)
         {
-            var user = await _userManager.GetUserAsync(User);
-            return Utilities.TryInt32Parse(user.CustomerId);
+            var invoices = await _invoiceService.List(new SOInvoice() { CustomerId = customerId });
+            return Json(new SelectList(invoices, "Id", "InvoiceNumber"));
         }
-
     }
 }

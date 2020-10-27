@@ -23,9 +23,8 @@ using SATNET.WebApp.Models.Order;
 namespace SATNET.WebApp.Controllers
 {
     [Authorize]
-    public class OrderController : BaseController
+    public class OrderController : Base2Controller
     {
-        private readonly IService<Customer> _customerService;
         private readonly IService<Order> _orderService;
         private readonly IService<Lookup> _lookupService;
         private readonly IService<Hardware> _hardwareService;
@@ -36,13 +35,11 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<IP> _ipService;
         private readonly IService<City> _cityService;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
 
         public OrderController(IService<Customer> customerService, IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
             , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper
-            , UserManager<ApplicationUser> userManager, IService<City> cityService)
+            , UserManager<ApplicationUser> userManager, IService<City> cityService):base(customerService, userManager)
         {
-            _customerService = customerService;
             _orderService = orderService;
             _hardwareService = hardwareService;
             _servicePlanService = servicePlanService;
@@ -52,7 +49,6 @@ namespace SATNET.WebApp.Controllers
             _promotionService = promotionService;
             _ipService = ipService;
             _mapper = mapper;
-            _userManager = userManager;
             _cityService = cityService;
         }
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
@@ -82,7 +78,7 @@ namespace SATNET.WebApp.Controllers
             var customerId = await GetCustomerId();//Loggedin user customer Id
             if (customerId == 0)//true, satnet user
             {
-                customers = await _customerService.List(new Customer());
+                customers = await GetCustomerList(new Customer());
             }
             ViewBag.CustomerId = customerId;
             OrderViewModel model = new OrderViewModel();
@@ -109,7 +105,7 @@ namespace SATNET.WebApp.Controllers
             model.MacAirNoSelectList= new SelectList(macAirNos, "Id", "Name");
             if (customerId > 0)//true, customer
             {
-                customer = await _customerService.Get(customerId);
+                customer = await GetCustomer(customerId);
                 model.CustomerName = customer.Name;
                 //model.SiteName = GetLoggedInUserCustomerName3(customer.Name).ToUpper() + GetNumber(GetSiteCount() + 1);
             }
@@ -207,7 +203,7 @@ namespace SATNET.WebApp.Controllers
             string siteName = "";
             if (customerId > 0)
             {
-                var customer = await _customerService.Get(customerId);
+                var customer = await GetCustomer(customerId);
                 siteName = GetProposedSiteNameImp(customerId, customer.Code);
             }
             return Json(new { siteName });
@@ -252,11 +248,6 @@ namespace SATNET.WebApp.Controllers
                 totalCount = serviceResult.FirstOrDefault().RecordsCount;
             }
             return totalCount;
-        }
-        private async Task<int> GetCustomerId()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            return Utilities.TryInt32Parse(user.CustomerId);
         }
         public async Task<IActionResult> GetSites(int customerId, List<int> statusIds)
         {
