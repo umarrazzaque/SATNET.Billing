@@ -27,6 +27,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_HCRegistrationNumber", obj.HCRegistrationNumber, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SerialNumber", obj.SerialNumber, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_UNIQUE_IDENTIFIER", obj.UniqueIdentifier, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_HardwareComponentId", obj.HardwareComponentId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_IsRegistered", obj.IsRegistered, DbType.Boolean, ParameterDirection.Input);
@@ -80,6 +81,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_HCRegistrationNumber", obj.HCRegistrationNumber, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SerialNumber", obj.SerialNumber, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_UNIQUE_IDENTIFIER", obj.UniqueIdentifier, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_HardwareComponentId", obj.HardwareComponentId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_IsRegistered", obj.IsRegistered, DbType.Int16, ParameterDirection.Input);

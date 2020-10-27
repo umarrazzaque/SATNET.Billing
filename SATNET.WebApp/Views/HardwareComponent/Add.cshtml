@@ -34,7 +34,7 @@
         <div class="col-lg-5">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentModel.HardwareTypeId, new { })
-                @Html.DropDownListFor(model => model.HardwareComponentModel.HardwareTypeId, new SelectList(Model.HardwareTypes as System.Collections.IEnumerable, "Id", "Name"), "--Select Hardware Type", new { @class = "form-control select2 text-input" })
+                @Html.DropDownListFor(model => model.HardwareComponentModel.HardwareTypeId, new SelectList(Model.HardwareTypes as System.Collections.IEnumerable, "Id", "Name"), "--Select Hardware Type", new { @class = "form-control text-input" })
             </div>
         </div>
         <div class="col-lg-5 spare-type">

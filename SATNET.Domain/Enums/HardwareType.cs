@@ -19,7 +19,8 @@ namespace SATNET.Domain.Enums
         Modem = 79,
         AntennaMeter = 81,
         Kit = 80,
-        Spare = 83
+        Spare = 83,
+        Transceiver = 82
         #endregion
     }
 }

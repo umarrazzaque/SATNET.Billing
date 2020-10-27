@@ -11,7 +11,7 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div>
-                    Add Hardware Component Registration
+                    Add Hardware Model Registration
                     <div class="page-title-subheading">
                         Please fillout following form
                     </div>
@@ -22,7 +22,7 @@
                     <a href="@String.Format("/{0}", "HardwareComponentRegistration/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save Hardware Component Registration</button>
+                    <button type="submit" class="btn btn-default">Save Hardware Model Registration</button>
                 </div>
             </div>
         </div>
@@ -49,22 +49,36 @@
                 @Html.EditorFor(model => model.HardwareComponentRegistrationModel.HCRegistrationNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Registration Number", @type = "text" } })
             </div>
         </div>
-        <div class="col-lg-6">
+    </div>
+    <div class="row">
+        <h5 class="title">Add Hardware Model Item</h5>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
+                @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
+                <span class="help-block text-danger" id="label_error">ds</span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="position-relative form-group">
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.UniqueIdentifier, new { id = "label_item" })
                 <div class="input-group mb-3">
-                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "M.A.C Address", @type = "text" } })
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.UniqueIdentifier, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Unique Identifier", @type = "text" } })
+
                     <div class="input-group-append">
-                        <button class="btn-info add_mac_address" type="button">Save</button>
+                        <button class="btn-info add_hm_item" type="button">Save</button>
                     </div>
+                    
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <h5 class="title">Hardware Registration MAC Addresses List</h5>
+            <h5 class="title">Hardware Model List</h5>
         </div>
         <div class="col-lg-12">
             <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
@@ -72,7 +86,8 @@
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th> @Html.DisplayName("MAC Address") </th>
+                            <th> @Html.DisplayName("Serial Number") </th>
+                            <th id="table_header_section_type"> Unique Identifier </th>
                             <th class="text-center"> Actions </th>
                         </tr>
                     </thead>
@@ -91,9 +106,12 @@
 
 <script language="javascript" type="text/javascript">
     //$.validator.unobtrusive.parse('#formAdd');
-    var mac_address_array = [];
+    var grid_obj_array = [];
     var edit_flag = -1;
     var edit_record_index = -1;
+    var specs_seperator = '---';
+    var node_object_key = 'node_object';
+    var section_type = 'AIR MAC NUMBER';
     $('#HardwareComponentRegistrationModel_HardwareTypeId').change(function () {
         var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId').val();
         $.ajax({
@@ -112,31 +130,91 @@
                     options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
                 });
                 $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
+                $('#HardwareComponentRegistrationModel_UniqueIdentifier').attr('placeholder', section_type);
+                $('#label_item').text(section_type);
             }
         });
+        $('#table_header_section_type').text(section_type);
     });
-    $(document).on('click', '.add_mac_address', function () {
-        var mac_address_item = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
-        console.log(mac_address_item);
-        if (!(mac_address_array.indexOf(mac_address_item) > -1)) {
-            if (edit_flag == 1) {
-                mac_address_array[edit_record_index] = mac_address_item;
+    function record_exist_or_not(grid_array, obj) {
+        var return_val = 0;
+        var returnMessage = '';
+        $.each(grid_array, function (i, item) {
+            if (item.specsOne == obj.specsOne) {
+                return_val = 1;
+                returnMessage = 'Serial Number Already Exist';
+                return;
+            } else if (item.specsTwo == obj.specsTwo) {
+                return_val = 1;
+                returnMessage = section_type + ' Already Exist';
+                return
             }
-            else {
-                mac_address_array.push(mac_address_item);
+        });
+        return [return_val, returnMessage];
+    }
+    function get_record_index(grid_array, obj) {
+        var return_val = -1;
+        $.each(grid_obj_array, function (i, item) {
+            if (item.specsOne == obj.specsOne && item.specsTwo == obj.specsTwo) {
+                return_val = i;
+                return;
             }
-            load_table(mac_address_array);
-            reset_config();
+        });
+        return return_val;
+    }
+    $(document).on('click', '.add_hm_item', function () {
+        var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
+        var specsTwo = $('#HardwareComponentRegistrationModel_UniqueIdentifier').val().toUpperCase();
+        //console.log(serialNo + ':' + uniqueIdentifier);
+        var grid_obj_item = {
+            specsOne: specsOne,
+            specsTwo: specsTwo
+        }
+        if (specsOne == '') {
+            console.log('Specs One');
+            $('#label_error').text('Serial Number should not be empty');
+        } else if (specsTwo == '') {
+            console.log('Specs Two');
+            $('#label_error').text(section_type + ' should not be empty');
         }
         else {
-
+            //---Check Record Exist in Grid
+            var returnVal = record_exist_or_not(grid_obj_array, grid_obj_item);
+            if (returnVal[0] == 0) { // Not Exist
+                if (edit_flag == 1) {
+                    grid_obj_array[edit_record_index] = grid_obj_item;
+                }
+                else {
+                    grid_obj_array.push(grid_obj_item);
+                }
+                console.log(grid_obj_array);
+                load_table(grid_obj_array);
+                reset_config();
+            }
+            else { //Exist
+                $('#label_error').text(returnVal[1]);
+                if (edit_flag == 1) {
+                    grid_obj_array[edit_record_index] = grid_obj_item;
+                    alert('Why there');
+                }
+            }
+            
         }
+        
     });
     $(document).on('click', '.row_edit', function () {
-        var record_value = $(this).attr('data-val');
-        edit_record_index = mac_address_array.indexOf(record_value);
+        var grid_obj = $(this).attr('data-' + node_object_key);
+        grid_obj = JSON.parse(grid_obj);
+        $('#HardwareComponentRegistrationModel_SerialNumber').val(grid_obj.specsOne);
+        $('#HardwareComponentRegistrationModel_UniqueIdentifier').val(grid_obj.specsTwo);
+        edit_record_index = get_record_index(grid_obj_array, grid_obj);
+        console.log('index:' + edit_record_index);
         edit_flag = 1;
-        $('#HardwareComponentRegistrationModel_SerialNumber').val(record_value);
+
+        //var record_value = $(this).attr('data-val');
+        //edit_record_index = mac_address_array.indexOf(record_value);
+        //edit_flag = 1;
+        //$('#HardwareComponentRegistrationModel_SerialNumber').val(record_value);
     });
     $(document).on('click', '.row_delete', function () {
         var record_value = $(this).attr('data-val');
@@ -146,28 +224,31 @@
     });
     function reset_config() {
         $('#HardwareComponentRegistrationModel_SerialNumber').val('');
+        $('#HardwareComponentRegistrationModel_UniqueIdentifier').val('');
+        $('#label_error').text('');
         edit_flag = edit_record_index = -1;
     }
     function load_table(record_array) {
         var rows = '';
         $.each(record_array, function (i, item) {
-            rows += add_row(item, i+1);
+            rows += add_row(item, i + 1);
         });
         $("#reg_table_body > tbody").html("");
         $('#reg_table_body').html(rows);
         $('#HardwareComponentRegistrationModel_SerialNumbers').val('');
         $('#HardwareComponentRegistrationModel_SerialNumbers').val(record_array);
     }
-    function add_row(col_value, record_count) {
-        var row = '<tr id=' + col_value + '>' +
+    function add_row(item, record_count) {
+        var row = '<tr id=row_' + record_count + '>' +
             '<td class="text-center text-muted">' + record_count + '</td>' +
-            '<td> ' + col_value + '</td>' +
+            '<td> ' + item.specsOne + '</td>' +
+            '<td> ' + item.specsTwo + '</td>' +
             '<td class="text-center">' +
             '<div class="buttons">' +
-            '<a href="#" data-val=' + col_value + ' class="pl-1 pr-1 row_edit">' +
+            '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_edit">' +
             '<span class="fa fa-edit" aria-hidden="true"></span>' +
             '</a>' +
-            '<a href="#" data-val=' + col_value + ' class="pl-1 pr-1 row_delete">' +
+            '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_delete">' +
             '<span class="fa fa-trash" aria-hidden="true"></span>' +
             '</a>' +
             '</div>' +
@@ -175,5 +256,5 @@
             '</tr>';
         return row;
     }
-    
+
 </script>

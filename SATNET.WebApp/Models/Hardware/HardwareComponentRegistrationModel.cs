@@ -13,8 +13,10 @@ namespace SATNET.WebApp.Models.Hardware
     {
         [DisplayName("Registration Number")]
         public string HCRegistrationNumber { get; set; }
-        [DisplayName("MAC Address")]
+        [DisplayName("Serial Number")]
         public string SerialNumber { get; set; }
+        [DisplayName("MAC Address")]
+        public string UniqueIdentifier { get; set; }
         [DisplayName("Hardware Type")]
         [Required(ErrorMessage = "Hardware Type field is required!")]
         public int HardwareTypeId { get; set; }

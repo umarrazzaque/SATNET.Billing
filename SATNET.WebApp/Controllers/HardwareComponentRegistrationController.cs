@@ -46,9 +46,21 @@ namespace SATNET.WebApp.Controllers
                     LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType)
                 }))
             };
+            resultModel.HardwareTypes = GetHarwareTypes().Result;
             return View(resultModel);
         }
-
+        private async Task<List<LookUpModel>> GetHarwareTypes()
+        {
+            var retList = new List<LookUpModel>();
+            var resList = await _lookUpService.List(new Lookup()
+            {
+                LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType)
+            });
+            resList = resList.Where(ht => ht.Id == Convert.ToInt32(HardwareType.Modem) || 
+            ht.Id == Convert.ToInt32(HardwareType.Transceiver)).ToList();
+            retList = _mapper.Map<List<LookUpModel>>(resList);
+            return retList;
+        }
         [HttpPost]
         public async Task<IActionResult> Add(CreateHardwareComponentRegistrationModel retModel)
         {

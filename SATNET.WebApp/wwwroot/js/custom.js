@@ -193,6 +193,7 @@ function Layout() {
 
     $(document).on("click", 'a.modal-pan', function (e) {
         e.preventDefault();
+        console.log('Delete Here');
         $("#modal-deleteConfirm").attr("href", $(this).attr("href"));
         return true;
     });
