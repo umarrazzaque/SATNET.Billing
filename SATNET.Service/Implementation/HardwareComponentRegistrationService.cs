@@ -24,11 +24,14 @@ namespace SATNET.Service.Implementation
                         var sList = serials.Split(',');
                         foreach (var item in sList)
                         {
-                            var specs = item.Split("---");
+                            if (item != "") {
+                                var specs = item.Split("---");
 
-                            obj.SerialNumber = specs[0];
-                            obj.UniqueIdentifier = specs[1];
-                            retId = uow.HardwareComponentRegistrations.Add(obj).Result;
+                                obj.SerialNumber = specs[0];
+                                obj.UniqueIdentifier = specs[1];
+                                retId = uow.HardwareComponentRegistrations.Add(obj).Result;
+                            }
+                            
                         }
                     }
                     

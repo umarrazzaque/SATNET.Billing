@@ -236,7 +236,13 @@
         $("#reg_table_body > tbody").html("");
         $('#reg_table_body').html(rows);
         $('#HardwareComponentRegistrationModel_SerialNumbers').val('');
-        $('#HardwareComponentRegistrationModel_SerialNumbers').val(record_array);
+        var specsObj = '';
+        $.each(record_array, function (i, item) {
+             specsObj += item.specsOne + specs_seperator + item.specsTwo + ',';
+        });
+
+        $('#HardwareComponentRegistrationModel_SerialNumbers').val(specsObj);
+        
     }
     function add_row(item, record_count) {
         var row = '<tr id=row_' + record_count + '>' +
