@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Office.Interop.Excel;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
@@ -21,6 +27,7 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
         private readonly string _responseUrl;
+        
         public HardwareComponentRegistrationController(IMapper mapper, IService<Lookup> lookUpService, IService<HardwareComponentRegistration> hardwareComponentRegistrationService,
             IService<HardwareComponent> hardwareComponentService)
         {
@@ -42,7 +49,8 @@ namespace SATNET.WebApp.Controllers
                 //HardwareComponentList = _mapper.Map<List<HardwareComponentModel>>(_hardwareComponentService.List(new HardwareComponent()
                 //{
                 //}).Result),
-                HardwareTypes = _mapper.Map<List<LookUpModel>>( await _lookUpService.List(new Lookup() {
+                HardwareTypes = _mapper.Map<List<LookUpModel>>(await _lookUpService.List(new Lookup()
+                {
                     LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType)
                 }))
             };
@@ -56,7 +64,7 @@ namespace SATNET.WebApp.Controllers
             {
                 LookupTypeId = Convert.ToInt32(LookupTypes.HardwareType)
             });
-            resList = resList.Where(ht => ht.Id == Convert.ToInt32(HardwareType.Modem) || 
+            resList = resList.Where(ht => ht.Id == Convert.ToInt32(HardwareType.Modem) ||
             ht.Id == Convert.ToInt32(HardwareType.Transceiver)).ToList();
             retList = _mapper.Map<List<LookUpModel>>(resList);
             return retList;
@@ -92,7 +100,7 @@ namespace SATNET.WebApp.Controllers
             {
                 objModel.HardwareTypeId = hcm.HardwareTypeId;
             }
-            
+
             var resultModel = new CreateHardwareComponentRegistrationModel()
             {
                 HardwareComponentRegistrationModel = objModel,
@@ -126,7 +134,8 @@ namespace SATNET.WebApp.Controllers
             if (hardware_type_id != null)
             {
                 var retList = new List<HardwareComponentModel>();
-                var resList = _hardwareComponentService.List(new HardwareComponent() { 
+                var resList = _hardwareComponentService.List(new HardwareComponent()
+                {
                     Flag = "GET_BY_HARDWARE_TYPE",
                     Keyword = hardware_type_id
                 }).Result;
@@ -138,5 +147,8 @@ namespace SATNET.WebApp.Controllers
                 return Json("Error in Model Binding");
             }
         }
+        //    CFAApprovalRefNumber = "",
+        //    MajorEquipGroup = row2[3].ToString(),
+        //    Amount_in_Mil = row2[15].ToString(),
     }
 }
