@@ -85,12 +85,12 @@
             <div class="app-header__content">
                 <div class="app-header-left">
                     <!-- <div class="search-wrapper">
-                        <div class="input-holder">
-                            <input type="text" class="search-input" placeholder="Type to search">
-                            <button class="search-icon"><span></span></button>
-                        </div>
-                        <button class="close"></button>
-                    </div> -->
+                    <div class="input-holder">
+                        <input type="text" class="search-input" placeholder="Type to search">
+                        <button class="search-icon"><span></span></button>
+                    </div>
+                    <button class="close"></button>
+                </div> -->
                     <ul class="header-menu nav">
                         <li class="nav-item">
                             <a href="javascript:void(0);" class="nav-link">
@@ -216,6 +216,30 @@
                                 </li>
                                 <li>
                                     <a href="" class="">
+                                        <i class="metismenu-icon icofont-wifi-router"></i> Logistics
+                                        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+                                    </a>
+                                    <ul class="vertical-nav-menu">
+                                        <li>
+
+                                            <a href="@Url.Action("Index","HardwareModemAIRMAC")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> AIRMAC
+                                            </a>
+                                            <a href="@Url.Action("","")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Register AIRMAC
+                                            </a>
+                                            <a href="@Url.Action("","")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> TRIA SN(BUC)
+                                            </a>
+                                            <a href="@Url.Action("","")" class="">
+                                                <i class="metismenu-icon icofont-library"></i> Register TRIA
+                                            </a>
+
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="" class="">
                                         <i class="metismenu-icon icofont-library"></i> Service Plan
                                         <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
                                     </a>
@@ -300,10 +324,10 @@
                                         </a>
                                     </li>
                                     <!-- <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                        <img src="assets/images/govt-pakistan-logo.png" height="30" />
-                                        </a>
-                                    </li> -->
+                                    <a href="javascript:void(0);" class="nav-link">
+                                    <img src="assets/images/govt-pakistan-logo.png" height="30" />
+                                    </a>
+                                </li> -->
                                 </ul>
                             </div>
                             <div class="app-footer-right">
@@ -377,40 +401,65 @@
                         <b>Site Name</b>
                         <p id="pSiteName"></p>
                         @*<hr>
-                            <div id="divActivation">
-                                <h6>New Site Details</h6>
-                                <hr>
-                                <p id="pSiteName"></p>
-                                <p id="pSiteCity"></p>
-                                <p id="pSiteArea"></p>
-                                <p id="pSiteInstallationDate"></p>
-                                <p id="pSiteServicePlan"></p>
-                                <p id="pSiteIP"></p>
-                                <h6>Hardware</h6>
-                                <hr>
-                                <p id="pHardwareMacAirNo"></p>
-                                <h6>Subscriber</h6>
-                                <p id="pSubscrberName"></p>
-                                <p id="pSubscriberCity"></p>
-                                <p id="pSubscriberEmail"></p>
-                                <p id="pSubscriberArea"></p>
-                                <p id="pSubscriberNotes"></p>
-                            </div>
-                            <div id="divReActivation">
-                                <h6>Re Activation</h6>
-                                <p></p>
-                            </div>
-                            <div id="divDowngrade">
-                                <h6>Downgrade</h6>
-                                <p></p>
-                            </div>
-                            <div id="divUpgrade">
-                                <h6>Upgrade</h6>
-                                <p></p>
-                            </div>*@
+                        <div id="divActivation">
+                            <h6>New Site Details</h6>
+                            <hr>
+                            <p id="pSiteName"></p>
+                            <p id="pSiteCity"></p>
+                            <p id="pSiteArea"></p>
+                            <p id="pSiteInstallationDate"></p>
+                            <p id="pSiteServicePlan"></p>
+                            <p id="pSiteIP"></p>
+                            <h6>Hardware</h6>
+                            <hr>
+                            <p id="pHardwareMacAirNo"></p>
+                            <h6>Subscriber</h6>
+                            <p id="pSubscrberName"></p>
+                            <p id="pSubscriberCity"></p>
+                            <p id="pSubscriberEmail"></p>
+                            <p id="pSubscriberArea"></p>
+                            <p id="pSubscriberNotes"></p>
+                        </div>
+                        <div id="divReActivation">
+                            <h6>Re Activation</h6>
+                            <p></p>
+                        </div>
+                        <div id="divDowngrade">
+                            <h6>Downgrade</h6>
+                            <p></p>
+                        </div>
+                        <div id="divUpgrade">
+                            <h6>Upgrade</h6>
+                            <p></p>
+                        </div>*@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        <div class="modal" id="modal-acceptOrderConfirm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Accept Service Order</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="" class="pl-1 pr-1 right-pan">
+                            <span class="fa fa-warning text-danger delete-icon" aria-hidden="true"></span>
+                        </a>
+                        <i class="fa fa-warning text-danger delete-icon"></i>
+                        <p>Are you sure you want to accept the service order?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info" id="btnAcceptOrder" data-dismiss="modal">Proceed</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -438,6 +487,7 @@
                 <!-- /.modal-content -->
             </div>
         </div>
+
 
         <div class="modal" id="modal-rejectreason">
             <div class="modal-dialog">

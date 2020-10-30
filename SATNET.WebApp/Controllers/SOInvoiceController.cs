@@ -57,14 +57,14 @@ namespace SATNET.WebApp.Controllers
             {
                 case 1: //Activation
                 case 32://Re-Activation
-                    viewName = "Detail/Activation2";
+                    viewName = "Detail/Activation";
                     break;
 
                 case 2://Termination
                     viewName = "Detail/Termination";
                     break;
                 case 3://Upgrade
-                    viewName = "Detail/Upgrade2";
+                    viewName = "Detail/Upgrade";
                     break;
                 case 4://Downgrade
                     viewName = "Detail/Downgrade";

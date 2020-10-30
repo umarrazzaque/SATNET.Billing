@@ -121,15 +121,15 @@ namespace SATNET.WebApp.Controllers
             return retList;
         }
 
-        public IActionResult GetHardwareComponetByHardwareType(string hardware_type_id)
+        public async Task<IActionResult> GetHardwareComponetByHardwareType(string hardware_type_id)
         {
             if (hardware_type_id != null)
             {
                 var retList = new List<HardwareComponentModel>();
-                var resList = _hardwareComponentService.List(new HardwareComponent() { 
+                var resList = await _hardwareComponentService.List(new HardwareComponent() { 
                     Flag = "GET_BY_HARDWARE_TYPE",
                     Keyword = hardware_type_id
-                }).Result;
+                });
                 retList = _mapper.Map<List<HardwareComponentModel>>(resList);
                 return Json(retList);
             }

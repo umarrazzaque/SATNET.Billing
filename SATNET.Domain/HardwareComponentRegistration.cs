@@ -10,6 +10,7 @@ namespace SATNET.Domain
         public string SerialNumber { get; set; }
         public string UniqueIdentifier { get; set; }
         public int HardwareComponentId { get; set; }
+        public int HardwareTypeId { get; set; }
         public string HardwareComponent { get; set; }
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }

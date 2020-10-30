@@ -10,31 +10,33 @@ namespace SATNET.Service.Implementation
 {
     public class HardwareComponentRegistrationService : IService<HardwareComponentRegistration>
     {
-        public Task<StatusModel> Add(HardwareComponentRegistration obj)
+        public async Task<StatusModel> Add(HardwareComponentRegistration obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponentRegistration/Index" };
-            try
+            int retId = -1;
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+                try
                 {
                     uow.BeginTransaction();
-                    if (obj.SerialNumbers.Length >= 1) {
+                    if (obj.SerialNumbers.Length >= 1)
+                    {
                         var serials = obj.SerialNumbers[0];
                         var sList = serials.Split(',');
                         foreach (var item in sList)
                         {
-                            if (item != "") {
+                            if (item != "")
+                            {
                                 var specs = item.Split("---");
 
                                 obj.SerialNumber = specs[0];
                                 obj.UniqueIdentifier = specs[1];
-                                retId = uow.HardwareComponentRegistrations.Add(obj).Result;
+                                retId = await uow.HardwareComponentRegistrations.Add(obj);
                             }
-                            
+
                         }
                     }
-                    
+
                     //retId = uow.HardwareComponentRegistrations.Add(obj).Result;
                     if (retId != 0)
                     {
@@ -48,14 +50,19 @@ namespace SATNET.Service.Implementation
                         status.ErrorCode = "Error in inserting the record.";
                     }
                 }
+                catch (Exception e)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "An error occured while processing request.";
+                    status.ErrorDescription = e.Message;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
+
             }
-            catch (Exception e)
-            {
-                status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
-                status.ErrorDescription = e.Message;
-            }
-            return Task.FromResult(status);
+            return status;
         }
 
         public Task<StatusModel> Delete(int recId, int deletedBy)
@@ -63,55 +70,63 @@ namespace SATNET.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<HardwareComponentRegistration> Get(int id)
+        public async Task<HardwareComponentRegistration> Get(int id)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponentRegistration/Index" };
             var retModel = new HardwareComponentRegistration();
-            try
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                using (var uow = new UnitOfWorkFactory().Create())
+                try
                 {
-                    retModel = uow.HardwareComponentRegistrations.Get(id).Result;
+                    retModel = await uow.HardwareComponentRegistrations.Get(id);
                     if (retModel.Id != 0)
                     {
 
                     }
                 }
-            }
-            catch (Exception e)
-            {
-
-            }
-            return Task.FromResult(retModel);
-        }
-
-        public Task<List<HardwareComponentRegistration>> List(HardwareComponentRegistration obj)
-        {
-            List<HardwareComponentRegistration> retList = new List<HardwareComponentRegistration>();
-            try
-            {
-                using (var uow = new UnitOfWorkFactory().Create())
+                catch (Exception e)
                 {
-                    retList = uow.HardwareComponentRegistrations.List(obj).Result;
+
+                }
+                finally
+                {
+                    uow.Connection.Close();
                 }
             }
-            catch (Exception e)
-            {
-
-            }
-            return Task.FromResult(retList);
+            return retModel;
         }
 
-        public Task<StatusModel> Update(HardwareComponentRegistration obj)
+        public async Task<List<HardwareComponentRegistration>> List(HardwareComponentRegistration obj)
+        {
+            List<HardwareComponentRegistration> retList = new List<HardwareComponentRegistration>();
+            using (var uow = new UnitOfWorkFactory().Create())
+            {
+                try
+                {
+                    retList = await uow.HardwareComponentRegistrations.List(obj);
+                }
+                catch (Exception e)
+                {
+
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
+            }
+            return retList;
+        }
+
+        public async Task<StatusModel> Update(HardwareComponentRegistration obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponentRegistration/Index" };
-            try
+            int retId = -1;
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+                try
                 {
                     uow.BeginTransaction();
-                    retId = uow.HardwareComponentRegistrations.Update(obj).Result;
+                    retId = await uow.HardwareComponentRegistrations.Update(obj);
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -124,14 +139,19 @@ namespace SATNET.Service.Implementation
                         status.ErrorCode = "Error in updating the record.";
                     }
                 }
+                catch (Exception e)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "An error occured while processing request.";
+                    status.ErrorDescription = e.Message;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
             }
-            catch (Exception e)
-            {
-                status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
-                status.ErrorDescription = e.Message;
-            }
-            return Task.FromResult(status);
+
+            return status;
         }
     }
 }
