@@ -58,7 +58,7 @@
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
                 @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
-                <span class="help-block text-danger" id="label_error">ds</span>
+                <span class="help-block text-danger" id="label_error"></span>
             </div>
         </div>
         <div class="col-lg-6">
@@ -111,30 +111,49 @@
     var edit_record_index = -1;
     var specs_seperator = '---';
     var node_object_key = 'node_object';
-    var section_type = 'AIR MAC NUMBER';
+    var section_type = '';
     $('#HardwareComponentRegistrationModel_HardwareTypeId').change(function () {
         var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId').val();
-        $.ajax({
-            url: '/HardwareComponentRegistration/GetHardwareComponetByHardwareType',
-            type: "POST",
-            data: { hardware_type_id: hardware_type },
-            dataType: "json",
-            error: function (response) {
-            },
-            success: function (response) {
-                payment_filter_list = response;
-                console.log(response);
-                var options = "<option value'>--SELECT HARDWARE COMPONENT--</option>";
-                //"<option value=''>--SELECT " + retModel.Column + "--</option>";
-                $.each(response, function (i, plan) {
-                    options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
-                });
-                $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
-                $('#HardwareComponentRegistrationModel_UniqueIdentifier').attr('placeholder', section_type);
-                $('#label_item').text(section_type);
-            }
-        });
-        $('#table_header_section_type').text(section_type);
+        console.log(typeof (hardware_type));
+        if (hardware_type != undefined) {
+            
+            $.ajax({
+                url: '/HardwareComponentRegistration/GetHardwareComponetByHardwareType',
+                type: "POST",
+                data: { hardware_type_id: hardware_type },
+                dataType: "json",
+                error: function (response) {
+                },
+                success: function (response) {
+                    payment_filter_list = response;
+                    //console.log(response);
+                    var options = "<option value'>--SELECT HARDWARE COMPONENT--</option>";
+                    //"<option value=''>--SELECT " + retModel.Column + "--</option>";
+                    $.each(response, function (i, plan) {
+                        options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
+                    });
+                    $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
+                    var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId option:selected').text();
+                    if (hardware_type.toUpperCase().indexOf('MODE') > -1) {
+                        section_type = 'AIR MAC NUMBER';
+                        console.log(':Hardware Section');
+                    } else if (hardware_type.toUpperCase().indexOf('TRANS') > -1) {
+                        section_type = 'BUC MODEL';
+                        console.log('Transceiver Section');
+                    }
+                    else {
+                        console.log(hardware_type.toUpperCase().indexOf('MODE') + 'Unique Identifier');
+                    }
+                    //if () { }
+
+                    $('#HardwareComponentRegistrationModel_UniqueIdentifier').attr('placeholder', section_type);
+                    $('#label_item').text(section_type);
+                    $('#table_header_section_type').text(section_type);
+                }
+            });
+        }
+        
+        
     });
     function record_exist_or_not(grid_array, obj) {
         var return_val = 0;

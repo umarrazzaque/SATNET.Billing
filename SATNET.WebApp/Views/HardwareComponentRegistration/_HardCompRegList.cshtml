@@ -3,12 +3,29 @@
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
 
+@*@using (Html.BeginForm("ImportData", "HardwareComponentRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+    }*@
+<div class="row">
+    <div class="col-md-8">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">UPLOAD</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="input_file" name="postedFile"
+                       aria-describedby="file_upload">
+                <label class="custom-file-label" id="file_label" for="input_file">Choose File</label>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
                 @*<th class="text-center" width="30">
-        </th>*@
+                    </th>*@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.HardwareComponentId) </th>
