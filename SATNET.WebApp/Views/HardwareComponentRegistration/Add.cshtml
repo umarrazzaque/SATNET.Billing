@@ -63,9 +63,9 @@
         </div>
         <div class="col-lg-6">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.UniqueIdentifier, new { id = "label_item" })
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { id = "label_item" })
                 <div class="input-group mb-3">
-                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.UniqueIdentifier, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Unique Identifier", @type = "text" } })
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Unique Identifier", @type = "text" } })
 
                     <div class="input-group-append">
                         <button class="btn-info add_hm_item" type="button">Save</button>
@@ -146,7 +146,7 @@
                     }
                     //if () { }
 
-                    $('#HardwareComponentRegistrationModel_UniqueIdentifier').attr('placeholder', section_type);
+                    $('#HardwareComponentRegistrationModel_AIRMAC').attr('placeholder', section_type);
                     $('#label_item').text(section_type);
                     $('#table_header_section_type').text(section_type);
                 }
@@ -183,8 +183,8 @@
     }
     $(document).on('click', '.add_hm_item', function () {
         var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
-        var specsTwo = $('#HardwareComponentRegistrationModel_UniqueIdentifier').val().toUpperCase();
-        //console.log(serialNo + ':' + uniqueIdentifier);
+        var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val().toUpperCase();
+        //console.log(serialNo + ':' + AIRMAC);
         var grid_obj_item = {
             specsOne: specsOne,
             specsTwo: specsTwo
@@ -225,7 +225,7 @@
         var grid_obj = $(this).attr('data-' + node_object_key);
         grid_obj = JSON.parse(grid_obj);
         $('#HardwareComponentRegistrationModel_SerialNumber').val(grid_obj.specsOne);
-        $('#HardwareComponentRegistrationModel_UniqueIdentifier').val(grid_obj.specsTwo);
+        $('#HardwareComponentRegistrationModel_AIRMAC').val(grid_obj.specsTwo);
         edit_record_index = get_record_index(grid_obj_array, grid_obj);
         console.log('index:' + edit_record_index);
         edit_flag = 1;
@@ -243,7 +243,7 @@
     });
     function reset_config() {
         $('#HardwareComponentRegistrationModel_SerialNumber').val('');
-        $('#HardwareComponentRegistrationModel_UniqueIdentifier').val('');
+        $('#HardwareComponentRegistrationModel_AIRMAC').val('');
         $('#label_error').text('');
         edit_flag = edit_record_index = -1;
     }

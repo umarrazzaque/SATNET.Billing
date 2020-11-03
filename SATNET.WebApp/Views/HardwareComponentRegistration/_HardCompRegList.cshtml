@@ -6,7 +6,7 @@
 @*@using (Html.BeginForm("ImportData", "HardwareComponentRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
     }*@
-<div class="row">
+@*<div class="row">
     <div class="col-md-8">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
@@ -29,7 +29,7 @@
                 <th class="text-center">#</th>
 
                 <th> @Html.DisplayNameFor(model => model.HardwareComponentId) </th>
-                <th> @Html.DisplayNameFor(model => model.UniqueIdentifier) </th>
+                <th> @Html.DisplayNameFor(model => model.AIRMAC) </th>
                 <th> @Html.DisplayNameFor(model => model.SerialNumber) </th>
                 <th> @Html.DisplayNameFor(model => model.CustomerId) </th>
                 <th> @Html.DisplayNameFor(model => model.IsRegistered) </th>
@@ -52,7 +52,7 @@
                     @counter
                 </td>
                 <td> @Html.DisplayFor(modelItem => item.HardwareComponent)</td>
-                <td> @Html.DisplayFor(modelItem => item.UniqueIdentifier)</td>
+                <td> @Html.DisplayFor(modelItem => item.AIRMAC)</td>
                 <td> @Html.DisplayFor(modelItem => item.SerialNumber)</td>
                 <td> @Html.DisplayFor(modelItem => item.CustomerName)</td>
                 <td> @Html.DisplayFor(modelItem => item.IsRegistered)</td>

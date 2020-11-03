@@ -1,67 +1,61 @@
-﻿@model SATNET.WebApp.Models.CreditNoteViewModel
+﻿@model SATNET.WebApp.Models.Hardware.HardwareComponentRegistrationModel
 
 
-<form id="formAdd" method="post" data-ajax="true" asp-controller="CreditNote" asp-action="Add" data-ajax-method="post" enctype="multipart/form-data" autocomplete="off">
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-title-heading">
-                <div>
-                    Add Credit Note
-                    <div class="page-title-subheading">
-                        Please fillout following form
+    <form id="formAdd" method="post" data-ajax="true" asp-controller="LogisticsAIRMACReg" asp-action="Add" data-ajax-method="post" enctype="multipart/form-data" autocomplete="off">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div>
+                        Register AIRMAC
+                    </div>
+                </div>
+                <div class="page-title-actions">
+                    <div class="d-inline-block dropdown">
+                        <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Index")" class=" btn btn-danger">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-default">Save AIRMAC Registeration</button>
                     </div>
                 </div>
             </div>
-            <div class="page-title-actions">
-                <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "CreditNote/Index")" class=" btn btn-danger">
-                        Cancel
-                    </a>
-                    <button type="submit" class="btn btn-default">Save Credit Note</button>
+        </div>
+        <div class="filters">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Model</label>
+                        <select id="selectModem" asp-items="ViewBag.SelectHardwareModems" class="form-control select2 text-input">
+                            <option value="0" selected>All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label>AIRMAC</label>
+                        <select id="selectAIRMAC" asp-items="ViewBag.SelectUnRegisteredAIRMACs" class="form-control select2 text-input">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 offset-md-5">
+                    <div class="form-group">
+                        <label>Register to </label>
+                        <select id="selectCustomer" asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
+                        </select>
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.CustomerId == 0)
-        {
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <label>Customer</label>
-                    <select id="selectCustomer" asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
-                    </select>
-                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="BodyContent">
+                    @await Html.PartialAsync("_AddList", Model)
                 </div>
             </div>
-
-        }
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label>Invoice</label>
-                <select asp-for="InvoiceId" asp-items="Model.InvoiceSelectList" class="form-control select2 text-input">
-                    <option value="" hidden disabled selected>Select</option>
-                </select>
-                <span asp-validation-for="InvoiceId" class="text-danger"></span>
-            </div>
         </div>
-        <div class="col-lg-3">
-            <div class="position-relative form-group">
-                <label class="lable-control">Amount</label>
-                <input asp-for="Amount" class="form-control" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="position-relative form-group">
-                <label class="lable-control">Comments</label>
-                <textarea asp-for="Details" type="text" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Details" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-</form>
+    </form>
 
 
 
@@ -72,10 +66,6 @@
     @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
     <script type="text/javascript">
         $(function () {
-            $("#selectCustomer").change(function () {
-                var customerId = $(this).val();
-                populateDropDown(customerId);
-            })
 
             var mySelect = $('#selectCustomer').selectpicker({
 
@@ -86,14 +76,14 @@
                 noneResultsText: 'No results matched {0}',
 
                 // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
-                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options.
                 // The function must return a string.
                 countSelectedText: function (numSelected, numTotal) {
                     return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
                 },
 
                 // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
-                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup.
                 // If a string is used, the same text is used for both the element and the optgroup.
                 maxOptionsText: function (numAll, numGroup) {
                     return [
@@ -205,25 +195,38 @@
             // Re-render
             mySelect.selectpicker('render');
 
+
+            $("#selectModem").change(function () {
+                reLoadAIRMACList();
+            });
+            $("#selectAIRMAC").change(function () {
+                reLoadAIRMACList();
+            });
         });
 
-        populateDropDown = function (customerId) {
-            $.ajax({
-                url: '/CreditNote/GetInvoiceList',
-                data: { customerId: customerId },
-                traditional: true,
-                success: function (result) {
-                    var items = '';
-                    $.each(result, function (i, plan) {
-                        items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
-                    });
-                    $("#InvoiceId").empty();
-                    $("#InvoiceId").html(items);
-                    $("#InvoiceId").prepend("<option value=''>Select</option>").val('');
-                }
-            });
+        reLoadAIRMACList = function () {
+            var modem = $("#selectModem").val();
+            var airmac = $("#selectAIRMAC").val();
+            $.ajax(
+                {
+                    url: '/LogisticsAIRMACReg/GetAIRMACListByFilter',
+                    data: { modem: modem, airmac: airmac, flag: 'UnRegisteredAIRMAC' },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
+                    }
+                });
 
         }
+
+
+
     </script>
 }
 

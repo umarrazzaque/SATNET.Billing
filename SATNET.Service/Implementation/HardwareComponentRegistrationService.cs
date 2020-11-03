@@ -30,7 +30,7 @@ namespace SATNET.Service.Implementation
                                 var specs = item.Split("---");
 
                                 obj.SerialNumber = specs[0];
-                                obj.UniqueIdentifier = specs[1];
+                                obj.AIRMAC = specs[1];
                                 retId = await uow.HardwareComponentRegistrations.Add(obj);
                             }
 
@@ -65,10 +65,40 @@ namespace SATNET.Service.Implementation
             return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/LogisticsAIRMAC/Index" };
+            int dRow = -1;
+            var uow = new UnitOfWorkFactory().Create();
+            try
+            {
+
+
+                uow.BeginTransaction();
+                dRow = await uow.HardwareComponentRegistrations.Delete(recId, deletedBy);
+                if (dRow > 0)
+                {
+                    uow.SaveChanges();
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Transaction completed successfully.";
+                }
+                else
+                {
+                    status.ErrorCode = "An error occured while processing request.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                status.ErrorCode = "Cannot delete record due to referential records.";
+            }
+            finally
+            {
+                uow.Connection.Close();
+            }
+            return status;
         }
+
 
         public async Task<HardwareComponentRegistration> Get(int id)
         {
@@ -126,8 +156,23 @@ namespace SATNET.Service.Implementation
                 try
                 {
                     uow.BeginTransaction();
-                    retId = await uow.HardwareComponentRegistrations.Update(obj);
-                    if (retId != 0)
+                    if (obj.Flag== "RegisterAIRMAC")
+                    {
+                        if (obj.AIRMACs.Length > 0)
+                        {
+                            foreach (var item in obj.AIRMACs)
+                            {
+                                obj.AIRMAC = item;
+                                retId = await uow.HardwareComponentRegistrations.Update(obj);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        retId = await uow.HardwareComponentRegistrations.Update(obj);
+                    }
+                   
+                    if (retId > 0)
                     {
                         uow.SaveChanges();
                         status.IsSuccess = true;

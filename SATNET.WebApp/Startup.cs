@@ -63,6 +63,8 @@ namespace SATNET.WebApp
                 options.AddPolicy("ReadOnlyServiceOrderPolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
                 options.AddPolicy("ReadOnlySOInvoicePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting"));
                 options.AddPolicy("ReadOnlySitePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
+                options.AddPolicy("ReadOnlyLogisticsPolicy", policy => policy.RequireRole("Admin", "Management", "Accounting", "Logistics"));
+                options.AddPolicy("ManageLogisticsPolicy", policy => policy.RequireRole("Admin", "Accounting", "Logistics"));
             });
 
             //Session

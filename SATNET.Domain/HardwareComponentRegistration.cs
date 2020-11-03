@@ -8,7 +8,7 @@ namespace SATNET.Domain
     {
         public string HCRegistrationNumber { get; set; }
         public string SerialNumber { get; set; }
-        public string UniqueIdentifier { get; set; }
+        public string AIRMAC { get; set; }
         public int HardwareComponentId { get; set; }
         public int HardwareTypeId { get; set; }
         public string HardwareComponent { get; set; }
@@ -16,6 +16,6 @@ namespace SATNET.Domain
         public string CustomerName { get; set; }
         public bool IsRegistered { get; set; }
         public string [] SerialNumbers { get; set; }
-
+        public string[] AIRMACs { get; set; }
     }
 }
