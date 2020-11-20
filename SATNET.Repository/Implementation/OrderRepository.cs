@@ -89,7 +89,7 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@IPId", obj.IPId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@ChangeIPId", obj.ChangeIPId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@TokenId", obj.TokenId, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@MacAirNoId", obj.MacAirNoId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@AirMac", obj.AirMac, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@HardwareConditionId", obj.HardwareConditionId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@PromotionId", obj.PromotionId, DbType.Int32, ParameterDirection.Input);
                     paramsOrder.Add("@SiteCityId", obj.SiteCityId, DbType.Int32, ParameterDirection.Input);
@@ -103,9 +103,10 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@SubscriberNotes", obj.SubscriberNotes, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@Other", obj.Other, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@ChangeServicePlanId", obj.ChangeServicePlanId, DbType.Int32, ParameterDirection.Input);
-                    paramsOrder.Add("@NewMacAirNoId", obj.NewMacAirNoId, DbType.Int32, ParameterDirection.Input);
+                    paramsOrder.Add("@NewAirMac", obj.NewAirMac, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@ProRataQuota", obj.ProRataQuota, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@UpgradeToProRataQuota", obj.UpgradeToProRataQuota, DbType.String, ParameterDirection.Input);
+                    paramsOrder.Add("@IsServicePlanFull", obj.IsServicePlanFull, DbType.Boolean, ParameterDirection.Input);
                     orderId = await con.ExecuteScalarAsync<int>("OrderInsert", paramsOrder, transaction, commandType: CommandType.StoredProcedure);
 
                     transaction.Commit();

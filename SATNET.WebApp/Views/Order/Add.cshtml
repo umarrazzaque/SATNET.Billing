@@ -43,7 +43,6 @@
         <div class="form-group">
             <label>Customer</label>
             <select asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="CustomerId" class="text-danger"></span>
         </div>
@@ -124,6 +123,17 @@
             <span asp-validation-for="ServicePlanId" class="text-danger"></span>
         </div>
     </div>
+    <div class="col-lg-3 fullOrProrata">
+        <div class="form-group">
+            <label>Service Plan Full/Pro-rata</label>
+            <select asp-for="IsServicePlanFull" class="form-control select2 text-input">
+                <option value="" hidden disabled selected>Select</option>
+                <option value="True">Full</option>
+                <option value="False">Pro-rata</option>
+            </select>
+            <span asp-validation-for="IsServicePlanFull" class="text-danger"></span>
+        </div>
+    </div>
     <div class="col-lg-3 pro-rata-gb">
         <div class="form-group">
             <label>Pro-Rata Quota(GB) </label>
@@ -173,11 +183,11 @@
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
-            <label>MAC AIR Number</label>
-            <select asp-for="MacAirNoId" asp-items="Model.MacAirNoSelectList" class="form-control select2 text-input">
+            <label>AIRMAC </label>
+            <select asp-for="AirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
+            <span asp-validation-for="AirMac" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
@@ -395,20 +405,19 @@
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>Current MAC AIR Number</label>
-            <select id="currentMacAirNo" asp-items="Model.MacAirNoSelectList" class="form-control select2 text-input">
+            <label>Current AIRMAC </label>
+            <select id="currentAirMac" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>New MAC AIR Number</label>
-            <select asp-for="NewMacAirNoId" asp-items="Model.MacAirNoSelectList" class="form-control select2 text-input">
+            <label>New AIRMAC</label>
+            <select asp-for="NewAirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
                 <option value="" hidden disabled selected>Select</option>
             </select>
-            <span asp-validation-for="MacAirNoId" class="text-danger"></span>
+            <span asp-validation-for="NewAirMac" class="text-danger"></span>
         </div>
     </div>
 

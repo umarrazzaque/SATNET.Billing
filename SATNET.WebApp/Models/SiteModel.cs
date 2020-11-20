@@ -38,6 +38,10 @@ namespace SATNET.WebApp.Models
         public string ServicePlanType { get; set; }
         [DisplayName("Promotion")]
         public string Promotion { get; set; }
+        [DisplayName("AIRMAC")]
+        public string AirMac { get; set; }
+        [DisplayName("IP")]
+        public string IpName { get; set; }
     }
 
     public class CreateSiteModel

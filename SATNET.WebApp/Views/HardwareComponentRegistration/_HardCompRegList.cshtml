@@ -32,7 +32,6 @@
                 <th> @Html.DisplayNameFor(model => model.AIRMAC) </th>
                 <th> @Html.DisplayNameFor(model => model.SerialNumber) </th>
                 <th> @Html.DisplayNameFor(model => model.CustomerId) </th>
-                <th> @Html.DisplayNameFor(model => model.IsRegistered) </th>
                 <th class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -55,7 +54,6 @@
                 <td> @Html.DisplayFor(modelItem => item.AIRMAC)</td>
                 <td> @Html.DisplayFor(modelItem => item.SerialNumber)</td>
                 <td> @Html.DisplayFor(modelItem => item.CustomerName)</td>
-                <td> @Html.DisplayFor(modelItem => item.IsRegistered)</td>
                 <td class="text-center">
                     <div class="buttons">
                         <a href="@String.Format("/{0}?id={1}", "HardwareComponentRegistration/Edit", item.Id)" class="pl-1 pr-1">

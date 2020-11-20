@@ -14,6 +14,7 @@ using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Mappings;
 using SATNET.WebApp.Models.Invoice;
+using SATNET.WebApp.Models.Report;
 
 namespace SATNET.WebApp.Controllers
 {
@@ -24,7 +25,7 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<Site> _siteService;
         private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
-        public SOInvoiceController(IService<SOInvoice> invoiceService, IService<Site> siteService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Customer> customerService) : base(customerService,userManager)
+        public SOInvoiceController(IService<SOInvoice> invoiceService, IService<Site> siteService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Customer> customerService) : base(customerService, userManager)
         {
             _siteService = siteService;
             _invoiceService = invoiceService;
@@ -100,7 +101,7 @@ namespace SATNET.WebApp.Controllers
             return PartialView("_List", model);
         }
 
-        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int statusId) 
+        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int statusId)
         {
             List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
             var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = statusId });
@@ -113,23 +114,71 @@ namespace SATNET.WebApp.Controllers
 
         [HttpGet]
         [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
-        public async Task<IActionResult> Report()
+        public async Task<IActionResult> GetSiteLedgerReport()
         {
-            var customerList = await GetCustomerList(new Customer());
-            ViewBag.CustomerList = new SelectList(customerList, "Id", "Name");
-            return View("Report/Index");
+            List<SiteLedgerViewModel> model = new List<SiteLedgerViewModel>();
+            List<Customer> customers = new List<Customer>();
+            int customerId = await GetCustomerId();
+            if (customerId == 0)
+            {
+                customers = await GetCustomerList(new Customer());
+                ViewBag.CustomerSelectList = new SelectList(customers, "Id", "Name");
+                ViewBag.CustomerId = 0;
+            }
+            else
+            {
+                var customer = await GetCustomer(customerId);
+                ViewBag.CustomerName = customer.Name;
+                ViewBag.CustomerId = customerId;
+                model = await GetSiteLedgerList(customerId, 0);
+            }
+
+            return View("Report/SiteLedger", model);
         }
 
-        //public async Task<IActionResult> GetSiteLedger(int customerId)
-        //{
-        //    var sites = await _siteService.List(new Site() { CustomerId = customerId });
-        //    foreach (var s in sites)
-        //    {
-        //        var siteLedger = 
-        //    }
-            
-        //    return PartialView("_List", model);
-        //}
+        public async Task<IActionResult> GetAjaxSiteLedgerReport(int customerId, int siteId)
+        {
+            var model = await GetSiteLedgerList(customerId, siteId);
+            if (customerId > 0)
+            {
+                var customer = await GetCustomer(customerId);
+                ViewBag.CustomerName = customer.Name;
+            }
 
+            return PartialView("Report/_SiteLedgerList", model);
+        }
+
+        private async Task<List<SiteLedgerViewModel>> GetSiteLedgerList(int customerId, int siteId)
+        {
+            List<SiteLedgerViewModel> siteLedgerList = new List<SiteLedgerViewModel>();
+            var sites = await _siteService.List(new Site() { CustomerId = customerId, Id = siteId });
+            ViewBag.SiteSelectList = new SelectList(sites, "Id", "Name");
+            foreach (var site in sites)
+            {
+                var siteLedgerViewModel = new SiteLedgerViewModel() { Name = site.Name };
+                DateTime.Today.AddMonths(-1);
+                var invoices = await _invoiceService.List(new SOInvoice() { SiteId = site.Id, StartDate= DateTime.Today.AddMonths(-1).Date, EndDate=DateTime.Now.Date });
+                if (invoices.Any())
+                {
+                    foreach (var inv in invoices)
+                    {
+                        var invoice = await _invoiceService.Get(inv.Id);
+                        var invoiceViewModel = _mapper.Map<SOInvoiceViewModel>(invoice);
+                        siteLedgerViewModel.InvoiceViewModels.Add(invoiceViewModel);
+                    }
+                }
+                siteLedgerList.Add(siteLedgerViewModel);
+            }
+            return siteLedgerList;
+        }
+        public async Task<IActionResult> GetSiteSelectList(int customerId)
+        {
+            Site site = new Site()
+            {
+                CustomerId = customerId
+            };
+            var sites = await _siteService.List(site);
+            return Json(new SelectList(sites, "Id", "Name"));
+        }
     }
 }

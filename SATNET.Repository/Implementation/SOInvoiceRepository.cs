@@ -50,6 +50,15 @@ namespace SATNET.Repository.Implementation
                 var parms = new DynamicParameters();
                 parms.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
                 parms.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
+                if (obj.StartDate != DateTime.MinValue)
+                {
+                    parms.Add("@StartDate", obj.StartDate, DbType.DateTime, ParameterDirection.Input);
+                }
+                if (obj.EndDate != DateTime.MinValue)
+                {
+                    parms.Add("@EndDate", obj.EndDate, DbType.DateTime, ParameterDirection.Input);
+                }
                 var result = await con.QueryAsync<SOInvoice>("InvoiceSOList", parms, commandType: CommandType.StoredProcedure);
                 orders = result.ToList();
             }
@@ -60,5 +69,6 @@ namespace SATNET.Repository.Implementation
 
         public async Task<int> Update(SOInvoice obj) { throw new NotImplementedException(); }
         public async Task<int> Delete(int id, int deletedBy) { throw new NotImplementedException(); }
+
     }
 }

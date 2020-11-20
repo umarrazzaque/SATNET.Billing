@@ -6,7 +6,7 @@ $(function () {
     var mySelect = $('#CustomerId').selectpicker({
 
         // text for no selection
-        noneSelectedText: 'Nothing selected',
+        noneSelectedText: 'Select',
 
         // text for no result
         noneResultsText: 'No results matched {0}',
@@ -190,7 +190,7 @@ $(function () {
                 $("#ScheduleDateId").val(58);
                 $("#hdnScheduleDateId").val(58);
                 $("#ScheduleDateId").prop("disabled", true);
-                $("#MacAirNoId").prop("disabled", false);
+                $("#AirMac").prop("disabled", false);
                 $("#HardwareConditionId").prop("disabled", false);
                 $("#PromotionId").prop("disabled", false);
                 break
@@ -204,7 +204,7 @@ $(function () {
                 $(".select-site").show();
                 $(".new-site").show();
                 $(".hardware").show();
-                $("#MacAirNoId").prop("disabled", true);
+                $("#AirMac").prop("disabled", true);
                 $("#HardwareConditionId").prop("disabled", true);
                 $("#PromotionId").prop("disabled", true);
                 $(".site-name").hide();
@@ -286,9 +286,16 @@ $(function () {
         }
     });
     $(".service-plantype").change(function () {
+        $('#IsServicePlanFull').val('');
         $('#txtProRataGB').text('');
         $('.pro-rata-gb').hide();
+        $('.fullOrProrata').hide();
+        $('.dedicated-serviceplan').hide();
+        $('.custom-dedicated-serviceplan').hide();
         var type = $(this).val();
+        if (type == "12") {
+            $('.fullOrProrata').show();
+        }
         var section = $(this).data('section');
         if (type != "" && section != 'downgrade' && section != 'upgrade') {
             getServicePlansByType(type, section);
@@ -297,18 +304,11 @@ $(function () {
     $("#CustomerId").change(function () {
         var customerDDLId = $(this).val();
         var requestTypeId = $("#RequestTypeId").val();
-
-        ////Satnet User
-        //if (_customerId == 0 && customerDDLId > 0) {//satnet user
-        //    var url = '/Order/GetProposedSiteName';
-        //    $.getJSON(url, { customerId: $(this).val() }, function (result) {
-        //        $("#SiteName").val(result.siteName);
-        //    });
-        //}
         
         if (customerDDLId > 0 && requestTypeId > 0 && requestTypeId != '1') {
             getSites(requestTypeId, customerDDLId);
         }
+        getAIRMACs(customerDDLId);
     });
     $("#SiteId").change(function () {
         if ($(this).val() > 0) {
@@ -324,19 +324,24 @@ $(function () {
                     }
                     $("#IPId").val(result.ipId);
                     $("#SubscriberName").val(result.subscriberName);
-                    $("#MacAirNoId").val(result.macAirNoId);
+                    $("#AirMac").val(result.airMac);
                     $('#ipChangeTo').empty();
                     var $options = $("#IPId > option").clone();
                     $('#ipChangeTo').append($options);
                     $("#ipPlan").val(result.ipId);
                     $("#ipPlan").prop("disabled", true);
                     $("#ipChangeTo option[value=" + result.ipId + "]").remove();
-                    $('#NewMacAirNoId').empty();
-                    var $options = $("#MacAirNoId > option").clone();
-                    $('#NewMacAirNoId').append($options);
-                    $("#currentMacAirNo").val(result.macAirNoId);
-                    $("#currentMacAirNo").prop("disabled", true);
-                    $("#NewMacAirNoId option[value=" + result.macAirNoId + "]").remove();
+                    var items = '';
+                    items += "<option>"+ result.airMac +"</option>";
+                    $('#currentAirMac').empty();
+                    $("#currentAirMac").html(items);
+                    $("#currentAirMac").prop("disabled", true);
+                    //$('#NewAirMac').empty();
+                    //var $options = $("#AirMac > option").clone();
+                    //$('#NewAirMac').append($options);
+                    //$("#currentAirMac").val(result.airMac);
+                    //$("#currentAirMac").prop("disabled", true);
+                    //$("#NewAirMac option[value=" + result.airMac + "]").remove();
                 }
             });
         }
@@ -359,14 +364,13 @@ $(function () {
             }
         }
         else if (servicePlanType == '12') {
-            $('.pro-rata-gb').hide();
             $('#txtProRataGB').text('');
             var quotaPlanValue = $(this).val();
             if (quotaPlanValue > 0) {
                 var quotaPlanText = $('#ServicePlanId option:selected').text();
                 var installationDate = $('#InstallationDate').val();
                 if (installationDate != '') {
-                    $('.pro-rata-gb').show();
+                    //$('.pro-rata-gb').show();
                     showProRataGB(quotaPlanText, installationDate, '#txtProRataGB')
                 }
                 else {
@@ -381,7 +385,7 @@ $(function () {
         var quotaPlanValue = $('#ServicePlanId').val();
         var quotaPlanText = $('#ServicePlanId option:selected').text();
         if (installationDate != '' && quotaPlanValue > 0 && quotaPlanType == 12) {
-            $('.pro-rata-gb').show();
+            //$('.pro-rata-gb').show();
             showProRataGB(quotaPlanText, installationDate, '#txtProRataGB')
         }
     });
@@ -421,7 +425,14 @@ $(function () {
             showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
         }
     });
-
+    $("#IsServicePlanFull").change(function () {
+        if ($(this).val() == "False") {
+            $(".pro-rata-gb").show();
+        }
+        else if ($(this).val() == "True") {
+            $(".pro-rata-gb").hide();
+        }
+    });
 });
 
 getDateToday = function(){
@@ -438,6 +449,7 @@ hideAllSections = function () {
     $(".dedicated-serviceplan").hide();
     $(".custom-dedicated-serviceplan").hide();
     $(".pro-rata-gb").hide();
+    $(".fullOrProrata").hide();
     $(".upgrade-pro-rata-gb").hide();
     $(".upgrade").hide();
     $(".downgrade").hide();
@@ -511,6 +523,9 @@ getSites = function (requestTypeId, customerId) {
         case '4'://Downgrade
         case '5':// Token Top up
         case '6':// lock
+        case '67':// change plan
+        case '68'://change ip
+            case '69': //modem swap
             //list all active sites
             statusIds.push(17);
             break
@@ -736,6 +751,26 @@ showProRataGB = function (quotaPlanText, installationDate, textBox) {
             }
         }
     });
+}
+
+getAIRMACs = function (customerId) {
+    if (customerId > 0) {
+        $.ajax({
+            url: '/Order/GetAIRMACs',
+            data: { customerId: customerId },
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                var items = '';
+                $.each(result, function (i, plan) {
+                    items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+                });
+                $(".airmac").empty();
+                $(".airmac").html(items);
+                $(".airmac").prepend("<option value=''>Select</option>").val('');
+            }
+        });
+    }
 }
 
 

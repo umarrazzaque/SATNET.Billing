@@ -35,10 +35,11 @@ namespace SATNET.WebApp.Controllers
         private readonly IService<IP> _ipService;
         private readonly IService<City> _cityService;
         private readonly IMapper _mapper;
+        private readonly IService<HardwareComponentRegistration> _hardwareComponentRegistrationService;
 
         public OrderController(IService<Customer> customerService, IService<Order> orderService, IService<Hardware> hardwareService, IService<ServicePlan> servicePlanService, IService<Site> siteService
             , IService<Lookup> lookupService, IService<Token> tokenService, IService<Promotion> promotionService, IService<IP> ipService, IMapper mapper
-            , UserManager<ApplicationUser> userManager, IService<City> cityService):base(customerService, userManager)
+            , UserManager<ApplicationUser> userManager, IService<City> cityService, IService<HardwareComponentRegistration> hardwareComponentRegistrationService) :base(customerService, userManager)
         {
             _orderService = orderService;
             _hardwareService = hardwareService;
@@ -50,6 +51,7 @@ namespace SATNET.WebApp.Controllers
             _ipService = ipService;
             _mapper = mapper;
             _cityService = cityService;
+            _hardwareComponentRegistrationService = hardwareComponentRegistrationService;
         }
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> Index()
@@ -87,11 +89,16 @@ namespace SATNET.WebApp.Controllers
             var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
             var servicePlanTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ServicePlanType) });
             var hardwareConditions = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareType.HardwareCondition) });
-            var macAirNos = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(HardwareType.MACAirNo) });
             var tokens = await _tokenService.List(new Token());
             var promotions = await _promotionService.List(new Promotion());
             var ips = await _ipService.List(new IP());
+            List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();
+            if (customerId > 0)
+            {
+                airmacs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = "UnUsedAIRMAC", CustomerId = customerId });
 
+            }
+            model.AirMacSelectList = new SelectList(airmacs, "AIRMAC", "AIRMAC");
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.ScheduleDateSelectList= new SelectList(scheduleDates, "Id", "Name");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
@@ -102,7 +109,6 @@ namespace SATNET.WebApp.Controllers
             model.CustomerSelectList = new SelectList(customers, "Id", "Name");
             model.SiteCitySelectList = new SelectList(cities, "Id", "Name");
             model.HardwareConditionSelectList = new SelectList(hardwareConditions, "Id", "Name");
-            model.MacAirNoSelectList= new SelectList(macAirNos, "Id", "Name");
             if (customerId > 0)//true, customer
             {
                 customer = await GetCustomer(customerId);
@@ -123,7 +129,7 @@ namespace SATNET.WebApp.Controllers
             var order = new Order()
             {
                 SiteId = model.SiteId,
-                MacAirNoId = model.MacAirNoId,
+                AirMac = model.AirMac,
                 HardwareConditionId = model.HardwareConditionId,
                 ServicePlanId = model.ServicePlanId,
                 DedicatedServicePlanName = model.DedicatedServicePlanName,
@@ -148,9 +154,10 @@ namespace SATNET.WebApp.Controllers
                 SiteCityId = model.SiteCityId,
                 ScheduleDateId = model.ScheduleDateId,
                 ChangeServicePlanId = model.ChangeServicePlanId,
-                NewMacAirNoId = model.NewMacAirNoId,
+                NewAirMac = model.NewAirMac,
                 ProRataQuota = model.ProRataQuota,
-                UpgradeToProRataQuota = model.UpgradeToProRataQuota
+                UpgradeToProRataQuota = model.UpgradeToProRataQuota,
+                IsServicePlanFull = model.IsServicePlanFull
             };
 
             var result = await _orderService.Add(order);
@@ -387,6 +394,16 @@ namespace SATNET.WebApp.Controllers
             {
                 proRataQuotaGB = proRataQuotaGB
             });
+        }
+        public async Task<IActionResult> GetAIRMACs(int customerId)
+        {
+            List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();
+            if (customerId > 0)
+            {
+                airmacs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = "UnUsedAIRMAC", CustomerId = customerId });
+            }
+            
+            return Json(new SelectList(airmacs, "AIRMAC", "AIRMAC"));
         }
 
     }

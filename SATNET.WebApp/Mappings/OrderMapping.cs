@@ -37,8 +37,6 @@ namespace SATNET.WebApp.Mappings
                 IPPrice=obj.IPPrice,
                 Total = obj.Total,
 ModemModel = obj.ModemModel,
-TransceiverWATT=obj.TransceiverWATT,
-AntennaSize = obj.AntennaSize,
 StatusId = obj.StatusId,
 CustomerId=obj.CustomerId,
 CustomerShortName=obj.CustomerShortName,
@@ -50,7 +48,7 @@ SiteCity = obj.SiteCity,
 SiteArea = obj.SiteArea,
 InstallationDate = obj.InstallationDate,
 Promotion = obj.Promotion,
-MacAirNo = obj.MacAirNo,
+AirMac = obj.AirMac,
 CurrentIPName = obj.CurrentIPName,
 CurrentSpName = obj.CurrentSpName,
 CurrentSpTypeName = obj.CurrentSpTypeName,
@@ -61,12 +59,13 @@ DowngradeToName=obj.DowngradeToName,
 UpgradeToTypeName=obj.UpgradeToTypeName,
 UpgradeToName=obj.UpgradeToName,
 Token = obj.Token,
-NewMacAirNo = obj.NewMacAirNo,
+NewAirMac = obj.NewAirMac,
 Other = obj.Other,
 CreatedOn = obj.CreatedOn,
 CreatedByName=obj.CreatedByName,
 CreatedByRole=obj.CreatedByRole,
-ProRataQuota = obj.ProRataQuota
+ProRataQuota = obj.ProRataQuota,
+IsServicePlanFull = obj.IsServicePlanFull
             };
             return model;
         }
@@ -83,7 +82,8 @@ ProRataQuota = obj.ProRataQuota
                 StatusName = model.StatusName,
                 RequestTypeId = model.RequestTypeId,
                 ProRataQuota = model.ProRataQuota,
-                ServicePlanTypeId=model.ServicePlanTypeId
+                ServicePlanTypeId=model.ServicePlanTypeId,
+                IsServicePlanFull = model.IsServicePlanFull
             };
             return obj;
         }

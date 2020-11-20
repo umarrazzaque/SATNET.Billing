@@ -12,8 +12,6 @@ namespace SATNET.WebApp.Models.Hardware
 {
     public class HardwareComponentRegistrationModel : BaseModel
     {
-        [DisplayName("Registration Number")]
-        public string HCRegistrationNumber { get; set; }
         [DisplayName("Serial Number")]
         public string SerialNumber { get; set; }
         [DisplayName("MAC Address")]
@@ -29,8 +27,7 @@ namespace SATNET.WebApp.Models.Hardware
         [Required(ErrorMessage ="Required Field")]
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
-        [DisplayName("Registered")]
-        public bool IsRegistered { get; set; }
+        public bool IsUsed { get; set; }
         public string[] SerialNumbers { get; set; }
         public string[] AIRMACs { get; set; }
         public SelectList CustomerSelectList { get; set; }

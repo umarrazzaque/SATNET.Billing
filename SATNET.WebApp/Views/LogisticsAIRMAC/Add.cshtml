@@ -156,8 +156,8 @@
         return return_val;
     }
     $(document).on('click', '.add_hm_item', function () {
-        var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
-        var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val().toUpperCase();
+        var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val();
+        var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val();
         //console.log(serialNo + ':' + AIRMAC);
         var grid_obj_item = {
             specsOne: specsOne,

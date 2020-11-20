@@ -40,6 +40,7 @@
     <link href="~/css/custom.css" rel="stylesheet" />
     @*<link rel="stylesheet" href="/path/to/cdn/bootstrap.min.css" />*@
     <link href="~/lib/bootstrap/autocomplete/css/bootstrap-select.css" rel="stylesheet" />
+    @RenderSection("Styles", required:false)
 </head>
 <body>
     @using Microsoft.AspNetCore.Authorization
@@ -175,7 +176,7 @@
                                             <a href="#" class="" title="View Hardware Order Invoices">
                                                 <i class="metismenu-icon icofont-bill"></i>Purchase Order Invoices
                                             </a>
-                                            <a href="@String.Format("/{0}", "SOInvoice/Report")" class="" title="View Service Order Invoices">
+                                            <a href="@String.Format("/{0}", "SOInvoice/GetSiteLedgerReport")" class="" title="View Service Order Invoices">
                                                 <i class="metismenu-icon icofont-bill"></i> Reports
                                             </a>
                                         </li>
@@ -226,13 +227,13 @@
                                                 <i class="metismenu-icon icofont-library"></i> AIRMAC
                                             </a>
                                             <a href="@Url.Action("Index","LogisticsAIRMACReg")" class="">
-                                                <i class="metismenu-icon icofont-library"></i> AIRMAC Registrations
+                                                <i class="metismenu-icon icofont-library"></i> Registered AIRMACs
                                             </a>
                                             <a href="@Url.Action("","")" class="">
                                                 <i class="metismenu-icon icofont-library"></i> BUC
                                             </a>
                                             <a href="@Url.Action("","")" class="">
-                                                <i class="metismenu-icon icofont-library"></i> BUC Registrations
+                                                <i class="metismenu-icon icofont-library"></i> Registered BUCs
                                             </a>
 
                                         </li>

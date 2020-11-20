@@ -22,13 +22,14 @@ namespace SATNET.WebApp.Models
         [Required(ErrorMessage = "Antenna Meters field is required")]
         public int AntennaMeterId { get; set; }
         public string AntennaMeter { get; set; }
-        [DisplayName("Power WATT")]
-        [Required(ErrorMessage = "Power WATT field is required")]
+        [DisplayName("BUC(WATT)")]
+        [Required(ErrorMessage = "BUC(WATT) field is required")]
         public int PowerWATT { get; set; }
         [DisplayName("NPRM Pieces")]
         [Required(ErrorMessage = "NPRM Pieces field is required")]
         public int NPRMPieces { get; set; }
-        [Required(ErrorMessage = "RG6 field is required")]
+        [DisplayName("RG6 Cable")]
+        [Required(ErrorMessage = "RG6 Cable field is required")]
         public int RG6 { get; set; }
         [DisplayName("Connector Pieces")]
         [Required(ErrorMessage = "Connector Pieces field is required")]
