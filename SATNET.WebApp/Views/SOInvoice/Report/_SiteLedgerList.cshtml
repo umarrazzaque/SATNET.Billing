@@ -23,73 +23,74 @@
         </thead>
 
         <tbody>
-
-            @{
-                int counter = 0;
+            @if (Model.Any())
+            {
                 decimal siteTotal = 0;
                 decimal total = 0;
-            }
-            @foreach (var siteLedger in Model)
-            {
-                 siteTotal = 0;
-                foreach (var invoice in siteLedger.InvoiceViewModels)
+
+                foreach (var siteLedger in Model)
                 {
-                    foreach (var invoiceItem in invoice.InvoiceItems)
+                    @if (siteLedger.InvoiceViewModels.Any())
                     {
-            <tr>
-                @*<td class="text-center"> <input type="checkbox"></td>*@
-                @*<td class="text-center text-muted">
-            @{
-                counter++;
-            }
-            @counter
-        </td>*@
-                <td>
-                    @siteLedger.Name
-                </td>
-                <td> @invoice.CreatedOn</td>
-                <td>@invoiceItem.Item - @invoiceItem.Description</td>
-                <td>@invoice.InvoiceNumber </td>
+                        siteTotal = 0;
+                        foreach (var invoice in siteLedger.InvoiceViewModels)
+                        {
+                            foreach (var invoiceItem in invoice.InvoiceItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @siteLedger.Name
+                                    </td>
+                                    <td> @invoice.CreatedOn</td>
+                                    <td>@invoiceItem.Item - @invoiceItem.Description</td>
+                                    <td>@invoice.InvoiceNumber </td>
 
-                @if (invoiceItem.ItemTypeId == 88)
-                {
-                    <td>- @invoiceItem.Amount</td>
-                    siteTotal = siteTotal - invoiceItem.Amount;
-                }
-                else
-                {
-                    <td>@invoiceItem.Amount</td>
-                    siteTotal = siteTotal + invoiceItem.Amount;
+                                    @if (invoiceItem.ItemTypeId == 88)
+                                    {
+                                        <td>- @invoiceItem.Amount</td>
+                                        siteTotal = siteTotal - invoiceItem.Amount;
+                                    }
+                                    else
+                                    {
+                                        <td>@invoiceItem.Amount</td>
+                                        siteTotal = siteTotal + invoiceItem.Amount;
 
-                }
-            </tr>
+                                    }
+
+                                </tr>
+                            }
+                        }
+                        <tr class="site-footer">
+                            <td>
+                                @siteLedger.Name
+                            </td>
+                            <td colspan="3">
+                                Total
+                            </td>
+                            <td>
+                                @siteTotal
+                            </td>
+                            @{total = total + siteTotal;}
+                        </tr>
                     }
+
                 }
-                <tr></tr>
                 <tr class="site-footer">
                     <td>
-                        @siteLedger.Name
+                        Report
                     </td>
                     <td colspan="3">
                         Total
                     </td>
                     <td>
-                        @siteTotal
+                        @total
                     </td>
-                    @{total = total + siteTotal;}
                 </tr>
             }
-        <tr class="site-footer">
-            <td>
-                Report
-            </td>
-            <td colspan="3">
-                Total
-            </td>
-            <td>
-                @total
-            </td>
-        </tr>
+            else
+            {
+                <tr><td colspan="5">No site found.</td></tr>
+            }
         </tbody>
     </table>
 

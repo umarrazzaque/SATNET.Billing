@@ -34,8 +34,9 @@
             {
                 <div class="col-lg-2">
                     <div class="position-relative form-group">
+                        <label>Customer</label>
                         <select id="selectCustomer" type="select" class="form-control" asp-items="ViewBag.CustomerSelectList">
-                            <option value="0" selected>Select</option>
+                            <option value="0" disabled selected>Select</option>
                         </select>
                     </div>
                 </div>
@@ -43,12 +44,24 @@
             }
             <div class="col-lg-2">
                 <div class="position-relative form-group">
+                    <label>Site</label>
                     <select id="selectSite" type="select" class="form-control" asp-items="ViewBag.SiteSelectList">
-                        <option value="0" selected>Select</option>
+                        <option value="0" selected>All</option>
                     </select>
                 </div>
             </div>
-
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Start Date</label>
+                    <input id="dateStart" type="date" placeholder="..." class="form-control" value="" />
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>End Date</label>
+                    <input id="dateEnd" type="date" placeholder="..." class="form-control" value="" />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -70,29 +83,49 @@
             $(".filters select#selectCustomer").change(function () {
                 var customerId = $(this).val();
                 if (customerId != '0') {
-                    GetSiteLedgerReport(customerId, 0);
+                    GetSiteLedgerReport(customerId, 0, null,null);
                     GetSiteSelectList(customerId);
+                    $("#dateStart").val('');
+                    $("#dateEnd").val('');
                 }
             });
             $(".filters select#selectSite").change(function () {
                 var siteId = $(this).val();
-                if (siteId != '0') {
                     var customerId = $(".filters select#selectCustomer").val();
                     if (customerId > 0) {
-                        GetSiteLedgerReport(customerId, siteId);
+                        GetSiteLedgerReport(customerId, siteId, null, null);
                     }
                     else {
-                        GetSiteLedgerReport(_customerId, siteId);
+                        GetSiteLedgerReport(_customerId, siteId, null, null);
                     }
+                    $("#dateStart").val('');
+                    $("#dateEnd").val('');
+            });
+            $(".filters input#dateStart").change(function () {
+                var customerId = $(".filters select#selectCustomer").val();
+                var siteId = $(".filters select#selectSite").val();
+                var startDate = $(this).val();
+                if (startDate != '') {
+                    GetSiteLedgerReport(customerId, siteId, startDate, null);
                 }
             });
+            $(".filters input#dateEnd").change(function () {
+                var customerId = $(".filters select#selectCustomer").val();
+                var siteId = $(".filters select#selectSite").val();
+                var startDate = $(".filters input#dateStart").val();
+                var endDate = $(this).val();
+                if (endDate != '') {
+                    GetSiteLedgerReport(customerId, siteId, startDate, endDate);
+                }
+            });
+
         });
 
-        GetSiteLedgerReport = function (customerId, siteId) {
+        GetSiteLedgerReport = function (customerId, siteId, startDate, endDate) {
             $.ajax(
                 {
                     url: '/SOInvoice/GetAjaxSiteLedgerReport',
-                    data: { customerId: customerId, siteId: siteId },
+                    data: { customerId: customerId, siteId: siteId, startDate: startDate, endDate: endDate },
                     type: 'get',
                     dataType: "html",
                     success: function (html) {
@@ -117,7 +150,7 @@
                     });
                     $("#selectSite").empty();
                     $("#selectSite").html(items);
-                    $("#selectSite").prepend("<option value='0'>Select</option>").val('0');
+                    $("#selectSite").prepend("<option value='0'>All</option>").val('0');
                 }
             });
 

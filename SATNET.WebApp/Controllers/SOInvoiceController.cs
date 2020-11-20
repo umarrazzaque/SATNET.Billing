@@ -130,15 +130,15 @@ namespace SATNET.WebApp.Controllers
                 var customer = await GetCustomer(customerId);
                 ViewBag.CustomerName = customer.Name;
                 ViewBag.CustomerId = customerId;
-                model = await GetSiteLedgerList(customerId, 0);
+                model = await GetSiteLedgerList(customerId, 0, DateTime.MinValue, DateTime.MinValue);
             }
 
             return View("Report/SiteLedger", model);
         }
 
-        public async Task<IActionResult> GetAjaxSiteLedgerReport(int customerId, int siteId)
+        public async Task<IActionResult> GetAjaxSiteLedgerReport(int customerId, int siteId, DateTime startDate, DateTime endDate)
         {
-            var model = await GetSiteLedgerList(customerId, siteId);
+            var model = await GetSiteLedgerList(customerId, siteId, startDate, endDate);
             if (customerId > 0)
             {
                 var customer = await GetCustomer(customerId);
@@ -148,7 +148,7 @@ namespace SATNET.WebApp.Controllers
             return PartialView("Report/_SiteLedgerList", model);
         }
 
-        private async Task<List<SiteLedgerViewModel>> GetSiteLedgerList(int customerId, int siteId)
+        private async Task<List<SiteLedgerViewModel>> GetSiteLedgerList(int customerId, int siteId, DateTime startDate, DateTime endDate)
         {
             List<SiteLedgerViewModel> siteLedgerList = new List<SiteLedgerViewModel>();
             var sites = await _siteService.List(new Site() { CustomerId = customerId, Id = siteId });
@@ -157,7 +157,7 @@ namespace SATNET.WebApp.Controllers
             {
                 var siteLedgerViewModel = new SiteLedgerViewModel() { Name = site.Name };
                 DateTime.Today.AddMonths(-1);
-                var invoices = await _invoiceService.List(new SOInvoice() { SiteId = site.Id, StartDate= DateTime.Today.AddMonths(-1).Date, EndDate=DateTime.Now.Date });
+                var invoices = await _invoiceService.List(new SOInvoice() { SiteId = site.Id, StartDate= startDate, EndDate=endDate });
                 if (invoices.Any())
                 {
                     foreach (var inv in invoices)
