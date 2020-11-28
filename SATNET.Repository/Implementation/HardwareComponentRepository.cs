@@ -38,7 +38,7 @@ namespace SATNET.Repository.Implementation
             int result = 0;
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
-            queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
             int retResult = await dbCon.ExecuteScalarAsync<int>("HardwareComponentDelete", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);

@@ -220,4 +220,5 @@ refreshSelectPicker = function () {
 
     // Re-render
     mySelect.selectpicker('render');
+
 }

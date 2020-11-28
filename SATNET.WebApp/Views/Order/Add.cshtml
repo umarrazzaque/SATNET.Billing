@@ -183,8 +183,17 @@
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
+            <label>Modem Model </label>
+            <select id="selectModemModel" asp-for="ModemModelId" asp-items="Model.ModemModelSelectList" class="form-control select2 text-input airmac">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="ModemModelId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 hardware">
+        <div class="form-group">
             <label>AIRMAC </label>
-            <select asp-for="AirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
+            <select id="selectAirMac" asp-for="AirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="AirMac" class="text-danger"></span>

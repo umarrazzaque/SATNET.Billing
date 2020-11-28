@@ -47,9 +47,36 @@ namespace SATNET.Service.Implementation
             return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            throw new NotImplementedException();
+            var status = new StatusModel { IsSuccess = false };
+            try
+            {
+                int dRow = -1;
+                using (var uow = new UnitOfWorkFactory().Create())
+                {
+                    uow.BeginTransaction();
+                    dRow = await uow.HardwareComponents.Delete(recId, deletedBy);
+                    if (dRow > 0)
+                    {
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Transaction completed successfully.";
+                    }
+                    else
+                    {
+                        status.ErrorCode = "An error occured while processing request.";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                status.ErrorCode = "Cannot delete record due to referential records.";
+            }
+            finally
+            {
+            }
+            return status;
         }
 
         public async Task<HardwareComponent> Get(int id)

@@ -63,6 +63,9 @@ namespace SATNET.WebApp.Models.Order
         public string AirMac { get; set; }
         public string Promotion { get; set; }
         public SelectList AirMacSelectList { get; set; }
+        [Required(ErrorMessage = "Modem model is required")]
+        public string ModemModelId { get; set; }
+        public SelectList ModemModelSelectList { get; set; }
         public string HardwareModel { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }

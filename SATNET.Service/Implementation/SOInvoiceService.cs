@@ -30,7 +30,18 @@ namespace SATNET.Service.Implementation
         }
         public async Task<List<SOInvoice>> List(SOInvoice obj) 
         {
-            return await _invoiceRepository.List(obj);
+            List<SOInvoice> invoices = new List<SOInvoice>();
+            try
+            {
+                invoices = await _invoiceRepository.List(obj);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+            return invoices;
         }
         public async Task<StatusModel> Add(SOInvoice order) { throw new NotImplementedException(); }
         public async Task<StatusModel> Update(SOInvoice order) { throw new NotImplementedException(); }

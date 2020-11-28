@@ -156,8 +156,8 @@ namespace SATNET.WebApp.Controllers
             foreach (var site in sites)
             {
                 var siteLedgerViewModel = new SiteLedgerViewModel() { Name = site.Name };
-                DateTime.Today.AddMonths(-1);
-                var invoices = await _invoiceService.List(new SOInvoice() { SiteId = site.Id, StartDate= startDate, EndDate=endDate });
+                
+                var invoices = await _invoiceService.List(new SOInvoice() { SiteId = site.Id, StartDate = startDate, EndDate = endDate });
                 if (invoices.Any())
                 {
                     foreach (var inv in invoices)

@@ -308,7 +308,10 @@ $(function () {
         if (customerDDLId > 0 && requestTypeId > 0 && requestTypeId != '1') {
             getSites(requestTypeId, customerDDLId);
         }
-        getAIRMACs(customerDDLId);
+        var modemModelId = $("#selectModemModel").val();
+        if (modemModelId > 0 && customerDDLId > 0) {
+            getAIRMACs(customerDDLId, modemModelId);
+        }
     });
     $("#SiteId").change(function () {
         if ($(this).val() > 0) {
@@ -433,6 +436,14 @@ $(function () {
             $(".pro-rata-gb").hide();
         }
     });
+    $("#selectModemModel").change(function () {
+        var modemModelId = $(this).val();
+        var customerId = getCustomerId();
+        if (modemModelId > 0 && customerId > 0) {
+            getAIRMACs(customerId, modemModelId);
+        }
+    });
+
 });
 
 getDateToday = function(){
@@ -753,11 +764,11 @@ showProRataGB = function (quotaPlanText, installationDate, textBox) {
     });
 }
 
-getAIRMACs = function (customerId) {
-    if (customerId > 0) {
+getAIRMACs = function (customerId, modemModelId) {
+
         $.ajax({
             url: '/Order/GetAIRMACs',
-            data: { customerId: customerId },
+            data: { customerId: customerId, modemModelId: modemModelId },
             type: 'get',
             dataType: 'json',
             success: function (result) {
@@ -765,12 +776,12 @@ getAIRMACs = function (customerId) {
                 $.each(result, function (i, plan) {
                     items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
                 });
-                $(".airmac").empty();
-                $(".airmac").html(items);
-                $(".airmac").prepend("<option value=''>Select</option>").val('');
+                $("#selectAirMac").empty();
+                $("#selectAirMac").html(items);
+                $("#selectAirMac").prepend("<option value=''>Select</option>").val('');
             }
         });
-    }
+
 }
 
 

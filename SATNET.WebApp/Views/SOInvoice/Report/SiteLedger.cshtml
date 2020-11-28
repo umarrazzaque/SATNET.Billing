@@ -106,7 +106,12 @@
                 var siteId = $(".filters select#selectSite").val();
                 var startDate = $(this).val();
                 if (startDate != '') {
-                    GetSiteLedgerReport(customerId, siteId, startDate, null);
+                    if (customerId > 0) {
+                        GetSiteLedgerReport(customerId, siteId, startDate, null);
+                    }
+                    else {
+                        GetSiteLedgerReport(_customerId, siteId, startDate, null);
+                    }
                 }
             });
             $(".filters input#dateEnd").change(function () {
@@ -115,7 +120,12 @@
                 var startDate = $(".filters input#dateStart").val();
                 var endDate = $(this).val();
                 if (endDate != '') {
-                    GetSiteLedgerReport(customerId, siteId, startDate, endDate);
+                    if (customerId > 0) {
+                        GetSiteLedgerReport(customerId, siteId, startDate, endDate);
+                    }
+                    else {
+                        GetSiteLedgerReport(_customerId, siteId, startDate, endDate);
+                    }
                 }
             });
 
