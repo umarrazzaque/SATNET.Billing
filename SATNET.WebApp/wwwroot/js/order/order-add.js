@@ -193,6 +193,7 @@ $(function () {
                 $("#AirMac").prop("disabled", false);
                 $("#HardwareConditionId").prop("disabled", false);
                 $("#PromotionId").prop("disabled", false);
+                getModemModels();
                 break
             case '2':// Termination
                 $(".select-site").show();
@@ -310,7 +311,7 @@ $(function () {
         }
         var modemModelId = $("#selectModemModel").val();
         if (modemModelId > 0 && customerDDLId > 0) {
-            getAIRMACs(customerDDLId, modemModelId);
+            getAIRMACs(customerDDLId, modemModelId, 'new-site');
         }
     });
     $("#SiteId").change(function () {
@@ -318,33 +319,7 @@ $(function () {
             var url = '/Order/GetSiteDetails';
             $.getJSON(url, { siteId: $(this).val() }, function (result) {
                 if (result != null) {
-                    var requestTypeId = $("#RequestTypeId").val();
-                    $("#SiteCityId").val(result.cityId);
-                    $("#SiteArea").val(result.area);
-                    $("#ServicePlanTypeId").val(result.servicePlanTypeId);
-                    if (result.servicePlanTypeId > 0) {
-                        populateServicePlan(result.servicePlanTypeId, result.servicePlanId, requestTypeId);
-                    }
-                    $("#IPId").val(result.ipId);
-                    $("#SubscriberName").val(result.subscriberName);
-                    $("#AirMac").val(result.airMac);
-                    $('#ipChangeTo').empty();
-                    var $options = $("#IPId > option").clone();
-                    $('#ipChangeTo').append($options);
-                    $("#ipPlan").val(result.ipId);
-                    $("#ipPlan").prop("disabled", true);
-                    $("#ipChangeTo option[value=" + result.ipId + "]").remove();
-                    var items = '';
-                    items += "<option>"+ result.airMac +"</option>";
-                    $('#currentAirMac').empty();
-                    $("#currentAirMac").html(items);
-                    $("#currentAirMac").prop("disabled", true);
-                    //$('#NewAirMac').empty();
-                    //var $options = $("#AirMac > option").clone();
-                    //$('#NewAirMac').append($options);
-                    //$("#currentAirMac").val(result.airMac);
-                    //$("#currentAirMac").prop("disabled", true);
-                    //$("#NewAirMac option[value=" + result.airMac + "]").remove();
+                    populateFormFields(result);
                 }
             });
         }
@@ -436,11 +411,12 @@ $(function () {
             $(".pro-rata-gb").hide();
         }
     });
-    $("#selectModemModel").change(function () {
+    $(".modem").change(function () {
+        var section = $(this).data("section");
         var modemModelId = $(this).val();
         var customerId = getCustomerId();
         if (modemModelId > 0 && customerId > 0) {
-            getAIRMACs(customerId, modemModelId);
+            getAIRMACs(customerId, modemModelId, section);
         }
     });
 
@@ -482,7 +458,7 @@ getServicePlansByType = function (type, section) {
         $.each(result, function (i, plan) {
             items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
         });
-        if (section == "newsite") {
+        if (section == "new-site") {
             $("#ServicePlanId").empty();
             $("#ServicePlanId").html(items);
             $("#ServicePlanId").prop("disabled", false);
@@ -642,6 +618,7 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
 
 resetFields = function () {
     $("#CustomerId").val('');
+    $('#CustomerId').selectpicker('refresh')
     $("#SiteId").val('');
     $("#SiteCityId").val('');
     $("#SiteId").empty();
@@ -656,6 +633,8 @@ resetFields = function () {
     $("#SubscriberEmail").val('');
     $("#SubscriberArea").val('');
     $("#SubscriberNotes").val('');
+    $("#selectAirMac").val('');
+    $("#selectAirMac").prop('disabled', false);
 }
 
 removeDowngradeItem = function (servicePlanType) {
@@ -764,7 +743,71 @@ showProRataGB = function (quotaPlanText, installationDate, textBox) {
     });
 }
 
-getAIRMACs = function (customerId, modemModelId) {
+populateFormFields = function (result) {
+
+    var requestTypeId = $("#RequestTypeId").val();
+    $("#SiteCityId").val(result.cityId);
+    $("#SiteArea").val(result.area);
+    $("#ServicePlanTypeId").val(result.servicePlanTypeId);
+    if (result.servicePlanTypeId > 0) {
+        populateServicePlan(result.servicePlanTypeId, result.servicePlanId, requestTypeId);
+    }
+    $("#IPId").val(result.ipId);
+    $("#SubscriberName").val(result.subscriberName);
+
+    if (requestTypeId == 32) {
+        $("#selectAirMac").empty();
+        var airmacItem = "<option selected disabled>" + result.airMac + "</option>";
+        $("#selectAirMac").html(airmacItem);
+        $("#selectAirMac").prop("disabled", true);
+        $("#selectModemModel").empty();
+        var modemItem = "<option selected disabled>" + result.modemModel + "</option>";
+        $("#selectModemModel").html(modemItem);
+        $("#selectModemModel").prop("disabled", true);
+    }
+    else if (requestTypeId == 69) {
+        $("#txtCurrentModem").val(result.modemModel);
+        $("#txtCurrentAirmac").val(result.airMac);
+    }
+    $('#ipChangeTo').empty();
+    var $options = $("#IPId > option").clone();
+    $('#ipChangeTo').append($options);
+    $("#ipPlan").val(result.ipId);
+    $("#ipPlan").prop("disabled", true);
+    $("#ipChangeTo option[value=" + result.ipId + "]").remove();
+    var items = '';
+    items += "<option>" + result.airMac + "</option>";
+    $('#currentAirMac').empty();
+    $("#currentAirMac").html(items);
+    $("#currentAirMac").prop("disabled", true);
+                    //$('#NewAirMac').empty();
+                    //var $options = $("#AirMac > option").clone();
+                    //$('#NewAirMac').append($options);
+                    //$("#currentAirMac").val(result.airMac);
+                    //$("#currentAirMac").prop("disabled", true);
+                    //$("#NewAirMac option[value=" + result.airMac + "]").remove();
+}
+
+getModemModels = function () {
+
+    $.ajax({
+        url: '/Order/GetModemModels',
+        type: 'get',
+        dataType: 'json',
+        success: function (result) {
+            var items = '';
+            $.each(result, function (i, plan) {
+                items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+            });
+            $("#selectModemModel").empty();
+            $("#selectModemModel").html(items);
+            $("#selectModemModel").prepend("<option value=''>Select</option>").val('');
+            $("#selectModemModel").prop("disabled", false);
+        }
+    });
+
+}
+getAIRMACs = function (customerId, modemModelId, section) {
 
         $.ajax({
             url: '/Order/GetAIRMACs',
@@ -773,12 +816,20 @@ getAIRMACs = function (customerId, modemModelId) {
             dataType: 'json',
             success: function (result) {
                 var items = '';
+                var select = '';
                 $.each(result, function (i, plan) {
                     items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
                 });
-                $("#selectAirMac").empty();
-                $("#selectAirMac").html(items);
-                $("#selectAirMac").prepend("<option value=''>Select</option>").val('');
+                if (section == 'new-site') {
+                    select = $("#selectAirMac");
+                }
+                else if (section=='modem-swap') {
+                    select = $("#selectNewAirmac");
+                }
+                select.empty();
+                select.html(items);
+                select.prepend("<option value=''>Select</option>").val('');
+                select.prop("disabled", false);
             }
         });
 

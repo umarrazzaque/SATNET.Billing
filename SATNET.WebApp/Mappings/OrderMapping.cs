@@ -65,7 +65,7 @@ CreatedOn = obj.CreatedOn,
 CreatedByName=obj.CreatedByName,
 CreatedByRole=obj.CreatedByRole,
 ProRataQuota = obj.ProRataQuota,
-IsServicePlanFull = obj.IsServicePlanFull
+IsServicePlanFull = obj.IsServicePlanFull,
             };
             return model;
         }

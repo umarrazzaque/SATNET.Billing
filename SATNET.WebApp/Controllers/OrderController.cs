@@ -94,15 +94,8 @@ namespace SATNET.WebApp.Controllers
             var promotions = await _promotionService.List(new Promotion());
             var ips = await _ipService.List(new IP());
             List<HardwareComponent> modems = new List<HardwareComponent>();
-            modems = await _hardwareComponentService.List(new HardwareComponent() { SearchBy= "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
-            //List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();
-            //if (customerId > 0)
-            //{
-            //    airmacs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = "UnUsedAIRMAC", CustomerId = customerId });
-
-            //}
+            modems = await _hardwareComponentService.List(new HardwareComponent() { SearchBy = "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
             model.ModemModelSelectList = new SelectList(modems, "Id", "HCValue");
-            //model.AirMacSelectList = new SelectList(airmacs, "AIRMAC", "AIRMAC");
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.ScheduleDateSelectList= new SelectList(scheduleDates, "Id", "Name");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
@@ -117,7 +110,6 @@ namespace SATNET.WebApp.Controllers
             {
                 customer = await GetCustomer(customerId);
                 model.CustomerName = customer.Name;
-                //model.SiteName = GetLoggedInUserCustomerName3(customer.Name).ToUpper() + GetNumber(GetSiteCount() + 1);
             }
 
             return View(model);
@@ -399,6 +391,12 @@ namespace SATNET.WebApp.Controllers
                 proRataQuotaGB = proRataQuotaGB
             });
         }
+        public async Task<IActionResult> GetModemModels()
+        {
+            var modems = await _hardwareComponentService.List(new HardwareComponent() { SearchBy = "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
+            return Json(new SelectList(modems, "Id", "HCValue"));
+        }
+
         public async Task<IActionResult> GetAIRMACs(int customerId, int modemModelId)
         {
             List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();

@@ -32,6 +32,7 @@ namespace SATNET.Domain
         public DateTime ActivationDate { get; set; }
         public DateTime LastActivationDate { get; set; }
         public DateTime NextBillingDate { get; set; }
+        public string ModemModel { get; set; }
         public string AirMac { get; set; }
         public int PromotionId { get; set; }
         public int HardwareConditionId { get; set; }
