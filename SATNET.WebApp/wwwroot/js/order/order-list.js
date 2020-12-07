@@ -83,7 +83,8 @@
         var orderId = $(this).data("id");
         var action = $(this).data("action");
         if (action == "Accept") {
-            orderAction(orderId, 21, '');//accepted=21
+            $("#btnAcceptOrder").data("id", orderId);
+            //orderAction(orderId, 21, '');//accepted=21
         }
         else {
             $("#btnRejectOrder").data("id", orderId);
@@ -103,6 +104,12 @@
         var orderId = $(this).data("id");
         orderAction(orderId, 22, $("#txtRejectReason").val());//rejected=22
 
+    });
+
+    $(document).on("click", '#btnAcceptOrder', function (e) {
+        e.preventDefault();
+        var orderId = $(this).data("id");
+        orderAction(orderId, 21, '');//accepted=21
     });
 
 });

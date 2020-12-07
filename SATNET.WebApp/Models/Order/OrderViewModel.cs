@@ -59,29 +59,13 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Hardware Billing is required")]
         public int BillingId { get; set; }
         public SelectList BillingSelectList { get; set; }
-        [Required(ErrorMessage = "Modem Model is required")]
-        public int ModemModelId { get; set; }
-        public SelectList ModemModelSelectList { get; set; }
-        [Required(ErrorMessage = "Modem Serial No is required")]
-        public int ModemSrNoId { get; set; }
-        public SelectList ModemSrNoSelectList { get; set; }
-        [Required(ErrorMessage = "Mac Air No is required")]
-        public int MacAirNoId { get; set; }
-        public string MacAirNo { get; set; }
-        public string NewMacAirNo { get; set; }
+        [Required(ErrorMessage = "AIRMAC is required")]
+        public string AirMac { get; set; }
         public string Promotion { get; set; }
-        public SelectList MacAirNoSelectList { get; set; }
-        [Required(ErrorMessage = "Antenna size is required")]
-        public int AntennaSizeId { get; set; }
-        public SelectList AntennaSizeSelectList { get; set; }
-        [Required(ErrorMessage = "Antenna Serial No is required")]
-        public string AntennaSrNo { get; set; }
-        [Required(ErrorMessage = "Transceiver WATT is required")]
-        public int TransceiverWATTId { get; set; }
-        public SelectList TransceiverWATTSelectList { get; set; }
-        [Required(ErrorMessage = "Transceiver Serial No is required")]
-        public int TransceiverSrNoId { get; set; }
-        public SelectList TransceiverSrNoSelectList { get; set; }
+        public SelectList AirMacSelectList { get; set; }
+        [Required(ErrorMessage = "Modem model is required")]
+        public string ModemModelId { get; set; }
+        public SelectList ModemModelSelectList { get; set; }
         public string HardwareModel { get; set; }
         [DisplayName("Hardware")]
         public SelectList HardwareSelectList { get; set; }
@@ -174,7 +158,7 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "Change Service plan to is required")]
         public int ChangeServicePlanId { get; set; }
         [Required(ErrorMessage = "New Mac Air No is required")]
-        public int NewMacAirNoId { get; set; }
-
+        public string NewAirMac { get; set; }
+        public bool IsServicePlanFull { get; set; }
     }
 }

@@ -43,12 +43,12 @@ namespace SATNET.WebApp.Controllers
             var resultModel = new CreateHardwareKitModel() { 
                 HardwareKitModel = new HardwareKitModel(),
                 ModemModels = _mapper.Map<List<HardwareComponentModel>> (_hardwareComponentService.List(new HardwareComponent() {
-                    Flag = "GET_BY_HARDWARE_TYPE", 
+                    SearchBy = "HC.HardwareTypeId", 
                     Keyword = Convert.ToInt32 (HardwareType.Modem).ToString()
                 }).Result),
                 AntennaMeters = _mapper.Map<List<HardwareComponentModel>>(_hardwareComponentService.List(new HardwareComponent()
                 {
-                    Flag = "GET_BY_HARDWARE_TYPE",
+                    SearchBy = "HC.HardwareTypeId",
                     Keyword = Convert.ToInt32(HardwareType.AntennaMeter).ToString()
                 }).Result)
             };
@@ -80,12 +80,12 @@ namespace SATNET.WebApp.Controllers
                 HardwareKitModel = _mapper.Map< HardwareKitModel> (_hardwareKitService.Get(id).Result),
                 ModemModels = _mapper.Map<List<HardwareComponentModel>>(_hardwareComponentService.List(new HardwareComponent()
                 {
-                    Flag = "GET_BY_HARDWARE_TYPE",
+                    SearchBy = "HC.HardwareTypeId",
                     Keyword = Convert.ToInt32(HardwareType.Modem).ToString()
                 }).Result),
                 AntennaMeters = _mapper.Map<List<HardwareComponentModel>>(_hardwareComponentService.List(new HardwareComponent()
                 {
-                    Flag = "GET_BY_HARDWARE_TYPE",
+                    SearchBy = "HC.HardwareTypeId",
                     Keyword = Convert.ToInt32(HardwareType.AntennaMeter).ToString()
                 }).Result)
             };
@@ -103,7 +103,7 @@ namespace SATNET.WebApp.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             //1  as loged in user id
-            var statusModel = _lookUpService.Delete(id, 1).Result;
+            var statusModel = _hardwareKitService.Delete(id, 1).Result;
             statusModel.Html = RenderViewToString(this, "Index", await GetHardwareKitList());
             return Json(statusModel);
         }

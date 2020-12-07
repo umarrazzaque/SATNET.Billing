@@ -23,24 +23,9 @@ namespace SATNET.Service.Implementation
                     retId = uow.HardwareKits.Add(obj).Result;
                     if (retId != 0)
                     {
-                        HardwareComponent hcObj = new HardwareComponent()
-                        {
-                            HardwareTypeId = Convert.ToInt32( HardwareType.Kit),
-                            KitId = retId,
-                            HCValue = obj.KitName
-                        };
-                        retId = uow.HardwareComponents.Add(hcObj).Result;
-                        if (retId != 0)
-                        {
-                            uow.SaveChanges();
-                            status.IsSuccess = true;
-                            status.ErrorCode = "Record insert successfully.";
-                        }
-                        else
-                        {
-                            status.IsSuccess = false;
-                            status.ErrorCode = "Error in inserting the record.";
-                        }
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Record insert successfully.";
                     }
                     else
                     {
@@ -135,29 +120,12 @@ namespace SATNET.Service.Implementation
                 {
                     uow.BeginTransaction();
                     retId = uow.HardwareKits.Update(obj).Result;
+
                     if (retId != 0)
                     {
-                        var hardCompList = uow.HardwareComponents.List(new HardwareComponent()
-                        {
-                            SearchBy = "HC.KITID",
-                            Keyword = retId.ToString()//0321-5836090
-                        }).Result;
-                        if (hardCompList.Count > 0)
-                        {
-                            var hcObj = hardCompList[0];
-                            hcObj.HCValue = obj.KitName;
-                            if (hcObj != null)
-                            {
-                                retId = uow.HardwareComponents.Update(hcObj).Result;
-                            }
-                            if (retId != 0)
-                            {
-                                uow.SaveChanges();
-                                status.IsSuccess = true;
-                                status.ErrorCode = "Record update successfully.";
-                            }
-                        }
-                        
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Record updated successfully.";
                     }
                     else
                     {

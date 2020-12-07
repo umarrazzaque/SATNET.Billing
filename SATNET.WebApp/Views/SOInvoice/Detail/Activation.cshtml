@@ -1,17 +1,5 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
 
-@{ 
-    DateTime plannedDate = Model.PlannedInstallationDate.Value;
-    int plannedDay = plannedDate.Day;
-    int plannedMonth = plannedDate.Month;
-    int plannedYear = plannedDate.Year;
-    int daysInPlannedMonth = DateTime.DaysInMonth(plannedYear, plannedMonth);
-    string month = plannedDate.ToString("MMM");
-    decimal ipRate = Model.IPPrice / daysInPlannedMonth;
-    decimal servicePlanRate = Model.ServicePlanPrice / daysInPlannedMonth;
-    ipRate = Decimal.Round(ipRate,1,MidpointRounding.ToPositiveInfinity);
-    servicePlanRate = Decimal.Round(servicePlanRate,1,MidpointRounding.ToPositiveInfinity);
-}
 
 <div id="MainContents">
     @await Html.PartialAsync("Detail/_Common")
@@ -25,68 +13,47 @@
                         <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
+                                    <th class="text-left" style="width:5%">#</th>
                                     <th class="text-left" style="width:25%">Item</th>
-                                    <th class="text-left" style="width:45%">Description</th>
+                                    <th class="text-left" style="width:40%">Description</th>
                                     <th class="text-right" style="width:10%">Unit</th>
                                     <th class="text-right" style="width:10%">Rate($)</th>
                                     <th class="text-right" style="width:10%">Amount($)</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    int counter = 0;
+                                }
+                                @foreach (var item in Model.InvoiceItems)
+                                {
                                 <tr>
                                     <td class="text-left">
-                                        <span>@Model.ServicePlan @Model.ServicePlanUnit Prorata</span>
+                                        @{
+                                            counter++;
+                                        }
+                                        @counter
                                     </td>
-                                    <td class="text-left">Subscription from @plannedDay - @daysInPlannedMonth @month</td>
-                                    <td class="unit">@servicePlanRate</td>
-                                    <td class="unit">@Model.ServicePlanPrice</td>
-                                    <td class="total">@Model.ProRataPrice</td>
+                                    <td class="text-left">
+                                        <span>@item.Item</span>
+                                    </td>
+                                    <td class="text-left">@item.Description</td>
+                                    <td class="unit">@item.Unit</td>
+                                    <td class="unit">@item.Rate</td>
+                                    @if (item.ItemTypeId == 88)
+                                    {
+                                        <td class="total">- @item.Amount</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="total">@item.Amount</td>
+                                    }
                                 </tr>
-                                @if (Model.IPProRataPrice > 0)
-                                {
-                                    <tr>
-                                        <td class="text-left">
-                                            @Model.IP Prorata
-                                        </td>
-                                        <td class="text-left">
-                                            Subscription from @plannedDay - @daysInPlannedMonth @month
-                                        </td>
-                                        <td class="unit">@ipRate</td>
-                                        <td class="unit">@Model.IPPrice</td>
-                                        <td class="total">@Model.IPProRataPrice</td>
-                                    </tr>
-
-                                }
-                                @if (Model.PromotionRebate > 0)
-                                {
-                                    <tr>
-                                        <td class="text-left">
-                                            <span>@Model.ServicePlan @Model.ServicePlanUnit </span>
-                                        </td>
-                                        <td class="text-left">@Model.Validity Months Subscription</td>
-                                        <td class="unit">@Model.Validity</td>
-                                        <td class="unit">@Model.ServicePlanPrice</td>
-                                        <td class="total">
-                                            @Model.ServicePlanTotal
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">
-                                            display name of hardware model
-                                        </td>
-                                        <td class="text-left">
-                                            Hardware Promotion Rebate
-                                        </td>
-                                        <td class="unit">1</td>
-                                        <td class="unit">@Model.PromotionRebate</td>
-                                        <td class="total">-@Model.PromotionRebate</td>
-                                    </tr>
-
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3"></td>
+                                    <td colspan="4"></td>
                                     <td>TOTAL $</td>
                                     <td> @Model.Total</td>
                                 </tr>
@@ -94,9 +61,9 @@
                         </table>
                         <div class="thanks">Thank you!</div>
                         @*<div class="notices">
-            <div>NOTICE:</div>
-            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
-        </div>*@
+                                <div>NOTICE:</div>
+                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                            </div>*@
                     </main>
                     <footer>
                         Invoice was created on a computer and is valid without the signature and seal.

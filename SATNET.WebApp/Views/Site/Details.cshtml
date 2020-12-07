@@ -76,6 +76,18 @@
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
+            @Html.LabelFor(model => model.AirMac, new { })
+            @Html.EditorFor(model => model.AirMac, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
+            @Html.LabelFor(model => model.IpName, new { })
+            @Html.EditorFor(model => model.IpName, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
             @Html.LabelFor(model => model.ActivationDate, new { })
             @Html.EditorFor(model => model.ActivationDate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>

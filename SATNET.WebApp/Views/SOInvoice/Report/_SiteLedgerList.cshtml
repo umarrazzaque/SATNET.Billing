@@ -1,0 +1,97 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.Report.SiteLedgerViewModel>
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    @*<center>
+            <h3>@ViewBag.CustomerName</h3>
+            <h4>Site Ledger</h4>
+        </center>*@
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="" width="100%">
+        <thead>
+            <tr class="header">
+                <th colspan="5">@ViewBag.CustomerName</th>
+            </tr>
+            <tr class="header">
+                <th colspan="5">Site Ledger</th>
+            </tr>
+            <tr>
+                <th style="width:10%">Site Name</th>
+                <th style="width:20%"> Date </th>
+                <th style="width:40%"> Description </th>
+                <th style="width:20%"> Reference</th>
+                <th style="width:10%"> Amount($) </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Any())
+            {
+                decimal siteTotal = 0;
+                decimal total = 0;
+
+                foreach (var siteLedger in Model)
+                {
+                    @if (siteLedger.InvoiceViewModels.Any())
+                    {
+                        siteTotal = 0;
+                        foreach (var invoice in siteLedger.InvoiceViewModels)
+                        {
+                            foreach (var invoiceItem in invoice.InvoiceItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @siteLedger.Name
+                                    </td>
+                                    <td> @invoice.CreatedOn</td>
+                                    <td>@invoiceItem.Item - @invoiceItem.Description</td>
+                                    <td>@invoice.InvoiceNumber </td>
+
+                                    @if (invoiceItem.ItemTypeId == 88)
+                                    {
+                                        <td>- @invoiceItem.Amount</td>
+                                        siteTotal = siteTotal - invoiceItem.Amount;
+                                    }
+                                    else
+                                    {
+                                        <td>@invoiceItem.Amount</td>
+                                        siteTotal = siteTotal + invoiceItem.Amount;
+
+                                    }
+
+                                </tr>
+                            }
+                        }
+                        <tr class="site-footer">
+                            <td>
+                                @siteLedger.Name
+                            </td>
+                            <td colspan="3">
+                                Total
+                            </td>
+                            <td>
+                                @siteTotal
+                            </td>
+                            @{total = total + siteTotal;}
+                        </tr>
+                    }
+
+                }
+                <tr class="site-footer">
+                    <td>
+                        Report
+                    </td>
+                    <td colspan="3">
+                        Total
+                    </td>
+                    <td>
+                        @total
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr><td colspan="5">No site found.</td></tr>
+            }
+        </tbody>
+    </table>
+
+</div>

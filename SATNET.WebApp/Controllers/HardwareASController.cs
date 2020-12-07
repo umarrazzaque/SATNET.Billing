@@ -25,7 +25,7 @@ namespace SATNET.WebApp.Controllers
         {
             _lookUpService = lookUpService;
             _mapper = mapper;
-            activeHardwareAttribute = HardwareType.AntennaSize;
+            activeHardwareAttribute = HardwareType.AntennaMeter;
             _responseUrl = "/HardwareAS/Index";
         }
 

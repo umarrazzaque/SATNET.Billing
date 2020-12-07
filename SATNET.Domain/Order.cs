@@ -24,17 +24,9 @@ namespace SATNET.Domain
         public string SubscriberEmail { get; set; }
         public string SubscriberArea { get; set; }
         public string SubscriberNotes{ get; set; }
-        public int HardwareId { get; set; }
         public int BillingId { get; set; }
-        public int ModemModelId { get; set; }
-        public int ModemSrNoId { get; set; }
-        public int MacAirNoId { get; set; }
-        public string MacAirNo { get; set; }
-        public string NewMacAirNo { get; set; }
+        public string AirMac { get; set; }
         public string Promotion { get; set; }
-        public int AntennaSizeId { get; set; }
-        public int TransceiverWATTId { get; set; }
-        public int TransceiverSrNoId { get; set; }
         public string HardwareModel { get; set; }
         public decimal HardwarePrice { get; set; }
         public int RequestTypeId { get; set; }
@@ -76,13 +68,12 @@ namespace SATNET.Domain
         public string Other { get; set; }
         public decimal Total { get; set; }
         public string ModemModel { get; set; }
-        public string TransceiverWATT { get; set; }
-        public string AntennaSize { get; set; }
         public string RejectReason { get; set; }
         public int ScheduleDateId { get; set; }
         public string ScheduleDateName { get; set; }
         public int HardwareConditionId { get; set; }
         public int ChangeServicePlanId { get; set; }
-        public int NewMacAirNoId { get; set; }
+        public string NewAirMac { get; set; }
+        public bool IsServicePlanFull { get; set; }
     }
 }

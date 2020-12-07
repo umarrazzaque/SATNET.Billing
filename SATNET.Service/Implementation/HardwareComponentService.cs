@@ -10,16 +10,16 @@ namespace SATNET.Service.Implementation
 {
     public class HardwareComponentService : IService<HardwareComponent>
     {
-        public Task<StatusModel> Add(HardwareComponent obj)
+        public async Task<StatusModel> Add(HardwareComponent obj)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponent/Index" };
-            try
+            int retId = -1;
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+                try
                 {
                     uow.BeginTransaction();
-                    retId = uow.HardwareComponents.Add(obj).Result;
+                    retId = await uow.HardwareComponents.Add(obj);
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -32,70 +32,115 @@ namespace SATNET.Service.Implementation
                         status.ErrorCode = "Error in inserting the record.";
                     }
                 }
+                catch (Exception e)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "An error occured while processing request.";
+                    status.ErrorDescription = e.Message;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
             }
-            catch (Exception e)
-            {
-                status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
-                status.ErrorDescription = e.Message;
-            }
-            return Task.FromResult(status);
+
+            return status;
         }
 
-        public Task<StatusModel> Delete(int recId, int deletedBy)
+        public async Task<StatusModel> Delete(int recId, int deletedBy)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<HardwareComponent> Get(int id)
-        {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponent/Index" };
-            var retModel = new HardwareComponent();
+            var status = new StatusModel { IsSuccess = false };
             try
             {
+                int dRow = -1;
                 using (var uow = new UnitOfWorkFactory().Create())
                 {
-                    retModel = uow.HardwareComponents.Get(id).Result;
-                    if (retModel.Id != 0)
+                    uow.BeginTransaction();
+                    dRow = await uow.HardwareComponents.Delete(recId, deletedBy);
+                    if (dRow > 0)
                     {
-
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Transaction completed successfully.";
+                    }
+                    else
+                    {
+                        status.ErrorCode = "An error occured while processing request.";
                     }
                 }
             }
             catch (Exception e)
             {
-
+                status.ErrorCode = "Cannot delete record due to referential records.";
             }
-            return Task.FromResult(retModel);
+            finally
+            {
+            }
+            return status;
         }
 
-        public Task<List<HardwareComponent>> List(HardwareComponent obj)
-        {
-            List<HardwareComponent> retList = new List<HardwareComponent>();
-            try
-            {
-                using (var uow = new UnitOfWorkFactory().Create())
-                {
-                    retList = uow.HardwareComponents.List(obj).Result;
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-            return Task.FromResult(retList);
-        }
-
-        public Task<StatusModel> Update(HardwareComponent obj)
+        public async Task<HardwareComponent> Get(int id)
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponent/Index" };
-            try
+            var retModel = new HardwareComponent();
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                int retId = -1;
-                using (var uow = new UnitOfWorkFactory().Create())
+                try
+                {
+                    retModel = await uow.HardwareComponents.Get(id);
+                    if (retModel.Id != 0)
+                    {
+
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
+            }
+            return retModel;
+        }
+
+        public async Task<List<HardwareComponent>> List(HardwareComponent obj)
+        {
+            List<HardwareComponent> retList = new List<HardwareComponent>();
+
+            using (var uow = new UnitOfWorkFactory().Create())
+            {
+                try
+                {
+                    retList = await uow.HardwareComponents.List(obj);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
+            }
+
+            return retList;
+        }
+
+        public async Task<StatusModel> Update(HardwareComponent obj)
+        {
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponent/Index" };
+
+            int retId = -1;
+            using (var uow = new UnitOfWorkFactory().Create())
+            {
+                try
                 {
                     uow.BeginTransaction();
-                    retId = uow.HardwareComponents.Update(obj).Result;
+                    retId = await uow.HardwareComponents.Update(obj);
                     if (retId != 0)
                     {
                         uow.SaveChanges();
@@ -108,14 +153,21 @@ namespace SATNET.Service.Implementation
                         status.ErrorCode = "Error in updating the record.";
                     }
                 }
+                catch (Exception e)
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "An error occured while processing request.";
+                    status.ErrorDescription = e.Message;
+                }
+                finally
+                {
+                    uow.Connection.Close();
+                }
+
             }
-            catch (Exception e)
-            {
-                status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
-                status.ErrorDescription = e.Message;
-            }
-            return Task.FromResult(status);
+
+
+            return status;
         }
     }
 }

@@ -5,13 +5,13 @@
 
 <!-- Main content -->
 @*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
-<form method="post" data-ajax="true" asp-controller="HardwareComponentRegistration" asp-action="Add" data-ajax-method="post"
+<form method="post" data-ajax="true" asp-controller="LogisticsAIRMAC" asp-action="Add" data-ajax-method="post"
       enctype="multipart/form-data" id="formAdd" autocomplete="off">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div>
-                    Add Hardware Model Registration
+                    Add AIRMAC
                     <div class="page-title-subheading">
                         Please fillout following form
                     </div>
@@ -19,10 +19,10 @@
             </div>
             <div class="page-title-actions">
                 <div class="d-inline-block dropdown">
-                    <a href="@String.Format("/{0}", "HardwareComponentRegistration/Index")" class=" btn btn-danger">
+                    <a href="@String.Format("/{0}", "LogisticsAIRMAC/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save Hardware Model Registration</button>
+                    <button type="submit" class="btn btn-default">Save AIRMAC</button>
                 </div>
             </div>
         </div>
@@ -31,40 +31,30 @@
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.HiddenFor(model => model.HardwareComponentRegistrationModel.SerialNumbers)
+
         <div class="col-lg-4">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HardwareTypeId, new { })
-                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareTypeId, new SelectList(Model.HardwareTypes as System.Collections.IEnumerable, "Id", "Name"), "--SELECT HARDWARE TYPE--", new { @class = "form-control select2 text-input" })
+                <label>Model</label>
+                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new SelectList(Model.HardwareComponentList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT MODEM--", new { @class = "form-control select2 text-input" })
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new { })
-                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new SelectList(Model.HardwareComponentList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT HARDWARE COMPONENT--", new { @class = "form-control select2 text-input" })
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <h5 class="title">Add Hardware Model Item</h5>
-    </div>
-    <div class="row">
         <div class="col-lg-4">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
                 @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
-                <span class="help-block text-danger" id="label_error"></span>
+                <span class="help-block text-danger" id="label_error">ds</span>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { id = "label_item" })
                 <div class="input-group mb-3">
-                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Unique Identifier", @type = "text" } })
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "AIRMAC", @type = "text" } })
 
                     <div class="input-group-append">
                         <button class="btn-info add_hm_item" type="button">Save</button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -72,7 +62,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <h5 class="title">Hardware Model List</h5>
+            <h5 class="title">AIRMAC List</h5>
         </div>
         <div class="col-lg-12">
             <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
@@ -80,8 +70,9 @@
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th> @Html.DisplayName("Serial Number") </th>
-                            <th id="table_header_section_type"> Unique Identifier </th>
+                            <th class="text-left">Model</th>
+                            <th class="text-left"> @Html.DisplayName("Serial Number") </th>
+                            <th id="table_header_section_type"> AIRMAC </th>
                             <th class="text-center"> Actions </th>
                         </tr>
                     </thead>
@@ -100,54 +91,43 @@
 
 <script language="javascript" type="text/javascript">
     //$.validator.unobtrusive.parse('#formAdd');
+
+    $('#HardwareComponentRegistrationModel_HardwareComponentId').change(function () {
+        $('#reg_table_body').empty();
+        $('#HardwareComponentRegistrationModel_SerialNumbers').val('');
+        specsObj = '';
+        grid_obj_array = [];
+    });
+
     var grid_obj_array = [];
     var edit_flag = -1;
     var edit_record_index = -1;
     var specs_seperator = '---';
     var node_object_key = 'node_object';
-    var section_type = '';
+    var section_type = 'AIR MAC NUMBER';
     $('#HardwareComponentRegistrationModel_HardwareTypeId').change(function () {
         var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId').val();
-        console.log(typeof (hardware_type));
-        if (hardware_type != undefined) {
-            
-            $.ajax({
-                url: '/HardwareComponentRegistration/GetHardwareComponetByHardwareType',
-                type: "POST",
-                data: { hardware_type_id: hardware_type },
-                dataType: "json",
-                error: function (response) {
-                },
-                success: function (response) {
-                    payment_filter_list = response;
-                    //console.log(response);
-                    var options = "<option value'>--SELECT HARDWARE COMPONENT--</option>";
-                    //"<option value=''>--SELECT " + retModel.Column + "--</option>";
-                    $.each(response, function (i, plan) {
-                        options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
-                    });
-                    $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
-                    var hardware_type = $('#HardwareComponentRegistrationModel_HardwareTypeId option:selected').text();
-                    if (hardware_type.toUpperCase().indexOf('MODE') > -1) {
-                        section_type = 'AIR MAC NUMBER';
-                        console.log(':Hardware Section');
-                    } else if (hardware_type.toUpperCase().indexOf('TRANS') > -1) {
-                        section_type = 'BUC MODEL';
-                        console.log('Transceiver Section');
-                    }
-                    else {
-                        console.log(hardware_type.toUpperCase().indexOf('MODE') + 'Unique Identifier');
-                    }
-                    //if () { }
-
-                    $('#HardwareComponentRegistrationModel_AIRMAC').attr('placeholder', section_type);
-                    $('#label_item').text(section_type);
-                    $('#table_header_section_type').text(section_type);
-                }
-            });
-        }
-        
-        
+        $.ajax({
+            url: '/HardwareComponentRegistration/GetHardwareComponetByHardwareType',
+            type: "POST",
+            data: { hardware_type_id: hardware_type },
+            dataType: "json",
+            error: function (response) {
+            },
+            success: function (response) {
+                payment_filter_list = response;
+                console.log(response);
+                var options = "<option value'>--SELECT HARDWARE COMPONENT--</option>";
+                //"<option value=''>--SELECT " + retModel.Column + "--</option>";
+                $.each(response, function (i, plan) {
+                    options += "<option value='" + plan.id + "'>" + plan.hcValue + "</option>";//selected='selected'
+                });
+                $('#HardwareComponentRegistrationModel_HardwareComponentId').empty().append(options);
+                $('#HardwareComponentRegistrationModel_AIRMAC').attr('placeholder', section_type);
+                $('#label_item').text(section_type);
+            }
+        });
+        $('#table_header_section_type').text(section_type);
     });
     function record_exist_or_not(grid_array, obj) {
         var return_val = 0;
@@ -176,8 +156,8 @@
         return return_val;
     }
     $(document).on('click', '.add_hm_item', function () {
-        var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val().toUpperCase();
-        var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val().toUpperCase();
+        var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val();
+        var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val();
         //console.log(serialNo + ':' + AIRMAC);
         var grid_obj_item = {
             specsOne: specsOne,
@@ -211,9 +191,9 @@
                     alert('Why there');
                 }
             }
-            
+
         }
-        
+
     });
     $(document).on('click', '.row_edit', function () {
         var grid_obj = $(this).attr('data-' + node_object_key);
@@ -255,22 +235,19 @@
         });
 
         $('#HardwareComponentRegistrationModel_SerialNumbers').val(specsObj);
-        
+
     }
     function add_row(item, record_count) {
         var row = '<tr id=row_' + record_count + '>' +
             '<td class="text-center text-muted">' + record_count + '</td>' +
+            '<td class="text-left"> ' + $('#HardwareComponentRegistrationModel_HardwareComponentId option:selected').text() + '</td>' +
             '<td> ' + item.specsOne + '</td>' +
             '<td> ' + item.specsTwo + '</td>' +
             '<td class="text-center">' +
             '<div class="buttons">' +
             '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_edit">' +
             '<span class="fa fa-edit" aria-hidden="true"></span>' +
-            '</a>' +
-            '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_delete">' +
-            '<span class="fa fa-trash" aria-hidden="true"></span>' +
-            '</a>' +
-            '</div>' +
+            '</a></div>' +
             '</td>' +
             '</tr>';
         return row;

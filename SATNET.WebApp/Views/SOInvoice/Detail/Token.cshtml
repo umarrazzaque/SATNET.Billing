@@ -18,18 +18,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-left">
-                                        <h3>
-                                            Token Top Up:
-                                        </h3>
-                                        <span>@Model.Token GB</span>
-                                    </td>
-                                    <td class="unit">$ @Model.TokenPrice</td>
-                                    <td class="total">
-                                        $ @Model.TokenPrice
-                                    </td>
-                                </tr>
+                                @foreach (var item in Model.InvoiceItems)
+                                {
+                                    <tr>
+                                        <td class="text-left">
+                                            <span>@item.Item GB Token</span>
+                                        </td>
+                                        <td class="unit">$ @item.Rate</td>
+                                        <td class="total">
+                                            $ @item.Amount
+                                        </td>
+                                    </tr>
+
+                                }
                             </tbody>
                             <tfoot>
                                 <tr>

@@ -1,0 +1,186 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.Report.SiteLedgerViewModel>
+
+<div id="MainContents">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+
+                <div class="d-inline-block dropdown">
+
+                    <div class="dropdown d-inline-block">
+                        <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info">Export  <i class="fa fa-angle-down ml-2"></i></button>
+                        <div tabindex="-1" role="menu" class="dropdown-menu">
+                            <button type="button" tabindex="0" class="dropdown-item">PDF</button>
+                            <button type="button" tabindex="0" class="dropdown-item">CSV</button>
+                            <button type="button" tabindex="0" class="dropdown-item">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters">
+        <div class="row">
+            @if (ViewBag.CustomerSelectList != null)
+            {
+                <div class="col-lg-2">
+                    <div class="position-relative form-group">
+                        <label>Customer</label>
+                        <select id="selectCustomer" type="select" class="form-control" asp-items="ViewBag.CustomerSelectList">
+                            <option value="0" disabled selected>Select</option>
+                        </select>
+                    </div>
+                </div>
+
+            }
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Site</label>
+                    <select id="selectSite" type="select" class="form-control" asp-items="ViewBag.SiteSelectList">
+                        <option value="0" selected>All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Start Date</label>
+                    <input id="dateStart" type="date" placeholder="..." class="form-control" value="" />
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>End Date</label>
+                    <input id="dateEnd" type="date" placeholder="..." class="form-control" value="" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="BodyContent">
+        @await Html.PartialAsync("Report/_SiteLedgerList")
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            var _customerId = 0;
+            if (@ViewBag.CustomerId != null) {
+                _customerId=@ViewBag.CustomerId;
+            }
+            $(".filters select#selectCustomer").change(function () {
+                var customerId = $(this).val();
+                if (customerId != '0') {
+                    GetSiteLedgerReport(customerId, 0, null,null);
+                    GetSiteSelectList(customerId);
+                    $("#dateStart").val('');
+                    $("#dateEnd").val('');
+                }
+            });
+            $(".filters select#selectSite").change(function () {
+                var siteId = $(this).val();
+                    var customerId = $(".filters select#selectCustomer").val();
+                    if (customerId > 0) {
+                        GetSiteLedgerReport(customerId, siteId, null, null);
+                    }
+                    else {
+                        GetSiteLedgerReport(_customerId, siteId, null, null);
+                    }
+                    $("#dateStart").val('');
+                    $("#dateEnd").val('');
+            });
+            $(".filters input#dateStart").change(function () {
+                var customerId = $(".filters select#selectCustomer").val();
+                var siteId = $(".filters select#selectSite").val();
+                var startDate = $(this).val();
+                if (startDate != '') {
+                    if (customerId > 0) {
+                        GetSiteLedgerReport(customerId, siteId, startDate, null);
+                    }
+                    else {
+                        GetSiteLedgerReport(_customerId, siteId, startDate, null);
+                    }
+                }
+            });
+            $(".filters input#dateEnd").change(function () {
+                var customerId = $(".filters select#selectCustomer").val();
+                var siteId = $(".filters select#selectSite").val();
+                var startDate = $(".filters input#dateStart").val();
+                var endDate = $(this).val();
+                if (endDate != '') {
+                    if (customerId > 0) {
+                        GetSiteLedgerReport(customerId, siteId, startDate, endDate);
+                    }
+                    else {
+                        GetSiteLedgerReport(_customerId, siteId, startDate, endDate);
+                    }
+                }
+            });
+
+        });
+
+        GetSiteLedgerReport = function (customerId, siteId, startDate, endDate) {
+            $.ajax(
+                {
+                    url: '/SOInvoice/GetAjaxSiteLedgerReport',
+                    data: { customerId: customerId, siteId: siteId, startDate: startDate, endDate: endDate },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
+                    }
+                });
+        }
+        GetSiteSelectList = function (customerId) {
+            $.ajax({
+                url: '/SOInvoice/GetSiteSelectList',
+                data: { customerId: customerId },
+                traditional: true,
+                success: function (result) {
+                    var items = '';
+                    $.each(result, function (i, plan) {
+                        items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+                    });
+                    $("#selectSite").empty();
+                    $("#selectSite").html(items);
+                    $("#selectSite").prepend("<option value='0'>All</option>").val('0');
+                }
+            });
+
+        }
+
+
+    </script>
+}
+
+@section Styles{
+<style>
+    table#grid_table tr.header th {
+        text-align: center;
+        font-size: medium;
+    }
+    table#grid_table th,td {
+        border: 1px solid #dfe1e6;
+    }
+    table#grid_table tr.site-footer td {
+        font-weight:bold;
+    }
+</style>
+}

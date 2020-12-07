@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -112,8 +113,8 @@ namespace SATNET.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            //1  as loged in user id
-            var statusModel = _lookUpService.Delete(id, 1).Result;
+            var loginUserId = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var statusModel = await _hardwareComponentService.Delete(id, loginUserId);
             statusModel.Html = RenderViewToString(this, "Index", await GetHardwareComponentList());
             return Json(statusModel);
         }

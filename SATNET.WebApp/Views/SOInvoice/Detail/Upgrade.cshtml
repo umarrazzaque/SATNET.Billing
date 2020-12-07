@@ -1,16 +1,5 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
 
-@{
-    DateTime plannedDate = Model.ScheduleDate.Value;
-    int plannedDay = plannedDate.Day;
-    int plannedMonth = plannedDate.Month;
-    int plannedYear = plannedDate.Year;
-    int daysInPlannedMonth = DateTime.DaysInMonth(plannedYear, plannedMonth);
-    string month = plannedDate.ToString("MMM");
-    decimal servicePlanRate = Model.ServicePlanPrice / daysInPlannedMonth;
-    servicePlanRate = Decimal.Round(servicePlanRate, 1, MidpointRounding.ToPositiveInfinity);
-}
-
 <div id="MainContents">
     @await Html.PartialAsync("Detail/_Common")
     <div class="row">
@@ -31,18 +20,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-left">
-                                        <h3>
-                                            Upgrade Service Plan To
-                                        </h3>
-                                        <span>@Model.ServicePlan @Model.ServicePlanUnit Prorata</span>
-                                    </td>
-                                    <td class="text-left">Subscription from @plannedDay - @daysInPlannedMonth @month</td>
-                                    <td class="unit">@servicePlanRate</td>
-                                    <td class="unit">@Model.ServicePlanPrice</td>
-                                    <td class="total">@Model.ProRataPrice</td>
-                                </tr>
+                                @foreach (var item in Model.InvoiceItems)
+                                {
+                                    <tr>
+                                        <td class="text-left">
+                                            <span>@item.Item</span>
+                                        </td>
+                                        <td class="text-left">@item.Description</td>
+                                        <td class="unit">@item.Unit</td>
+                                        <td class="unit">@item.Rate</td>
+
+                                            <td class="total">@item.Amount</td>
+                                    </tr>
+                                }
                             </tbody>
                             <tfoot>
                                 <tr>

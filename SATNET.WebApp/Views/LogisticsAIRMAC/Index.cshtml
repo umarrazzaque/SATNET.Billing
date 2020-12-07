@@ -7,7 +7,7 @@
             <div class="page-title-heading">
 
                 <div>
-                    Hardware Component Registration
+                    AIRMAC
                     <div class="page-title-subheading">
                     </div>
                 </div>
@@ -24,8 +24,8 @@
                             <button type="button" tabindex="0" class="dropdown-item">Print</button>
                         </div>
                     </div>
-                    <a href="@String.Format("/{0}", "HardwareComponentRegistration/Add")" class=" btn btn-default">
-                        Add Hardware Model Registration
+                    <a href="@String.Format("/{0}", "LogisticsAIRMAC/Add")" class=" btn btn-default">
+                        Add AIRMAC
                     </a>
                     @*<a href="#" class=" btn btn-success">
                         Import
@@ -38,9 +38,9 @@
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_HardCompRegList", Model)
+                @await Html.PartialAsync("_List", Model)
             </div>
-            
+
 
 
         </div>
@@ -64,7 +64,7 @@
             "columnDefs": [
                 { "orderable": false, "targets": 0 },
                 { "orderable": false, "targets": 1 },
-                { "orderable": false, "targets": 6 }
+                { "orderable": false, "targets": 8 }
             ],
             //"columnDefs": [
             //    {

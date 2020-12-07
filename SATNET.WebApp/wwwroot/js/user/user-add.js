@@ -68,7 +68,6 @@ getCustomers = function () {
     var url = '/User/GetCustomers';
     $.getJSON(url, { customerTypeId: type, priceTierId: tier }, function (result) {
         var items = '';
-        items += "<option value=''>-Select Customer-</option>";
         $.each(result, function (i, plan) {
             items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
         });
@@ -97,7 +96,7 @@ refreshSelectPicker = function () {
     var mySelect = $('#CustomerId').selectpicker({
 
         // text for no selection
-        noneSelectedText: 'Nothing selected',
+        noneSelectedText: 'Select',
 
         // text for no result
         noneResultsText: 'No results matched {0}',
@@ -221,4 +220,5 @@ refreshSelectPicker = function () {
 
     // Re-render
     mySelect.selectpicker('render');
+
 }

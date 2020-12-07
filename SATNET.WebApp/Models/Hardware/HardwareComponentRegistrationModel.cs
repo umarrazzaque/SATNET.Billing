@@ -1,4 +1,5 @@
-﻿using SATNET.WebApp.Helpers;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Models.Lookup;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,10 @@ namespace SATNET.WebApp.Models.Hardware
 {
     public class HardwareComponentRegistrationModel : BaseModel
     {
-        [DisplayName("Registration Number")]
-        public string HCRegistrationNumber { get; set; }
         [DisplayName("Serial Number")]
         public string SerialNumber { get; set; }
         [DisplayName("MAC Address")]
-        public string UniqueIdentifier { get; set; }
+        public string AIRMAC { get; set; }
         [DisplayName("Hardware Type")]
         [Required(ErrorMessage = "Hardware Type field is required!")]
         public int HardwareTypeId { get; set; }
@@ -25,11 +24,14 @@ namespace SATNET.WebApp.Models.Hardware
         public int HardwareComponentId { get; set; }
         public string HardwareComponent { get; set; }
         [DisplayName("Customer")]
+        [Required(ErrorMessage ="Required Field")]
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
-        [DisplayName("Registered")]
-        public bool IsRegistered { get; set; }
+        public bool IsUsed { get; set; }
         public string[] SerialNumbers { get; set; }
+        public string[] AIRMACs { get; set; }
+        public SelectList CustomerSelectList { get; set; }
+        public SelectList ModemSelectList { get; set; }
     }
     public class CreateHardwareComponentRegistrationModel : BaseModel
     {

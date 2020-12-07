@@ -27,8 +27,6 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_HardwareTypeId", obj.HardwareTypeId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_HCValue", obj.HCValue, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_HCSpareTypeId", obj.HCSpareTypeId, DbType.Int32, ParameterDirection.Input);
-            queryParameters.Add("@P_KIT_ID", obj.KitId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
             int retResult = await dbCon.ExecuteScalarAsync<int>("HardwareComponentAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
@@ -40,7 +38,7 @@ namespace SATNET.Repository.Implementation
             int result = 0;
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
-            queryParameters.Add("@P_Rec_Id", id, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_Id", id, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", deletedBy, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_Return_ID", -1, DbType.Int32, ParameterDirection.Output);
             int retResult = await dbCon.ExecuteScalarAsync<int>("HardwareComponentDelete", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
@@ -80,8 +78,6 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
             queryParameters.Add("@P_HardwareTypeId", obj.HardwareTypeId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_HCValue", obj.HCValue, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_HCSpareTypeId", obj.HCSpareTypeId, DbType.Int32, ParameterDirection.Input);
-            queryParameters.Add("@P_KIT_ID", obj.KitId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
             int retResult = await dbCon.ExecuteScalarAsync<int>("HardwareComponentAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));

@@ -45,12 +45,6 @@
         </div>
         <div class="col-lg-4">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.HCRegistrationNumber, new { })
-                @Html.EditorFor(model => model.HardwareComponentRegistrationModel.HCRegistrationNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Registration Number", @type = "text", @readonly = "readonly" } })
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
                 @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "M.A.C Address", @type = "text", @readonly = "readonly" } })
 
@@ -60,13 +54,6 @@
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.CustomerId, new { })
                 @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.CustomerId, new SelectList(Model.CustomerList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT CUSTOMER--", new { @class = "form-control select2 text-input" })
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.IsRegistered, new { })
-                @Html.CheckBoxFor(model => model.HardwareComponentRegistrationModel.IsRegistered, new { htmlAttributes = new { @class = "form-control text-input", @type = "checkbox"} })
-
             </div>
         </div>
 

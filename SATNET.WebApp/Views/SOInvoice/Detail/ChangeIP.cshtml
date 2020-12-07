@@ -1,5 +1,6 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
 
+
 <div id="MainContents">
     @await Html.PartialAsync("Detail/_Common")
     <div class="row">
@@ -29,20 +30,23 @@
                                         <td class="text-left">@item.Description</td>
                                         <td class="unit">@item.Unit</td>
                                         <td class="unit">@item.Rate</td>
-
-                                            <td class="total">@item.Amount</td>
+                                        <td class="total">@item.Amount</td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="3"></td>
-                                    <td>GRAND TOTAL</td>
-                                    <td>$ @Model.Total</td>
+                                    <td>TOTAL $</td>
+                                    <td> @Model.Total</td>
                                 </tr>
                             </tfoot>
                         </table>
                         <div class="thanks">Thank you!</div>
+                        @*<div class="notices">
+                                <div>NOTICE:</div>
+                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                            </div>*@
                     </main>
                     <footer>
                         Invoice was created on a computer and is valid without the signature and seal.

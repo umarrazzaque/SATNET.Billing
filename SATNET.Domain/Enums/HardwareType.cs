@@ -6,14 +6,7 @@ namespace SATNET.Domain.Enums
 {
     public enum HardwareType
     {
-        ModemModel = 1010,
-        ModemSrNo = 1011,
-        MACAirNo = 1012,
-        AntennaSize = 1013,
-        TransceiverWATT = 1014,
-        TransceiverSrNo = 1015,
         HardwareCondition=1018,
-
 
         #region Hardware Types
         Modem = 79,

@@ -3,36 +3,17 @@
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
 
-@*@using (Html.BeginForm("ImportData", "HardwareComponentRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-    }*@
-@*<div class="row">
-    <div class="col-md-8">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">UPLOAD</span>
-            </div>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="input_file" name="postedFile"
-                       aria-describedby="file_upload">
-                <label class="custom-file-label" id="file_label" for="input_file">Choose File</label>
-            </div>
-        </div>
-    </div>
-</div>*@
 <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
                 @*<th class="text-center" width="30">
-                    </th>*@
-                <th class="text-center">#</th>
-
-                <th> @Html.DisplayNameFor(model => model.HardwareComponentId) </th>
-                <th> @Html.DisplayNameFor(model => model.AIRMAC) </th>
-                <th> @Html.DisplayNameFor(model => model.SerialNumber) </th>
-                <th> @Html.DisplayNameFor(model => model.CustomerId) </th>
-                <th class="text-center"> Actions </th>
+        </th>*@
+                <th style="width:10%" class="text-center">#</th>
+                <th style="width:20%"> Model </th>
+                <th style="width:30%"> @Html.DisplayNameFor(model => model.AIRMAC) </th>
+                <th style="width:30%"> @Html.DisplayNameFor(model => model.SerialNumber) </th>
+                <th style="width:10%" class="text-center"> Actions </th>
             </tr>
         </thead>
 
@@ -53,13 +34,12 @@
                 <td> @Html.DisplayFor(modelItem => item.HardwareComponent)</td>
                 <td> @Html.DisplayFor(modelItem => item.AIRMAC)</td>
                 <td> @Html.DisplayFor(modelItem => item.SerialNumber)</td>
-                <td> @Html.DisplayFor(modelItem => item.CustomerName)</td>
                 <td class="text-center">
                     <div class="buttons">
-                        <a href="@String.Format("/{0}?id={1}", "HardwareComponentRegistration/Edit", item.Id)" class="pl-1 pr-1">
+                        <a href="@String.Format("/{0}?id={1}", "LogisticsAIRMAC/Edit", item.Id)" class="pl-1 pr-1">
                             <span class="fa fa-edit" aria-hidden="true"></span>
                         </a>
-                        <a href="@String.Format("/{0}?id={1}", "HardwareComponentRegistration/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                        <a href="@String.Format("/{0}?id={1}", "LogisticsAIRMAC/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
                            data-toggle="modal" data-target="#modal-deleteConfirm">
                             <span class="fa fa-trash" aria-hidden="true"></span>
                         </a>
