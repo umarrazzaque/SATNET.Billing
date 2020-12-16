@@ -1,0 +1,349 @@
+﻿@model SATNET.WebApp.Models.Hardware.HardwareComponentRegistrationModel
+
+
+    <form id="formAdd" method="post" data-ajax="true" asp-controller="LogisticBUCReg" asp-action="Add" data-ajax-method="post" enctype="multipart/form-data" autocomplete="off">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div>
+                        Register BUC
+                    </div>
+                </div>
+                <div class="page-title-actions">
+                    <div class="d-inline-block dropdown">
+                        <a href="@String.Format("/{0}", "LogisticBUCReg/Index")" class=" btn btn-danger">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-default">Save BUC Registeration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filters">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Transceiver Model</label>
+                        <select id="selectModem" asp-items="ViewBag.SelectHardwareModems" class="form-control select2 text-input">
+                            <option value="0" selected>All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 offset-md-5">
+                    <div class="form-group">
+                        <label>Register to </label>
+                        <select id="selectCustomer" asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
+                        </select>
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="BodyContent">
+                    @await Html.PartialAsync("_AddList", Model)
+                </div>
+            </div>
+        </div>
+    </form>
+
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script type="text/javascript">
+        $(function () {
+            refreshAIRMACSelectPicker();
+            var mySelect = $('#selectCustomer').selectpicker({
+
+                // text for no selection
+                noneSelectedText: 'Select',
+
+                // text for no result
+                noneResultsText: 'No results matched {0}',
+
+                // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
+                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options.
+                // The function must return a string.
+                countSelectedText: function (numSelected, numTotal) {
+                    return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+                },
+
+                // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
+                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup.
+                // If a string is used, the same text is used for both the element and the optgroup.
+                maxOptionsText: function (numAll, numGroup) {
+                    return [
+                        (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
+                        (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
+                    ];
+                },
+
+                // Text for Select All button
+                selectAllText: 'Select All',
+
+                // Text for Deselect All button
+                deselectAllText: 'Deselect All',
+
+                // Shows done button
+                doneButton: false,
+
+                // Text for done button
+                doneButtonText: 'Close',
+
+                // custom separator
+                multipleSeparator: ', ',
+
+                // button styles
+                styleBase: 'btn',
+                style: 'btn-default',
+
+                // dropdown size
+                size: 'auto',
+
+                // dropdown title
+                title: null,
+
+                // 'values' | 'static' | 'count' | 'count > x'
+                selectedTextFormat: 'values',
+
+                // dropdown width
+                width: false,
+
+                // e.g., container: 'body' | '.main-body'
+                container: false,
+
+                // hide disabled options
+                hideDisabled: false,
+
+                // shows sub text
+                showSubtext: false,
+
+                // shows icon
+                showIcon: true,
+
+                // shows content
+                showContent: true,
+
+                // auto dropup
+                dropupAuto: true,
+
+                // shows dropdown header
+                header: false,
+
+                // live search options
+                liveSearch: true,
+                liveSearchPlaceholder: null,
+                liveSearchNormalize: false,
+                liveSearchStyle: 'contains',
+
+                // enables Select All / Deselect All box
+                actionsBox: false,
+
+                // icons
+                iconBase: 'glyphicon',
+                tickIcon: 'glyphicon-ok',
+
+                // shows checkmark on selected option
+                showTick: false,
+
+                // custom template
+                template: {
+                    caret: '<span class="caret"></span>'
+                },
+
+                // string | array | function
+                maxOptions: false,
+
+                // enables the device's native menu for select menus
+                mobile: false,
+
+                // treats the tab character like the enter or space characters within the selectpicker dropdown.
+                selectOnTab: false,
+
+                // Align the menu to the right instead of the left.
+                dropdownAlignRight: false,
+
+                // e.g. [top, right, bottom, left]
+                windowPadding: 0
+
+            });
+
+            // Sets the selected value
+            mySelect.selectpicker('val', 'JQuery');
+            mySelect.selectpicker('val', ['jQuery', 'Script']);
+
+            // Selects all items
+            mySelect.selectpicker('selectAll');
+
+            // Clears all
+            mySelect.selectpicker('deselectAll');
+
+            // Re-render
+            mySelect.selectpicker('render');
+
+
+            $("#selectModem").change(function () {
+                reLoadAIRMACList();
+            });
+            $("#selectAIRMAC").change(function () {
+                reLoadAIRMACList();
+            });
+        });
+
+        reLoadAIRMACList = function () {
+            var transceiver = $("#selectModem").val();
+
+            var customer = $("#selectCustomer").val();
+            $.ajax(
+                {
+                    url: '/LogisticBUCReg/GetBUCListByFilter',
+                    data: { transceiver: transceiver, customer: customer, flag: 'UnregisteredBUC' },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
+                    }
+                });
+
+        }
+
+        refreshAIRMACSelectPicker = function () {
+            var mySelect = $('#selectAIRMAC').selectpicker({
+
+                // text for no selection
+                noneSelectedText: 'Select',
+
+                // text for no result
+                noneResultsText: 'No results matched {0}',
+
+                // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
+                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+                // The function must return a string.
+                countSelectedText: function (numSelected, numTotal) {
+                    return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+                },
+
+                // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
+                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+                // If a string is used, the same text is used for both the element and the optgroup.
+                maxOptionsText: function (numAll, numGroup) {
+                    return [
+                        (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
+                        (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
+                    ];
+                },
+
+                // Text for Select All button
+                selectAllText: 'Select All',
+
+                // Text for Deselect All button
+                deselectAllText: 'Deselect All',
+
+                // Shows done button
+                doneButton: false,
+
+                // Text for done button
+                doneButtonText: 'Close',
+
+                // custom separator
+                multipleSeparator: ', ',
+
+                // button styles
+                styleBase: 'btn',
+                style: 'btn-default',
+
+                // dropdown size
+                size: 'auto',
+
+                // dropdown title
+                title: null,
+
+                // 'values' | 'static' | 'count' | 'count > x'
+                selectedTextFormat: 'values',
+
+                // dropdown width
+                width: false,
+
+                // e.g., container: 'body' | '.main-body'
+                container: false,
+
+                // hide disabled options
+                hideDisabled: false,
+
+                // shows sub text
+                showSubtext: false,
+
+                // shows icon
+                showIcon: true,
+
+                // shows content
+                showContent: true,
+
+                // auto dropup
+                dropupAuto: true,
+
+                // shows dropdown header
+                header: false,
+
+                // live search options
+                liveSearch: true,
+                liveSearchPlaceholder: null,
+                liveSearchNormalize: false,
+                liveSearchStyle: 'contains',
+
+                // enables Select All / Deselect All box
+                actionsBox: false,
+
+                // icons
+                iconBase: 'glyphicon',
+                tickIcon: 'glyphicon-ok',
+
+                // shows checkmark on selected option
+                showTick: false,
+
+                // custom template
+                template: {
+                    caret: '<span class="caret"></span>'
+                },
+
+                // string | array | function
+                maxOptions: false,
+
+                // enables the device's native menu for select menus
+                mobile: false,
+
+                // treats the tab character like the enter or space characters within the selectpicker dropdown.
+                selectOnTab: false,
+
+                // Align the menu to the right instead of the left.
+                dropdownAlignRight: false,
+
+                // e.g. [top, right, bottom, left]
+                windowPadding: 0
+
+            });
+
+            // Sets the selected value
+            mySelect.selectpicker('val', 'JQuery');
+            mySelect.selectpicker('val', ['jQuery', 'Script']);
+
+            // Selects all items
+            mySelect.selectpicker('selectAll');
+
+            // Clears all
+            mySelect.selectpicker('deselectAll');
+
+            // Re-render
+            mySelect.selectpicker('render');
+        }
+
+
+    </script>
+}
+

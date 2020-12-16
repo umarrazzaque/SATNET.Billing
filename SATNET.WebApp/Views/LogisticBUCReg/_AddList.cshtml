@@ -1,0 +1,45 @@
+﻿@model SATNET.WebApp.Models.Hardware.HardwareComponentRegistrationModel
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                @*<th class="text-center" width="30">
+                    </th>*@
+                <th style="width:10%" class="text-center">#</th>
+                <th style="width:30%"> Transceiver Model </th>
+                <th style="width:40%"> Serial Number </th>
+                <th style="width:10%" class="text-center"> Register </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in ViewBag.AIRMACs)
+            {
+                <tr>
+                    @*<td class="text-center"> <input type="checkbox"></td>*@
+                    <td class="text-center text-muted">
+                        @{
+                            counter++;
+                        }
+                        @counter
+                    </td>
+                    <td>@item.HardwareComponent </td>
+                    <td>@item.SerialNumber </td>
+                    <td class="text-center">
+                        <div class="buttons">
+                            <input type="checkbox" name="AIRMACs" value="@item.SerialNumber" />
+                            <span asp-validation-for="AIRMACs" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>
