@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost/SATNET.WebApp",
+      "applicationUrl": "https://localhost/SATNET.WebApp",
       "sslPort": 0
     },
     "iisExpress": {
@@ -25,7 +25,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }    
+      }
     }
   }
 }

@@ -7,7 +7,7 @@
             <div class="page-title-heading">
 
                 <div>
-                    AIRMAC
+                    BUC
                     <div class="page-title-subheading">
                     </div>
                 </div>
@@ -24,8 +24,8 @@
                             <button type="button" tabindex="0" class="dropdown-item">Print</button>
                         </div>
                     </div>
-                    <a href="@String.Format("/{0}", "LogisticsAIRMAC/Add")" class=" btn btn-default">
-                        Add AIRMAC
+                    <a href="@String.Format("/{0}", "LogisticBUC/Add")" class=" btn btn-default">
+                        Add BUC
                     </a>
                     @*<a href="#" class=" btn btn-success">
                         Import
@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_List", Model)
+                @await Html.PartialAsync("_LogisticBUCList", Model)
             </div>
 
 
@@ -63,7 +63,7 @@
             "responsive": true,
             "columnDefs": [
                 { "orderable": false, "targets": 0 },
-                { "orderable": false, "targets": 1 }
+                { "orderable": false, "targets": 1 },
             ],
             //"columnDefs": [
             //    {

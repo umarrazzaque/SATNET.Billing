@@ -28,9 +28,14 @@ namespace SATNET.Service.Implementation
                             if (item != "")
                             {
                                 var specs = item.Split("---");
-
-                                obj.SerialNumber = specs[0];
-                                obj.AIRMAC = specs[1];
+                                if (specs.Length == 2) {
+                                    obj.SerialNumber = specs[0];
+                                    obj.AIRMAC = specs[1];
+                                }
+                                else if (specs.Length == 1) {
+                                    obj.SerialNumber = specs[0];
+                                }
+                                
                                 retId = await uow.HardwareComponentRegistrations.Add(obj);
                             }
 
@@ -156,13 +161,23 @@ namespace SATNET.Service.Implementation
                 try
                 {
                     uow.BeginTransaction();
-                    if (obj.Flag== "RegisterAIRMAC")
+                    if (obj.Flag == "RegisterAIRMAC")
                     {
                         if (obj.AIRMACs.Length > 0)
                         {
                             foreach (var item in obj.AIRMACs)
                             {
                                 obj.AIRMAC = item;
+                                retId = await uow.HardwareComponentRegistrations.Update(obj);
+                            }
+                        }
+                    } else if (obj.Flag == "RegisterBUC") {
+                        if (obj.AIRMACs.Length > 0)
+                        {
+                            foreach (var item in obj.AIRMACs)
+                            {
+                                obj.SerialNumber = item;
+                                obj.AIRMAC = "";
                                 retId = await uow.HardwareComponentRegistrations.Update(obj);
                             }
                         }
