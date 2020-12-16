@@ -19,8 +19,8 @@ namespace SATNET.Repository.Core
         public UnitOfWork()
         {
             //IDbConnection dbConnection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local devUmerKhalid
-            IDbConnection dbConnection = new SqlConnection("Server=.;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local DevBranch
-            //IDbConnection dbConnection = new SqlConnection("Server=tcp:satnetbilling.database.windows.net,1433;Initial Catalog=SatnetBilling;Persist Security Info=False;User ID=usat;Password=Password01@@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");//azure
+            //IDbConnection dbConnection = new SqlConnection("Server=.;Database=SatnetBilling;Trusted_Connection=True;MultipleActiveResultSets=true");//local DevBranch
+            IDbConnection dbConnection = new SqlConnection("Server=tcp:satnetbilling.database.windows.net,1433;Initial Catalog=SatnetBilling;Persist Security Info=False;User ID=usat;Password=Password01@@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");//azure
             _connection = dbConnection;
             OpenConnection();
         }
