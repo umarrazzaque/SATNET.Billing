@@ -1,11 +1,7 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.Invoice.SOInvoiceViewModel>
-@using SATNET.WebApp.Areas.Identity.Data;
-@using Microsoft.AspNetCore.Identity;
-@inject UserManager<ApplicationUser> UserManager
+﻿@model IEnumerable<SATNET.WebApp.Models.Invoice.MRCInvoiceViewModel>
 
 @{
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
-    var user = await UserManager.GetUserAsync(User);
 }
 
 <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
@@ -16,12 +12,11 @@
              <input type="checkbox">
         </th>*@
                 @*<th class="text-center">#</th>*@
-                <th style="width:20%">Invoice Number</th>
-                <th style="width:20%"> Order Number </th>
-                <th style="width:10%"> Request </th>
+                <th style="width:30%">Invoice Number</th>
+                <th style="width:15%"> Site Name </th>
+                <th style="width:15%"> Customer Name </th>
                 <th style="width:10%"> Created Date</th>
                 <th style="width:10%"> Due Date</th>
-                <th style="width:10%"> Status </th>
                 <th style="width:20%"> Total </th>
                 <th class="text-center"> </th>
             </tr>
@@ -43,10 +38,10 @@
             @counter
         </td>*@
                 <td>
-                    <a href="@String.Format("/{0}?id={1}", "SOInvoice/ViewInvoice", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.InvoiceNumber</a>
+                    <a href="@String.Format("/{0}?id={1}", "MRCInvoice/ViewInvoice", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.InvoiceNumber</a>
                 </td>
-                <td> @item.OrderNumber</td>
-                <td>@item.RequestType</td>
+                <td>@item.SiteName</td>
+                <td>@item.CustomerName</td>
                 <td>
                     @if (item.CreatedOn != null)
                     {
@@ -59,7 +54,6 @@
                         @item.DueDate.ToShortDateString();
                     }
                 </td>
-                <td>@item.Status</td>
                 <td> @item.Total</td>
                 <td class="text-center">
                 </td>

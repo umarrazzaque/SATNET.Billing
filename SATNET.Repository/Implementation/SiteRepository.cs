@@ -70,6 +70,7 @@ namespace SATNET.Repository.Implementation
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@BillingDate", obj.NextBillingDate, DbType.DateTime, ParameterDirection.Input);
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);

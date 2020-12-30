@@ -31,6 +31,7 @@ namespace SATNET.WebApp.MappingProfiles
             CreateMap<SiteLedgerReport, SiteLedgerReportViewModel>().ReverseMap();
             CreateMap<SOInvoice, SOInvoiceViewModel>().ReverseMap();
             CreateMap<SOInvoiceItem, SOInvoiceItemViewModel>().ReverseMap();
+            CreateMap<MRCInvoice, MRCInvoiceViewModel>().ReverseMap();
         }
     }
 }

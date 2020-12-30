@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using SATNET.Domain;
 using SATNET.Repository.Core;
 using SATNET.Repository.Core.Interface;
@@ -23,8 +26,12 @@ using SATNET.Repository.Interface;
 using SATNET.Service.Implementation;
 using SATNET.Service.Interface;
 using SATNET.WebApp.Areas.Identity.Data;
+using SATNET.WebApp.BackgroundTasks;
+using SATNET.WebApp.BackgroundTasks.Jobs;
 using SATNET.WebApp.Data;
+using SATNET.WebApp.Helpers;
 using SATNET.WebApp.MappingProfiles;
+
 
 namespace SATNET.WebApp
 {
@@ -131,6 +138,7 @@ namespace SATNET.WebApp
             services.AddScoped<IService<HardwareComponent>, HardwareComponentService>();
             services.AddScoped<IService<HardwareKit>, HardwareKitService>();
             services.AddScoped<IService<SOInvoice>, SOInvoiceService>();
+            services.AddScoped<IService<MRCInvoice>, MRCInvoiceService>();
             services.AddScoped<IService<IP>, IPService>();
             services.AddScoped<IService<IPPrice>, IPPriceService>();
             services.AddScoped<IService<TokenPrice>, TokenPriceService>();
@@ -155,6 +163,7 @@ namespace SATNET.WebApp
 
 
             services.AddScoped<IRepository<SOInvoice>, SOInvoiceRepository>();
+            services.AddScoped<IRepository<MRCInvoice>, MRCInvoiceRepository>();
             services.AddScoped<IRepository<IP>, IPRepository>();
             services.AddScoped<IRepository<IPPrice>, IPPriceRepository>();
             services.AddScoped<IRepository<TokenPrice>, TokenPriceRepository>();
@@ -165,6 +174,24 @@ namespace SATNET.WebApp
             //services.AddScoped<IRepository<Customer>, ResellerRepository>();
             //services.AddScoped<IService<Customer>, ResellerService>();
             //-------------Misc-----------
+
+            //------Background Services-----------//
+
+            //services.AddSingleton<NotificationJob>();
+            //services.AddSingleton(new JobMetadata(Guid.NewGuid(), typeof(NotificationJob), "Notification Job", "0/10 * * * * ?"));
+            //services.AddSingleton(new JobMetadata(Guid.NewGuid(), typeof(InvoiceJob), "Invoice Job", "0 */1 * ? * *"));// every 2 mins
+            //services.AddSingleton(new JobMetadata(Guid.NewGuid(), typeof(InvoiceJob), "Invoice Job", "0 */1 * ? * *"));// every hour
+            //services.AddSingleton(new JobMetadata(Guid.NewGuid(), typeof(InvoiceJobMonthly), "Invoice Job Monthly", "0 */1 * ? * *"));// At 00:00:00am, on the 1st day, every month
+
+            services.AddHostedService<CustomQuartzHostedService>();
+            services.AddSingleton<IJobFactory, CustomQuartzJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            //jobs
+            services.AddSingleton<InvoiceJob>();
+            services.AddSingleton<MRCJob>();
+
+            services.AddSingleton<IBackgroundTaskService, BackgroundTaskService>();
+            services.AddSingleton<IBackgroundTaskRepository, BackgroundTaskRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
