@@ -67,7 +67,7 @@ namespace SATNET.Service.Implementation
         {
             try
             {
-                var orders = _orderService.List(new Order() { RequestTypeId=6, Flag = "EndOfMonth" }).Result;
+                var orders = _orderService.List(new Order() { RequestTypeId = 6, Flag = "EndOfMonth" }).Result;
                 if (orders != null && orders.Count > 0)
                 {
                     foreach (var o in orders)
@@ -87,15 +87,35 @@ namespace SATNET.Service.Implementation
                         }
                     }
                 }
-                //var sites = _siteService.List(new Site() { StatusId = 17, NextBillingDate = DateTime.Now.Date }).Result;
-                //if (sites != null && sites.Count > 0)
-                //{
-                //    //sites = sites.Where(s => s.CustomerId == 12).ToList();
-                //    foreach (var site in sites)
-                //    {
-                //        _backgroundTaskRepository.InsertMRCInvoice(site.Id);
-                //    }
-                //}
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void TerminateSitesEndOfMonth()
+        {
+            try
+            {
+                var sites = _siteService.List(new Site() { Flag = "Scheduled_Site_Termination" }).Result;
+                if (sites != null && sites.Count > 0)
+                {
+                    foreach (var s in sites)
+                    {
+                        try
+                        {
+                            bool isSuccess = _siteService.Update(new Site() {Id=s.Id, Flag = "UpdateStatus", StatusId = 19 }).Result.IsSuccess; // update site status to terminated
+                            if (isSuccess)
+                            {
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

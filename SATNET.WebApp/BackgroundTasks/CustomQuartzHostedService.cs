@@ -40,10 +40,17 @@ namespace SATNET.WebApp.BackgroundTasks
 
             //End of month job which runs at the end of month 
             //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "End of month job", "0 0 21 ? * * *"); // At 21:00:00pm every day 
-            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */1 * ? * *"); // Every 2 minutes
+            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */1 * ? * *"); // Every 1 minutes
             var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 0 21 L * ?"); // At 21:00:00pm, on the last day of the month, every month
             IJobDetail _endOfMonthJob = CreateJob(endOfMonthJobMetaData);
             ITrigger endOfMonthTrigger = CreateTrigger(endOfMonthJobMetaData);
+
+            //10th of each month job e.g to terminate all locked sites of previous month.
+            //var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 */1 * ? * *"); // Every 1 minutes
+            var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 0 0 10 * ?"); // At 00:00:00am, on the 10th day, every month
+            IJobDetail _tenthOfMonthJob = CreateJob(tenthOfMonthJobMetaData);
+            ITrigger tenthOfMonthTrigger = CreateTrigger(tenthOfMonthJobMetaData);
+
 
             Scheduler = await schedulerFactory.GetScheduler();
             Scheduler.JobFactory = jobFactory;
@@ -51,7 +58,7 @@ namespace SATNET.WebApp.BackgroundTasks
             await Scheduler.ScheduleJob(_MRCJob, MRCTrigger, cancellationToken);
             await Scheduler.ScheduleJob(_endOfMonthJob, endOfMonthTrigger, cancellationToken);
             await Scheduler.ScheduleJob(invoiceJob, invoiceTrigger, cancellationToken);
-
+            await Scheduler.ScheduleJob(_tenthOfMonthJob, tenthOfMonthTrigger, cancellationToken);
             await Scheduler.Start(cancellationToken);
         }
         public async Task StopAsync(CancellationToken cancellationToken)

@@ -191,6 +191,7 @@ namespace SATNET.WebApp
             services.AddSingleton<InvoiceJob>(); 
             services.AddSingleton<MRCJob>();
             services.AddSingleton<EndOfMonthJob>();
+            services.AddSingleton<TenthOfMonthJob>();
 
             services.AddSingleton<IBackgroundTaskService, BackgroundTaskService>();
             services.AddSingleton<IBackgroundTaskRepository, BackgroundTaskRepository>();
