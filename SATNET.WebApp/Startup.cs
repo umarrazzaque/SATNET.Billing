@@ -145,6 +145,7 @@ namespace SATNET.WebApp
             services.AddScoped<IService<CreditNote>, CreditNoteService>();
             services.AddScoped<IService<HardwareComponentPrice>, HardwareComponentPriceService>();
             services.AddScoped<IService<HardwareComponentRegistration>, HardwareComponentRegistrationService>();
+            services.AddScoped <IAPIService, APIService>();
 
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<ServicePlan>, ServicePlanRepository>();
@@ -187,8 +188,9 @@ namespace SATNET.WebApp
             services.AddSingleton<IJobFactory, CustomQuartzJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             //jobs
-            services.AddSingleton<InvoiceJob>();
+            services.AddSingleton<InvoiceJob>(); 
             services.AddSingleton<MRCJob>();
+            services.AddSingleton<EndOfMonthJob>();
 
             services.AddSingleton<IBackgroundTaskService, BackgroundTaskService>();
             services.AddSingleton<IBackgroundTaskRepository, BackgroundTaskRepository>();

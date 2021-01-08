@@ -22,7 +22,7 @@ namespace SATNET.WebApp.Models
         public int? SubscriberId { get; set; }
         [DisplayName("Subscriber")]
         public string SubscriberName { get; set; }
-        [DisplayName("Status")]
+        [DisplayName("Site Status")]
         public int StatusId { get; set; }
         public string Status { get; set; }
         public string Name { get; set; }
@@ -38,6 +38,8 @@ namespace SATNET.WebApp.Models
         public string ServicePlanType { get; set; }
         [DisplayName("Promotion")]
         public string Promotion { get; set; }
+        [DisplayName("Modem Model")]
+        public string ModemModel { get; set; }
         [DisplayName("AIRMAC")]
         public string AirMac { get; set; }
         [DisplayName("IP")]

@@ -27,20 +27,31 @@ namespace SATNET.WebApp.BackgroundTasks
         public IScheduler Scheduler { get; set; }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            //var invoiceJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(InvoiceJob), "Invoice Job", "0 */5 * ? * *");
-            //IJobDetail invoiceJob = CreateJob(invoiceJobMetaData);
-            //ITrigger invoiceTrigger = CreateTrigger(invoiceJobMetaData);
+            //test job
+            var invoiceJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(InvoiceJob), "Invoice Job", "0 0 1 * * ?");// Every day at 1am
+            //var invoiceJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(InvoiceJob), "Invoice Job", "0 */2 * ? * *");// Every 2 minutes
+            IJobDetail invoiceJob = CreateJob(invoiceJobMetaData);
+            ITrigger invoiceTrigger = CreateTrigger(invoiceJobMetaData);
 
-            //var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "Invoice Job Monthly", "0 0 0 1 * ?"); // At 00:00:00am, on the 1st day, every month 
-            var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "Invoice Job Monthly", "0 */1 * ? * *"); // every 1 mins
+            //MRC job which runs every month to generate recurring invoices
+            var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 0 0 1 * ?"); // At 00:00:00am, on the 1st day, every month 
             IJobDetail _MRCJob = CreateJob(MRCJobMetaData);
             ITrigger MRCTrigger = CreateTrigger(MRCJobMetaData);
+
+            //End of month job which runs at the end of month 
+            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "End of month job", "0 0 21 ? * * *"); // At 21:00:00pm every day 
+            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */1 * ? * *"); // Every 2 minutes
+            var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 0 21 L * ?"); // At 21:00:00pm, on the last day of the month, every month
+            IJobDetail _endOfMonthJob = CreateJob(endOfMonthJobMetaData);
+            ITrigger endOfMonthTrigger = CreateTrigger(endOfMonthJobMetaData);
 
             Scheduler = await schedulerFactory.GetScheduler();
             Scheduler.JobFactory = jobFactory;
 
             await Scheduler.ScheduleJob(_MRCJob, MRCTrigger, cancellationToken);
-            //await Scheduler.ScheduleJob(invoiceJob, invoiceTrigger, cancellationToken);
+            await Scheduler.ScheduleJob(_endOfMonthJob, endOfMonthTrigger, cancellationToken);
+            await Scheduler.ScheduleJob(invoiceJob, invoiceTrigger, cancellationToken);
+
             await Scheduler.Start(cancellationToken);
         }
         public async Task StopAsync(CancellationToken cancellationToken)

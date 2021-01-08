@@ -66,6 +66,7 @@ CreatedByName=obj.CreatedByName,
 CreatedByRole=obj.CreatedByRole,
 ProRataQuota = obj.ProRataQuota,
 IsServicePlanFull = obj.IsServicePlanFull,
+ScheduleDateId = obj.ScheduleDateId
             };
             return model;
         }

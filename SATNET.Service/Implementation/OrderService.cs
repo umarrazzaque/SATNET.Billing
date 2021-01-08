@@ -13,9 +13,14 @@ namespace SATNET.Service.Implementation
     public class OrderService : IService<Order>
     {
         private readonly IRepository<Order> _orderRepository;
-        public OrderService(IRepository<Order> orderRepository)
+        private readonly IAPIService _APIService;
+        public OrderService()
+        {
+        }
+        public OrderService(IRepository<Order> orderRepository, IAPIService APIService)
         {
             _orderRepository = orderRepository;
+            _APIService = APIService;
         }
         public async Task<Order> Get(int id)
         {
@@ -54,6 +59,13 @@ namespace SATNET.Service.Implementation
                 {
                     status.IsSuccess = true;
                     status.ErrorCode = "Record inserted successfully.";
+                    // check condition for lock/unlock/token 
+                    if ((order.RequestTypeId == 6 || order.RequestTypeId == 7) && order.ScheduleDateId == 58) //request type: lock/unlock, schedulate date:now
+                    {
+                        var orderDetails = await _orderRepository.Get(retId);
+                        status = await LockUnLockSite(orderDetails);
+                        return status;
+                    }
                 }
                 else
                 {
@@ -78,7 +90,8 @@ namespace SATNET.Service.Implementation
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
             try
             {
-                int retId = await _orderRepository.Update(order);
+                int retId = 0;
+                retId = await _orderRepository.Update(order);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
@@ -89,6 +102,7 @@ namespace SATNET.Service.Implementation
                     status.IsSuccess = false;
                     status.ErrorCode = "Error in updating the record.";
                 }
+
             }
             catch (Exception e)
             {
@@ -150,6 +164,36 @@ namespace SATNET.Service.Implementation
                 servicePlanUnit = ServiceUnit.Mbps;
             }
             return servicePlanUnit;
+        }
+        private async Task<StatusModel> LockUnLockSite(Order order)
+        {
+            int retId = 0;
+            bool apiResult = false;
+            string requestType = "";
+            var status = new StatusModel();
+            requestType = order.RequestTypeId == 6 ? "lock" : order.RequestTypeId==7? "unlock":"";
+            apiResult = _APIService.LockUnlockSite(order.SiteName, requestType);
+            if (apiResult)
+            {
+                order.StatusId = 21; // complete order
+                retId = await _orderRepository.Update(order);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = "Site locked successfully.";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in updating lock status of site.";
+                }
+            }
+            else
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Some error occurred while calling to lock/unlock API.";
+            }
+            return status;
         }
     }
 }

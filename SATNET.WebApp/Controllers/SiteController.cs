@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
@@ -22,23 +23,36 @@ namespace SATNET.WebApp.Controllers
     public class SiteController : Base2Controller
     {
         private readonly IService<Site> _siteService;
+        private readonly IService<Promotion> _promotionService;
         private readonly IService<Lookup> _lookUpService;
         private readonly IMapper _mapper;
         public SiteController(IService<Site> siteService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Lookup> lookUpService
-            , IService<Customer> customerService) : base(customerService, userManager)
+            , IService<Customer> customerService, IService<Promotion> promotionService) : base(customerService, userManager)
         {
             _siteService = siteService;
             _mapper = mapper;
             _lookUpService = lookUpService;
+            _promotionService = promotionService;
         }
         public async Task<IActionResult> Index()
         {
-            return View(await GetPackagesList());
+            int customerId = await GetCustomerId();
+            if (customerId == 0)
+            {
+                var customers = await GetCustomerList(new Customer());
+                ViewBag.CustomerSelectList = new SelectList(customers, "Id", "Name");
+                ViewBag.CustomerId = 0;
+            }
+            var statuses = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.SiteStatus) });
+            ViewBag.SiteStatusSelectList = new SelectList(statuses, "Id", "Name");
+            var promotions = await _promotionService.List(new Promotion());
+            ViewBag.PromotionSelectList = new SelectList(promotions, "Id", "Name");
+            return View(await GetSiteList(customerId, 0,0));
         }
 
         public async Task<IActionResult> Reset()
         {
-            return Json(new { isValid = true, html = RenderViewToString(this, "Index", await GetPackagesList()) });
+            return Json(new { isValid = true, html = RenderViewToString(this, "Index", await GetSiteList(await GetCustomerId(), 0,0)) });
         }
         public IActionResult Add()
         {
@@ -81,7 +95,7 @@ namespace SATNET.WebApp.Controllers
             {
                 statusModel.ErrorCode = "Error occured see entity validation errors.";
             }
-            //statusModel.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //statusModel.Html = RenderViewToString(this, "Index", await GetSiteList());
             return Json(statusModel);
 
         }
@@ -108,7 +122,7 @@ namespace SATNET.WebApp.Controllers
             Site obj = _mapper.Map<Site>(createReturnModel.SiteModel);
             var statusModel = await _siteService.Update(obj);
             return Json(statusModel);
-            //status.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            //status.Html = RenderViewToString(this, "Index", await GetSiteList());
             //return Json(status);
         }
 
@@ -131,19 +145,17 @@ namespace SATNET.WebApp.Controllers
         {
             //1  as loged in user id
             var statusModel = _siteService.Delete(id, 1).Result;
-            statusModel.Html = RenderViewToString(this, "Index", await GetPackagesList());
+            statusModel.Html = RenderViewToString(this, "Index", await GetSiteList(await GetCustomerId(), 0,0));
             return Json(statusModel);
         }
 
-        private async Task<List<SiteModel>> GetPackagesList()
+        private async Task<List<SiteModel>> GetSiteList(int customerId, int siteStatusId, int promotionId)
         {
             //PackageModelList packageList = new PackageModelList();
             //packageList.MenuModel = SetLayoutContent(heading: "Site",subHeading: "Listing");
 
-            int customerId = await GetCustomerId();
-
             var retList = new List<SiteModel>();
-            var serviceResult = await _siteService.List(new Site() { CustomerId = customerId});
+            var serviceResult = await _siteService.List(new Site() { CustomerId = customerId, StatusId=siteStatusId, PromotionId=promotionId});
             if (serviceResult.Any())
             {
                 retList = _mapper.Map<List<SiteModel>>(serviceResult);
@@ -195,5 +207,12 @@ namespace SATNET.WebApp.Controllers
         //    };
         //    return siteStatusList;
         //}
+
+        public async Task<IActionResult> GetSiteListAjax(int customerId, int statusId, int promotionId)
+        {
+            var model = await GetSiteList(customerId, statusId, promotionId);
+            return PartialView("_Site", model);
+        }
+
     }
 }

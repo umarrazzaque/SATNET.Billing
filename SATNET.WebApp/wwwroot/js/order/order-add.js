@@ -241,8 +241,10 @@ $(function () {
                 break
             case '7':// Unlock
                 $(".select-site").show();
-                $("#ScheduleDateId").val('');
-                $("#ScheduleDateId").prop("disabled", false);
+                $(".site-name").show();
+                $("#ScheduleDateId").val(58);
+                $("#hdnScheduleDateId").val(58);
+                $("#ScheduleDateId").prop("disabled", true);
                 break
             case '8':// Other
                 $(".other").show();
@@ -294,10 +296,10 @@ $(function () {
         $('.dedicated-serviceplan').hide();
         $('.custom-dedicated-serviceplan').hide();
         var type = $(this).val();
-        if (type == "12") {
+        var section = $(this).data('section');
+        if (type == "12" && section != "change-service-plan") {
             $('.fullOrProrata').show();
         }
-        var section = $(this).data('section');
         if (type != "" && section != 'downgrade' && section != 'upgrade') {
             getServicePlansByType(type, section);
         }

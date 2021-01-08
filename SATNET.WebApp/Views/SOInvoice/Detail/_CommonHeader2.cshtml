@@ -3,14 +3,14 @@
 <div class="row contacts">
     <div class="col invoice-to">
         <div class="text-gray-light">INVOICE TO:</div>
-        <h3 class="to">@Model.SiteName, @Model.SubscriberName</h3>
+        <h5 class="to">@Model.CustomerName, @Model.SiteName, @Model.SubscriberName</h5>
         <div class="address">@Model.SiteCity , @Model.SiteArea</div>
     </div>
     <div class="col invoice-details">
-        <h3 class="invoice-id">@Model.InvoiceNumber</h3>
+        <h5 class="invoice-id">@Model.InvoiceNumber</h5>
         <div class="address">Order Number: @Model.OrderNumber</div>
         <div class="address">Request Type: @Model.RequestType</div>
         <div class="date">Invoice Date: @Model.CreatedOn.Value.ToShortDateString()</div>
-        <div class="date">Due Date: @Model.DueDate.ToShortDateString()</div>
+        @*<div class="date">Due Date: @Model.DueDate.ToShortDateString()</div>*@
     </div>
 </div>

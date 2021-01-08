@@ -8,5 +8,6 @@ namespace SATNET.Service.Interface
     {
         public void InsertMRCInvoice();
         public void InsertMRCInvoiceMonthly();
+        public void LockSitesEndOfMonth();
     }
 }
