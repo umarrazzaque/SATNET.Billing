@@ -21,6 +21,7 @@ namespace SATNET.WebApp.Models.Hardware
         public int HardwareTypeId { get; set; }
         public string HardwareType { get; set; }
         [DisplayName("Hardware Component")]
+        [Required(ErrorMessage = "Field is required")]
         public int HardwareComponentId { get; set; }
         public string HardwareComponent { get; set; }
         [DisplayName("Customer")]
@@ -45,5 +46,15 @@ namespace SATNET.WebApp.Models.Hardware
         public List<HardwareComponentModel> HardwareComponentList { get; set; }
         public List<LookUpModel> HardwareTypes { get; set; }
         public List<CustomerModel> CustomerList { get; set; }
+    }
+    public class ImportHardwareComponentModel : BaseModel
+    {
+        public ImportHardwareComponentModel()
+        {
+            HardwareComponentRegistrationModel = new HardwareComponentRegistrationModel();
+            HardwareComponentImportList = new List<HardwareComponentRegistrationModel>();
+        }
+        public HardwareComponentRegistrationModel HardwareComponentRegistrationModel { get; set; }
+        public List<HardwareComponentRegistrationModel> HardwareComponentImportList { get; set; }
     }
 }

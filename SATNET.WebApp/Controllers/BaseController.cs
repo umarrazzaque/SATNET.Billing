@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
+using SATNET.Service;
+using SATNET.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +17,10 @@ namespace SATNET.WebApp.Controllers
 {
     public class BaseController : Controller
     {
+        
+        public BaseController()
+        {
+        }
         public static string RenderViewToString(Controller controller, string viewName, object model = null)
         {
             controller.ViewData.Model = model;
@@ -35,4 +44,6 @@ namespace SATNET.WebApp.Controllers
         }
 
     }
+
+
 }
