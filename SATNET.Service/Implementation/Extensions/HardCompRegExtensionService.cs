@@ -15,43 +15,86 @@ namespace SATNET.Service.Implementation.Extensions
             var status = new StatusModel { IsSuccess = false };
             int dRow = -1;
             bool isSuccess = false;
-            var uow = new UnitOfWorkFactory().Create();
-            try
+            using (var uow = new UnitOfWorkFactory().Create())
             {
-                uow.BeginTransaction();
-                foreach (var item in recordsList)
+                try
                 {
-                    dRow = await uow.HardwareComponentRegistrations.Add(item);
-                    if (dRow > 0) {
-                        isSuccess = true;
+                    uow.BeginTransaction();
+                    foreach (var item in recordsList)
+                    {
+                        dRow = await uow.HardwareComponentRegistrations.Add(item);
+                        if (dRow > 0)
+                        {
+                            isSuccess = true;
+                        }
+                        else
+                        {
+                            isSuccess = false;
+                            break;
+                        }
+                    }
+                    if (isSuccess)
+                    {
+                        uow.SaveChanges();
+                        status.IsSuccess = true;
+                        status.ErrorCode = "Transaction completed successfully.";
                     }
                     else
                     {
-                        isSuccess = false;
-                        break;
+                        status.IsSuccess = false;
+                        status.ErrorCode = "An error occured while processing request.";
                     }
                 }
-                if (isSuccess) {
-                    uow.SaveChanges();
-                    status.IsSuccess = true;
-                    status.ErrorCode = "Transaction completed successfully.";
-                }
-                else
+                catch (Exception e)
                 {
                     status.IsSuccess = false;
                     status.ErrorCode = "An error occured while processing request.";
+                    status.ErrorDescription = e.Message;
+                }
+                finally
+                {
+                    uow.Connection.Close();
                 }
             }
-            catch (Exception e)
-            {
-                status.IsSuccess = false;
-                status.ErrorCode = "An error occured while processing request.";
-                status.ErrorDescription = e.Message;
-            }
-            finally
-            {
-                uow.Connection.Close();
-            }
+            //var uow = new UnitOfWorkFactory().Create();
+            //try
+            //{
+            //    uow.BeginTransaction();
+            //    foreach (var item in recordsList)
+            //    {
+            //        dRow = await uow.HardwareComponentRegistrations.Add(item);
+            //        if (dRow > 0)
+            //        {
+            //            isSuccess = true;
+            //        }
+            //        else
+            //        {
+            //            isSuccess = false;
+            //            break;
+            //        }
+            //    }
+            //    if (isSuccess)
+            //    {
+            //        uow.SaveChanges();
+            //        status.IsSuccess = true;
+            //        status.ErrorCode = "Transaction completed successfully.";
+            //    }
+            //    else
+            //    {
+            //        status.IsSuccess = false;
+            //        status.ErrorCode = "An error occured while processing request.";
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    status.IsSuccess = false;
+            //    status.ErrorCode = "An error occured while processing request.";
+            //    status.ErrorDescription = e.Message;
+            //}
+            //finally
+            //{
+            //    uow.Connection.Close();
+            //}
             return status;
             //foreach (var item in recordsList)
             //{
