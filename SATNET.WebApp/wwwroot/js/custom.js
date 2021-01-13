@@ -228,8 +228,12 @@ function init_table_pagination(tableName) {
             data: { "records": ret_table_rows, "header": table_header_str, "menu": menu_name },
             success: function (response) {
                 console.log(response);
+                //get the file name for download
+                
                 if (response.isSuccess === true) {
-                    Layout.ShowMessage(response.errorCode, 'Success Message', 1);
+                    //use window.location.href for redirect to download action for download the file
+                    window.location.href = "/Export/Download?fileName=" + response.errorCode;
+                    //Layout.ShowMessage("File Exported Succesfully!", 'Success Message', 1);
                 }
                 else {
                     Layout.ShowMessage(response.errorCode, 'Error Message', 2);
