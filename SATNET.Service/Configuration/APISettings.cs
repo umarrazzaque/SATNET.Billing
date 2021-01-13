@@ -19,6 +19,10 @@ namespace SATNET.Service.Configuration
             {
                 url = "http://10.2.0.50/rest/modem/usatcom/" + siteName + "/unlock";
             }
+            else if (type == "token")
+            {
+                url = "http://10.2.0.27/qm/rest/subscriptions/subscribe";
+            }
             return url;
         }
 

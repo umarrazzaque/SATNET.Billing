@@ -156,12 +156,7 @@ namespace SATNET.WebApp.Controllers
                 IsServicePlanFull = model.IsServicePlanFull
             };
 
-            var result = await _orderService.Add(order);
-            if (result.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
-            var status = new StatusModel { IsSuccess = false, ErrorDescription = result.ErrorDescription };
+            var status = await _orderService.Add(order);
             //status.Html = RenderViewToString(this, "Index", await GetOrderList());
             return Json(status);
 

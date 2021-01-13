@@ -51,19 +51,35 @@ namespace SATNET.Service.Implementation
         }
         public async Task<StatusModel> Add(Order order)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "Order/Index" };
+            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Order/Index" };
             try
-            {
+            {    
+               
+                if (order.RequestTypeId == 3) // business rule: upgrade is possible only one time in a month.
+                {
+                    status = await CheckUpgradesInMonth(order.SiteId);
+                    if (!status.IsSuccess)
+                    {
+                        return status;
+                    }
+                }
                 int retId = await _orderRepository.Add(order);
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
                     status.ErrorCode = "Record inserted successfully.";
-                    // check condition for lock/unlock/token 
+                    // call to lock/unlock APIs
                     if ((order.RequestTypeId == 6 || order.RequestTypeId == 7) && order.ScheduleDateId == 58) //request type: lock/unlock, schedulate date:now
                     {
                         var orderDetails = await _orderRepository.Get(retId);
                         status = await LockUnLockSite(orderDetails);
+                        return status;
+                    }
+                    // call to token APIs
+                    else if ((order.RequestTypeId == 5 && order.ScheduleDateId == 58)) //request type: token top up, schedulate date:now
+                    {
+                        var orderDetails = await _orderRepository.Get(retId);
+                        status = await TokenTopUpSite(orderDetails);
                         return status;
                     }
                 }
@@ -171,7 +187,8 @@ namespace SATNET.Service.Implementation
             bool apiResult = false;
             string requestType = "";
             var status = new StatusModel();
-            requestType = order.RequestTypeId == 6 ? "lock" : order.RequestTypeId==7? "unlock":"";
+            status.ResponseUrl = "/Order/Index";
+            requestType = order.RequestTypeId == 6 ? "lock" : order.RequestTypeId == 7 ? "unlock" : "";
             apiResult = _APIService.LockUnlockSite(order.SiteName, requestType);
             if (apiResult)
             {
@@ -180,7 +197,7 @@ namespace SATNET.Service.Implementation
                 if (retId != 0)
                 {
                     status.IsSuccess = true;
-                    status.ErrorCode = "Site locked successfully.";
+                    status.ErrorCode = order.RequestTypeId == 6 ? "Site locked successfully." : order.RequestTypeId == 7 ? "Site unlocked successfully." : "";
                 }
                 else
                 {
@@ -192,6 +209,55 @@ namespace SATNET.Service.Implementation
             {
                 status.IsSuccess = false;
                 status.ErrorCode = "Some error occurred while calling to lock/unlock API.";
+            }
+            return status;
+        }
+        private async Task<StatusModel> TokenTopUpSite(Order order)
+        {
+            int retId = 0;
+            bool apiResult = false;
+            string requestType = "";
+            var status = new StatusModel();
+            status.ResponseUrl = "/Order/Index";
+            requestType = order.RequestTypeId == 5 ? "token" : "";
+            apiResult = _APIService.TokenTopUpSite(order.SiteName, requestType);
+            if (apiResult)
+            {
+                order.StatusId = 21; // complete order
+                retId = await _orderRepository.Update(order);
+                if (retId != 0)
+                {
+                    status.IsSuccess = true;
+                    status.ErrorCode = order.RequestTypeId == 5 ? "Token applied successfully." : "";
+                }
+                else
+                {
+                    status.IsSuccess = false;
+                    status.ErrorCode = "Error in updating token top up record.";
+                }
+            }
+            else
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Some error occurred while calling to token API.";
+            }
+            return status;
+        }
+        private async Task<StatusModel> CheckUpgradesInMonth(int siteId)
+        {
+            StatusModel status = new StatusModel();
+            status.ResponseUrl = "/Order/Index";
+            var orders = await _orderRepository.List(new Order() { Flag = "RequestsInMonth", RequestTypeId = 3, SiteId = siteId, CreatedOn = DateTime.Now });
+            if (orders.Count > 0)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Only one upgrade is allowed per site per month.";
+                status.ResponseUrl = "/Order/Index";
+            }
+            else
+            {
+                status.IsSuccess = true;
+                status.ResponseUrl = "/Order/Index";
             }
             return status;
         }

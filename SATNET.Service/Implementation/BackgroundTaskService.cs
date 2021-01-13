@@ -67,7 +67,7 @@ namespace SATNET.Service.Implementation
         {
             try
             {
-                var orders = _orderService.List(new Order() { RequestTypeId = 6, Flag = "EndOfMonth" }).Result;
+                var orders = _orderService.List(new Order() { RequestTypeId = 6, Flag = "EndOfMonth", CreatedOn=DateTime.Now }).Result;
                 if (orders != null && orders.Count > 0)
                 {
                     foreach (var o in orders)

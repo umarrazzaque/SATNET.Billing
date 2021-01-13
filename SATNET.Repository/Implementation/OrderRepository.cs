@@ -46,7 +46,13 @@ namespace SATNET.Repository.Implementation
 
                 var parms = new DynamicParameters();
                 parms.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
-                //parms.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@Flag", obj.Flag, DbType.String, ParameterDirection.Input);
+                if (obj.CreatedOn != DateTime.MinValue)
+                {
+                    parms.Add("@CreatedOn", obj.CreatedOn, DbType.DateTime, ParameterDirection.Input);
+                }
                 parms.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
                 var result = await con.QueryAsync<Order>("OrderList",parms, commandType: CommandType.StoredProcedure);
                 orders = result.ToList();
