@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.Invoice.MRCInvoiceViewModel>
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                @*<th class="text-center" width="30">
+             <input type="checkbox">
+        </th>*@
+                @*<th class="text-center">#</th>*@
+                <th style="width:30%">Invoice Number</th>
+                <th style="width:15%"> Site Name </th>
+                <th style="width:15%"> Customer Name </th>
+                <th style="width:10%"> Created Date</th>
+                <th style="width:10%"> Due Date</th>
+                <th style="width:20%"> Total </th>
+                <th class="text-center"> </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+            <tr>
+                @*<td class="text-center"> <input type="checkbox"></td>*@
+                @*<td class="text-center text-muted">
+            @{
+                counter++;
+            }
+            @counter
+        </td>*@
+                <td>
+                    <a href="@String.Format("/{0}?id={1}", "MRCInvoice/ViewInvoice", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.InvoiceNumber</a>
+                </td>
+                <td>@item.SiteName</td>
+                <td>@item.CustomerName</td>
+                <td>
+                    @if (item.CreatedOn != null)
+                    {
+                        @item.CreatedOn.Value.ToShortDateString();
+                    }
+                </td>
+                <td>
+                    @if (item.DueDate != null)
+                    {
+                        @item.DueDate.ToShortDateString();
+                    }
+                </td>
+                <td> @item.Total</td>
+                <td class="text-center">
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

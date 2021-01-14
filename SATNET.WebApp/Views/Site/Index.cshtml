@@ -24,6 +24,38 @@
             </div>
         </div>
     </div>
+    <div class="filters">
+        <div class="row">
+            @if (ViewBag.CustomerSelectList != null)
+            {
+                <div class="col-lg-2">
+                    <div class="position-relative form-group">
+                        <label>Customer</label>
+                        <select id="selectCustomer" type="select" class="form-control" asp-items="ViewBag.CustomerSelectList">
+                            <option value="0" selected>All</option>
+                        </select>
+                    </div>
+                </div>
+
+            }
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Site Status</label>
+                    <select id="selectSiteStatus" type="select" class="form-control" asp-items="ViewBag.SiteStatusSelectList">
+                        <option value="0" selected>All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Promotion</label>
+                    <select id="selectPromotion" type="select" class="form-control" asp-items="ViewBag.PromotionSelectList">
+                        <option value="0" selected>All</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -34,36 +66,47 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        init_table_pagination('grid_table');
+    
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            init_table_pagination('grid_table');
     });
-    //$(function () {
-    //    var t = $("#grid_table").DataTable({
+        $(function () {
+            var _customerId = 0;
+            if (@ViewBag.CustomerId != null) {
+                _customerId=@ViewBag.CustomerId;
+            }
+            $(".filters select#selectCustomer").change(function () {
+                GetSiteList();
+            });
+            $(".filters select#selectSiteStatus").change(function () {
+                GetSiteList();
+            });
+            $(".filters select#selectPromotion").change(function () {
+                GetSiteList();
+            });
+        });
 
-    //        "paging": true,
-    //        "lengthChange": true,
-    //        "searching": true,
-    //        "ordering": true,
-    //        "info": true,
-    //        "autoWidth": false,
-    //        "responsive": true,
-    //        "columnDefs": [
-    //            { "orderable": false, "targets": 0 },
-    //            { "orderable": false, "targets": 1 },
-    //            { "orderable": false, "targets": 6 }
-    //        ],
-    //        //"columnDefs": [
-    //        //    {
-    //        //        'targets': 0, // column index (start from 0)bb
-    //        //        'orderable': false, // set orderable false for selected columns
-    //        //    }],
-    //    });
-    //    t.on('order.dt search.dt', function () {
-    //        t.column(1, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-    //            cell.innerHTML = i + 1;
-    //        });
-    //    }).draw();
-    //});
-
-</script>
+        GetSiteList = function () {
+            var customerId = $("#selectCustomer").val();
+            var statusId = $("#selectSiteStatus").val();
+            var promotionId = $("#selectPromotion").val();
+            $.ajax(
+                {
+                    url: '/Site/GetSiteListAjax',
+                    data: { customerId: customerId, statusId: statusId, promotionId: promotionId },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
+                    }
+                });
+        }
+    </script>
+}

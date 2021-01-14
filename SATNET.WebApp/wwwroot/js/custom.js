@@ -130,7 +130,9 @@ function init_table_pagination(tableName) {
         //window.location.href = 'https://localhost:44367/Customer';
         //$("#MainContents").html(data.html);
         console.log(window.location.origin + url);
-        window.location.href = window.location.origin + url;
+        if (url !== null) {
+            window.location.href = window.location.origin + url;
+        }
     };
 
     Layout.ShowMessage = function (text, title, type) {

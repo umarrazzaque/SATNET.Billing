@@ -70,6 +70,8 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_IdFilter1", obj.IdFilter1, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@P_IdFilter2", obj.IdFilter2, DbType.Int32, ParameterDirection.Input);
             var result = await dbCon.QueryAsync<Lookup>("LookupList", queryParameters, commandType: CommandType.StoredProcedure, transaction: UnitOfWork.Transaction);
             lookups = result.ToList();
             return lookups;

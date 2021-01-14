@@ -1,0 +1,14 @@
+﻿@model SATNET.WebApp.Models.Invoice.MRCInvoiceViewModel
+
+<div class="row contacts">
+    <div class="col invoice-to">
+        <div class="text-gray-light">INVOICE TO:</div>
+        <h3 class="to">@Model.SiteName, @Model.SubscriberName</h3>
+        <div class="address">@Model.SiteCity , @Model.SiteArea</div>
+    </div>
+    <div class="col invoice-details">
+        <h3 class="invoice-id">@Model.InvoiceNumber</h3>
+        <div class="date">Invoice Date: @Model.CreatedOn.Value.ToShortDateString()</div>
+        @*<div class="date">Due Date: @Model.DueDate.ToShortDateString()</div>*@
+    </div>
+</div>

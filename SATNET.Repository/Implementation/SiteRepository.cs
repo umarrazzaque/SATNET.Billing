@@ -69,7 +69,13 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
+            queryParameters.Add("@PromotionId", obj.PromotionId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
+            if (obj.NextBillingDate != DateTime.MinValue)
+            {
+                queryParameters.Add("@BillingDate", obj.NextBillingDate, DbType.DateTime, ParameterDirection.Input);
+            }
             queryParameters.Add("@P_SEARCHBY", obj.SearchBy, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_KEYWORD", obj.Keyword, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
@@ -98,15 +104,9 @@ namespace SATNET.Repository.Implementation
             var dbCon = UnitOfWork.Connection;
             var queryParameters = new DynamicParameters();
             queryParameters.Add("@P_Id", obj.Id, DbType.Int32, ParameterDirection.InputOutput);
-            queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
-            queryParameters.Add("@P_SubscriberId", obj.SubscriberId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
-            queryParameters.Add("@P_Name", obj.Name, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_City", obj.City, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_Area", obj.Area, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@P_Subscriber", obj.SubscriberName, DbType.String, ParameterDirection.Input);
-            queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
-            int retResult = await dbCon.ExecuteScalarAsync<int>("SiteAddOrUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
+            queryParameters.Add("@P_flag", obj.Flag, DbType.String, ParameterDirection.Input);
+            int retResult = await dbCon.ExecuteScalarAsync<int>("SiteUpdate", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
             result = Parse.ToInt32(queryParameters.Get<int>("@P_Id"));
             return result;
         }

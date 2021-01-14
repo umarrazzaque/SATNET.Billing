@@ -13,6 +13,7 @@
                 <th style="width:20%"> Model </th>
                 <th style="width:30%"> @Html.DisplayNameFor(model => model.AIRMAC) </th>
                 <th style="width:30%"> @Html.DisplayNameFor(model => model.SerialNumber) </th>
+                @*<th style="width:10%"> @Html.DisplayNameFor(model => model.IsUsed) </th>*@
                 <th style="width:10%" class="text-center"> Actions </th>
             </tr>
         </thead>
@@ -34,16 +35,32 @@
                 <td> @Html.DisplayFor(modelItem => item.HardwareComponent)</td>
                 <td> @Html.DisplayFor(modelItem => item.AIRMAC)</td>
                 <td> @Html.DisplayFor(modelItem => item.SerialNumber)</td>
+
+                @*@if (item.IsUsed)
+                {
+                    <td>
+                        No
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Yes
+                    </td>
+                }*@
                 <td class="text-center">
                     <div class="buttons">
                         <a href="@String.Format("/{0}?id={1}", "LogisticsAIRMAC/Edit", item.Id)" class="pl-1 pr-1">
                             <span class="fa fa-edit" aria-hidden="true"></span>
                         </a>
-                        <a href="@String.Format("/{0}?id={1}", "LogisticsAIRMAC/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
-                           data-toggle="modal" data-target="#modal-deleteConfirm">
-                            <span class="fa fa-trash" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                        @if (!item.IsUsed)
+                        {
+                            <a href="@String.Format("/{0}?id={1}", "LogisticsAIRMAC/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                               data-toggle="modal" data-target="#modal-deleteConfirm">
+                                <span class="fa fa-trash" aria-hidden="true"></span>
+                            </a>
+                        }
+                        </div>
                 </td>
             </tr>
             }

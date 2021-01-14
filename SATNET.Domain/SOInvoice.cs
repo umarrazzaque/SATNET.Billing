@@ -13,6 +13,7 @@ namespace SATNET.Domain
         public int OrderId { get; set; }
         public int SiteId { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public int StatusId { get; set; }
         public string Status { get; set; }
         public DateTime DueDate { get; set; }

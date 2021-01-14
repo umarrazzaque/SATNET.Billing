@@ -28,6 +28,7 @@ namespace SATNET.WebApp.Models.Hardware
         [Required(ErrorMessage ="Required Field")]
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
+        [DisplayName("Is Available")]
         public bool IsUsed { get; set; }
         public string[] SerialNumbers { get; set; }
         public string[] AIRMACs { get; set; }

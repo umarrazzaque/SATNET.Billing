@@ -1,7 +1,7 @@
 ﻿@model SATNET.WebApp.Models.Order.OrderViewModel
 @using SATNET.Domain.Enums
 
-<form id="formServiceOrder" method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
+<form id="formAdd" method="post" data-ajax="true" asp-controller="Order" asp-action="Add" data-ajax-method="post"
       enctype="multipart/form-data" autocomplete="off">
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -43,6 +43,7 @@
         <div class="form-group">
             <label>Customer</label>
             <select asp-for="CustomerId" asp-items="Model.CustomerSelectList" class="form-control select2 text-input">
+                <option value="" selected>Select</option>
             </select>
             <span asp-validation-for="CustomerId" class="text-danger"></span>
         </div>
@@ -76,13 +77,6 @@
             <span asp-validation-for="SubscriberName" class="text-danger"></span>
         </div>
     </div>
-    @*<div class="col-lg-3 new-site site-name">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" asp-for="SiteName" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SiteName" class="text-danger"></span>
-            </div>
-        </div>*@
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label>City</label>
@@ -108,7 +102,7 @@
     <div class="col-lg-3 new-site">
         <div class="form-group">
             <label asp-for="ServicePlanTypeSelectList"></label>
-            <select asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="newsite" class="form-control select2 text-input service-plantype">
+            <select asp-for="ServicePlanTypeId" asp-items="Model.ServicePlanTypeSelectList" data-section="new-site" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -164,27 +158,13 @@
             </select>
         </div>
     </div>
-    @*<div class="col-lg-3 new-site">
-            <div class="position-relative form-group">
-                <label asp-for="Download"></label>
-                <input asp-for="Download" type="text" placeholder="Download" class="form-control text-input" />
-                <span asp-validation-for="Download" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-3 new-site">
-            <div class="position-relative form-group">
-                <label asp-for="Upload"></label>
-                <input asp-for="Upload" type="text" placeholder="Upload" class="form-control text-input" />
-                <span asp-validation-for="Upload" class="text-danger"></span>
-            </div>
-        </div>*@
     <div class="col-lg-12 hardware">
         <h5 class="title">Hardware Details</h5>
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>Modem Model </label>
-            <select id="selectModemModel" asp-for="ModemModelId" asp-items="Model.ModemModelSelectList" class="form-control select2 text-input airmac">
+            <select id="selectModemModel" asp-for="ModemModelId" asp-items="Model.ModemModelSelectList" class="form-control select2 text-input modem" data-section="new-site">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ModemModelId" class="text-danger"></span>
@@ -193,7 +173,7 @@
     <div class="col-lg-3 hardware">
         <div class="form-group">
             <label>AIRMAC </label>
-            <select id="selectAirMac" asp-for="AirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
+            <select id="selectAirMac" asp-for="AirMac" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="AirMac" class="text-danger"></span>
@@ -220,44 +200,6 @@
             <span asp-validation-for="PromotionId" class="text-danger"></span>
         </div>
     </div>
-    @*<div class="col-lg-12 new-site subscriber">
-
-            <h5 class="title">Subscriber Details</h5>
-        </div>
-        <div class="col-lg-3 new-site subscriber">
-            <div class="position-relative form-group">
-                <label asp-for="SubscriberName"></label>
-                <input asp-for="SubscriberName" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="SubscriberName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-3 new-site subscriber">
-            <div class="position-relative form-group">
-                <label asp-for="SubscriberCity"></label>
-                <input asp-for="SubscriberCity" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="SubscriberCity" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-3 new-site subscriber">
-            <div class="position-relative form-group">
-                <label asp-for="SubscriberEmail"></label>
-                <input asp-for="SubscriberEmail" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="SubscriberEmail" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-3 new-site subscriber">
-            <div class="position-relative form-group">
-                <label asp-for="SubscriberArea"></label>
-                <input asp-for="SubscriberArea" type="text" placeholder="..." class="form-control" />
-                <span asp-validation-for="SubscriberArea" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-lg-3 new-site subscriber">
-            <div class="position-relative form-group">
-                <label asp-for="SubscriberNotes"></label>
-                <input asp-for="SubscriberNotes" type="text" placeholder="..." class="form-control" />
-            </div>
-        </div>*@
     <div class="col-lg-12 upgrade">
         <h5 class="title">Upgrade</h5>
     </div>
@@ -377,7 +319,7 @@
     <div class="col-lg-3 change-serviceplan">
         <div class="form-group">
             <label>Current Service Plan Type</label>
-            <select disabled id="currentServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="newsite" class="form-control select2 text-input service-plantype">
+            <select disabled id="currentServicePlanType" asp-items="Model.ServicePlanTypeSelectList" data-section="new-site" class="form-control select2 text-input service-plantype">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ServicePlanTypeId" class="text-danger"></span>
@@ -410,26 +352,40 @@
         </div>
     </div>
     <div class="col-lg-12 modem-swap">
-        <h5 class="title">Hardware Details</h5>
+        <h5 class="title">Current Hardware</h5>
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>Current AIRMAC </label>
-            <select id="currentAirMac" class="form-control select2 text-input">
+            <label>Modem </label>
+            <input type="text" id="txtCurrentModem" disabled="disabled" class="form-control" />
+        </div>
+    </div>
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>AIRMAC</label>
+            <input type="text" id="txtCurrentAirmac" disabled="disabled" class="form-control" />
+        </div>
+    </div>
+    <div class="col-lg-12 modem-swap">
+        <h5 class="title">New Hardware</h5>
+    </div>
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>Modem </label>
+            <select class="form-control select2 text-input modem" asp-items="Model.ModemModelSelectList" data-section="modem-swap">
                 <option value="" hidden disabled selected>Select</option>
             </select>
         </div>
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>New AIRMAC</label>
-            <select asp-for="NewAirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input airmac">
+            <label>AIRMAC</label>
+            <select id="selectNewAirmac" asp-for="NewAirMac" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="NewAirMac" class="text-danger"></span>
         </div>
     </div>
-
 </div>
 </form>
 

@@ -180,5 +180,6 @@ namespace SATNET.WebApp.Controllers
             var sites = await _siteService.List(site);
             return Json(new SelectList(sites, "Id", "Name"));
         }
+
     }
 }
