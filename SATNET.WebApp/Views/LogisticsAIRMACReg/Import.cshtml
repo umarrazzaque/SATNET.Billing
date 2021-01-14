@@ -14,7 +14,7 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div>
-                        Import AIRMAC
+                        Import Registered AIRMAC
                         <div class="page-title-subheading">
                             Please fillout following form
                         </div>
@@ -22,10 +22,9 @@
                 </div>
                 <div class="page-title-actions">
                     <div class="d-inline-block dropdown">
-                        <a href="@String.Format("/{0}", "LogisticsAIRMAC/Index")" class=" btn btn-danger">
+                        <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Index")" class=" btn btn-danger">
                             Back
                         </a>
-                        @*<button type="submit" id="btn_import" class="btn btn-default">Import AIRMAC's</button>*@
                     </div>
                 </div>
             </div>
@@ -46,7 +45,7 @@
         <div class="row import_list_div" style="display:none">
             <div class="col-md-12">
                 <div id="ImportList">
-                    @await Html.PartialAsync("_AirMACPartialList", Model.HardwareComponentImportList)
+                    @await Html.PartialAsync("_AirMACRegPartialList", Model.HardwareComponentImportList)
                 </div>
             </div>
         </div>
@@ -72,14 +71,11 @@
         $(document).on("click", '#upload', function (e) {
             e.preventDefault();
             var fdata = new FormData();
-            var fileInput = $('#upload_file')[0];
-            var file = fileInput.files[0];
-            console.log(fileInput);
-            console.log(file);
+            var file = $('#upload_file')[0].files[0];
             fdata.append("File", file);
             $.ajax({
                 type: 'post',
-                url: '/LogisticsAIRMAC/ImportFile',
+                url: '/LogisticsAIRMAC/ImportAirMACFile',
                 data: fdata,
                 processData: false,
                 contentType: false
@@ -92,10 +88,6 @@
                 init_table_pagination("import_grid_table");
             });
         });
-        //$(document).on('click', '#btn_import', function (e) {
-        //    e.preventDefault();
-        //    console.log($('#HardwareComponentImportList').val());
-        //});
         $(document).ready(function () {
             var table = init_table_pagination("import_grid_table");
         });
