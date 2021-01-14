@@ -284,7 +284,6 @@ namespace SATNET.WebApp.Controllers
             catch (Exception e) { 
             }
             return Json(new StatusModel() { IsSuccess = false, ErrorCode = "Error while importing file." });
-
         }
         private int SpecificationExists(string section, string searchBy, string specs) {
             int resultCount = -1;

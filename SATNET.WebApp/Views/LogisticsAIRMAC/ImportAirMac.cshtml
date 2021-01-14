@@ -71,7 +71,8 @@
         });
         $(document).on("click", '#upload', function (e) {
             e.preventDefault();
-            
+            $('#loader').addClass('overlay');
+            console.log('------');
             var fdata = new FormData();
             var file = $('#upload_file')[0].files[0];
             console.log(file);
@@ -90,7 +91,9 @@
                 $('#ImportList').html(result);
                 $('#upload').attr('disabled', true);
                 init_table_pagination("import_grid_table");
+                $('#loader').removeClass('overlay');
             });
+            
         });
         //$(document).on('click', '#btn_import', function (e) {
         //    e.preventDefault();
