@@ -31,9 +31,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-8">
                 <div class="form-group position-relative">
-                    <input type="file" name="file" id="upload_file" />
+                    <input type="file" name="file" id="upload_file" class="text-input" />
                     <button type="button" class="btn btn-success" id="upload" disabled>Upload File</button>
                 </div>
             </div>
@@ -86,11 +86,18 @@
                 contentType: false
             }).done(function (result) {
                 // do something with the result now
-                $('.import_list_div').show();
-                $('#ImportList').html('');
-                $('#ImportList').html(result);
-                $('#upload').attr('disabled', true);
-                init_table_pagination("import_grid_table");
+                if (result.isSuccess != null) {
+                    if (result.isSuccess == false) {
+                        $('#import_state_label').text(result.errorCode);
+                    }
+                }
+                else {
+                    $('.import_list_div').show();
+                    $('#ImportList').html('');
+                    $('#ImportList').html(result);
+                    $('#upload').attr('disabled', true);
+                    init_table_pagination("import_grid_table");
+                }
                 $('#loader').removeClass('overlay');
             });
             
