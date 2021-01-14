@@ -177,12 +177,13 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ImportAirMACFile(IFormFile inputFile)
         {
-            //check for inputFile extension
-            if (!Path.GetExtension(inputFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-            {
-                return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}."});
-            }
+            
             try {
+                //check for inputFile extension
+                if (!Path.GetExtension(inputFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}." });
+                }
                 //get filename
                 string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
                 //set file path on server machine
@@ -345,7 +346,7 @@ namespace SATNET.WebApp.Controllers
                     }
                     recordCounter++;
                 }
-                response = response.Substring(0, response.Length - 1);
+                response = response.Equals("") ? "" : response.Substring(0, response.Length - 1);
                 statusModel.ErrorCode = response;
                 return Json(statusModel);
             }

@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="form-group position-relative">
                     <input type="file" name="file" id="upload_file" />
                     <button type="button" class="btn btn-success" id="upload" disabled>Upload File</button>
@@ -71,15 +71,15 @@
         });
         $(document).on("click", '#upload', function (e) {
             e.preventDefault();
+            
             var fdata = new FormData();
-            var fileInput = $('#upload_file')[0];
-            var file = fileInput.files[0];
-            console.log(fileInput);
+            var file = $('#upload_file')[0].files[0];
             console.log(file);
-            fdata.append("File", file);
+            fdata.append("inputFile", file);
+            console.log('------');
             $.ajax({
                 type: 'post',
-                url: '/LogisticsAIRMAC/ImportFile',
+                url: '/LogisticsAIRMAC/ImportAirMACFile',
                 data: fdata,
                 processData: false,
                 contentType: false
