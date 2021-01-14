@@ -166,7 +166,7 @@ namespace SATNET.WebApp.Controllers
             return Json(statusModel);
         }
         [Authorize(Policy = "ManageLogisticsPolicy")]
-        public async Task<IActionResult> Import()
+        public IActionResult ImportAirMac()
         {
             var resultModel = new ImportHardwareComponentModel()
             {
@@ -175,111 +175,115 @@ namespace SATNET.WebApp.Controllers
             return View(resultModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Import(ImportHardwareComponentModel retModel)
+        public async Task<IActionResult> ImportAirMACFile(IFormFile inputFile)
         {
-            var statusModel = new StatusModel { IsSuccess = false, ResponseUrl = _responseUrl };
-            statusModel.ResponseUrl = _responseUrl;
-            return Json(statusModel);
-        }
-        [HttpPost]
-        public async Task<IActionResult> ImportFile(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return Content("file not selected");
-            var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot", "Uploads/AirMAC",
-                        fileName);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            //if (formFile == null || formFile.Length <= 0)
-            //{
-            //    return DemoResponse<List<UserInfo>>.GetResult(-1, "formfile is empty");
-            //}
-
-            if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-            {
-                //return DemoResponse<List<UserInfo>>.GetResult(-1, "Not Support file extension");
-            }
-            var retModel = new ImportHardwareComponentModel();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-                using (var package = new ExcelPackage(stream))
+            
+            try {
+                //check for inputFile extension
+                if (!Path.GetExtension(inputFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                    var rowCount = worksheet.Dimension.Rows;
-
-                    for (int row = 2; row <= rowCount; row++)
+                    return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}." });
+                }
+                //get filename
+                string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
+                //set file path on server machine
+                var path = Path.Combine(
+                            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
+                //copy the file to server location for temporary storage
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await inputFile.CopyToAsync(stream);
+                }
+                //set excel configuration
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                var retModel = new ImportHardwareComponentModel();
+                //set stream to read the file from temporary upload location
+                using (var stream = new MemoryStream())
+                {
+                    await inputFile.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
                     {
-                        string briefDescription = "";
-                        bool isExist = false;
-                        int hardwareComponentId = -1;
-                        string serialNumber = worksheet.Cells[row, 2].Value != null ? worksheet.Cells[row, 2].Value.ToString().Trim() : "";
-                        //Check in ExistingList
-                        //check serial number
-                        if (serialNumber != "") {
-                            isExist = retModel.HardwareComponentImportList.Where(c => c.SerialNumber.Equals(serialNumber)).ToList().Count > 0 ? true : false;
-                            briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "Serail Number Exist - " : "OK-");
-                        }
-                        else
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+                        for (int row = 2; row <= rowCount; row++)
                         {
-                            briefDescription += "Serial Number is empty - ";
-                        }
-                        //check airmac number
-                        string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim(): "";
-                        if (airMac != "")
-                        {
-                            isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
-                            briefDescription += isExist == true ? "Duplicate AIRMAC Number - " : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC Number Exist - " : "OK-");
-                        }
-                        else {
-                            briefDescription += "AIRMAC Number is empty - ";
-                        }
-                        //check hardware component
-                        string hardwareComponent = worksheet.Cells[row, 4].Value != null ? worksheet.Cells[row, 4].Value.ToString().Trim() : "";
-                        if (hardwareComponent != "") {
-                            //try to avoid db call by checking from linq list
-                            hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
-                            briefDescription += hardwareComponentId == -1 ? "Modem Model Number Not Exists" : "OK";
-                        }
-                        else {
-                            briefDescription += "Modem Model Number is empty.";
-                        }
-                        if (serialNumber.Equals("") && airMac.Equals("") && hardwareComponent.Equals("")) {
-                            briefDescription += "OOOPPPPSSSS!";
-                        }
-                        else
-                        {
-                            retModel.HardwareComponentImportList.Add(new HardwareComponentRegistrationModel
+                            string briefDescription = "";
+                            bool isExist = false;
+                            int hardwareComponentId = -1;
+                            //check hardware component
+                            string hardwareComponent = worksheet.Cells[row, 4].Value != null ? worksheet.Cells[row, 4].Value.ToString().Trim() : "";
+                            if (hardwareComponent != "")
                             {
-                                SerialNumber = serialNumber,
-                                AIRMAC = airMac,
-                                HardwareComponent = hardwareComponent,
-                                HardwareComponentId = hardwareComponentId,
-                                BriefDescription = briefDescription
-                            });
+                                //try to avoid db call by checking from linq list
+                                hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
+                                briefDescription += hardwareComponentId == -1 ? "Modem Model Number Not Exists - " : "OK";
+                            }
+                            else
+                            {
+                                briefDescription += "Modem Model Number is empty - ";
+                            }
+                            //check serial number
+                            string serialNumber = worksheet.Cells[row, 2].Value != null ? worksheet.Cells[row, 2].Value.ToString().Trim() : "";
+                            //Check in ExistingList
+                            if (serialNumber != "")
+                            {
+                                isExist = retModel.HardwareComponentImportList.Where(c => c.SerialNumber.Equals(serialNumber)).ToList().Count > 0 ? true : false;
+                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "Serail Number Exist - " : "OK-");
+                            }
+                            else
+                            {
+                                briefDescription += "Serial Number is empty - ";
+                            }
+                            //check airmac number
+                            string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
+                            if (airMac != "")
+                            {
+                                isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
+                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC Number Exist - " : "OK-");
+                            }
+                            else
+                            {
+                                briefDescription += "AIRMAC Number is empty";
+                            }
+
+                            if (serialNumber.Equals("") && airMac.Equals("") && hardwareComponent.Equals(""))
+                            {
+                                briefDescription += "OOOPPPPSSSS!";
+                            }
+                            else
+                            {
+                                retModel.HardwareComponentImportList.Add(new HardwareComponentRegistrationModel
+                                {
+                                    SerialNumber = serialNumber,
+                                    AIRMAC = airMac,
+                                    HardwareComponent = hardwareComponent,
+                                    HardwareComponentId = hardwareComponentId,
+                                    BriefDescription = briefDescription
+                                });
+                            }
+
                         }
-                        
-                    }
-                    retModel.isSuccess = retModel.HardwareComponentImportList.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0 ? false : true;
-                    if (retModel.isSuccess)
-                    {
-                        //Valid records, add records in DB
-                        var hc_list = _mapper.Map<List<HardwareComponentRegistration>>(retModel.HardwareComponentImportList);
-                        var res = await _hardwareComponentRegistrationService.AddBulk(hc_list);
-                        if (res.IsSuccess == false) {
-                            retModel.HardwareComponentImportList.FirstOrDefault().BriefDescription += "-Number";
+                        retModel.isSuccess = retModel.HardwareComponentImportList.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0 ? false : true;
+                        if (retModel.isSuccess)
+                        {
+                            //Valid records, add records in DB
+                            var hc_list = _mapper.Map<List<HardwareComponentRegistration>>(retModel.HardwareComponentImportList);
+                            var res = await _hardwareComponentRegistrationService.AddBulk(hc_list);
+                            if (res.IsSuccess == false)
+                            {
+                                retModel.HardwareComponentImportList.FirstOrDefault().BriefDescription += "-Number";
+                            }
                         }
-                    }
-                    else { 
+                        else
+                        {
+                        }
                     }
                 }
+                return PartialView("_AirMACPartialList", retModel.HardwareComponentImportList);
             }
-            return PartialView("_AirMACPartialList", retModel.HardwareComponentImportList);
+            catch (Exception e) { 
+            }
+            return Json(new StatusModel() { IsSuccess = false, ErrorCode = "Error while importing file." });
         }
         private int SpecificationExists(string section, string searchBy, string specs) {
             int resultCount = -1;
@@ -341,7 +345,7 @@ namespace SATNET.WebApp.Controllers
                     }
                     recordCounter++;
                 }
-                response = response.Substring(0, response.Length - 1);
+                response = response.Equals("") ? "" : response.Substring(0, response.Length - 1);
                 statusModel.ErrorCode = response;
                 return Json(statusModel);
             }

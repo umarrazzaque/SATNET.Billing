@@ -309,11 +309,12 @@ function init_table_pagination(tableName) {
     });
 
     $(document).on("submit", '#formAdd', function (e) {
-        console.log('There');
         e.preventDefault();
+        $('#loader').addClass('overlay');
         $.post($(this).attr("action"),
             $(this).serialize(),
             function (data) {
+                $('#loader').removeClass('overlay');
                 Layout.LoadContent(data.responseUrl, null);
                 Layout.ProcessTransactionMessage(data.isSuccess, data.errorCode);
             });

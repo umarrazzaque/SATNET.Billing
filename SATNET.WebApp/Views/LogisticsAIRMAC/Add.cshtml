@@ -151,14 +151,11 @@
             specsArray.push(item.specsOne + '---' + item.specsTwo);
             specsObj += item.specsOne + ',';
         });
-        console.log(specsArray);
-        console.log(specsObj);
         var returnVal = checkRecordinDB('AIRMAC', specsArray);
         if (returnVal[0] == false) {
             e.preventDefault();
             $('#label_transaction').text(returnVal[1] + ' - Exist in DB!');
         } else {
-
         }
 
     });

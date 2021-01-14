@@ -29,7 +29,7 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/css/site.css">
     <!-- jQuery -->
     <script src="~/Themes/QMSN/Resources/js/jquery/jquery.min.js"></script>
 
@@ -40,7 +40,7 @@
     <link href="~/css/custom.css" rel="stylesheet" />
     @*<link rel="stylesheet" href="/path/to/cdn/bootstrap.min.css" />*@
     <link href="~/lib/bootstrap/autocomplete/css/bootstrap-select.css" rel="stylesheet" />
-    @RenderSection("Styles", required:false)
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     @using Microsoft.AspNetCore.Authorization
@@ -491,8 +491,6 @@
                 <!-- /.modal-content -->
             </div>
         </div>
-
-
         <div class="modal" id="modal-rejectreason">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -512,8 +510,8 @@
                 <!-- /.modal-content -->
             </div>
         </div>
-
     </div>
+    <div id="loader"></div>
 
     <!-- ./wrapper -->
     <!-- jQuery UI 1.11.4 -->

@@ -136,7 +136,6 @@ namespace SATNET.WebApp.Controllers
                             //propNames.Add(prop.GetValue(item).ToString());
                             var propertyVal = prop.GetValue(item);
                             propertyVal = propertyVal != null ? propertyVal.ToString() : "";
-
                             workSheet.Cells[recordIndex, excelColStart].Value = propertyVal;
                             excelColStart++;
                         }
@@ -144,7 +143,6 @@ namespace SATNET.WebApp.Controllers
                         recordIndex++;
                     }
                     workSheet.Column(3).AutoFit();
-
                     package.Save();
                     statusModel.ErrorCode = fileName;
 
