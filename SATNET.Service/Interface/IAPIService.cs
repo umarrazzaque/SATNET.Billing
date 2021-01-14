@@ -8,6 +8,6 @@ namespace SATNET.Service.Interface
     public interface IAPIService
     {
         public bool LockUnlockSite(string siteName, string requestType);
-        public bool TokenTopUpSite(string siteName, string token);
+        public bool TokenTopUpSite(string siteName, string bundleName);
     }
 }

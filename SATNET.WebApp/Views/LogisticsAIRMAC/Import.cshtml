@@ -1,0 +1,125 @@
+﻿@model SATNET.WebApp.Models.Hardware.ImportHardwareComponentModel
+@*@{
+        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    }*@
+
+<!-- Main content -->
+@*@await Component.InvokeAsync("ContentHead", @Model.MenuModel)*@
+    <form method="post" data-ajax="true" asp-controller="LogisticsAIRMAC" asp-action="Import" data-ajax-method="post"
+          enctype="multipart/form-data" id="formAdd" autocomplete="off">
+
+        @Html.HiddenFor(model => model.HardwareComponentImportList)
+        @Html.AntiForgeryToken()
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div>
+                        Import AIRMAC
+                        <div class="page-title-subheading">
+                            Please fillout following form
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title-actions">
+                    <div class="d-inline-block dropdown">
+                        <a href="@String.Format("/{0}", "LogisticsAIRMAC/Index")" class=" btn btn-danger">
+                            Back
+                        </a>
+                        @*<button type="submit" id="btn_import" class="btn btn-default">Import AIRMAC's</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group position-relative">
+                    <input type="file" name="file" id="upload_file" />
+                    <button type="button" class="btn btn-success" id="upload" disabled>Upload File</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label id="import_state_label"></label>
+            </div>
+        </div>
+        <div class="row import_list_div" style="display:none">
+            <div class="col-md-12">
+                <div id="ImportList">
+                    @await Html.PartialAsync("_AirMACPartialList", Model.HardwareComponentImportList)
+                </div>
+            </div>
+        </div>
+    </form>
+@*<form asp-controller="LogisticsAIRMAC" asp-action="ImportFile" method="post"
+          enctype="multipart/form-data">
+    </form>*@
+<!-- /.Main content -->
+@section Scripts{
+
+    <script type="text/javascript">
+        var table;
+        function init_table_pagination(tableName) {
+            var table = $('#' + tableName).DataTable({
+
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "columnDefs": [
+                    { "orderable": false, "targets": 0 }
+                ]
+            });
+            table.on('order.dt search.dt', function () {
+                table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+            return table;
+        }
+        $(document).on("change", "#upload_file", function (e) {
+            var file = $('#upload_file')[0].files[0];
+            //hide the list
+            $('.import_list_div').hide();
+            if (file != null) {
+                $('#upload').removeAttr('disabled');
+            } else {
+                $('#upload').attr('disabled', true);
+            }
+        });
+        $(document).on("click", '#upload', function (e) {
+            e.preventDefault();
+            var fdata = new FormData();
+            var fileInput = $('#upload_file')[0];
+            var file = fileInput.files[0];
+            console.log(fileInput);
+            console.log(file);
+            fdata.append("File", file);
+            $.ajax({
+                type: 'post',
+                url: '/LogisticsAIRMAC/ImportFile',
+                data: fdata,
+                processData: false,
+                contentType: false
+            }).done(function (result) {
+                // do something with the result now
+                $('.import_list_div').show();
+                $('#ImportList').html('');
+                $('#ImportList').html(result);
+                $('#upload').attr('disabled', true);
+                var table = init_table_pagination("import_grid_table");
+                console.log(result);
+            });
+        });
+        //$(document).on('click', '#btn_import', function (e) {
+        //    e.preventDefault();
+        //    console.log($('#HardwareComponentImportList').val());
+        //});
+        $(document).ready(function () {
+            var table = init_table_pagination("import_grid_table");
+        });
+    </script>
+}

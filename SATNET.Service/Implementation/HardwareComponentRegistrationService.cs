@@ -14,6 +14,7 @@ namespace SATNET.Service.Implementation
         {
             var status = new StatusModel { IsSuccess = false, ResponseUrl = "/HardwareComponentRegistration/Index" };
             int retId = -1;
+            var resultSerials = "";
             using (var uow = new UnitOfWorkFactory().Create())
             {
                 try
@@ -23,23 +24,81 @@ namespace SATNET.Service.Implementation
                     {
                         var serials = obj.SerialNumbers[0];
                         var sList = serials.Split(',');
+                        string componentType = "";
+                        bool isExist = false;
+                        //Check Serial NUmber Exists
+                        if (sList.Length > 0)
+                        {
+                            var specs = sList[0].Split("---");
+                            if (specs.Length == 2)
+                            {
+                                componentType = "AIRMAC";
+                            }
+                            else if (specs.Length == 1)
+                            {
+                                componentType = "BUC";
+                            }
+                        }
                         foreach (var item in sList)
                         {
                             if (item != "")
                             {
                                 var specs = item.Split("---");
-                                if (specs.Length == 2) {
+                                if (componentType.Equals("AIRMAC")) {
                                     obj.SerialNumber = specs[0];
                                     obj.AIRMAC = specs[1];
-                                }
-                                else if (specs.Length == 1) {
-                                    obj.SerialNumber = specs[0];
-                                }
-                                
-                                retId = await uow.HardwareComponentRegistrations.Add(obj);
-                            }
 
+                                } else if (componentType.Equals("BUC")) {
+                                    obj.SerialNumber = specs[0];
+                                    obj.AIRMAC = "";
+                                }
+                                var checkSerialNumberExist = uow.HardwareComponentRegistrations.List(new HardwareComponentRegistration()
+                                {
+                                    Flag = "CHECK_SERIALNUMBER_EXIST",
+                                    Keyword = obj.SerialNumber,
+                                    SortOrder = obj.AIRMAC,
+                                    SearchBy = componentType
+                                }).Result;
+                                if (checkSerialNumberExist.Count > 0) {
+                                    isExist = true;
+                                    resultSerials += obj.SerialNumber + "---" + obj.AIRMAC + ",";
+                                }
+                                else {
+                                    
+                                }
+                            }
                         }
+                        if (!isExist) {
+                            foreach (var item in sList)
+                            {
+                                if (item != "")
+                                {
+
+                                    var specs = item.Split("---");
+                                    if (specs.Length == 2)
+                                    {
+                                        //Air Mac
+                                        componentType = "AIRMAC";
+                                        obj.SerialNumber = specs[0];
+                                        obj.AIRMAC = specs[1];
+                                    }
+                                    else if (specs.Length == 1)
+                                    {
+                                        //BUC
+                                        componentType = "BUC";
+                                        obj.SerialNumber = specs[0];
+                                        //check serial number exist
+                                    }
+                                    retId = await uow.HardwareComponentRegistrations.Add(obj);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            retId = 0;
+                        }
+                        //Insert
+                        
                     }
 
                     //retId = uow.HardwareComponentRegistrations.Add(obj).Result;
@@ -48,6 +107,11 @@ namespace SATNET.Service.Implementation
                         uow.SaveChanges();
                         status.IsSuccess = true;
                         status.ErrorCode = "Record insert successfully.";
+                    }
+                    else if(retId == 0)
+                    {
+                        status.IsSuccess = false;
+                        status.ErrorCode = "MAC Address/ Serial Number Already Exists. {" + resultSerials + "}";
                     }
                     else
                     {
@@ -61,13 +125,10 @@ namespace SATNET.Service.Implementation
                     status.ErrorCode = "An error occured while processing request.";
                     status.ErrorDescription = e.Message;
                 }
-                finally
-                {
-                    uow.Connection.Close();
-                }
-
+                
+                return status;
             }
-            return status;
+            
         }
 
         public async Task<StatusModel> Delete(int recId, int deletedBy)
@@ -77,8 +138,6 @@ namespace SATNET.Service.Implementation
             var uow = new UnitOfWorkFactory().Create();
             try
             {
-
-
                 uow.BeginTransaction();
                 dRow = await uow.HardwareComponentRegistrations.Delete(recId, deletedBy);
                 if (dRow > 0)
@@ -171,7 +230,9 @@ namespace SATNET.Service.Implementation
                                 retId = await uow.HardwareComponentRegistrations.Update(obj);
                             }
                         }
-                    } else if (obj.Flag == "RegisterBUC") {
+                    }
+                    else if (obj.Flag == "RegisterBUC")
+                    {
                         if (obj.AIRMACs.Length > 0)
                         {
                             foreach (var item in obj.AIRMACs)
@@ -186,7 +247,7 @@ namespace SATNET.Service.Implementation
                     {
                         retId = await uow.HardwareComponentRegistrations.Update(obj);
                     }
-                   
+
                     if (retId > 0)
                     {
                         uow.SaveChanges();

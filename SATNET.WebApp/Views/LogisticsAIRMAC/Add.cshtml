@@ -22,7 +22,7 @@
                     <a href="@String.Format("/{0}", "LogisticsAIRMAC/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save AIRMAC</button>
+                    <button type="submit" id="btn_submit_serials" class="btn btn-default">Save AIRMAC</button>
                 </div>
             </div>
         </div>
@@ -32,33 +32,46 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.HiddenFor(model => model.HardwareComponentRegistrationModel.SerialNumbers)
 
-        <div class="col-lg-4">
-            <div class="position-relative form-group">
-                <label>Model</label>
-                @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new SelectList(Model.HardwareComponentList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT MODEM--", new { @class = "form-control select2 text-input" })
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label asp-for="HardwareComponentRegistrationModel.HardwareComponentId"></label>
+                <select asp-for="HardwareComponentRegistrationModel.HardwareComponentId" asp-items="@(new SelectList(Model.HardwareComponentList, "Id", "HCValue")) " class="form-control select2 text-input">
+                    <option value="" hidden disabled selected>--SELECT MODEM--</option>
+                </select>
+                <span asp-validation-for="HardwareComponentRegistrationModel.HardwareComponentId" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-lg-4">
+        @*<div class="col-lg-4">
+                <div class="position-relative form-group">
+                    <label>Model</label>
+                    @Html.DropDownListFor(model => model.HardwareComponentRegistrationModel.HardwareComponentId, new SelectList(Model.HardwareComponentList as System.Collections.IEnumerable, "Id", "HCValue"), "--SELECT MODEM--", new { @class = "form-control select2 text-input" })
+                </div>
+            </div>*@
+        <div class="col-lg-3">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
-                @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
-                <span class="help-block text-danger" id="label_error">ds</span>
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { })
+                @Html.EditorFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "AIRMAC", @type = "text" } })
+                <span class="help-block text-danger" id="label_error"></span>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="position-relative form-group">
-                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { id = "label_item" })
+                @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { id = "label_item" })
                 <div class="input-group mb-3">
-                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "AIRMAC", @type = "text" } })
-
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
                     <div class="input-group-append">
                         <button class="btn-info add_hm_item" type="button">Save</button>
+                        <button class="btn btn-danger clear_item" type="button">Clear</button>
                     </div>
-
                 </div>
             </div>
         </div>
 
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="help-block text-danger" id="label_transaction"></span>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -71,8 +84,8 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th class="text-left">Model</th>
-                            <th class="text-left"> @Html.DisplayName("Serial Number") </th>
                             <th id="table_header_section_type"> AIRMAC </th>
+                            <th class="text-left"> @Html.DisplayName("Serial Number") </th>
                             <th class="text-center"> Actions </th>
                         </tr>
                     </thead>
@@ -88,7 +101,9 @@
 
 
 <!-- /.Main content -->
-
+@section scripts{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+}
 <script language="javascript" type="text/javascript">
     //$.validator.unobtrusive.parse('#formAdd');
 
@@ -129,25 +144,63 @@
         });
         $('#table_header_section_type').text(section_type);
     });
+    $('#btn_submit_serials').on('click', function (e) {
+        var specsObj = '';
+        var specsArray = [];
+        $.each(grid_obj_array, function (i, item) {
+            specsArray.push(item.specsOne + '---' + item.specsTwo);
+            specsObj += item.specsOne + ',';
+        });
+        console.log(specsArray);
+        console.log(specsObj);
+        var returnVal = checkRecordinDB('AIRMAC', specsArray);
+        if (returnVal[0] == false) {
+            e.preventDefault();
+            $('#label_transaction').text(returnVal[1] + ' - Exist in DB!');
+        } else {
+
+        }
+
+    });
+    function checkRecordinDB(section, specsArray) {
+        var isSuccess = false;
+        var errorCode = '';
+        $.ajax({
+            url: '/LogisticsAIRMAC/CheckRecordinDB',
+            type: "POST",
+            async: false,
+            data: { section: section, specsArray: specsArray },
+            dataType: "json",
+            error: function (response) {
+            },
+            success: function (response) {
+                isSuccess = response.isSuccess;
+                errorCode = response.errorCode;
+                
+            }
+        });
+        return [isSuccess, errorCode];
+    }
     function record_exist_or_not(grid_array, obj) {
         var return_val = 0;
         var returnMessage = '';
         $.each(grid_array, function (i, item) {
-            if (item.specsOne == obj.specsOne) {
+            if (item.specsOne === obj.specsOne) {
                 return_val = 1;
                 returnMessage = 'Serial Number Already Exist';
                 return;
-            } else if (item.specsTwo == obj.specsTwo) {
+            } else if (item.specsTwo === obj.specsTwo) {
                 return_val = 1;
                 returnMessage = section_type + ' Already Exist';
-                return
+                return;
             }
         });
         return [return_val, returnMessage];
     }
     function get_record_index(grid_array, obj) {
         var return_val = -1;
-        $.each(grid_obj_array, function (i, item) {
+        console.log(obj.specsOne + ':' + obj.specsTwo);
+        $.each(grid_array, function (i, item) {
             if (item.specsOne == obj.specsOne && item.specsTwo == obj.specsTwo) {
                 return_val = i;
                 return;
@@ -155,6 +208,9 @@
         });
         return return_val;
     }
+    $(document).on('click', '.clear_item', function (e) {
+        reset_config();
+    });
     $(document).on('click', '.add_hm_item', function () {
         var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val();
         var specsTwo = $('#HardwareComponentRegistrationModel_AIRMAC').val();
@@ -171,27 +227,35 @@
             $('#label_error').text(section_type + ' should not be empty');
         }
         else {
+            //if Edit
             //---Check Record Exist in Grid
             var returnVal = record_exist_or_not(grid_obj_array, grid_obj_item);
             if (returnVal[0] == 0) { // Not Exist
+                //Check in db
                 if (edit_flag == 1) {
                     grid_obj_array[edit_record_index] = grid_obj_item;
                 }
                 else {
                     grid_obj_array.push(grid_obj_item);
                 }
-                console.log(grid_obj_array);
                 load_table(grid_obj_array);
                 reset_config();
             }
             else { //Exist
-                $('#label_error').text(returnVal[1]);
                 if (edit_flag == 1) {
-                    grid_obj_array[edit_record_index] = grid_obj_item;
-                    alert('Why there');
+                    var i = get_record_index(grid_obj_array, grid_obj_item);
+                    //console.log(i + ':' + edit_record_index);
+                    if (i === edit_record_index) {
+                        grid_obj_array[edit_record_index] = grid_obj_item;
+                    }
+                    load_table(grid_obj_array);
+                    reset_config();
+                    $('#label_error').text(returnVal[1]);
+                }
+                else {
+                    $('#label_error').text(returnVal[1]);
                 }
             }
-
         }
 
     });
@@ -210,9 +274,13 @@
         //$('#HardwareComponentRegistrationModel_SerialNumber').val(record_value);
     });
     $(document).on('click', '.row_delete', function () {
-        var record_value = $(this).attr('data-val');
-        mac_address_array = mac_address_array.filter(e => e !== record_value); // will return ['A', 'C']
-        load_table(mac_address_array);
+        var record_value = $(this).attr('data-' + node_object_key);
+        console.log(record_value);
+        record_value = JSON.parse(record_value);
+        var index = get_record_index(grid_obj_array, record_value);
+        grid_obj_array.splice(index, 1);
+        //grid_obj_array = grid_obj_array.filter(e => e !== record_value); // will return ['A', 'C']
+        load_table(grid_obj_array);
         reset_config();
     });
     function reset_config() {
@@ -222,6 +290,7 @@
         edit_flag = edit_record_index = -1;
     }
     function load_table(record_array) {
+
         var rows = '';
         $.each(record_array, function (i, item) {
             rows += add_row(item, i + 1);
@@ -231,26 +300,48 @@
         $('#HardwareComponentRegistrationModel_SerialNumbers').val('');
         var specsObj = '';
         $.each(record_array, function (i, item) {
-             specsObj += item.specsOne + specs_seperator + item.specsTwo + ',';
+            specsObj += item.specsOne + specs_seperator + item.specsTwo + ',';
         });
 
         $('#HardwareComponentRegistrationModel_SerialNumbers').val(specsObj);
-
+        configure_dt();
     }
     function add_row(item, record_count) {
         var row = '<tr id=row_' + record_count + '>' +
             '<td class="text-center text-muted">' + record_count + '</td>' +
             '<td class="text-left"> ' + $('#HardwareComponentRegistrationModel_HardwareComponentId option:selected').text() + '</td>' +
-            '<td> ' + item.specsOne + '</td>' +
             '<td> ' + item.specsTwo + '</td>' +
+            '<td> ' + item.specsOne + '</td>' +
             '<td class="text-center">' +
             '<div class="buttons">' +
             '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_edit">' +
-            '<span class="fa fa-edit" aria-hidden="true"></span>' +
-            '</a></div>' +
+            '<span class="fa fa-edit" aria-hidden="true"></span>' + '</a>' +
+            '<a href="#" data-' + node_object_key + '=' + JSON.stringify(item) + ' class="pl-1 pr-1 row_delete">' +
+            '<span class="fa fa-trash" aria-hidden="true"></span>' +
+            '</a></div > ' +
             '</td>' +
             '</tr>';
         return row;
     }
 
+    function configure_dt() {
+        //$('#grid_table').DataTable().data.reload();
+
+    }
+    $(document).ready(function () {
+        $("#grid_table").dataTable({
+
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "columnDefs": [
+                { "orderable": false, "targets": 0 },
+                { "orderable": false, "targets": 3 }
+            ],
+        });
+    });
 </script>

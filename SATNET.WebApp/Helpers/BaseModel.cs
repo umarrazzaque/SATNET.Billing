@@ -34,5 +34,6 @@ namespace SATNET.WebApp.Helpers
         }
         [DisplayName("Brief Description")]
         public string BriefDescription { get; set; }
+        public bool isSuccess { get; set; }
     }
 }

@@ -15,4 +15,8 @@ table tbody tr td ul {
     margin-bottom:20px;
     margin-top:20px;
 }
-
+/* Table background content
+*/
+.td-color {
+    color: #eb6734;
+}

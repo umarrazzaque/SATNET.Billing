@@ -7,6 +7,7 @@ using System.Text;
 using System.Linq;
 using SATNET.Repository.Implementation;
 using Microsoft.Extensions.Configuration;
+using SATNET.Repository.Core;
 
 namespace SATNET.Service.Implementation
 {
@@ -20,7 +21,7 @@ namespace SATNET.Service.Implementation
         {
             _backgroundTaskRepository = backgroundTaskRepository;
             _siteService = new SiteService();
-            _orderService = new OrderService(new OrderRepository(configuration), new APIService(configuration));
+            _orderService = new OrderService(new OrderRepository(configuration), new SiteRepository(new UnitOfWork()) , new APIService(configuration), new LookupRepository(new UnitOfWork()));
             _APIService = new APIService(configuration);
         }
         public void InsertMRCInvoice()

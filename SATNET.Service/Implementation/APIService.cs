@@ -57,7 +57,7 @@ namespace SATNET.Service.Implementation
             }
             
         }
-        public bool TokenTopUpSite(string siteName, string token)
+        public bool TokenTopUpSite(string siteName, string bundleName)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace SATNET.Service.Implementation
                 request.AddHeader("Cache-Control", "no-cache");
                 request.AddHeader("Content-Type", "application/json");
                 request.RequestFormat = DataFormat.Json;
-                request.AddJsonBody(new { terminalName = siteName, terminalDomainName = "USatcom", bundleName = "2GB-TokenHigh", activateNow = true, expirationTime = DateTime.Now.AddMonths(4) }); // uses JsonSerializer
+                request.AddJsonBody(new { terminalName = siteName, terminalDomainName = "USatcom", bundleName = bundleName, activateNow = true, expirationTime = DateTime.Now.AddMonths(3) }); // uses JsonSerializer
                 IRestResponse response = lockClient.Execute(request);
                 if (response.StatusCode == HttpStatusCode.OK)
                 {

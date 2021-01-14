@@ -37,5 +37,7 @@ namespace SATNET.Domain
         public string ErrorProcedure { get; set; }
         public string ErrorLine { get; set; }
         public string ErrorMessage { get; set; }
+        public int IdFilter1 { get; set; }
+        public int IdFilter2 { get; set; }
     }
 }

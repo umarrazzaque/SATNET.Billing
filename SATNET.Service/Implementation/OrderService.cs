@@ -7,20 +7,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SATNET.Service.Implementation
 {
     public class OrderService : IService<Order>
     {
         private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<Site> _siteRepository;
+        private readonly IRepository<Lookup> _lookupRepository;
         private readonly IAPIService _APIService;
         public OrderService()
         {
         }
-        public OrderService(IRepository<Order> orderRepository, IAPIService APIService)
+        public OrderService(IRepository<Order> orderRepository, IRepository<Site> siteRepository, IAPIService APIService, IRepository<Lookup> lookupRepository)
         {
             _orderRepository = orderRepository;
+            _siteRepository = siteRepository;
             _APIService = APIService;
+            _lookupRepository = lookupRepository;
         }
         public async Task<Order> Get(int id)
         {
@@ -58,6 +63,14 @@ namespace SATNET.Service.Implementation
                 if (order.RequestTypeId == 3) // business rule: upgrade is possible only one time in a month.
                 {
                     status = await CheckUpgradesInMonth(order.SiteId);
+                    if (!status.IsSuccess)
+                    {
+                        return status;
+                    }
+                }
+                else if (order.RequestTypeId == 5) //business rule: token should only be applied on quota plans
+                {
+                    status = await IsQuotaPlan(order.SiteId);
                     if (!status.IsSuccess)
                     {
                         return status;
@@ -217,10 +230,20 @@ namespace SATNET.Service.Implementation
             int retId = 0;
             bool apiResult = false;
             string requestType = "";
+            string tokenRank = "";
             var status = new StatusModel();
             status.ResponseUrl = "/Order/Index";
             requestType = order.RequestTypeId == 5 ? "token" : "";
-            apiResult = _APIService.TokenTopUpSite(order.SiteName, requestType);
+            
+            var rankResult = await _lookupRepository.List(new Lookup() { Flag = "GET_TOKEN_RANK", IdFilter1 = order.ServicePlanId, IdFilter2 = order.TokenId.Value });
+            tokenRank = rankResult.FirstOrDefault().Name;
+            if (string.IsNullOrEmpty(tokenRank))
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Token rank not found in billing app.";
+                return status;
+            }
+            apiResult = _APIService.TokenTopUpSite(order.SiteName, tokenRank);
             if (apiResult)
             {
                 order.StatusId = 21; // complete order
@@ -252,14 +275,29 @@ namespace SATNET.Service.Implementation
             {
                 status.IsSuccess = false;
                 status.ErrorCode = "Only one upgrade is allowed per site per month.";
-                status.ResponseUrl = "/Order/Index";
             }
             else
             {
                 status.IsSuccess = true;
-                status.ResponseUrl = "/Order/Index";
             }
             return status;
         }
+        private async Task<StatusModel> IsQuotaPlan(int siteId)
+        {
+            StatusModel status = new StatusModel();
+            status.ResponseUrl = "/Order/Index";
+            var site = await _siteRepository.Get(siteId);
+            if (site.ServicePlanTypeId == 12) //quota plan
+            {
+                status.IsSuccess = true;
+            }
+            else
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Token can only be applied on quota plans.";
+            }
+            return status;
+        }
+
     }
 }

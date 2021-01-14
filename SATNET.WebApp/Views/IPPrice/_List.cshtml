@@ -7,6 +7,7 @@
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
+                <th class="text-center">#</th>
                 <th> IP</th>
                 <th> Price Tier </th>
                 <th> Price </th>
@@ -20,22 +21,28 @@
             }
             @foreach (var item in Model)
             {
-                <tr>
-                    <td> @item.IP</td>
-                    <td> @item.PriceTier</td>
-                    <td> @item.Price</td>
-                    <td class="text-center">
-                        <div class="buttons">
-                            <a href="@String.Format("/{0}?id={1}", "IPPrice/Edit", item.Id)" class="pl-1 pr-1">
-                                <span class="fa fa-edit" aria-hidden="true"></span>
-                            </a>
-                            <a href="@String.Format("/{0}?id={1}", "IPPrice/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
-                               data-toggle="modal" data-target="#modal-deleteConfirm">
-                                <span class="fa fa-trash" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+                <td class="text-center text-muted">
+                    @{
+                        counter++;
+                    }
+                    @counter
+                </td>
+                <td> @item.IP</td>
+                <td> @item.PriceTier</td>
+                <td> @item.Price</td>
+                <td class="text-center">
+                    <div class="buttons">
+                        <a href="@String.Format("/{0}?id={1}", "IPPrice/Edit", item.Id)" class="pl-1 pr-1">
+                            <span class="fa fa-edit" aria-hidden="true"></span>
+                        </a>
+                        <a href="@String.Format("/{0}?id={1}", "IPPrice/Delete", item.Id)" class="pl-1 pr-1 modal-pan"
+                           data-toggle="modal" data-target="#modal-deleteConfirm">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
             }
 
 

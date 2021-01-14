@@ -1,28 +1,9 @@
 ﻿$(function () {
-    var t = $("#grid_table").DataTable({
 
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "columnDefs": [
-            { "orderable": false, "targets": 0 }
-        ],
-        //"columnDefs": [
-        //    {
-        //        'targets': 0, // column index (start from 0)bb
-        //        'orderable': false, // set orderable false for selected columns
-        //    }],
+    $(document).ready(function () {
+        init_table_pagination('grid_table');
     });
-    t.on('order.dt search.dt', function () {
-        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-            cell.innerHTML = i + 1;
-        });
-    }).draw();
-
+    
     //dropdown filters change events
 
     $('#ddlOrderStatus').val(20);
@@ -124,6 +105,7 @@ GetOrdersByDDLFilter = function () {
             success: function (html) {
                 if (html !== null) {
                     $("#BodyContent").html(html);
+                    init_table_pagination('grid_table');
                 }
             },
             error: function () {

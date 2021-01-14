@@ -22,7 +22,7 @@
                     <a href="@String.Format("/{0}", "LogisticBUC/Index")" class=" btn btn-danger">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-default">Save BUC</button>
+                    <button type="submit" id="btn_submit_serials" class="btn btn-default">Save BUC</button>
                 </div>
             </div>
         </div>
@@ -42,15 +42,19 @@
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { })
                 <div class="input-group mb-3">
-                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "text" } })
-                    <span class="help-block text-danger" id="label_error"></span>
+                    @Html.EditorFor(model => model.HardwareComponentRegistrationModel.SerialNumber, new { htmlAttributes = new { @class = "form-control text-input", @placeholder = "Serial Number", @type = "number" } })
+
                     <div class="input-group-append">
                         <button class="btn-info add_hm_item" type="button">Save</button>
                     </div>
+                    
 
                 </div>
                 </div>
             </div>
+        <div class="col-lg-4">
+            <span class="help-block text-danger" id="label_error"></span>
+        </div>
         @*<div class="col-lg-4">
             <div class="position-relative form-group">
                 @Html.LabelFor(model => model.HardwareComponentRegistrationModel.AIRMAC, new { id = "label_item" })
@@ -156,13 +160,47 @@
         });
         return return_val;
     }
+    $('#btn_submit_serials').on('click', function (e) {
+        //$('#label_error').text('Record Exist in DB!');
+        var specsObj = '';
+        $.each(grid_obj_array, function (i, item) {
+            specsObj += item.specsOne + ',';
+        });
+        var ok = 'A';
+        if (ok == 'A') {
+            e.preventDefault();
+        } else {
+
+        }
+        console.log(specsObj);
+        console.log(typeof specsObj);
+    });
+    function checkRecordinDB(section, serialNumber, airMacNumber) {
+        var result = false;
+        $.ajax({
+            url: '/LogisticsAIRMAC/CheckRecordinDB',
+            type: "POST",
+            data: { section: section, serialNumber: serialNumber, airMacNumber: airMacNumber},
+            dataType: "json",
+            error: function (response) {
+            },
+            success: function (response) {
+                result = true;
+                console.log(response.isSuccess);
+            }
+        });
+    }
     $(document).on('click', '.add_hm_item', function () {
         var specsOne = $('#HardwareComponentRegistrationModel_SerialNumber').val();
         //console.log(serialNo + ':' + AIRMAC);
         var grid_obj_item = {
             specsOne: specsOne
         }
-        if (specsOne == '') {
+        console.log($('#HardwareComponentRegistrationModel_HardwareComponentId').val());
+        if ($('#HardwareComponentRegistrationModel_HardwareComponentId').val() == "") {
+            $('#label_error').text('Select Transceiver Model');
+        }
+        else if (specsOne == '') {
             console.log('Specs One');
             $('#label_error').text('Serial Number should not be empty');
         }
@@ -170,14 +208,22 @@
             //---Check Record Exist in Grid
             var returnVal = record_exist_or_not(grid_obj_array, grid_obj_item);
             if (returnVal[0] == 0) { // Not Exist
-                if (edit_flag == 1) {
-                    grid_obj_array[edit_record_index] = grid_obj_item;
-                }
-                else {
-                    grid_obj_array.push(grid_obj_item);
-                }
-                load_table(grid_obj_array);
-                reset_config();
+                //Check in DB
+                //if (checkRecordinDB('BUC', specsOne, '') == true) {
+                //    $('#label_error').text('Record Exist in DB!');
+                //}
+                //else {
+                    //Not Exist in DB
+                    if (edit_flag == 1) {
+                        grid_obj_array[edit_record_index] = grid_obj_item;
+                    }
+                    else {
+                        grid_obj_array.push(grid_obj_item);
+                    }
+                    load_table(grid_obj_array);
+                    reset_config();
+                //}
+                
             }
             else { //Exist
                 $('#label_error').text(returnVal[1]);
