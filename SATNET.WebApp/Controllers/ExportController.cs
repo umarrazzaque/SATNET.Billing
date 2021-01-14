@@ -12,6 +12,7 @@ using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Drawing;
 using System.Reflection;
+using OfficeOpenXml.Style;
 
 namespace SATNET.WebApp.Controllers
 {
@@ -80,6 +81,14 @@ namespace SATNET.WebApp.Controllers
         public IActionResult ExcelExport(IEnumerable<ExportModel> records, string header, string menu)
         {
             var statusModel = new StatusModel { IsSuccess = true };
+            var checkMenuName = menu.ToCharArray();
+            for (int i = 0; i < checkMenuName.Length; i++)
+            {
+                if (!char.IsLetterOrDigit(checkMenuName[i])) {
+                    checkMenuName[i] = '_';
+                }
+            }
+            menu = new string(checkMenuName);
             string rootFolder = _hostingEnvironment.WebRootPath;
             string fileName = "Export_"  + menu + "_" + ToJulianDate()  + ".xlsx";
             try {
@@ -94,7 +103,7 @@ namespace SATNET.WebApp.Controllers
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage package = new ExcelPackage(file))
                 {
-                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Sheet Name");
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(menu.ToString());
                     workSheet.TabColor = System.Drawing.Color.Black;
                     workSheet.DefaultRowHeight = 12;
                     // Header of the Excel sheet
@@ -102,6 +111,16 @@ namespace SATNET.WebApp.Controllers
                     for (int i = 1; i <= thLength; i++)
                     {
                         workSheet.Cells[1, i].Value = tableHeaders.ElementAt(i - 1);
+                        #region design Header
+                        //worksheet.Cells[headerRange].Style.Font.Bold = true;
+                        workSheet.Cells[1, i].Style.Font.Size = 11;
+                        workSheet.Cells[1, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[1, i].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGray);
+                        //worksheet.Cells[headerRange].Style.WrapText = true;
+                        workSheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                        workSheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Column(i).AutoFit();
+                        #endregion
                     }
                     PropertyInfo[] propsB = typeof(ExportModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
                     List<string> propNames = new List<string>();
@@ -127,7 +146,7 @@ namespace SATNET.WebApp.Controllers
                     workSheet.Column(3).AutoFit();
 
                     package.Save();
-                    statusModel.ErrorCode = "File '" + fileName + "' Exported Succesfully";
+                    statusModel.ErrorCode = fileName;
 
                 }
             }
@@ -138,5 +157,17 @@ namespace SATNET.WebApp.Controllers
             }
             return Json(statusModel);
         }
+
+        [HttpGet]
+        public ActionResult Download(string fileName)
+        {
+            //Get the temp folder and file path in server
+            string rootFolder = _hostingEnvironment.WebRootPath;
+            string filePath = Path.Combine(rootFolder, "Downloads", fileName);
+            byte[] fileByteArray = System.IO.File.ReadAllBytes(filePath);
+            System.IO.File.Delete(filePath);
+            return File(fileByteArray, "application/vnd.ms-excel", fileName);
+        }
     }
 }
+//20.46.43.179
