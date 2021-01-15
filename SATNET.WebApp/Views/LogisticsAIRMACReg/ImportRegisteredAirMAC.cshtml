@@ -70,22 +70,31 @@
         });
         $(document).on("click", '#upload', function (e) {
             e.preventDefault();
+            $('#loader').addClass('overlay');
             var fdata = new FormData();
             var file = $('#upload_file')[0].files[0];
-            fdata.append("File", file);
+            fdata.append("inputFile", file);
             $.ajax({
                 type: 'post',
-                url: '/LogisticsAIRMAC/ImportAirMACFile',
+                url: '/LogisticsAIRMACReg/ImportRegisteredAirMacFile',
                 data: fdata,
                 processData: false,
                 contentType: false
             }).done(function (result) {
                 // do something with the result now
-                $('.import_list_div').show();
-                $('#ImportList').html('');
-                $('#ImportList').html(result);
-                $('#upload').attr('disabled', true);
-                init_table_pagination("import_grid_table");
+                if (result.isSuccess != null) {
+                    if (result.isSuccess == false) {
+                        $('#import_state_label').text(result.errorCode);
+                    }
+                }
+                else {
+                    $('.import_list_div').show();
+                    $('#ImportList').html('');
+                    $('#ImportList').html(result);
+                    $('#upload').attr('disabled', true);
+                    init_table_pagination("import_grid_table");
+                }
+                $('#loader').removeClass('overlay');
             });
         });
         $(document).ready(function () {
