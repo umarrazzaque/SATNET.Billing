@@ -137,7 +137,7 @@ namespace SATNET.WebApp.Controllers
                     await inputFile.CopyToAsync(stream);
                 }
                 //set excel configuration
-                //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 var retModel = new ImportHardwareComponentModel();
                 //set stream to read the file from temporary upload location
                 using (var stream = new MemoryStream())
@@ -152,24 +152,14 @@ namespace SATNET.WebApp.Controllers
                             string briefDescription = "";
                             bool isExist = false;
                             int hardwareComponentId = -1;
-                            //check the modem model with airmac and serial number exists
-                            //if the record exist then assign it to a customer
-                            var obj = new HardwareComponentRegistration()
-                            {
-                                Flag = "CHECK_AIRMAC_EXIST_IMPORT",
-                                HardwareComponentId = Convert.ToInt32(HardwareType.Modem),
-                                AIRMAC = "",
-                                SerialNumber = "",
-                                HardwareComponent = ""
-                            };
-
+                            
                             //check hardware component
                             string hardwareComponent = worksheet.Cells[row, 4].Value != null ? worksheet.Cells[row, 4].Value.ToString().Trim() : "";
                             if (hardwareComponent != "")
                             {
                                 //try to avoid db call by checking from linq list
                                 hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
-                                briefDescription += hardwareComponentId == -1 ? "Modem Model Number Not Exists - " : "OK";
+                                briefDescription += hardwareComponentId != -1 ? "MODEM MODEL NUMBER EXISTS - " : "MODEM NUMBER NOT EXISTS - ";
                             }
                             else
                             {
@@ -181,7 +171,7 @@ namespace SATNET.WebApp.Controllers
                             if (serialNumber != "")
                             {
                                 isExist = retModel.HardwareComponentImportList.Where(c => c.SerialNumber.Equals(serialNumber)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "Serail Number Exist - " : "OK-");
+                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "SERIAL NUMBER EXISTS - " : "SERIAL NUMBER NOT EXISTS -");
                             }
                             else
                             {
@@ -192,15 +182,31 @@ namespace SATNET.WebApp.Controllers
                             if (airMac != "")
                             {
                                 isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC Number Exist - " : "OK-");
+                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC NUMBER EXISTS." : "AIRMAC NUMBER NOT EXISTS.");
                             }
                             else
                             {
                                 briefDescription += "AIRMAC Number is empty";
                             }
-                            if (serialNumber.Equals("") && airMac.Equals("") && hardwareComponent.Equals(""))
+                            //check if each specification exist in the records
+                            if (serialNumber.Contains("NUMBER EXISTS") && airMac.Contains("NUMBER EXISTS") && hardwareComponent.Contains("NUMBER EXISTS"))
                             {
-                                briefDescription += "OOOPPPPSSSS!";
+                                //check the specs exist as a single record and not assigned to any customers
+                                //check the modem model with airmac and serial number exists
+                                //if the record exist then assign it to a customer
+                                var obj = new HardwareComponentRegistration()
+                                {
+                                    Flag = "CHECK_AIRMAC_EXIST_IMPORT",
+                                    HardwareComponentId = Convert.ToInt32(HardwareType.Modem),
+                                    AIRMAC = airMac,
+                                    SerialNumber = serialNumber,
+                                    HardwareComponent = hardwareComponent
+                                };
+                                var reslist = _hardwareComponentRegistrationService.List(obj).Result;
+                                if (reslist.Count == 1) {
+                                    //there should be a sinlge record return from procedure call
+                                    //add record in local list with insertion flag ok
+                                }
                             }
                             else
                             {
@@ -267,6 +273,13 @@ namespace SATNET.WebApp.Controllers
         }
 
         //temp functions
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="section">HC or other</param>
+        /// <param name="searchBy">AIRMAC Number</param>
+        /// <param name="specs">Serial Number</param>
+        /// <returns>Provides the count for the specification, if there is any record it will provide the list count or the id of first record</returns>
         private int SpecificationExists(string section, string searchBy, string specs)
         {
             var obj = new HardwareComponentRegistration()

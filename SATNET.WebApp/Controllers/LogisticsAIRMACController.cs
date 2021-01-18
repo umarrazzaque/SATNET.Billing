@@ -180,17 +180,17 @@ namespace SATNET.WebApp.Controllers
                     return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}." });
                 }
                 //get filename
-                string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
+                //string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
                 //set file path on server machine
-                var path = Path.Combine(
-                            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
-                //copy the file to server location for temporary storage
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await inputFile.CopyToAsync(stream);
-                }
+                //var path = Path.Combine(
+                //            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
+                ////copy the file to server location for temporary storage
+                //using (var stream = new FileStream(path, FileMode.Create))
+                //{
+                //    await inputFile.CopyToAsync(stream);
+                //}
                 //set excel configuration
-                //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 var retModel = new ImportHardwareComponentModel();
                 //set stream to read the file from temporary upload location
                 using (var stream = new MemoryStream())
