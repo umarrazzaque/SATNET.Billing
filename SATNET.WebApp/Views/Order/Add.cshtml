@@ -163,20 +163,21 @@
     </div>
     <div class="col-lg-3 hardware">
         <div class="form-group">
+            <label>AIRMAC </label>
+            <select id="selectAirMac" asp-for="AirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input select-airmac">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
+            <span asp-validation-for="AirMac" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-lg-3 hardware">
+        <div class="form-group">
             <label>Modem Model </label>
             <select id="selectModemModel" asp-for="ModemModelId" asp-items="Model.ModemModelSelectList" class="form-control select2 text-input modem" data-section="new-site">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="ModemModelId" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="col-lg-3 hardware">
-        <div class="form-group">
-            <label>AIRMAC </label>
-            <select id="selectAirMac" asp-for="AirMac" class="form-control select2 text-input">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-            <span asp-validation-for="AirMac" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 hardware">
@@ -356,34 +357,36 @@
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>Modem </label>
-            <input type="text" id="txtCurrentModem" disabled="disabled" class="form-control" />
-        </div>
-    </div>
-    <div class="col-lg-3 modem-swap">
-        <div class="form-group">
             <label>AIRMAC</label>
             <input type="text" id="txtCurrentAirmac" disabled="disabled" class="form-control" />
         </div>
     </div>
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>Modem </label>
+            <input type="text" id="txtCurrentModem" disabled="disabled" class="form-control" />
+        </div>
+    </div>
+
     <div class="col-lg-12 modem-swap">
         <h5 class="title">New Hardware</h5>
     </div>
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
-            <label>Modem </label>
-            <select class="form-control select2 text-input modem" asp-items="Model.ModemModelSelectList" data-section="modem-swap">
-                <option value="" hidden disabled selected>Select</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-3 modem-swap">
-        <div class="form-group">
             <label>AIRMAC</label>
-            <select id="selectNewAirmac" asp-for="NewAirMac" class="form-control select2 text-input">
+            <select id="selectNewAirmac" asp-for="NewAirMac" asp-items="Model.AirMacSelectList" class="form-control select2 text-input select-airmac">
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="NewAirMac" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-lg-3 modem-swap">
+        <div class="form-group">
+            <label>Modem </label>
+            <select id="selectNewModemModel" class="form-control select2 text-input modem" asp-items="Model.ModemModelSelectList" data-section="modem-swap">
+                <option value="" hidden disabled selected>Select</option>
+            </select>
         </div>
     </div>
 </div>

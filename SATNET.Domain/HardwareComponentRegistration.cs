@@ -14,6 +14,7 @@ namespace SATNET.Domain
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public bool IsUsed { get; set; }
+        public int HardwareConditionId { get; set; }
         public string [] SerialNumbers { get; set; }
         public string[] AIRMACs { get; set; }
     }
