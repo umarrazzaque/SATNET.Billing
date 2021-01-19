@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -151,7 +150,7 @@ namespace SATNET.WebApp.Controllers
             catch(Exception e)
             {
                 statusModel.IsSuccess = false;
-                statusModel.ErrorCode = "Error in Exporting File!";
+                statusModel.ErrorCode = e.Message + " - Error in Exporting File!";
             }
             return Json(statusModel);
         }

@@ -17,11 +17,11 @@
                 <div class="d-inline-block dropdown">
 
                     @await Html.PartialAsync("_Export")
-                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Add")" class=" btn btn-default">
-                        Register new AIRMAC(s)
-                    </a>
-                    <a href="@String.Format("/{0}", "LogisticsAIRMAC/ImportAirMac")" class=" btn btn-default">
+                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/ImportRegisteredAirMAC")" class="btn btn-info">
                         Import Registered AIRMAC(s)
+                    </a>
+                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Add")" class="btn btn-default">
+                        Register new AIRMAC(s)
                     </a>
                 </div>
             </div>

@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
-using SATNET.Service.Implementation;
 using SATNET.Service.Implementation.Extensions;
 using SATNET.Service.Interface;
-using SATNET.WebApp.Areas.Identity.Data;
 using SATNET.WebApp.Models;
 using SATNET.WebApp.Models.Hardware;
-using SATNET.WebApp.Models.Lookup;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -177,7 +173,6 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ImportAirMACFile(IFormFile inputFile)
         {
-            
             try {
                 //check for inputFile extension
                 if (!Path.GetExtension(inputFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
@@ -185,15 +180,15 @@ namespace SATNET.WebApp.Controllers
                     return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}." });
                 }
                 //get filename
-                string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
+                //string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
                 //set file path on server machine
-                var path = Path.Combine(
-                            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
-                //copy the file to server location for temporary storage
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await inputFile.CopyToAsync(stream);
-                }
+                //var path = Path.Combine(
+                //            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
+                ////copy the file to server location for temporary storage
+                //using (var stream = new FileStream(path, FileMode.Create))
+                //{
+                //    await inputFile.CopyToAsync(stream);
+                //}
                 //set excel configuration
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 var retModel = new ImportHardwareComponentModel();
@@ -245,7 +240,6 @@ namespace SATNET.WebApp.Controllers
                             {
                                 briefDescription += "AIRMAC Number is empty";
                             }
-
                             if (serialNumber.Equals("") && airMac.Equals("") && hardwareComponent.Equals(""))
                             {
                                 briefDescription += "OOOPPPPSSSS!";
@@ -281,9 +275,10 @@ namespace SATNET.WebApp.Controllers
                 }
                 return PartialView("_AirMACPartialList", retModel.HardwareComponentImportList);
             }
-            catch (Exception e) { 
+            catch (Exception e) {
+                return Json(new StatusModel() { IsSuccess = false, ErrorCode = e.Message + "Error while importing file." });
             }
-            return Json(new StatusModel() { IsSuccess = false, ErrorCode = "Error while importing file." });
+            
         }
         private int SpecificationExists(string section, string searchBy, string specs) {
             int resultCount = -1;
