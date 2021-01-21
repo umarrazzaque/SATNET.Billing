@@ -12,12 +12,14 @@ using Syncfusion.Pdf.Graphics;
 using Syncfusion.Drawing;
 using System.Reflection;
 using OfficeOpenXml.Style;
+using Microsoft.AspNetCore.Http;
 
 namespace SATNET.WebApp.Controllers
 {
     public class ExportController : BaseController
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
+        public static byte[] fileByteArray;
         public ExportController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
@@ -77,7 +79,7 @@ namespace SATNET.WebApp.Controllers
             return Json(statusModel);
             //return File(stream, "application/pdf", "Sample.pdf");
         }
-        public IActionResult ExcelExport(IEnumerable<ExportModel> records, string header, string menu)
+        public ActionResult ExcelExport(IEnumerable<ExportModel> records, string header, string menu)
         {
             var statusModel = new StatusModel { IsSuccess = true };
             var checkMenuName = menu.ToCharArray();
@@ -88,19 +90,12 @@ namespace SATNET.WebApp.Controllers
                 }
             }
             menu = new string(checkMenuName);
-            string rootFolder = _hostingEnvironment.WebRootPath;
-            string fileName = "Export_"  + menu + "_" + ToJulianDate()  + ".xlsx";
+            var fileName = "Export_"  + menu + "_" + ToJulianDate()  + ".xlsx";
             try {
                 List<string> tableHeaders = new List<string>() { "Sr. No" };
                 tableHeaders.AddRange(header.Split(',').ToList());
-                FileInfo file = new FileInfo(Path.Combine(rootFolder, "Downloads", fileName));
-                if (file.Exists)
-                {
-                    file.Delete();
-                    file = new FileInfo(Path.Combine(rootFolder, fileName));
-                }
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                using (ExcelPackage package = new ExcelPackage(file))
+                using (ExcelPackage package = new ExcelPackage())
                 {
                     ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(menu.ToString());
                     workSheet.TabColor = System.Drawing.Color.Black;
@@ -142,9 +137,8 @@ namespace SATNET.WebApp.Controllers
                         recordIndex++;
                     }
                     workSheet.Column(3).AutoFit();
-                    package.Save();
+                    fileByteArray = package.GetAsByteArray();
                     statusModel.ErrorCode = fileName;
-
                 }
             }
             catch(Exception e)
@@ -159,11 +153,13 @@ namespace SATNET.WebApp.Controllers
         public ActionResult Download(string fileName)
         {
             //Get the temp folder and file path in server
-            string rootFolder = _hostingEnvironment.WebRootPath;
-            string filePath = Path.Combine(rootFolder, "Downloads", fileName);
-            byte[] fileByteArray = System.IO.File.ReadAllBytes(filePath);
-            System.IO.File.Delete(filePath);
-            return File(fileByteArray, "application/vnd.ms-excel", fileName);
+            //string rootFolder = _hostingEnvironment.WebRootPath;
+            //string filePath = Path.Combine(rootFolder, "Downloads", fileName);
+            //byte[] fileByteArray = System.IO.File.ReadAllBytes(filePath);
+            //System.IO.File.Delete(filePath);
+            var fileByteSafeCopy = fileByteArray;
+            fileByteArray = null;
+            return File(fileByteSafeCopy, "application/vnd.ms-excel", fileName);
         }
     }
 }

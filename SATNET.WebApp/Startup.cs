@@ -54,6 +54,15 @@ namespace SATNET.WebApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            //Session
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -77,15 +86,7 @@ namespace SATNET.WebApp
                 options.AddPolicy("ManageLogisticsPolicy", policy => policy.RequireRole("Admin", "Accounting", "Logistics"));
             });
 
-            //Session
-
-            services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            
             //services.AddAuthorization(options => {
             //    options.AddPolicy("UserAccessPolicy", policy =>
             //    {
@@ -114,6 +115,7 @@ namespace SATNET.WebApp
 
             services.ConfigureApplicationCookie(options =>
             {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);//set session timeout durations
                 options.LoginPath = $"/Identity/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";

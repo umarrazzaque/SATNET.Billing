@@ -68,6 +68,7 @@ namespace SATNET.Repository.Implementation
             queryParameters.Add("@P_FLAG", obj.Flag, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_SORTORDER", obj.SortOrder, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_AIRMAC", obj.AIRMAC, DbType.String, ParameterDirection.Input);
+            queryParameters.Add("@P_SERIAL_NUMBER", obj.SerialNumber, DbType.String, ParameterDirection.Input);
             queryParameters.Add("@P_HardwareComponentId", obj.HardwareComponentId, DbType.Int32, ParameterDirection.Input);
             queryParameters.Add("@P_IsUsed", obj.IsUsed, DbType.Boolean, ParameterDirection.Input);
             queryParameters.Add("@P_CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);

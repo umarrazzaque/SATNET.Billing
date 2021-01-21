@@ -39,6 +39,8 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlyLogisticsPolicy")]
         public async Task<IActionResult> Index()
         {
+            //set session properties
+            HttpContext.Session.SetString("product", "laptop");
             return View(await GetAirmacList());
         }
         private async Task<List<HardwareComponentRegistrationModel>> GetAirmacList()
@@ -262,7 +264,7 @@ namespace SATNET.WebApp.Controllers
                         {
                             //Valid records, add records in DB
                             var hc_list = _mapper.Map<List<HardwareComponentRegistration>>(retModel.HardwareComponentImportList);
-                            var res = await _hardwareComponentRegistrationService.AddBulk(hc_list);
+                            var res = await _hardwareComponentRegistrationService.AirMacImport(hc_list);
                             if (res.IsSuccess == false)
                             {
                                 retModel.HardwareComponentImportList.FirstOrDefault().BriefDescription += "-Number";
