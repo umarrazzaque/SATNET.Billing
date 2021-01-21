@@ -26,6 +26,7 @@ namespace SATNET.WebApp.Controllers
     {
         private readonly IService<HardwareComponent> _hardwareComponentService;
         private readonly IService<HardwareComponentRegistration> _hardwareComponentRegistrationService;
+        private readonly IService<Customer> _customerService;
         private readonly IMapper _mapper;
         private readonly string _responseUrl;
         public LogisticsAIRMACRegController(IMapper mapper, IService<Customer> customerService, UserManager<ApplicationUser> userManager
@@ -33,6 +34,7 @@ namespace SATNET.WebApp.Controllers
         {
             _hardwareComponentRegistrationService = hardwareComponentRegistrationService;
             _hardwareComponentService = hardwareComponentService;
+            _customerService = customerService;
             _mapper = mapper;
             _responseUrl = "/LogisticsAIRMACReg/Index";
         }
@@ -49,6 +51,7 @@ namespace SATNET.WebApp.Controllers
                 Keyword = Convert.ToInt32(HardwareType.Modem).ToString()
             });
             ViewBag.SelectHardwareModems = new SelectList(hardwareModems, "Id", "HCValue");
+            var res = HttpContext.Session.GetString("product");
 
             return View(model);
         }
@@ -126,16 +129,16 @@ namespace SATNET.WebApp.Controllers
                 {
                     return Json(new StatusModel() { IsSuccess = false, ErrorCode = "File Extension must be {.xlsx}." });
                 }
-                //get filename
-                string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
-                //set file path on server machine
-                var path = Path.Combine(
-                            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
-                //copy the file to server location for temporary storage
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await inputFile.CopyToAsync(stream);
-                }
+                ////get filename
+                //string fileName = ContentDispositionHeaderValue.Parse(inputFile.ContentDisposition).FileName.Trim('"');
+                ////set file path on server machine
+                //var path = Path.Combine(
+                //            Directory.GetCurrentDirectory(), "wwwroot", ImportExportDirectoryPath.ExcelImportPath, fileName);
+                ////copy the file to server location for temporary storage
+                //using (var stream = new FileStream(path, FileMode.Create))
+                //{
+                //    await inputFile.CopyToAsync(stream);
+                //}
                 //set excel configuration
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 var retModel = new ImportHardwareComponentModel();
@@ -151,7 +154,8 @@ namespace SATNET.WebApp.Controllers
                         {
                             string briefDescription = "";
                             bool isExist = false;
-                            int hardwareComponentId = -1;
+                            int hardwareComponentId = -1; int hardCompRegId = -1;
+                            string customerName = ""; int customerId = -1;
                             
                             //check hardware component
                             string hardwareComponent = worksheet.Cells[row, 4].Value != null ? worksheet.Cells[row, 4].Value.ToString().Trim() : "";
@@ -159,11 +163,11 @@ namespace SATNET.WebApp.Controllers
                             {
                                 //try to avoid db call by checking from linq list
                                 hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
-                                briefDescription += hardwareComponentId != -1 ? "MODEM MODEL NUMBER EXISTS - " : "MODEM NUMBER NOT EXISTS - ";
+                                briefDescription += hardwareComponentId != -1 ? "" : "MODEM NUMBER NOT EXISTS - "; //MODEM MODEL NUMBER EXISTS
                             }
                             else
                             {
-                                briefDescription += "Modem Model Number is empty - ";
+                                briefDescription += "MODEM NUMBER IS EMPTY - ";
                             }
                             //check serial number
                             string serialNumber = worksheet.Cells[row, 2].Value != null ? worksheet.Cells[row, 2].Value.ToString().Trim() : "";
@@ -171,26 +175,27 @@ namespace SATNET.WebApp.Controllers
                             if (serialNumber != "")
                             {
                                 isExist = retModel.HardwareComponentImportList.Where(c => c.SerialNumber.Equals(serialNumber)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "SERIAL NUMBER EXISTS - " : "SERIAL NUMBER NOT EXISTS -");
+                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "" : "SERIAL NUMBER NOT EXISTS -");//SERIAL NUMBER EXISTS
                             }
                             else
                             {
-                                briefDescription += "Serial Number is empty - ";
+                                briefDescription += "SERIAL NUMBER IS EMPTY - ";
                             }
                             //check airmac number
                             string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
                             if (airMac != "")
                             {
                                 isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC NUMBER EXISTS." : "AIRMAC NUMBER NOT EXISTS.");
+                                briefDescription += isExist == true ? "Duplicate AIRMAC Number - " : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "" : "AIRMAC NUMBER NOT EXISTS - ");//AIRMAC NUMBER EXISTS
                             }
                             else
                             {
-                                briefDescription += "AIRMAC Number is empty";
+                                briefDescription += "AIRMAC NUMBER IS EMPTY";
                             }
-                            //check if each specification exist in the records
-                            if (serialNumber.Contains("NUMBER EXISTS") && airMac.Contains("NUMBER EXISTS") && hardwareComponent.Contains("NUMBER EXISTS"))
+                            //check all the specification exist in storage
+                            if (!briefDescription.Contains("NUMBER NOT EXISTS"))
                             {
+                                //all specification exists in db storage
                                 //check the specs exist as a single record and not assigned to any customers
                                 //check the modem model with airmac and serial number exists
                                 //if the record exist then assign it to a customer
@@ -203,41 +208,78 @@ namespace SATNET.WebApp.Controllers
                                     HardwareComponent = hardwareComponent
                                 };
                                 var reslist = _hardwareComponentRegistrationService.List(obj).Result;
-                                if (reslist.Count == 1) {
+                                customerName = worksheet.Cells[row, 5].Value != null ? worksheet.Cells[row, 5].Value.ToString().Trim() : "";
+                                if (reslist.Count == 1)
+                                {
                                     //there should be a sinlge record return from procedure call
                                     //add record in local list with insertion flag ok
+                                    //checkCustomerName
+                                    hardCompRegId = reslist.FirstOrDefault().Id;
+                                    if (customerName != "")
+                                    {
+                                        //try to avoid db call by checking from linq list
+                                        var cRes = _customerService.List(new Customer()
+                                        {
+                                            Flag = "GET_CUSTOMER_BY_NAME",
+                                            Keyword = customerName.ToString()
+                                        }).Result;
+                                        if (cRes.Count == 1)
+                                        {
+                                            customerId = cRes.FirstOrDefault().Id;
+                                            briefDescription += "";
+                                        }
+                                        else
+                                        {
+                                            briefDescription += "CUSTOMER NUMBER NOT EXISTS";
+                                            customerId = -1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        briefDescription += "CUSTOMER FIELD IS EMPTY.";
+                                    }
+                                }
+                                else {
+                                    briefDescription += "ALREADY ASSIGNED";
                                 }
                             }
-                            else
-                            {
+                            else {
+                                //if (!briefDescription.Contains("NUMBER NOT EXISTS"))
+                                briefDescription += "Specification Not Exists";
+                            }
+                            if ( !(airMac.Equals("") && serialNumber.Equals("") && hardwareComponent.Equals("") ) ) {
+                                //add records in response list
                                 retModel.HardwareComponentImportList.Add(new HardwareComponentRegistrationModel
                                 {
                                     SerialNumber = serialNumber,
                                     AIRMAC = airMac,
                                     HardwareComponent = hardwareComponent,
                                     HardwareComponentId = hardwareComponentId,
-                                    BriefDescription = briefDescription
+                                    CustomerId = customerId,
+                                    CustomerName = customerName,
+                                    BriefDescription = briefDescription,
+                                    Id = hardCompRegId,
+                                    CreatedBy = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
                                 });
                             }
-
                         }
-                        retModel.isSuccess = retModel.HardwareComponentImportList.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0 ? false : true;
+                        retModel.isSuccess = retModel.HardwareComponentImportList.Where(c => c.BriefDescription.Contains("NUMBER NOT EXISTS") || c.BriefDescription.Contains("ALREADY ASSIGNED")).ToList().Count <= 0;
                         if (retModel.isSuccess)
                         {
                             //Valid records, add records in DB
                             var hc_list = _mapper.Map<List<HardwareComponentRegistration>>(retModel.HardwareComponentImportList);
-                            var res = await _hardwareComponentRegistrationService.AddBulk(hc_list);
+                            var res = await _hardwareComponentRegistrationService.AirMacRegistrationImport(hc_list);
                             if (res.IsSuccess == false)
                             {
                                 retModel.HardwareComponentImportList.FirstOrDefault().BriefDescription += "-Number";
                             }
                         }
-                        else
-                        {
-                        }
+                        //else
+                        //{
+                        //}
                     }
                 }
-                return PartialView("_AirMACPartialList", retModel.HardwareComponentImportList);
+                return PartialView("_AirMACRegPartialList", retModel.HardwareComponentImportList);
             }
             catch (Exception e)
             {

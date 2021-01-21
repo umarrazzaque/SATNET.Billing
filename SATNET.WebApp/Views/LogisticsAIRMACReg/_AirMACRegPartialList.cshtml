@@ -8,7 +8,7 @@
             <label id="import_state_label">@{
                 string label_value = "";
                 if (Model.Any()) {
-                    label_value = Model.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0 ? "Error In File!" : "File Import Successfully!";
+                    label_value = Model.Where(c => c.BriefDescription.Contains("NUMBER NOT EXISTS") || c.BriefDescription.Contains("ALREADY ASSIGNED")).ToList().Count > 0 ? "Error In File!" : "File Import Successfully!";
                 }
             }
             @label_value</label>
@@ -21,11 +21,11 @@
                     @*<th class="text-center" width="30">
         </th>*@
                     <th style="width:10%" class="text-center">#</th>
-                    <th style="width:20%"> Model </th>
-                    <th style="width:25%"> @Html.DisplayNameFor(model => model.AIRMAC) </th>
-                    <th style="width:25%"> @Html.DisplayNameFor(model => model.SerialNumber) </th>
-                    <th style="width:25%"> @Html.DisplayNameFor(model => model.CustomerName) </th>
-                    <th style="width:20%">  </th>
+                    <th style="width:10%"> Model </th>
+                    <th style="width:15%"> @Html.DisplayNameFor(model => model.AIRMAC) </th>
+                    <th style="width:15%"> @Html.DisplayNameFor(model => model.SerialNumber) </th>
+                    <th style="width:15%"> @Html.DisplayNameFor(model => model.CustomerName) </th>
+                    <th>  </th>
                 </tr>
             </thead>
 
@@ -40,7 +40,7 @@
                     @*<td class="text-center"> <input type="checkbox"></td>*@
                     @{
                         string backgroundClass = "";
-                        if (item.BriefDescription.Contains("Number"))
+                        if (item.BriefDescription.Contains("NUMBER NOT EXISTS") || item.BriefDescription.Contains("ALREADY ASSIGNED"))
                         {
                             backgroundClass = "td-color";
                         }
@@ -56,7 +56,7 @@
                     <td class="@backgroundClass"> @Html.DisplayFor(modelItem => item.SerialNumber)</td>
                     <td class="@backgroundClass"> @Html.DisplayFor(modelItem => item.CustomerName)</td>
                     @{
-                        if (item.BriefDescription.Contains("Number"))
+                        if (item.BriefDescription.Contains("NUMBER NOT EXISTS") || item.BriefDescription.Contains("ALREADY ASSIGNED"))
                         {
                             <td> @Html.DisplayFor(modelItem => item.BriefDescription)</td>
                         }
