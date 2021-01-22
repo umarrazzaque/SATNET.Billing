@@ -3,138 +3,11 @@ var unitMb;
 var _customerId;
 
 $(function () {
-    var mySelect = $('#CustomerId').selectpicker({
-
-        // text for no selection
-        noneSelectedText: 'Select',
-
-        // text for no result
-        noneResultsText: 'No results matched {0}',
-
-        // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
-        // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
-        // The function must return a string.
-        countSelectedText: function (numSelected, numTotal) {
-            return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
-        },
-
-        // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
-        // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
-        // If a string is used, the same text is used for both the element and the optgroup.
-        maxOptionsText: function (numAll, numGroup) {
-            return [
-                (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
-                (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
-            ];
-        },
-
-        // Text for Select All button
-        selectAllText: 'Select All',
-
-        // Text for Deselect All button
-        deselectAllText: 'Deselect All',
-
-        // Shows done button
-        doneButton: false,
-
-        // Text for done button
-        doneButtonText: 'Close',
-
-        // custom separator
-        multipleSeparator: ', ',
-
-        // button styles
-        styleBase: 'btn',
-        style: 'btn-default',
-
-        // dropdown size
-        size: 'auto',
-
-        // dropdown title
-        title: null,
-
-        // 'values' | 'static' | 'count' | 'count > x'
-        selectedTextFormat: 'values',
-
-        // dropdown width
-        width: false,
-
-        // e.g., container: 'body' | '.main-body'
-        container: false,
-
-        // hide disabled options
-        hideDisabled: false,
-
-        // shows sub text
-        showSubtext: false,
-
-        // shows icon
-        showIcon: true,
-
-        // shows content
-        showContent: true,
-
-        // auto dropup
-        dropupAuto: true,
-
-        // shows dropdown header
-        header: false,
-
-        // live search options
-        liveSearch: true,
-        liveSearchPlaceholder: null,
-        liveSearchNormalize: false,
-        liveSearchStyle: 'contains',
-
-        // enables Select All / Deselect All box
-        actionsBox: false,
-
-        // icons
-        iconBase: 'glyphicon',
-        tickIcon: 'glyphicon-ok',
-
-        // shows checkmark on selected option
-        showTick: false,
-
-        // custom template
-        template: {
-            caret: '<span class="caret"></span>'
-        },
-
-        // string | array | function
-        maxOptions: false,
-
-        // enables the device's native menu for select menus
-        mobile: false,
-
-        // treats the tab character like the enter or space characters within the selectpicker dropdown.
-        selectOnTab: false,
-
-        // Align the menu to the right instead of the left.
-        dropdownAlignRight: false,
-
-        // e.g. [top, right, bottom, left]
-        windowPadding: 0
-
-    });
-
-    // Sets the selected value
-    mySelect.selectpicker('val', 'JQuery');
-    mySelect.selectpicker('val', ['jQuery', 'Script']);
-
-    // Selects all items
-    mySelect.selectpicker('selectAll');
-
-    // Clears all
-    mySelect.selectpicker('deselectAll');
-
-    // Re-render
-    mySelect.selectpicker('render');
-
-
     unitGb = $("#hdnUnitGb").val();
     unitMb = $("#hdnUnitMb").val();
     _customerId = $("#hdnCustomerId").val();
+
+    refreshCustomerFilter();
 
     var dtToday = new Date();
     var maxDate = new Date();
@@ -193,7 +66,7 @@ $(function () {
                 $("#AirMac").prop("disabled", false);
                 $("#HardwareConditionId").prop("disabled", false);
                 $("#PromotionId").prop("disabled", false);
-                getModemModels();
+                //getModemModels();
                 break
             case '2':// Termination
                 $(".select-site").show();
@@ -206,6 +79,7 @@ $(function () {
                 $(".new-site").show();
                 $(".hardware").show();
                 $("#AirMac").prop("disabled", true);
+                $("#selectAirMac").prop('disabled', true);
                 $("#HardwareConditionId").prop("disabled", true);
                 $("#PromotionId").prop("disabled", true);
                 $(".site-name").hide();
@@ -284,9 +158,15 @@ $(function () {
     $("#RequestTypeId").change(function () {
         var requestTypeId = $("#RequestTypeId").val();
         var customerId = getCustomerId();
-        if (requestTypeId != '1' && customerId > 0) {
-            getSites(requestTypeId, customerId);
+        if (customerId > 0) {
+            if (requestTypeId != '1') {
+                getSites(requestTypeId, customerId);
+            }
+            if (requestTypeId == 1 || requestTypeId == 69) {
+                getAIRMACs(customerId, 0, requestTypeId);
+            }
         }
+
     });
     $(".service-plantype").change(function () {
         $('#IsServicePlanFull').val('');
@@ -311,9 +191,11 @@ $(function () {
         if (customerDDLId > 0 && requestTypeId > 0 && requestTypeId != '1') {
             getSites(requestTypeId, customerDDLId);
         }
-        var modemModelId = $("#selectModemModel").val();
-        if (modemModelId > 0 && customerDDLId > 0) {
-            getAIRMACs(customerDDLId, modemModelId, 'new-site');
+        //var modemModelId = $("#selectModemModel").val();
+        var requestTypeId = $("#RequestTypeId").val();
+        var modemModelId = 0;
+        if (customerDDLId > 0) {
+            getAIRMACs(customerDDLId, modemModelId, requestTypeId);
         }
     });
     $("#SiteId").change(function () {
@@ -413,15 +295,21 @@ $(function () {
             $(".pro-rata-gb").hide();
         }
     });
-    $(".modem").change(function () {
-        var section = $(this).data("section");
-        var modemModelId = $(this).val();
-        var customerId = getCustomerId();
-        if (modemModelId > 0 && customerId > 0) {
-            getAIRMACs(customerId, modemModelId, section);
+    //$(".modem").change(function () {
+    //    var section = $(this).data("section");
+    //    var modemModelId = $(this).val();
+    //    var customerId = getCustomerId();
+    //    if (modemModelId > 0 && customerId > 0) {
+    //        getAIRMACs(customerId, modemModelId, section);
+    //    }
+    //});
+    $(".select-airmac").change(function () {
+        var airmac = $(this).val();
+        var requesttypeid = $('#RequestTypeId').val();
+        if (airmac != null) {
+            getAirMacDetails(airmac, requesttypeid);   
         }
     });
-
 });
 
 getDateToday = function(){
@@ -635,8 +523,10 @@ resetFields = function () {
     $("#SubscriberEmail").val('');
     $("#SubscriberArea").val('');
     $("#SubscriberNotes").val('');
-    $("#selectAirMac").val('');
+    $("#selectAirMac").empty();
+    $("#selectNewAirmac").empty();
     $("#selectAirMac").prop('disabled', false);
+    //refreshAirMacFilter();
 }
 
 removeDowngradeItem = function (servicePlanType) {
@@ -790,25 +680,25 @@ populateFormFields = function (result) {
                     //$("#NewAirMac option[value=" + result.airMac + "]").remove();
 }
 
-getModemModels = function () {
+//getModemModels = function () {
 
-    $.ajax({
-        url: '/Order/GetModemModels',
-        type: 'get',
-        dataType: 'json',
-        success: function (result) {
-            var items = '';
-            $.each(result, function (i, plan) {
-                items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
-            });
-            $("#selectModemModel").empty();
-            $("#selectModemModel").html(items);
-            $("#selectModemModel").prepend("<option value=''>Select</option>").val('');
-            $("#selectModemModel").prop("disabled", false);
-        }
-    });
+//    $.ajax({
+//        url: '/Order/GetModemModels',
+//        type: 'get',
+//        dataType: 'json',
+//        success: function (result) {
+//            var items = '';
+//            $.each(result, function (i, plan) {
+//                items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+//            });
+//            $("#selectModemModel").empty();
+//            $("#selectModemModel").html(items);
+//            $("#selectModemModel").prepend("<option value=''>Select</option>").val('');
+//            $("#selectModemModel").prop("disabled", false);
+//        }
+//    });
 
-}
+//}
 getAIRMACs = function (customerId, modemModelId, section) {
 
         $.ajax({
@@ -822,22 +712,313 @@ getAIRMACs = function (customerId, modemModelId, section) {
                 $.each(result, function (i, plan) {
                     items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
                 });
-                if (section == 'new-site') {
+                if (section == '1') { //activation
                     select = $("#selectAirMac");
                 }
-                else if (section=='modem-swap') {
+                else if (section=='69') { //modem swap
                     select = $("#selectNewAirmac");
                 }
                 select.empty();
                 select.html(items);
                 select.prepend("<option value=''>Select</option>").val('');
                 select.prop("disabled", false);
-            }
+            },
+            complete: function () {
+                refreshAirMacFilter();
+            }           
         });
 
 }
 
+refreshAirMacFilter = function () {
+    var mySelect = $('.select-airmac').selectpicker({
 
+        // text for no selection
+        noneSelectedText: 'Select',
+
+        // text for no result
+        noneResultsText: 'No results matched {0}',
+
+        // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
+        // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+        // The function must return a string.
+        countSelectedText: function (numSelected, numTotal) {
+            return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+        },
+
+        // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
+        // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+        // If a string is used, the same text is used for both the element and the optgroup.
+        maxOptionsText: function (numAll, numGroup) {
+            return [
+                (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
+                (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
+            ];
+        },
+
+        // Text for Select All button
+        selectAllText: 'Select All',
+
+        // Text for Deselect All button
+        deselectAllText: 'Deselect All',
+
+        // Shows done button
+        doneButton: false,
+
+        // Text for done button
+        doneButtonText: 'Close',
+
+        // custom separator
+        multipleSeparator: ', ',
+
+        // button styles
+        styleBase: 'btn',
+        style: 'btn-default',
+
+        // dropdown size
+        size: 'auto',
+
+        // dropdown title
+        title: null,
+
+        // 'values' | 'static' | 'count' | 'count > x'
+        selectedTextFormat: 'values',
+
+        // dropdown width
+        width: false,
+
+        // e.g., container: 'body' | '.main-body'
+        container: false,
+
+        // hide disabled options
+        hideDisabled: false,
+
+        // shows sub text
+        showSubtext: false,
+
+        // shows icon
+        showIcon: true,
+
+        // shows content
+        showContent: true,
+
+        // auto dropup
+        dropupAuto: true,
+
+        // shows dropdown header
+        header: false,
+
+        // live search options
+        liveSearch: true,
+        liveSearchPlaceholder: null,
+        liveSearchNormalize: false,
+        liveSearchStyle: 'contains',
+
+        // enables Select All / Deselect All box
+        actionsBox: false,
+
+        // icons
+        iconBase: 'glyphicon',
+        tickIcon: 'glyphicon-ok',
+
+        // shows checkmark on selected option
+        showTick: false,
+
+        // custom template
+        template: {
+            caret: '<span class="caret"></span>'
+        },
+
+        // string | array | function
+        maxOptions: false,
+
+        // enables the device's native menu for select menus
+        mobile: false,
+
+        // treats the tab character like the enter or space characters within the selectpicker dropdown.
+        selectOnTab: false,
+
+        // Align the menu to the right instead of the left.
+        dropdownAlignRight: false,
+
+        // e.g. [top, right, bottom, left]
+        windowPadding: 0
+
+    });
+
+    // Sets the selected value
+    mySelect.selectpicker('val', 'JQuery');
+    mySelect.selectpicker('val', ['jQuery', 'Script']);
+
+    // Selects all items
+    mySelect.selectpicker('selectAll');
+
+    // Clears all
+    mySelect.selectpicker('deselectAll');
+
+    // Re-render
+    mySelect.selectpicker('render');
+    mySelect.selectpicker('refresh')
+}
+
+refreshCustomerFilter = function () {
+    var mySelect = $('#CustomerId').selectpicker({
+
+        // text for no selection
+        noneSelectedText: 'Select',
+
+        // text for no result
+        noneResultsText: 'No results matched {0}',
+
+        // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
+        // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+        // The function must return a string.
+        countSelectedText: function (numSelected, numTotal) {
+            return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+        },
+
+        // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
+        // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+        // If a string is used, the same text is used for both the element and the optgroup.
+        maxOptionsText: function (numAll, numGroup) {
+            return [
+                (numAll == 1) ? 'Limit reached ({n} item max)' : 'Limit reached ({n} items max)',
+                (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
+            ];
+        },
+
+        // Text for Select All button
+        selectAllText: 'Select All',
+
+        // Text for Deselect All button
+        deselectAllText: 'Deselect All',
+
+        // Shows done button
+        doneButton: false,
+
+        // Text for done button
+        doneButtonText: 'Close',
+
+        // custom separator
+        multipleSeparator: ', ',
+
+        // button styles
+        styleBase: 'btn',
+        style: 'btn-default',
+
+        // dropdown size
+        size: 'auto',
+
+        // dropdown title
+        title: null,
+
+        // 'values' | 'static' | 'count' | 'count > x'
+        selectedTextFormat: 'values',
+
+        // dropdown width
+        width: false,
+
+        // e.g., container: 'body' | '.main-body'
+        container: false,
+
+        // hide disabled options
+        hideDisabled: false,
+
+        // shows sub text
+        showSubtext: false,
+
+        // shows icon
+        showIcon: true,
+
+        // shows content
+        showContent: true,
+
+        // auto dropup
+        dropupAuto: true,
+
+        // shows dropdown header
+        header: false,
+
+        // live search options
+        liveSearch: true,
+        liveSearchPlaceholder: null,
+        liveSearchNormalize: false,
+        liveSearchStyle: 'contains',
+
+        // enables Select All / Deselect All box
+        actionsBox: false,
+
+        // icons
+        iconBase: 'glyphicon',
+        tickIcon: 'glyphicon-ok',
+
+        // shows checkmark on selected option
+        showTick: false,
+
+        // custom template
+        template: {
+            caret: '<span class="caret"></span>'
+        },
+
+        // string | array | function
+        maxOptions: false,
+
+        // enables the device's native menu for select menus
+        mobile: false,
+
+        // treats the tab character like the enter or space characters within the selectpicker dropdown.
+        selectOnTab: false,
+
+        // Align the menu to the right instead of the left.
+        dropdownAlignRight: false,
+
+        // e.g. [top, right, bottom, left]
+        windowPadding: 0
+
+    });
+
+    // Sets the selected value
+    mySelect.selectpicker('val', 'JQuery');
+    mySelect.selectpicker('val', ['jQuery', 'Script']);
+
+    // Selects all items
+    mySelect.selectpicker('selectAll');
+
+    // Clears all
+    mySelect.selectpicker('deselectAll');
+
+    // Re-render
+    mySelect.selectpicker('render');
+
+}
+
+getAirMacDetails = function (airmac, requesttypeid) {
+    $.ajax({
+        data: { airmac: airmac },
+        url: '/Order/GetAirMacDetails',
+        type: 'Get',
+        success: function (result) {
+            if (result != null) {
+                if (requesttypeid == 1) {
+                    $('#selectModemModel').val(result.hardwareComponentId);
+                    $('#selectModemModel').prop('disabled', true);
+                    $('#HardwareConditionId').val(result.hardwareConditionId);
+                    $('#HardwareConditionId').prop('disabled', true);
+                    if (result.hardwareConditionId == 61) {
+                        $('#PromotionId option[value="2"]').prop('disabled', true);
+                    }
+                    else {
+                        $('#PromotionId option[value="2"]').prop('disabled', false);
+                    }
+                }
+                else if (requesttypeid == 69){
+                    $('#selectNewModemModel').val(result.hardwareComponentId);
+                    $('#selectNewModemModel').prop('disabled', true);
+                }
+            }
+        }
+    });
+}
 
 
 

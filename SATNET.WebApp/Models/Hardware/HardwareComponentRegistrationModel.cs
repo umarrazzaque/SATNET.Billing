@@ -30,6 +30,7 @@ namespace SATNET.WebApp.Models.Hardware
         public string CustomerName { get; set; }
         [DisplayName("Is Available")]
         public bool IsUsed { get; set; }
+        public int HardwareConditionId { get; set; }
         public string[] SerialNumbers { get; set; }
         public string[] AIRMACs { get; set; }
         public SelectList CustomerSelectList { get; set; }

@@ -96,6 +96,17 @@ namespace SATNET.WebApp.Controllers
             List<HardwareComponent> modems = new List<HardwareComponent>();
             modems = await _hardwareComponentService.List(new HardwareComponent() { SearchBy = "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
             model.ModemModelSelectList = new SelectList(modems, "Id", "HCValue");
+            //List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();
+            //if (customerId > 0)
+            //{
+            //    airmacs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration()
+            //    {
+            //        Flag = "UnUsedAIRMAC",
+            //        CustomerId = customerId,
+            //        HardwareComponentId = 0
+            //    });
+            //}
+            //model.AirMacSelectList = new SelectList(airmacs, "AIRMAC", "AIRMAC");
             model.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
             model.ScheduleDateSelectList= new SelectList(scheduleDates, "Id", "Name");
             model.ServicePlanTypeSelectList = new SelectList(servicePlanTypes, "Id", "Name");
@@ -402,6 +413,20 @@ namespace SATNET.WebApp.Controllers
             }
             
             return Json(new SelectList(airmacs, "AIRMAC", "AIRMAC"));
+        }
+        public async Task<IActionResult> GetAIRMACDetails(string airmac)
+        {
+            List<HardwareComponentRegistration> airmacs = new List<HardwareComponentRegistration>();
+            if (!string.IsNullOrEmpty(airmac))
+            {
+                airmacs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration()
+                {
+                    AIRMAC = airmac,
+                    Flag= "GET_AIRMAC_DETAILS"
+                });
+            }
+            var airmacObj = airmacs.FirstOrDefault();
+            return Json(airmacObj);
         }
 
     }

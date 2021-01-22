@@ -76,6 +76,15 @@ namespace SATNET.Service.Implementation
                         return status;
                     }
                 }
+                if (order.RequestTypeId == 67 || order.RequestTypeId == 3 || order.RequestTypeId == 4) //business rule: for upgrade/downgrade/change plan
+                {
+                    status = await IsPassedPromotionRule(order);
+                    if (!status.IsSuccess)
+                    {
+                        return status;
+                    }
+
+                }
                 int retId = await _orderRepository.Add(order);
                 if (retId != 0)
                 {
@@ -295,6 +304,33 @@ namespace SATNET.Service.Implementation
             {
                 status.IsSuccess = false;
                 status.ErrorCode = "Token can only be applied on quota plans.";
+            }
+            return status;
+        }
+        private async Task<StatusModel> IsPassedPromotionRule(Order order)
+        {
+            StatusModel status = new StatusModel();
+            status.ResponseUrl = "/Order/Index";
+            status.IsSuccess = true;
+            var site = await _siteRepository.Get(order.SiteId);
+            if (site.PromotionId == 2) //is in promotion?
+            {
+                status.ErrorCode = "The requested operation cannot be performed as site is in promotion";
+                if (order.RequestTypeId == 3 && order.ScheduleDateId==58) //If upgrade now is selected and site is in promotion do not allow.
+                {
+                    status.IsSuccess = false;
+                }
+                else
+                {
+                    //Check If Next Billing Date field is > 1st of the next month it will not allow to change plan, Downgrade or upgrade.
+                    DateTime nextMonthBillingDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    nextMonthBillingDate = nextMonthBillingDate.AddMonths(1);
+                    if (site.NextBillingDate > nextMonthBillingDate)
+                    {
+                        status.IsSuccess = false;
+                    }
+                }
+
             }
             return status;
         }
