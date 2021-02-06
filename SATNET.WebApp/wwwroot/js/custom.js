@@ -39,6 +39,7 @@ function init_table_pagination(tableName) {
     return table;
 }
 
+
 (function ($) {
     $("ul").on("click",".metismenu li a", function (e) {
    

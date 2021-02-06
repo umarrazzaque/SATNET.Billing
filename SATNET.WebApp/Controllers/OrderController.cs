@@ -57,10 +57,10 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlyServiceOrderPolicy")]
         public async Task<IActionResult> Index()
         {
-            //var requestTypes = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderRequestType) });
+            var scheduleDates = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.ScheduleDate) });
             var orderStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.OrderStatus) });
 
-            //ViewBag.RequestTypeSelectList = new SelectList(requestTypes, "Id", "Name");
+            ViewBag.ScheduleDateList = new SelectList(scheduleDates, "Id", "Name");
             ViewBag.OrderStatusSelectList = new SelectList(orderStatuses, "Id", "Name");
 
             List<OrderViewModel> model = new List<OrderViewModel>();
@@ -132,7 +132,10 @@ namespace SATNET.WebApp.Controllers
             int customerId = 0;
             string siteName = "";
             customerId = model.CustomerId == 0 ? await GetCustomerId() : model.CustomerId;
-
+            if (model.ScheduleDateId == 59)
+            {
+                model.IsServicePlanFullUpgrade = true;
+            }
             var order = new Order()
             {
                 SiteId = model.SiteId,
@@ -164,7 +167,8 @@ namespace SATNET.WebApp.Controllers
                 NewAirMac = model.NewAirMac,
                 ProRataQuota = model.ProRataQuota,
                 UpgradeToProRataQuota = model.UpgradeToProRataQuota,
-                IsServicePlanFull = model.IsServicePlanFull
+                IsServicePlanFull = model.IsServicePlanFull,
+                IsServicePlanFullUpgrade = model.IsServicePlanFullUpgrade
             };
 
             var status = await _orderService.Add(order);
@@ -173,12 +177,13 @@ namespace SATNET.WebApp.Controllers
 
         }
 
-        public async Task<IActionResult> GetOrdersByDDLFilter(string statusValue)
+        public async Task<IActionResult> GetOrdersByDDLFilter(int statusId, int scheduleDateId)
         {
             List<OrderViewModel> model = new List<OrderViewModel>();
             Order obj = new Order();
             //obj.RequestTypeId = string.IsNullOrEmpty(requestTypeValue) ? 0 : Convert.ToInt32(requestTypeValue);
-            obj.StatusId = string.IsNullOrEmpty(statusValue) ? 0 : Convert.ToInt32(statusValue);
+            obj.StatusId = statusId;
+            obj.ScheduleDateId = scheduleDateId;
             obj.CustomerId = await GetCustomerId();
             var serviceResult = await _orderService.List(obj);
             if (serviceResult.Any())
@@ -279,6 +284,7 @@ namespace SATNET.WebApp.Controllers
 
         }
         [HttpGet]
+        [Authorize(Policy = "ManageServiceOrderPolicy")]
         public async Task<IActionResult> Action(int id,int statusId, string rejectReason)
         {
             string siteName = "";

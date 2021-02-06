@@ -41,7 +41,7 @@ namespace SATNET.Service.Implementation
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
             }
             return status;
@@ -74,7 +74,7 @@ namespace SATNET.Service.Implementation
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
             }
             return retModel;
@@ -96,7 +96,7 @@ namespace SATNET.Service.Implementation
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
 
             }
@@ -134,7 +134,7 @@ namespace SATNET.Service.Implementation
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
             }
             return status;

@@ -1,0 +1,86 @@
+﻿@model SATNET.WebApp.Models.Report.ReceivablePerCategoryViewModel
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    @*<center>
+            <h3>@ViewBag.CustomerName</h3>
+            <h4>Site Ledger</h4>
+        </center>*@
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="" width="100%">
+        <thead>
+            @*<tr class="header">
+                    <th colspan="5">@ViewBag.CustomerName</th>
+                </tr>*@
+            <tr class="header">
+                <th colspan="2">Receivable Per Category</th>
+            </tr>
+            <tr>
+                <th style="width:50%">Category</th>
+                <th style="width:50%"> Amount </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr class="site-footer">
+                <td colspan="2">
+                    PLAN Airtime
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total
+                </td>
+                <td>
+                    $ @Model.ServicePlanTotal
+                </td>
+            </tr>
+            <tr class="site-footer">
+                <td colspan="2">
+                    Public IP
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total
+                </td>
+                <td>
+                    $ @Model.PublicIPTotal
+                </td>
+            </tr>
+            <tr class="site-footer">
+                <td colspan="2">
+                    Token
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total
+                </td>
+                <td>
+                    $ @Model.TokenTotal
+                </td>
+            </tr>
+            <tr class="site-footer">
+                <td colspan="2">
+                    Rebate
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total
+                </td>
+                <td>
+                    $ 0
+                </td>
+            </tr>
+            <tr class="site-footer">
+                <td>
+                    Total
+                </td>
+                <td>
+                    $ @Model.Total
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

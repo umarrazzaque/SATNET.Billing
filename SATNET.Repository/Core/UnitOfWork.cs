@@ -73,6 +73,14 @@ namespace SATNET.Repository.Core
                 _transaction = null;
             }
         }
+        public void CloseConnection()
+        {
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+                _connection.Dispose();
+            }
+        }
 
         private IRepository<Customer> _customerRepository;
         public IRepository<Customer> Customers { get { return _customerRepository ?? (_customerRepository = new CustomerRepository(this)); } }

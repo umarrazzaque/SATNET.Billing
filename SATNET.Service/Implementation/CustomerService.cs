@@ -49,7 +49,7 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-                uow.Connection.Close();
+                 uow.CloseConnection();
             }
             return status;
         }
@@ -83,7 +83,7 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-                uow.Connection.Close();
+                 uow.CloseConnection();
             }
             return status;
         }
@@ -95,8 +95,6 @@ namespace SATNET.Service.Implementation
             var uow = new UnitOfWorkFactory().Create();
             try
             {
-                
-                
                     retModel = await uow.Customers.Get(id);
                     if (retModel.Id != 0)
                     {
@@ -110,7 +108,7 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-                uow.Connection.Close();
+                 uow.CloseConnection();
             }
             return retModel;
         }
@@ -133,7 +131,7 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-                uow.Connection.Close();
+                 uow.CloseConnection();
             }
             return retList;
         }
@@ -169,7 +167,7 @@ namespace SATNET.Service.Implementation
             }
             finally
             {
-                uow.Connection.Close();
+                 uow.CloseConnection();
             }
             return status;
         }

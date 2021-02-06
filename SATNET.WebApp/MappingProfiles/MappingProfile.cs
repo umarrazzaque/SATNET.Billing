@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using SATNET.Domain;
+using SATNET.Domain.Reporting;
 using SATNET.WebApp.Models;
 using SATNET.WebApp.Models.Hardware;
 using SATNET.WebApp.Models.Invoice;
 using SATNET.WebApp.Models.Lookup;
+using SATNET.WebApp.Models.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +30,11 @@ namespace SATNET.WebApp.MappingProfiles
             CreateMap<HardwareKit, HardwareKitModel>().ReverseMap();
             CreateMap<HardwareComponentPrice, HardwareComponentPriceModel>().ReverseMap();
             CreateMap<HardwareComponentRegistration, HardwareComponentRegistrationModel>().ReverseMap();
-            CreateMap<SiteLedgerReport, SiteLedgerReportViewModel>().ReverseMap();
             CreateMap<SOInvoice, SOInvoiceViewModel>().ReverseMap();
             CreateMap<SOInvoiceItem, SOInvoiceItemViewModel>().ReverseMap();
             CreateMap<MRCInvoice, MRCInvoiceViewModel>().ReverseMap();
+            CreateMap<ReceivablePerCategory, ReceivablePerCategoryViewModel>().ReverseMap();
+            CreateMap<SystemLog, SystemLogViewModel>().ReverseMap();
         }
     }
 }

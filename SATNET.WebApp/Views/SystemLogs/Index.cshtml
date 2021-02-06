@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SATNET.WebApp.Models.SiteModel>
+﻿@model IEnumerable<SATNET.WebApp.Models.SystemLogViewModel>
 
 <div id="MainContents">
 
@@ -7,28 +7,23 @@
             <div class="page-title-heading">
 
                 <div>
-                    Sites
+                    System Logs
                     <div class="page-title-subheading">
                     </div>
                 </div>
             </div>
             <div class="page-title-actions">
 
-                <div class="d-inline-block dropdown">
-
-                    @await Html.PartialAsync("_Export") 
-                    @*<a href="@String.Format("/{0}", "Site/Add")" class=" btn btn-default right-pan">
-                            Add New
-                        </a>*@
-                </div>
+                @await Html.PartialAsync("_Export")
             </div>
         </div>
     </div>
+
     <div class="filters">
         <div class="row">
             @if (ViewBag.CustomerSelectList != null)
             {
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="position-relative form-group">
                         <label>Customer</label>
                         <select id="selectCustomer" type="select" class="form-control" asp-items="ViewBag.CustomerSelectList">
@@ -38,75 +33,51 @@
                 </div>
 
             }
-            <div class="col-lg-2">
-                <div class="position-relative form-group">
-                    <label>Site Status</label>
-                    <select id="selectSiteStatus" type="select" class="form-control" asp-items="ViewBag.SiteStatusSelectList">
-                        <option value="0" selected>All</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="position-relative form-group">
-                    <label>Promotion</label>
-                    <select id="selectPromotion" type="select" class="form-control" asp-items="ViewBag.PromotionSelectList">
-                        <option value="0" selected>All</option>
-                    </select>
-                </div>
-            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <div id="BodyContent">
-                @await Html.PartialAsync("_Site", Model)
+                @await Html.PartialAsync("_List", Model)
             </div>
         </div>
     </div>
 </div>
 
-    
-@section Scripts{
+
+@section scripts{
     <script type="text/javascript">
+
         $(function () {
             refreshCustomerSelectPicker();
             init_table_pagination('grid_table');
-            var _customerId = 0;
-            if (@ViewBag.CustomerId != null) {
-                _customerId=@ViewBag.CustomerId;
-            }
-            $(".filters select#selectCustomer").change(function () {
-                GetSiteList();
+
+            $(".filters select").change(function () {
+                GetLogList();
             });
-            $(".filters select#selectSiteStatus").change(function () {
-                GetSiteList();
-            });
-            $(".filters select#selectPromotion").change(function () {
-                GetSiteList();
-            });
+
         });
 
-        GetSiteList = function () {
+        GetLogList = function () {
             var customerId = $("#selectCustomer").val();
-            var statusId = $("#selectSiteStatus").val();
-            var promotionId = $("#selectPromotion").val();
-            $.ajax(
-                {
-                    url: '/Site/GetSiteListAjax',
-                    data: { customerId: customerId, statusId: statusId, promotionId: promotionId },
-                    type: 'get',
-                    dataType: "html",
-                    success: function (html) {
-                        if (html !== null) {
-                            $("#BodyContent").html(html);
+                $.ajax(
+                    {
+                        url: '/SystemLogs/GetAjaxLogList',
+                        data: { customerId: customerId },
+                        type: 'get',
+                        dataType: "html",
+                        success: function (html) {
+                            if (html !== null) {
+                                $("#BodyContent").html(html);
+                                init_table_pagination('grid_table');
+                            }
+                        },
+                        error: function () {
+                            alert('Error occurred while processing the request.');
                         }
-                    },
-                    error: function () {
-                        alert('Error occurred while processing the request.');
-                    }
-                });
-        }
+                    });
+            }
         refreshCustomerSelectPicker = function () {
             var mySelect = $('#selectCustomer').selectpicker({
 
@@ -236,6 +207,7 @@
             // Re-render
             mySelect.selectpicker('render');
         }
+
 
     </script>
 }

@@ -169,7 +169,7 @@ $(function () {
 
     });
     $(".service-plantype").change(function () {
-        $('#IsServicePlanFull').val('');
+        $('#selectIsServicePlanFull').val('');
         $('#txtProRataGB').text('');
         $('.pro-rata-gb').hide();
         $('.fullOrProrata').hide();
@@ -177,7 +177,7 @@ $(function () {
         $('.custom-dedicated-serviceplan').hide();
         var type = $(this).val();
         var section = $(this).data('section');
-        if (type == "12" && section != "change-service-plan") {
+        if (type == "12" && section == "new-site") {
             $('.fullOrProrata').show();
         }
         if (type != "" && section != 'downgrade' && section != 'upgrade') {
@@ -262,6 +262,19 @@ $(function () {
             $('.upgrade-pro-rata-gb').show();
             showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB')
         }
+        var requestTypeId = $('#RequestTypeId').val();
+        if (quotaPlanType == '12' && scheduleDate == 58) {
+            if (requestTypeId == "1" || requestTypeId == "32") {
+                $('.fullOrProrata').show();
+            }
+            else if (requestTypeId == "3") {
+                $('.upgrade-fullOrProrata').show();
+            }
+        }
+        else {
+            $('.upgrade-fullOrProrata').hide();
+            $('.fullOrProrata').hide();
+        }
     });
     $("#SiteCityId").change(function () {
         var cityId = $(this).val();
@@ -282,17 +295,27 @@ $(function () {
         $('.upgrade-pro-rata-gb').hide();
         $('#txtUpgradeProRataGB').text('');
         var quotaPlanText = $('#UpgradeToId option:selected').text();
-        if ($(this).val() != '' && $("#upgradeServicePlanType").val() == 12 && $("#ScheduleDateId").val()==58) { //for quota plan and schedule date now display pro-rata quota
+        if ($(this).val() != '' && $("#upgradeServicePlanType").val() == 12 && $("#ScheduleDateId").val() == 58 && $('#selectIsServicePlanFullUpgrade').val() == 'False') { //for quota plan and schedule date now display pro-rata quota
             $('.upgrade-pro-rata-gb').show();
             showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
         }
     });
-    $("#IsServicePlanFull").change(function () {
+    $("#selectIsServicePlanFull").change(function () {
         if ($(this).val() == "False") {
             $(".pro-rata-gb").show();
         }
         else if ($(this).val() == "True") {
             $(".pro-rata-gb").hide();
+        }
+    });
+    $("#selectIsServicePlanFullUpgrade").change(function () { //in upgrade plan section
+        if ($(this).val() == "False") {
+            $('.upgrade-pro-rata-gb').show();
+            showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
+        }
+        else if ($(this).val() == "True") {
+            $('.upgrade-pro-rata-gb').hide();
+            //showProRataGB(quotaPlanText, getDateToday(), '#txtUpgradeProRataGB');
         }
     });
     //$(".modem").change(function () {
@@ -327,6 +350,7 @@ hideAllSections = function () {
     $(".custom-dedicated-serviceplan").hide();
     $(".pro-rata-gb").hide();
     $(".fullOrProrata").hide();
+    $(".upgrade-fullOrProrata").hide();
     $(".upgrade-pro-rata-gb").hide();
     $(".upgrade").hide();
     $(".downgrade").hide();
@@ -456,14 +480,14 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
         $.each(result, function (i, plan) {
             items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
         });
-        if (requestTypeId == "1" || requestTypeId == "32") {
+        if (requestTypeId == "1" || requestTypeId == "32") { //activation or reactivation
             $("#ServicePlanId").empty();
             $("#ServicePlanId").html(items);
             $("#ServicePlanId").prop("disabled", false);
             setPlanUnit($(".unit-serviceplan"), servicePlanType);
             $("#ServicePlanId").val(servicePlanId);
         }
-        else if (requestTypeId == "4") {
+        else if (requestTypeId == "4") { //downgrade plan
             $("#DowngradeFromId").empty();
             $("#DowngradeToId").empty();
             $("#DowngradeFromId").html(items);
@@ -474,9 +498,10 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             $("#DowngradeFromId").val(servicePlanId);
             $("#downgradeServicePlanType").prop("disabled", true);
             $("#DowngradeFromId").prop("disabled", true);
+            $("#hdnDowngradeFromId").val(servicePlanId);
             removeDowngradeItem(servicePlanType, servicePlanId);
         }
-        else if (requestTypeId == "3") {
+        else if (requestTypeId == "3") { //upgrade plan
             $("#UpgradeFromId").empty();
             $("#UpgradeToId").empty();
             $("#UpgradeFromId").html(items);
@@ -485,11 +510,14 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             setPlanUnit($(".unit-upgrade"), servicePlanType);
             $("#upgradeServicePlanType").val(servicePlanType);
             $("#UpgradeFromId").val(servicePlanId);
+            $("#hdnUpgradeFromId").val(servicePlanId);
             $("#upgradeServicePlanType").prop("disabled", true);
             $("#UpgradeFromId").prop("disabled", true);
             removeUpgradeItem(servicePlanType, servicePlanId);
+
         }
-        else if (requestTypeId == "67") {
+        else if (requestTypeId == "67") { //change service plan
+            $("#hdnCurrentServicePlan").val(servicePlanId);
             $("#currentServicePlanType").val(servicePlanType);
             $("#currentServicePlanType").prop("disabled", true);
             $("#selectCurrentServicePlan").empty();
@@ -501,6 +529,16 @@ populateServicePlan = function (servicePlanType, servicePlanId, requestTypeId) {
             $("#changeToServicePlanType option[value=" + servicePlanType + "]").remove();
 
             //setPlanUnit($(".unit-upgrade"), servicePlanType);
+        }
+
+        //business rule
+        if (servicePlanType == '12' && $('#ScheduleDateId').val() == 58) {
+            if (requestTypeId == "1" || requestTypeId == "32") {
+                $('.fullOrProrata').show();
+            }
+            else if (requestTypeId == "3") {
+                $('.upgrade-fullOrProrata').show();
+            }
         }
     });
 
@@ -665,6 +703,7 @@ populateFormFields = function (result) {
     var $options = $("#IPId > option").clone();
     $('#ipChangeTo').append($options);
     $("#ipPlan").val(result.ipId);
+    $("#hdnCurrentIP").val(result.ipId);
     $("#ipPlan").prop("disabled", true);
     $("#ipChangeTo option[value=" + result.ipId + "]").remove();
     var items = '';
@@ -708,7 +747,7 @@ getAIRMACs = function (customerId, modemModelId, section) {
             dataType: 'json',
             success: function (result) {
                 var items = '';
-                var select = '';
+                var select = $("#selectAirMac");;
                 $.each(result, function (i, plan) {
                     items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
                 });

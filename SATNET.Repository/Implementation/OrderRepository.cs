@@ -46,6 +46,7 @@ namespace SATNET.Repository.Implementation
 
                 var parms = new DynamicParameters();
                 parms.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
+                parms.Add("@ScheduleDateId", obj.ScheduleDateId, DbType.Int32, ParameterDirection.Input);
                 parms.Add("@RequestTypeId", obj.RequestTypeId, DbType.Int32, ParameterDirection.Input);
                 parms.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
                 parms.Add("@Flag", obj.Flag, DbType.String, ParameterDirection.Input);
@@ -113,6 +114,7 @@ namespace SATNET.Repository.Implementation
                     paramsOrder.Add("@ProRataQuota", obj.ProRataQuota, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@UpgradeToProRataQuota", obj.UpgradeToProRataQuota, DbType.String, ParameterDirection.Input);
                     paramsOrder.Add("@IsServicePlanFull", obj.IsServicePlanFull, DbType.Boolean, ParameterDirection.Input);
+                    paramsOrder.Add("@IsServicePlanFullUpgrade", obj.IsServicePlanFullUpgrade, DbType.Boolean, ParameterDirection.Input);
                     orderId = await con.ExecuteScalarAsync<int>("OrderInsert", paramsOrder, transaction, commandType: CommandType.StoredProcedure);
 
                     transaction.Commit();
@@ -140,8 +142,8 @@ namespace SATNET.Repository.Implementation
                     queryParameters.Add("@Id", obj.Id, DbType.Int32, ParameterDirection.Input);
                     queryParameters.Add("@StatusId", obj.StatusId, DbType.Int32, ParameterDirection.Input);
                     queryParameters.Add("@RejectReason", obj.RejectReason, DbType.String, ParameterDirection.Input);
-                    queryParameters.Add("@SiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
-                    queryParameters.Add("@LoginUserId", obj.CreatedBy, DbType.Int32, ParameterDirection.Input);
+                    queryParameters.Add("@ActivationSiteName", obj.SiteName, DbType.String, ParameterDirection.Input);
+                    queryParameters.Add("@LoginUserId", obj.UpdatedBy, DbType.Int32, ParameterDirection.Input);
                     result = await con.ExecuteScalarAsync<int>("OrderUpdate", queryParameters, commandType: CommandType.StoredProcedure);
                 }
                 catch (Exception e)

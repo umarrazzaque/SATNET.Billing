@@ -6,10 +6,10 @@
     
     //dropdown filters change events
 
-    $('#ddlOrderStatus').val(20);
+    $('#selectOrderStatus').val(20);
 
     $(".filters select").change(function () {
-        GetOrdersByDDLFilter();
+            GetOrdersByDDLFilter();
     });
 
     $(document).on("click", 'a.modal-pan', function (e) {
@@ -65,26 +65,36 @@
         var action = $(this).data("action");
         if (action == "Accept") {
             $("#btnAcceptOrder").data("id", orderId);
-            //orderAction(orderId, 21, '');//accepted=21
         }
-        else {
+        else if (action == "Cancel") {
             $("#btnRejectOrder").data("id", orderId);
+            $("#btnRejectOrder").data("section", 111);//cancelled=111
+            $('#modal-rejectOrderConfirm .modal-title').text('Cancel Service Order');
+        }
+        else if (action == "Reject") {
+            $("#btnRejectOrder").data("id", orderId);
+            $("#btnRejectOrder").data("section", 22);//rejected=22
         }
     });
 
     $(document).on("click", 'a.rejected-order', function (e) {
         e.preventDefault();
         var reason = $(this).data("reason");
+        var action = $(this).data("action");
         $("#modal-rejectreason .modal-body p").html(reason);
-
+        if (action == 'Cancel') {
+            $('#modal-rejectreason .modal-title').text('Reason for Service Order Cancellation');
+        }
     });
 
 
     $(document).on("click", '#btnRejectOrder', function (e) {
         e.preventDefault();
         var orderId = $(this).data("id");
-        orderAction(orderId, 22, $("#txtRejectReason").val());//rejected=22
-
+        var sectionId = $(this).data("section");
+        if (orderId > 0 && sectionId > 0) {
+            orderAction(orderId, sectionId, $("#txtRejectReason").val());
+        }
     });
 
     $(document).on("click", '#btnAcceptOrder', function (e) {
@@ -99,7 +109,7 @@ GetOrdersByDDLFilter = function () {
     $.ajax(
         {
             url: '/Order/GetOrdersByDDLFilter',
-            data: { statusValue: $("#ddlOrderStatus").val()},
+            data: { statusId: $("#selectOrderStatus").val(), scheduleDateId: $("#selectScheduleDate").val()},
             type: 'get',
             dataType: "html",
             success: function (html) {

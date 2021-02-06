@@ -1,0 +1,189 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.Report.SiteLedgerViewModel>
+
+    <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+        @*<center>
+            <h3>@ViewBag.CustomerName</h3>
+            <h4>Site Ledger</h4>
+        </center>*@
+        <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="" width="100%">
+            <thead>
+                <tr class="header">
+                    <th colspan="5">@ViewBag.CustomerName</th>
+                </tr>
+                <tr class="header">
+                    <th colspan="5">Site Ledger</th>
+                </tr>
+                <tr>
+                    <th style="width:10%">Site Name</th>
+                    <th style="width:20%"> Date </th>
+                    <th style="width:40%"> Description </th>
+                    <th style="width:20%"> Reference</th>
+                    <th style="width:10%"> Amount($) </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    decimal siteTotal = 0;
+                    decimal total = 0;
+
+                    #region receivable per category
+                    decimal receivablePlanTotal = 0;
+                    decimal receivableIPTotal = 0;
+                    decimal receivableTokenTotal = 0;
+                    decimal receivableRebateTotal = 0;
+                    decimal receivableTotal = 0;
+                    #endregion
+
+                    foreach (var siteLedger in Model)
+                    {
+                        @if (siteLedger.InvoiceViewModels.Any())
+                        {
+                            siteTotal = 0;
+                            foreach (var invoice in siteLedger.InvoiceViewModels)
+                            {
+                                foreach (var invoiceItem in invoice.InvoiceItems)
+                                {
+                                    // receivable per category
+                                    if (invoiceItem.ItemTypeId == 85 || invoiceItem.ItemTypeId == 87 || invoiceItem.ItemTypeId == 96 || invoiceItem.ItemTypeId == 90)//service plan
+                                    {
+                                        receivablePlanTotal = receivablePlanTotal + invoiceItem.Amount;
+                                    }
+                                    else if (invoiceItem.ItemTypeId == 86 || invoiceItem.ItemTypeId == 97 || invoiceItem.ItemTypeId == 93)//ip
+                                    {
+                                        receivableIPTotal = receivableIPTotal + invoiceItem.Amount;
+                                    }
+                                    else if (invoiceItem.ItemTypeId == 91)//token
+                                    {
+                                        receivableTokenTotal = receivableTokenTotal + invoiceItem.Amount;
+                                    }
+                                    else if (invoiceItem.ItemTypeId == 88)//rebate
+                                    {
+                                        receivableRebateTotal = receivableRebateTotal + invoiceItem.Amount;
+                                    }
+                                    <tr>
+                                        <td>
+                                            @siteLedger.Name
+                                        </td>
+                                        <td> @invoice.CreatedOn</td>
+                                        <td>@invoiceItem.Item - @invoiceItem.Description</td>
+                                        <td>@invoice.InvoiceNumber </td>
+
+                                        @if (invoiceItem.ItemTypeId == 88)
+                                        {
+                                            <td>- @invoiceItem.Amount</td>
+                                            siteTotal = siteTotal - invoiceItem.Amount;
+                                        }
+                                        else
+                                        {
+                                            <td>@invoiceItem.Amount</td>
+                                            siteTotal = siteTotal + invoiceItem.Amount;
+
+                                        }
+
+                                    </tr>
+                                }
+                            }
+                            receivableTotal = receivableIPTotal + receivablePlanTotal + receivableTokenTotal - receivableRebateTotal;
+                            <tr class="site-footer">
+                                <td>
+                                    @siteLedger.Name
+                                </td>
+                                <td colspan="3">
+                                    Total
+                                </td>
+                                <td>
+                                    @siteTotal
+                                </td>
+                                @{total = total + siteTotal;}
+                            </tr>
+                        }
+
+                    }
+                    <tr class="site-footer">
+                        <td>
+                            Report
+                        </td>
+                        <td colspan="3">
+                            Total
+                        </td>
+                        <td>
+                            @total
+                        </td>
+                    </tr>
+                    <tr class="header">
+                        <th colspan="5">Receivable Per Category</th>
+                    </tr>
+                    <tr>
+                        <th>Category</th>
+                        <th colspan="4"> Amount($) </th>
+                    </tr>
+                    <tr class="site-footer">
+                        <td colspan="5">
+                            PLAN Airtime
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td colspan="4">
+                             @receivablePlanTotal
+                        </td>
+                    </tr>
+                    <tr class="site-footer">
+                        <td colspan="5">
+                            Public IP
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td colspan="4">
+                             @receivableIPTotal
+                        </td>
+                    </tr>
+                    <tr class="site-footer">
+                        <td colspan="5">
+                            Token
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td colspan="4">
+                             @receivableTokenTotal
+                        </td>
+                    </tr>
+                    <tr class="site-footer">
+                        <td colspan="5">
+                            Rebate
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td colspan="4">
+                             @receivableRebateTotal
+                        </td>
+                    </tr>
+                    <tr class="site-footer">
+                        <td>
+                            Total
+                        </td>
+                        <td colspan="4">
+                             @receivableTotal
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr><td colspan="5">No site found.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
