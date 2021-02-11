@@ -1,4 +1,5 @@
 ﻿$(function () {
+    init_table_pagination('grid_table');
     //dropdown filters change events
 
     $(".filters select").change(function () {
@@ -36,7 +37,8 @@ getUsers = function (userType) {
     var url = '/User/GetUsers';
     $.getJSON(url, { userTypeId: userType }, function (result) {
         if (result.isValid === true && result.html !== null) {
-            $("#grid_table").html(result.html);
+            $("#BodyContent").html(result.html);
+            init_table_pagination('grid_table');
         }
     });
 }

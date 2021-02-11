@@ -12,11 +12,12 @@
     <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
         <thead>
             <tr>
-                <th class="text-center">#</th>
-                <th>Site Name</th>
-                <th> Description </th>
-                <th> Action Date </th>
-                <th> Action By</th>
+                <th style="width:10%" class="text-center">#</th>
+                <th style="width:10%">Site</th>
+                <th style="width:35%"> Description </th>
+                <th style="width:20%">Customer</th>
+                <th style="width:10%"> Date </th>
+                <th style="width:15%"> Action By</th>
             </tr>
         </thead>
 
@@ -27,25 +28,26 @@
             }
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="text-center text-muted">
-                        @{
-                            counter++;
-                        }
-                        @counter
-                    </td>
-                    <td>
-                        @item.EntityName
-                    </td>
-                    <td> @item.Description</td>
-                    <td>
-                        @if (item.CreatedOn != null)
-                        {
-                            @item.CreatedOn.Value.ToShortDateString();
-                        }
-                    </td>
-                    <td>@item.CreatedByName</td>
-                </tr>
+            <tr>
+                <td class="text-center text-muted">
+                    @{
+                        counter++;
+                    }
+                    @counter
+                </td>
+                <td>
+                    @item.EntityName
+                </td>
+                <td> @item.Description</td>
+                <td> @item.CustomerName</td>
+                <td>
+                    @if (item.CreatedOn != null)
+                    {
+                        @item.CreatedOn.Value.ToShortDateString();
+                    }
+                </td>
+                <td>@item.CreatedByName</td>
+            </tr>
             }
         </tbody>
     </table>

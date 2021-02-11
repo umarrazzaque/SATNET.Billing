@@ -38,7 +38,14 @@ namespace SATNET.WebApp.Controllers
             var invoiceStatuses = await _lookupService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.InvoiceStatus) });
 
             ViewBag.InvoiceStatusSelectList = new SelectList(invoiceStatuses, "Id", "Name");
-            var model = await GetInvoiceList(71);
+            List<Customer> customers = new List<Customer>();
+            int customerId = await GetCustomerId();
+            if (customerId == 0)
+            {
+                customers = await GetCustomerList(new Customer());
+                ViewBag.CustomerSelectList = new SelectList(customers, "Id", "Name");
+            }
+            var model = await GetInvoiceList(customerId, 0,DateTime.MinValue, DateTime.MinValue);
 
             return View(model);
         }
@@ -95,16 +102,16 @@ namespace SATNET.WebApp.Controllers
             return View(viewName, model);
         }
 
-        public async Task<IActionResult> FilterInvoiceList(int statusId)
+        public async Task<IActionResult> FilterInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
         {
-            var model = await GetInvoiceList(statusId);
+            var model = await GetInvoiceList(customerId, siteId, startDate, endDate);
             return PartialView("_List", model);
         }
 
-        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int statusId)
+        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
         {
             List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
-            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = await GetCustomerId(), StatusId = statusId });
+            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = customerId, SiteId=siteId, StartDate = startDate, EndDate=endDate });
             if (serviceResult.Any())
             {
                 objList = SOInvoiceMapping.GetListViewModel(serviceResult);

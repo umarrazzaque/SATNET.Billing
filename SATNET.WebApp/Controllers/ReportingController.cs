@@ -97,15 +97,6 @@ namespace SATNET.WebApp.Controllers
             
             return siteLedgerList;
         }
-        public async Task<IActionResult> GetSiteSelectList(int customerId)
-        {
-            Site site = new Site()
-            {
-                CustomerId = customerId
-            };
-            var sites = await _siteService.List(site);
-            return Json(new SelectList(sites, "Id", "Name"));
-        }
 
 
         #endregion

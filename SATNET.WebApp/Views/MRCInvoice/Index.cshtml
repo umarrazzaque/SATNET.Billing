@@ -1,86 +1,143 @@
 ﻿@model IEnumerable<SATNET.WebApp.Models.Invoice.MRCInvoiceViewModel>
 
-<div id="MainContents">
+    <div id="MainContents">
 
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-title-heading">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
 
-                <div>
-                    MRC Invoices
-                    <div class="page-title-subheading">
+                    <div>
+                        MRC Invoices
+                        <div class="page-title-subheading">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="page-title-actions">
+                <div class="page-title-actions">
 
-                <div class="d-inline-block dropdown">
+                    <div class="d-inline-block dropdown">
 
-                    <div class="dropdown d-inline-block">
-                        <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info">Export  <i class="fa fa-angle-down ml-2"></i></button>
-                        <div tabindex="-1" role="menu" class="dropdown-menu">
-                            <button type="button" tabindex="0" class="dropdown-item">PDF</button>
-                            <button type="button" tabindex="0" class="dropdown-item">CSV</button>
-                            <button type="button" tabindex="0" class="dropdown-item">Print</button>
-                        </div>
+                        @await Html.PartialAsync("_Export")
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    @*<div class="filters">
+        <div class="filters">
             <div class="row">
-                <div class="col-lg-2">
+                @*<div class="col-lg-2">
                     <div class="position-relative form-group">
                         <select id="ddlInvoiceStatus" type="select" class="form-control" asp-items="ViewBag.InvoiceStatusSelectList">
                             <option value="0" selected>All</option>
                         </select>
                     </div>
-                </div>
-            </div>
-        </div>*@
+                </div>*@
+                @if (ViewBag.CustomerSelectList != null)
+                {
+                    <div class="col-lg-2">
+                        <div class="position-relative form-group">
+                            <label>Customer</label>
+                            <select id="selectCustomer" type="select" class="form-control" asp-items="ViewBag.CustomerSelectList">
+                                <option value="0" selected>All</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div id="BodyContent">
-                @await Html.PartialAsync("_List", Model)
+                }
+                <div class="col-lg-2">
+                    <div class="position-relative form-group">
+                        <label>Site</label>
+                        <select id="selectSite" type="select" class="form-control" asp-items="ViewBag.SiteSelectList">
+                            <option value="0" selected>All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="position-relative form-group">
+                        <label>Start Date</label>
+                        <input id="dateStart" type="date" placeholder="..." class="form-control" value="" />
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="position-relative form-group">
+                        <label>End Date</label>
+                        <input id="dateEnd" type="date" placeholder="..." class="form-control" value="" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="BodyContent">
+                    @await Html.PartialAsync("_List", Model)
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 @section scripts{
-    @*<script type="text/javascript">
+    <script type="text/javascript">
                 $(function () {
-                    $('#ddlInvoiceStatus').val(71);
+                    init_table_pagination('grid_table');
+
                     $(".filters select").change(function () {
-                        var statusId = $(this).val();
-                        GetInvoiceList(statusId);
-
+                        GetMRCInvoiceList();
                     });
-
+                    $(".filters select#selectCustomer").change(function () {
+                        var customerId = $(this).val();
+                        if (customerId != '0') {
+                            GetSiteSelectList(customerId);
+                        }
+                    });
+                    $(".filters input").change(function () {
+                        var startDate = $(this).val();
+                        if (startDate != '') {
+                            GetMRCInvoiceList();
+                        }
+                    });
                 });
-
-        GetInvoiceList = function (statusId) {
-                        $.ajax(
-                            {
-                                url: '/SOInvoice/FilterInvoiceList',
-                                data: { statusId: statusId },
-                                type: 'get',
-                                dataType: "html",
-                                success: function (html) {
-                                    if (html !== null) {
-                                        $("#BodyContent").html(html);
-                                    }
-                                },
-                                error: function () {
-                                    alert('Error occurred while processing the request.');
-                                }
-                            });
+        GetMRCInvoiceList = function () {
+            var customerId = $("#selectCustomer").val();
+            var siteId = $("#selectSite").val();
+            var startDate = $("#dateStart").val();
+            var endDate = $("#dateEnd").val();
+            $.ajax(
+                {
+                    url: '/MRCInvoice/FilterInvoiceList',
+                    data: { customerId: customerId, siteId: siteId, startDate: startDate, endDate: endDate },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                            init_table_pagination('grid_table');
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
                     }
+                });
+        }
+        GetSiteSelectList = function (customerId) {
+            $.ajax({
+                url: '/Shared/GetSiteSelectList',
+                data: { customerId: customerId },
+                traditional: true,
+                success: function (result) {
+                    var items = '';
+                    $.each(result, function (i, plan) {
+                        items += "<option value='" + plan.value + "'>" + plan.text + "</option>";
+                    });
+                    $("#selectSite").empty();
+                    $("#selectSite").html(items);
+                    $("#selectSite").prepend("<option value='0'>All</option>").val('0');
+                }
+            });
 
+        }
 
-            </script>*@
+            </script>
 }

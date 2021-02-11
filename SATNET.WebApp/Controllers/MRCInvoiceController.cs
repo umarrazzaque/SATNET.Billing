@@ -31,14 +31,20 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
         public async Task<IActionResult> Index()
         {
-            var model = await GetMRCInvoiceList();
-
+            List<Customer> customers = new List<Customer>();
+            int customerId = await GetCustomerId();
+            if (customerId == 0)
+            {
+                customers = await GetCustomerList(new Customer());
+                ViewBag.CustomerSelectList = new SelectList(customers, "Id", "Name");
+            }
+            var model = await GetMRCInvoiceList(customerId, 0, DateTime.MinValue, DateTime.MinValue);
             return View(model);
         }
-        private async Task<List<MRCInvoiceViewModel>> GetMRCInvoiceList()
+        private async Task<List<MRCInvoiceViewModel>> GetMRCInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
         {
             List<MRCInvoiceViewModel> model = new List<MRCInvoiceViewModel>();
-            var serviceResult = await _invoiceMRCService.List(new MRCInvoice() { CustomerId = await GetCustomerId() });
+            var serviceResult = await _invoiceMRCService.List(new MRCInvoice() { CustomerId = customerId, SiteId = siteId, StartDate = startDate, EndDate = endDate });
             if (serviceResult != null)
             {
                 model = _mapper.Map<List<MRCInvoiceViewModel>>(serviceResult);
@@ -57,6 +63,11 @@ namespace SATNET.WebApp.Controllers
             }
 
             return View(model);
+        }
+        public async Task<IActionResult> FilterInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
+        {
+            var model = await GetMRCInvoiceList(customerId, siteId, startDate, endDate);
+            return PartialView("_List", model);
         }
 
     }

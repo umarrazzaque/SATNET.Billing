@@ -13,6 +13,7 @@ namespace SATNET.WebApp.Models
         public int EntityId { get; set; }
         public string EntityName { get; set; }
         public string Description { get; set; }
+        public string CustomerName { get; set; }
         public SelectList CustomerSelectList { get; set; }
     }
 }

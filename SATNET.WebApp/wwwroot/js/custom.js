@@ -19,7 +19,7 @@ function Layout() {
 
 function init_table_pagination(tableName) {
     var table = $('#' + tableName).DataTable({
-
+        "pageLength": 100,
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -27,15 +27,15 @@ function init_table_pagination(tableName) {
         "info": true,
         "autoWidth": false,
         "responsive": true,
-        "columnDefs": [
-            { "orderable": false, "targets": 0 }
-        ]
+        //"columnDefs": [
+        //    { "orderable": false, "targets": 0 }
+        //]
     });
-    table.on('order.dt search.dt', function () {
+    /*table.on('order.dt search.dt', function () {
         table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
             cell.innerHTML = i + 1;
         });
-    }).draw();
+    }).draw();*/
     return table;
 }
 

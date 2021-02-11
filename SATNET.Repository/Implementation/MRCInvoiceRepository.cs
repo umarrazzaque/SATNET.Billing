@@ -52,7 +52,14 @@ namespace SATNET.Repository.Implementation
                 parms.Add("@Flag", obj.Flag, DbType.String, ParameterDirection.Input);
                 parms.Add("@CustomerId", obj.CustomerId, DbType.Int32, ParameterDirection.Input);
                 parms.Add("@SiteId", obj.SiteId, DbType.Int32, ParameterDirection.Input);
-
+                if (obj.StartDate != DateTime.MinValue)
+                {
+                    parms.Add("@StartDate", obj.StartDate, DbType.DateTime, ParameterDirection.Input);
+                }
+                if (obj.EndDate != DateTime.MinValue)
+                {
+                    parms.Add("@EndDate", obj.EndDate, DbType.DateTime, ParameterDirection.Input);
+                }
                 var result = await con.QueryAsync<MRCInvoice>("[InvoiceMRCList]", parms, commandType: CommandType.StoredProcedure);
                 invoices = result.ToList();
             }
