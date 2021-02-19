@@ -28,7 +28,7 @@ namespace SATNET.WebApp.Models
         [DisplayName("NPRM Pieces")]
         [Required(ErrorMessage = "NPRM Pieces field is required")]
         public int NPRMPieces { get; set; }
-        [DisplayName("RG6 Cable")]
+        [DisplayName("RG6 Cable (m)")]
         [Required(ErrorMessage = "RG6 Cable field is required")]
         public int RG6 { get; set; }
         [DisplayName("Connector Pieces")]

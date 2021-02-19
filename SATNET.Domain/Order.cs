@@ -75,5 +75,7 @@ namespace SATNET.Domain
         public int ChangeServicePlanId { get; set; }
         public string NewAirMac { get; set; }
         public bool IsServicePlanFull { get; set; }
+        public bool IsServicePlanFullUpgrade { get; set; }
+
     }
 }

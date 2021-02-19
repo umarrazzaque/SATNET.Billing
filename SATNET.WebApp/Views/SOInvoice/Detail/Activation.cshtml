@@ -27,28 +27,28 @@
                                 }
                                 @foreach (var item in Model.InvoiceItems)
                                 {
-                                <tr>
-                                    <td class="text-left">
-                                        @{
-                                            counter++;
+                                    <tr>
+                                        <td class="text-left">
+                                            @{
+                                                counter++;
+                                            }
+                                            @counter
+                                        </td>
+                                        <td class="text-left">
+                                            <span>@item.Item</span>
+                                        </td>
+                                        <td class="text-left">@item.Description</td>
+                                        <td class="unit">@item.Unit</td>
+                                        <td class="unit">@item.Rate</td>
+                                        @if (item.ItemTypeId == 88)
+                                        {
+                                            <td class="total">- @item.Amount</td>
                                         }
-                                        @counter
-                                    </td>
-                                    <td class="text-left">
-                                        <span>@item.Item</span>
-                                    </td>
-                                    <td class="text-left">@item.Description</td>
-                                    <td class="unit">@item.Unit</td>
-                                    <td class="unit">@item.Rate</td>
-                                    @if (item.ItemTypeId == 88)
-                                    {
-                                        <td class="total">- @item.Amount</td>
-                                    }
-                                    else
-                                    {
-                                        <td class="total">@item.Amount</td>
-                                    }
-                                </tr>
+                                        else
+                                        {
+                                            <td class="total">@item.Amount</td>
+                                        }
+                                    </tr>
                                 }
                             </tbody>
                             <tfoot>
@@ -75,4 +75,11 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        $("#pdf").show();
+        $("#excel").hide();
+    </script>
+}
 

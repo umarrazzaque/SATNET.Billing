@@ -43,15 +43,7 @@
                         @counter
                     </td>
                     <td>
-                        @if (item.StatusId != 21)
-                        {
-                            <a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.OrderNumber</a>
-
-                        }
-                        else
-                        {
-                            @item.OrderNumber
-                        }
+                        <a href="@String.Format("/{0}?id={1}", "Order/ViewOrder", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.OrderNumber</a>
                     </td>
                     <td> @item.SiteName</td>
                     <td>@item.SubscriberName</td>
@@ -59,9 +51,15 @@
                     <td> @item.ScheduleDateName</td>
                     <td>@item.ServiceOrderDate</td>
                     <td>
-                        @if (item.StatusId == 22)
+                        @if (item.StatusId == 22)//rejected
                         {
                             <a href="#" data-id="@item.Id" data-action="Reject" class="pl-1 pr-1 rejected-order" title="View Reason" data-reason="@item.RejectReason" data-toggle="modal" data-target="#modal-rejectreason">
+                                @item.StatusName
+                            </a>
+                        }
+                        else if(item.StatusId == 111)//cancelled
+                        {
+                            <a href="#" data-id="@item.Id" data-action="Cancel" class="pl-1 pr-1 rejected-order" title="View Reason" data-reason="@item.RejectReason" data-toggle="modal" data-target="#modal-rejectreason">
                                 @item.StatusName
                             </a>
                         }
@@ -78,50 +76,39 @@
                                 {
                                     // display accept/reject buttons for USAT Admin
 
-                                        <a href="#" data-id="@item.Id" data-action="Accept" data-customerid="@item.CustomerId" data-customercode="@item.CustomerCode" title="Complete Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-acceptOrderConfirm">
-                                            <span class="metismenu-icon icofont-tick-mark" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="#" data-id="@item.Id" data-action="Reject" title="Reject Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-rejectOrderConfirm">
-                                            <span class="metismenu-icon icofont-close" aria-hidden="true"></span>
-                                        </a>
+                                    <a href="#" data-id="@item.Id" data-action="Accept" data-customerid="@item.CustomerId" data-customercode="@item.CustomerCode" title="Complete Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-acceptOrderConfirm">
+                                        <span class="metismenu-icon icofont-tick-mark" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" data-id="@item.Id" data-action="Reject" title="Reject Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-rejectOrderConfirm">
+                                        <span class="metismenu-icon icofont-close" aria-hidden="true"></span>
+                                    </a>
 
                                 }
-                                @*else if (item.StatusId == 21)
-                                    {
-                                        // display invoice link for customer reseller accounts
-                                        <a href="@String.Format("/{0}?id={1}", "Order/Details", @item.Id)" title="View Invoice" class="pl-1 pr-1">
-                                            <span class="metismenu-icon icofont-bill" aria-hidden="true"></span>
-                                        </a>
-                                    }*@
                             }
-                            else if (User.IsInRole("Reseller Accounting"))
+                            else if (User.IsInRole("Reseller Accounting") || User.IsInRole("Reseller Operations"))
                             {
                                 if (item.StatusId == 20)
                                 {
-                                    <a href="@String.Format("/{0}?id={1}", "Order/Cancel", @item.Id)" title="Cancel Service Order" class="pl-1 pr-1 modal-pan" data-toggle="modal" data-target="#modal-deleteConfirm">
+                                    @*<a href="@String.Format("/{0}?id={1}", "Order/Cancel", @item.Id)" title="Cancel Service Order" class="pl-1 pr-1 modal-pan" data-toggle="modal" data-target="#modal-deleteConfirm">
 
                                         <span class="metismenu-icon icofont-close-squared" aria-hidden="true"></span>
+                                    </a>*@
+                                    <a href="#" data-id="@item.Id" data-action="Cancel" title="Cancel Service Order" class="pl-1 pr-1 order-action" data-toggle="modal" data-target="#modal-rejectOrderConfirm">
+                                        <span class="metismenu-icon icofont-close" aria-hidden="true"></span>
                                     </a>
                                 }
-                                @*else if (item.StatusId == 21)
-                                    {
-                                        // display invoice link for customer reseller accounts
-                                        <a href="@String.Format("/{0}?id={1}", "Order/Details", @item.Id)" title="View Invoice" class="pl-1 pr-1">
-                                            <span class="metismenu-icon icofont-bill" aria-hidden="true"></span>
-                                        </a>
-                                    }*@
 
                             }
-                            else if (User.IsInRole("Reseller Operations"))
-                            {
-                                if (item.StatusId == 20)
-                                {
-                                    <a href="@String.Format("/{0}?id={1}", "Order/Cancel", @item.Id)" title="Cancel Service Order" class="pl-1 pr-1 modal-pan" data-toggle="modal" data-target="#modal-deleteConfirm">
+                            @*else if (User.IsInRole("Reseller Operations"))
+        {
+            if (item.StatusId == 20)
+            {
+                <a href="@String.Format("/{0}?id={1}", "Order/Cancel", @item.Id)" title="Cancel Service Order" class="pl-1 pr-1 modal-pan" data-toggle="modal" data-target="#modal-deleteConfirm">
 
-                                        <span class="metismenu-icon icofont-close-squared" aria-hidden="true"></span>
-                                    </a>
-                                }
-                            }
+                    <span class="metismenu-icon icofont-close-squared" aria-hidden="true"></span>
+                </a>
+            }
+        }*@
                             else if (User.IsInRole("Accounting"))
                             {
                                 if (item.StatusId == 21)

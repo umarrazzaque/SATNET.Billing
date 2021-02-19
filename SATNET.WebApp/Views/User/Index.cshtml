@@ -16,14 +16,7 @@
 
                 <div class="d-inline-block dropdown">
 
-                    <div class="dropdown d-inline-block">
-                        <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info">Export  <i class="fa fa-angle-down ml-2"></i></button>
-                        <div tabindex="-1" role="menu" class="dropdown-menu">
-                            <button type="button" tabindex="0" class="dropdown-item">PDF</button>
-                            <button type="button" tabindex="0" class="dropdown-item">CSV</button>
-                            <button type="button" tabindex="0" class="dropdown-item">Print</button>
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("_Export")
                     <a href="@String.Format("/{0}", "User/Add")" class=" btn btn-default">
                         Add User
                     </a>
@@ -36,8 +29,9 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="position-relative form-group">
+                    <label>User Type</label>
                     <select id="selectUserType" type="select" class="form-control" asp-items="ViewBag.UserTypeSelectList">
-                        <option value="">User Type</option>
+                        <option value="">All</option>
                     </select>
                 </div>
             </div>

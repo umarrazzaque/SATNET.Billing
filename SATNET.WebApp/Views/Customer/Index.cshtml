@@ -36,9 +36,11 @@
 
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        console.log('There');
-        init_table_pagination('grid_table');
-    });
-</script>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            init_table_pagination('grid_table');
+        });
+    </script>
+}
+

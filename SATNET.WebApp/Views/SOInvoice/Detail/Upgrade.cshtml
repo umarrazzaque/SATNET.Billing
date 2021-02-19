@@ -30,7 +30,7 @@
                                         <td class="unit">@item.Unit</td>
                                         <td class="unit">@item.Rate</td>
 
-                                            <td class="total">@item.Amount</td>
+                                        <td class="total">@item.Amount</td>
                                     </tr>
                                 }
                             </tbody>
@@ -55,3 +55,9 @@
     </div>
 </div>
 
+@section scripts{
+    <script type="text/javascript">
+        $("#pdf").show();
+        $("#excel").hide();
+    </script>
+}

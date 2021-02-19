@@ -120,7 +120,7 @@
     <div class="col-lg-3 fullOrProrata">
         <div class="form-group">
             <label>Service Plan Full/Pro-rata</label>
-            <select asp-for="IsServicePlanFull" class="form-control select2 text-input">
+            <select id="selectIsServicePlanFull" asp-for="IsServicePlanFull" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
                 <option value="True">Full</option>
                 <option value="False">Pro-rata</option>
@@ -219,6 +219,7 @@
             <select disabled asp-for="UpgradeFromId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
+            <input id="hdnUpgradeFromId" type="hidden" asp-for="UpgradeFromId" />
             <span asp-validation-for="UpgradeFromId" class="text-danger"></span>
         </div>
     </div>
@@ -229,6 +230,17 @@
                 <option value="" hidden disabled selected>Select</option>
             </select>
             <span asp-validation-for="UpgradeToId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-3 upgrade-fullOrProrata">
+        <div class="form-group">
+            <label>Service Plan Full/Pro-rata</label>
+            <select id="selectIsServicePlanFullUpgrade" asp-for="IsServicePlanFullUpgrade" class="form-control select2 text-input">
+                <option value="" selected>Select</option>
+                <option value="True">Full</option>
+                <option value="False">Pro-rata</option>
+            </select>
+            <span asp-validation-for="IsServicePlanFullUpgrade" class="text-danger"></span>
         </div>
     </div>
     <div class="col-lg-3 upgrade-pro-rata-gb">
@@ -255,6 +267,7 @@
             <select disabled asp-for="DowngradeFromId" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
+            <input id="hdnDowngradeFromId" type="hidden" asp-for="DowngradeFromId" />
             <span asp-validation-for="DowngradeFromId" class="text-danger"></span>
         </div>
     </div>
@@ -303,6 +316,7 @@
             <select id="ipPlan" asp-items="Model.IPSelectList" class="form-control select2 text-input">
                 <option value="" hidden disabled selected>Select</option>
             </select>
+            <input type="hidden" id="hdnCurrentIP" asp-for="IPId">
         </div>
     </div>
     <div class="col-lg-3 change-ip">
@@ -332,6 +346,7 @@
             <select disabled id="selectCurrentServicePlan" class="form-control select2 text-input service-plan">
                 <option value="" hidden disabled selected>Select</option>
             </select>
+            <input type="hidden" id="hdnCurrentServicePlan" asp-for="ServicePlanId">
         </div>
     </div>
     <div class="col-lg-3 change-serviceplan">
@@ -358,7 +373,7 @@
     <div class="col-lg-3 modem-swap">
         <div class="form-group">
             <label>AIRMAC</label>
-            <input type="text" id="txtCurrentAirmac" disabled="disabled" class="form-control" />
+            <input type="text" id="txtCurrentAirmac" asp-for="AirMac" readonly="readonly" class="form-control" />
         </div>
     </div>
     <div class="col-lg-3 modem-swap">

@@ -59,6 +59,7 @@ namespace SATNET.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(UserViewModel model)
         {
+            StatusModel status = new StatusModel() { ResponseUrl="/User/Index"};
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -86,11 +87,15 @@ namespace SATNET.WebApp.Controllers
                             var role = model.RoleName;
                             await _userManager.AddToRoleAsync(user, role);
                         }
-                        return RedirectToAction("Index");
+                        status.IsSuccess = true;
+                        status.ErrorCode = "User created successfully!";
+                        //return RedirectToAction("Index");
                     }
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
+                        status.IsSuccess = false;
+                        status.ErrorCode = error.Description;
                     }
                 }
                 catch (Exception e)
@@ -99,8 +104,8 @@ namespace SATNET.WebApp.Controllers
                 }
 
             }
-            return RedirectToAction("Add");
-            //return Json(new { isValid = true, html = RenderViewToString(this,"Index", list) });
+            //return RedirectToAction("Add");
+            return Json(status);
         }
         public async Task<IActionResult> Edit(int id)
         {

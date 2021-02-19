@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SATNET.WebApp.Models.SystemLogViewModel>
+@using SATNET.WebApp.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
+    <table id="grid_table" class="align-middle  table table-sm table-hover dataTable" role="grid" aria-describedby="">
+        <thead>
+            <tr>
+                <th style="width:10%" class="text-center">#</th>
+                <th style="width:10%">Site</th>
+                <th style="width:35%"> Description </th>
+                <th style="width:20%">Customer</th>
+                <th style="width:10%"> Date </th>
+                <th style="width:15%"> Action By</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td class="text-center text-muted">
+                    @{
+                        counter++;
+                    }
+                    @counter
+                </td>
+                <td>
+                    @item.EntityName
+                </td>
+                <td> @item.Description</td>
+                <td> @item.CustomerName</td>
+                <td>
+                    @if (item.CreatedOn != null)
+                    {
+                        @item.CreatedOn.Value.ToShortDateString();
+                    }
+                </td>
+                <td>@item.CreatedByName</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

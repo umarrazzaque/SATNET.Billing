@@ -53,7 +53,7 @@ namespace SATNET.Service.Implementation.Extensions
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
             }
             //var uow = new UnitOfWorkFactory().Create();
@@ -93,7 +93,7 @@ namespace SATNET.Service.Implementation.Extensions
             //}
             //finally
             //{
-            //    uow.Connection.Close();
+            //     uow.CloseConnection();
             //}
             return status;
             //foreach (var item in recordsList)
@@ -147,7 +147,7 @@ namespace SATNET.Service.Implementation.Extensions
                 }
                 finally
                 {
-                    uow.Connection.Close();
+                     uow.CloseConnection();
                 }
             }
             return status;

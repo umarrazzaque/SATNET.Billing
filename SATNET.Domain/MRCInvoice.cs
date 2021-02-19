@@ -16,6 +16,8 @@ namespace SATNET.Domain
         public int StatusId { get; set; }
         public string Status { get; set; }
         public DateTime DueDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public decimal Total { get; set; }
         public string SubscriberName { get; set; }
         public List<SOInvoiceItem> InvoiceItems { get; set; }

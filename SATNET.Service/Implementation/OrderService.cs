@@ -215,6 +215,7 @@ namespace SATNET.Service.Implementation
             if (apiResult)
             {
                 order.StatusId = 21; // complete order
+                order.UpdatedBy = order.CreatedBy;
                 retId = await _orderRepository.Update(order);
                 if (retId != 0)
                 {
@@ -256,6 +257,7 @@ namespace SATNET.Service.Implementation
             if (apiResult)
             {
                 order.StatusId = 21; // complete order
+                order.UpdatedBy = order.CreatedBy;
                 retId = await _orderRepository.Update(order);
                 if (retId != 0)
                 {

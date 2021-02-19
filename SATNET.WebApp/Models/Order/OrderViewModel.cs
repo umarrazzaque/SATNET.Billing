@@ -160,5 +160,6 @@ namespace SATNET.WebApp.Models.Order
         [Required(ErrorMessage = "New Mac Air No is required")]
         public string NewAirMac { get; set; }
         public bool IsServicePlanFull { get; set; }
+        public bool IsServicePlanFullUpgrade { get; set; }
     }
 }

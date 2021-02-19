@@ -15,16 +15,7 @@
             <div class="page-title-actions">
 
                 <div class="d-inline-block dropdown">
-
-                    <div class="dropdown d-inline-block">
-                        <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info">Export  <i class="fa fa-angle-down ml-2"></i></button>
-                        <div tabindex="-1" role="menu" class="dropdown-menu">
-                            <button id="excel" type="button" tabindex="0" class="dropdown-item">Excel</button>
-                            <button type="button" tabindex="0" class="dropdown-item">PDF</button>
-                            <button type="button" tabindex="0" class="dropdown-item">Print</button>
-                        </div>
-                    </div>
-
+                    @await Html.PartialAsync("_Export")
                     <a href="@String.Format("/{0}", "Order/Add")" class=" btn btn-default">
                         Add New SO
                     </a>
@@ -35,18 +26,19 @@
 
     <div class="filters">
         <div class="row">
-            @*<div class="col-lg-2">
-                <div class="position-relative form-group">
-                    <select id="ddlRequestType" type="select" class="form-control" asp-items="ViewBag.RequestTypeSelectList">
-                        <option value="" selected>Request Type</option>
-                    </select>
-                </div>
-            </div>*@
-
             <div class="col-lg-2">
                 <div class="position-relative form-group">
-                    <select id="ddlOrderStatus" type="select" class="form-control" asp-items="ViewBag.OrderStatusSelectList">
-                        <option value="" selected>All</option>
+                    <label>Order Status</label>
+                    <select id="selectOrderStatus" type="select" class="form-control" asp-items="ViewBag.OrderStatusSelectList">
+                        <option value="0" selected>All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="position-relative form-group">
+                    <label>Schedule Date</label>
+                    <select id="selectScheduleDate" type="select" class="form-control" asp-items="ViewBag.ScheduleDateList">
+                        <option value="0" selected>All</option>
                     </select>
                 </div>
             </div>

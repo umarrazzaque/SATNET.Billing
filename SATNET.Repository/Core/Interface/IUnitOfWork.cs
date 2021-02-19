@@ -12,6 +12,7 @@ namespace SATNET.Repository.Core.Interface
         public IDbConnection Connection { get; }
         public IDbTransaction Transaction { get; }
         public void BeginTransaction();
+        public void CloseConnection();
         public void SaveChanges();
         public void Rollback();
 

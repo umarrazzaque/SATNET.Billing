@@ -16,6 +16,7 @@
         </div>
         <div class="page-title-actions">
             <div class="d-inline-block dropdown">
+                @await Html.PartialAsync("_Export")
                 <a href="@String.Format("/{0}", "Site/Index")" class=" btn btn-danger ">
                     Back
                 </a>

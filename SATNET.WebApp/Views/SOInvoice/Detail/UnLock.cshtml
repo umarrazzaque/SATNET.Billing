@@ -26,21 +26,21 @@
                                 }
                                 @foreach (var item in Model.InvoiceItems)
                                 {
-                                <tr>
-                                    <td class="text-left">
-                                        @{
-                                            counter++;
-                                        }
-                                        @counter
-                                    </td>
-                                    <td class="text-left">
-                                        <span>@item.Item</span>
-                                    </td>
-                                    <td class="text-left">@item.Description</td>
-                                    <td class="unit">@item.Unit</td>
-                                    <td class="unit">@item.Rate</td>
-                                    <td class="total">@item.Amount</td>
-                                </tr>
+                                    <tr>
+                                        <td class="text-left">
+                                            @{
+                                                counter++;
+                                            }
+                                            @counter
+                                        </td>
+                                        <td class="text-left">
+                                            <span>@item.Item</span>
+                                        </td>
+                                        <td class="text-left">@item.Description</td>
+                                        <td class="unit">@item.Unit</td>
+                                        <td class="unit">@item.Rate</td>
+                                        <td class="total">@item.Amount</td>
+                                    </tr>
                                 }
 
                             </tbody>
@@ -68,4 +68,11 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        $("#pdf").show();
+        $("#excel").hide();
+    </script>
+}
 
