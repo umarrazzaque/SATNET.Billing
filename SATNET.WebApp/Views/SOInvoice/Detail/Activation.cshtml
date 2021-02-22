@@ -40,7 +40,7 @@
                                         <td class="text-left">@item.Description</td>
                                         <td class="unit">@item.Unit</td>
                                         <td class="unit">@item.Rate</td>
-                                        @if (item.ItemTypeId == 88)
+                                        @if (item.ItemTypeId == 88 && item.Amount > 0)
                                         {
                                             <td class="total">- @item.Amount</td>
                                         }
@@ -75,11 +75,34 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="hdnInvoiceId" value="@ViewBag.InvoiceId" />
 @section scripts{
     <script type="text/javascript">
         $("#pdf").show();
         $("#excel").hide();
+
+        $("#pdf").click(function () {
+            var invoiceId = $("#hdnInvoiceId").val();
+            if (invoiceId > 0) {
+                generateInvoicePdf(invoiceId);
+            }
+        });
+
+        generateInvoicePdf = function (invoiceId) {
+            $.ajax({
+                url: '/SOInvoice/GetInvoiceHtml',
+                data: { invoiceId: invoiceId },
+                type: 'Get',
+                dataType: 'json',
+                success: function (result) {
+                    if (result) {
+                        window.location.href = '@Url.Action("DownloadPDF", "SOInvoice")';
+                    }
+                    else {
+                    }
+                }
+            });
+        }
     </script>
 }
 

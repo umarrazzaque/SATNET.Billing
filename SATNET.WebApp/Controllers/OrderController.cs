@@ -391,10 +391,11 @@ namespace SATNET.WebApp.Controllers
 
         public async Task<IActionResult> GetProRataGB(string monthlyQuota, DateTime installationDate)
         {
-            int quota = Convert.ToInt32(monthlyQuota);
+            decimal quota = Convert.ToDecimal(monthlyQuota);
             int installationMonth = DateAndTime.Month(installationDate);
             int installationDay = DateAndTime.Day(installationDate);
-            int daysPerMonth = DateTime.DaysInMonth(2020, installationMonth);
+            int currentYear = DateTime.Now.Year;
+            int daysPerMonth = DateTime.DaysInMonth(currentYear, installationMonth);
             int remainingDays = daysPerMonth - installationDay + 1;
             decimal proRataQuotaGB = (quota * remainingDays)/30;
 

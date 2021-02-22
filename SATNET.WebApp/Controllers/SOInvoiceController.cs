@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,22 +17,29 @@ using SATNET.WebApp.Helpers;
 using SATNET.WebApp.Mappings;
 using SATNET.WebApp.Models.Invoice;
 using SATNET.WebApp.Models.Report;
+using Syncfusion.HtmlConverter;
+using Syncfusion.Pdf;
+using Syncfusion.Compression;
+
 
 namespace SATNET.WebApp.Controllers
 {
     [Authorize]
     public class SOInvoiceController : Base2Controller
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IService<SOInvoice> _invoiceService;
         private readonly IService<Site> _siteService;
         private readonly IService<Lookup> _lookupService;
         private readonly IMapper _mapper;
-        public SOInvoiceController(IService<SOInvoice> invoiceService, IService<Site> siteService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Customer> customerService) : base(customerService, userManager)
+        private static string invoiceHtml;
+        public SOInvoiceController(IWebHostEnvironment hostingEnvironment, IService<SOInvoice> invoiceService, IService<Site> siteService, IService<Lookup> lookupService, UserManager<ApplicationUser> userManager, IMapper mapper, IService<Customer> customerService) : base(customerService, userManager)
         {
             _siteService = siteService;
             _invoiceService = invoiceService;
             _mapper = mapper;
             _lookupService = lookupService;
+            _hostingEnvironment = hostingEnvironment;
         }
         [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
         public async Task<IActionResult> Index()
@@ -55,13 +64,56 @@ namespace SATNET.WebApp.Controllers
         public async Task<IActionResult> ViewInvoice(int id)
         {
             string viewName = "";
+            ViewBag.InvoiceId = id;
             SOInvoiceViewModel model = new SOInvoiceViewModel();
             var serviceResult = await _invoiceService.Get(id);
             if (serviceResult != null)
             {
                 model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
+                viewName = GetInvoiceViewName(serviceResult.RequestTypeId);
             }
-            switch (serviceResult.RequestTypeId)
+            return View(viewName, model);
+        }
+
+        public async Task<IActionResult> FilterInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
+        {
+            var model = await GetInvoiceList(customerId, siteId, startDate, endDate);
+            return PartialView("_List", model);
+        }
+
+        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
+        {
+            List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
+            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = customerId, SiteId=siteId, StartDate = startDate, EndDate=endDate });
+            if (serviceResult.Any())
+            {
+                objList = SOInvoiceMapping.GetListViewModel(serviceResult);
+            }
+            return objList;
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
+        public async Task<IActionResult> GetInvoiceHtml(int invoiceId)
+        {
+            string viewName = "";
+            ViewBag.InvoiceId = invoiceId;
+            SOInvoiceViewModel model = new SOInvoiceViewModel();
+            var serviceResult = await _invoiceService.Get(invoiceId);
+            if (serviceResult != null)
+            {
+                model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
+                viewName = GetInvoiceViewName(serviceResult.RequestTypeId);
+            }
+            invoiceHtml = RenderViewToString(this, viewName, model);
+
+            return Json(true);
+        }
+
+        private string GetInvoiceViewName(int requestTypeId)
+        {
+            string viewName = "";
+            switch (requestTypeId)
             {
                 case 1: //Activation
                 case 32://Re-Activation
@@ -99,24 +151,37 @@ namespace SATNET.WebApp.Controllers
                     viewName = "Detail/ModemSwap";
                     break;
             }
-            return View(viewName, model);
+            return viewName;
         }
 
-        public async Task<IActionResult> FilterInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
+        [HttpGet]
+        public IActionResult DownloadPDF()
         {
-            var model = await GetInvoiceList(customerId, siteId, startDate, endDate);
-            return PartialView("_List", model);
-        }
-
-        private async Task<List<SOInvoiceViewModel>> GetInvoiceList(int customerId, int siteId, DateTime startDate, DateTime endDate)
-        {
-            List<SOInvoiceViewModel> objList = new List<SOInvoiceViewModel>();
-            var serviceResult = await _invoiceService.List(new SOInvoice() { CustomerId = customerId, SiteId=siteId, StartDate = startDate, EndDate=endDate });
-            if (serviceResult.Any())
-            {
-                objList = SOInvoiceMapping.GetListViewModel(serviceResult);
-            }
-            return objList;
+            //Initialize HTML to PDF converter
+            HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter(HtmlRenderingEngine.WebKit);
+            WebKitConverterSettings settings = new WebKitConverterSettings();
+            //Set print media type
+            settings.MediaType = MediaType.Print;
+            //Set the page orientation 
+            settings.Orientation = PdfPageOrientation.Portrait;
+            //Set WebKit path
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+            settings.WebKitPath = contentRootPath + "/QtBinariesWindows/";
+            settings.EnableJavaScript = true;
+            settings.EnableHyperLink = true;
+            //Assign WebKit settings to HTML converter
+            htmlConverter.ConverterSettings = settings;
+            //HTML string and base URL 
+            //string htmlText = "<html><body Align='Left'><br><p> <font size='12'>As-Salam-o-Alikum! </p></font> </body></html>";
+            string baseUrl = _hostingEnvironment.WebRootPath;
+            baseUrl = baseUrl + "/css";
+            //Convert a URL to PDF with HTML converter
+            PdfDocument document = htmlConverter.Convert(invoiceHtml, baseUrl);
+            //Save and close the PDF document
+            MemoryStream stream = new MemoryStream();
+            document.Save(stream);
+            document.Close(true);
+            return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "HTMLtoPDF.pdf");
         }
 
     }

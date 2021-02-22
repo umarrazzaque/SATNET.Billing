@@ -41,8 +41,8 @@ namespace SATNET.WebApp.Controllers
             {
                 var customers = await GetCustomerList(new Customer());
                 ViewBag.CustomerSelectList = new SelectList(customers, "Id", "Name");
-                ViewBag.CustomerId = 0;
             }
+            ViewBag.CustomerId = customerId;
             var statuses = await _lookUpService.List(new Lookup() { LookupTypeId = Convert.ToInt32(LookupTypes.SiteStatus) });
             ViewBag.SiteStatusSelectList = new SelectList(statuses, "Id", "Name");
             var promotions = await _promotionService.List(new Promotion());

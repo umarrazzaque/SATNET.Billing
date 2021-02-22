@@ -56,35 +56,15 @@ namespace SATNET.Service.Implementation
         }
         public async Task<StatusModel> Add(Order order)
         {
-            var status = new StatusModel { IsSuccess = false, ResponseUrl = "/Order/Index" };
+            var status = new StatusModel { IsSuccess = true, ResponseUrl = "/Order/Index" };
             try
-            {    
-               
-                if (order.RequestTypeId == 3) // business rule: upgrade is possible only one time in a month.
+            {
+                status = await PassBusinessRules(order);
+                if (!status.IsSuccess)
                 {
-                    status = await CheckUpgradesInMonth(order.SiteId);
-                    if (!status.IsSuccess)
-                    {
-                        return status;
-                    }
+                    return status;
                 }
-                else if (order.RequestTypeId == 5) //business rule: token should only be applied on quota plans
-                {
-                    status = await IsQuotaPlan(order.SiteId);
-                    if (!status.IsSuccess)
-                    {
-                        return status;
-                    }
-                }
-                if (order.RequestTypeId == 67 || order.RequestTypeId == 3 || order.RequestTypeId == 4) //business rule: for upgrade/downgrade/change plan
-                {
-                    status = await IsPassedPromotionRule(order);
-                    if (!status.IsSuccess)
-                    {
-                        return status;
-                    }
 
-                }
                 int retId = await _orderRepository.Add(order);
                 if (retId != 0)
                 {
@@ -281,7 +261,7 @@ namespace SATNET.Service.Implementation
         {
             StatusModel status = new StatusModel();
             status.ResponseUrl = "/Order/Index";
-            var orders = await _orderRepository.List(new Order() { Flag = "RequestsInMonth", RequestTypeId = 3, SiteId = siteId, CreatedOn = DateTime.Now });
+            var orders = await _orderRepository.List(new Order() { Flag = "UpgradesInMonth", RequestTypeId = 3, SiteId = siteId, CreatedOn = DateTime.Now });
             if (orders.Count > 0)
             {
                 status.IsSuccess = false;
@@ -293,6 +273,23 @@ namespace SATNET.Service.Implementation
             }
             return status;
         }
+        private async Task<StatusModel> CheckDuplicateReactivation(int siteId)
+        {
+            StatusModel status = new StatusModel();
+            status.ResponseUrl = "/Order/Index";
+            var orders = await _orderRepository.List(new Order() { Flag = "DuplicateReactivation", RequestTypeId = 32, SiteId = siteId, CreatedOn = DateTime.Now });
+            if (orders.Count > 0)
+            {
+                status.IsSuccess = false;
+                status.ErrorCode = "Re-activation request for this site already exists.";
+            }
+            else
+            {
+                status.IsSuccess = true;
+            }
+            return status;
+        }
+
         private async Task<StatusModel> IsQuotaPlan(int siteId)
         {
             StatusModel status = new StatusModel();
@@ -336,6 +333,43 @@ namespace SATNET.Service.Implementation
             }
             return status;
         }
+        private async Task<StatusModel> PassBusinessRules(Order order)
+        {
+            var status = new StatusModel { IsSuccess = true, ResponseUrl = "/Order/Index" };
+            if (order.RequestTypeId == 3) // business rule: upgrade is possible only one time in a month.
+            {
+                status = await CheckUpgradesInMonth(order.SiteId);
+                if (!status.IsSuccess)
+                {
+                    return status;
+                }
+            }
+            else if (order.RequestTypeId == 5) //business rule: token should only be applied on quota plans
+            {
+                status = await IsQuotaPlan(order.SiteId);
+                if (!status.IsSuccess)
+                {
+                    return status;
+                }
+            }
+            if (order.RequestTypeId == 32) // business rule: duplicate reactivation requests are not allowed per site
+            {
+                status = await CheckDuplicateReactivation(order.SiteId);
+                if (!status.IsSuccess)
+                {
+                    return status;
+                }
+            }
+            if (order.RequestTypeId == 67 || order.RequestTypeId == 3 || order.RequestTypeId == 4) //business rule: for upgrade/downgrade/change plan
+            {
+                status = await IsPassedPromotionRule(order);
+                if (!status.IsSuccess)
+                {
+                    return status;
+                }
 
+            }
+            return status;
+        }
     }
 }

@@ -24,6 +24,7 @@ function init_table_pagination(tableName) {
         "lengthChange": true,
         "searching": true,
         "ordering": true,
+        "order": [],
         "info": true,
         "autoWidth": false,
         "responsive": true,
@@ -39,6 +40,9 @@ function init_table_pagination(tableName) {
     return table;
 }
 
+function TestExportPdf() {
+    window.location.href = "/Export/DownloadPDF";
+}
 
 (function ($) {
     $("ul").on("click",".metismenu li a", function (e) {
@@ -51,6 +55,7 @@ function init_table_pagination(tableName) {
     });
     $(document).ready(function () {
         $(document).ready(function () {
+            //TestExportPdf();
             //localStorage.clear();   // Uncomment to clear ALL storage.
             // Timer needed because of Bootstrap's animation delay.
             var timer;
@@ -248,41 +253,41 @@ function init_table_pagination(tableName) {
             }
         });
     });
-    $('#pdf').click(function () {
-        console.log('Click PDF');
-        var tab = $('#grid_table').DataTable();
-        var dd = tab.rows({ search: 'applied' }).data().toArray();
-        var retArray = new Array();
-        $.each(dd, function (index, value) {
+    //$('#pdf').click(function () {
+    //    console.log('Click PDF');
+    //    var tab = $('#grid_table').DataTable();
+    //    var dd = tab.rows({ search: 'applied' }).data().toArray();
+    //    var retArray = new Array();
+    //    $.each(dd, function (index, value) {
 
-            let data = {};
-            data["Property1"] = value[1];
-            data["Property2"] = value[2];
-            data["Property3"] = value[3];
-            retArray.push(data);
-        });
-        console.log(retArray);
+    //        let data = {};
+    //        data["Property1"] = value[1];
+    //        data["Property2"] = value[2];
+    //        data["Property3"] = value[3];
+    //        retArray.push(data);
+    //    });
+    //    console.log(retArray);
 
-        $.ajax({
-            ContentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/Export/PDFExport',
-            data: { "records": retArray },
-            success: function (response) {
-                console.log(response);
-                if (response.isSuccess === true) {
-                    Layout.ShowMessage(response.errorCode, 'Success Message', 1);
-                }
-                else {
-                    Layout.ShowMessage(response.errorCode, 'Error Message', 2);
-                }
-            },
-            error: function (response) {
-                Layout.ShowMessage('Something went wrong during the operation!', 'Error Message', 2);
-            }
-        });
-    });
+    //    $.ajax({
+    //        ContentType: 'application/json; charset=utf-8',
+    //        dataType: 'json',
+    //        type: 'POST',
+    //        url: '/Export/PDFExport',
+    //        data: { "records": retArray },
+    //        success: function (response) {
+    //            console.log(response);
+    //            if (response.isSuccess === true) {
+    //                Layout.ShowMessage(response.errorCode, 'Success Message', 1);
+    //            }
+    //            else {
+    //                Layout.ShowMessage(response.errorCode, 'Error Message', 2);
+    //            }
+    //        },
+    //        error: function (response) {
+    //            Layout.ShowMessage('Something went wrong during the operation!', 'Error Message', 2);
+    //        }
+    //    });
+    //});
     //-------------------------Export---------------------------
 
     $(document).on("click", 'a.right-pan', function (e) {
