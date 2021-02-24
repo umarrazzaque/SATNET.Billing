@@ -213,11 +213,22 @@ namespace SATNET.WebApp.Controllers
                             {
                                 //try to avoid db call by checking from linq list
                                 hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
-                                briefDescription += hardwareComponentId == -1 ? "Modem Model Number Not Exists - " : "OK";
+                                briefDescription += hardwareComponentId == -1 ? "Modem Model Number Not Exists - " : "OK-";
                             }
                             else
                             {
                                 briefDescription += "Modem Model Number is empty - ";
+                            }
+                            //check airmac number
+                            string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
+                            if (airMac != "")
+                            {
+                                isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
+                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC Number Exist - " : "OK-");
+                            }
+                            else
+                            {
+                                briefDescription += "AIRMAC Number is empty";
                             }
                             //check serial number
                             string serialNumber = worksheet.Cells[row, 2].Value != null ? worksheet.Cells[row, 2].Value.ToString().Trim() : "";
@@ -230,17 +241,6 @@ namespace SATNET.WebApp.Controllers
                             else
                             {
                                 briefDescription += "Serial Number is empty - ";
-                            }
-                            //check airmac number
-                            string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
-                            if (airMac != "")
-                            {
-                                isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate AIRMAC Number" : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "AIRMAC Number Exist - " : "OK-");
-                            }
-                            else
-                            {
-                                briefDescription += "AIRMAC Number is empty";
                             }
                             if (serialNumber.Equals("") && airMac.Equals("") && hardwareComponent.Equals(""))
                             {

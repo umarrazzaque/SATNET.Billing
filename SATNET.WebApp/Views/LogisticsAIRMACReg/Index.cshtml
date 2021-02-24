@@ -17,12 +17,18 @@
                 <div class="d-inline-block dropdown">
 
                     @await Html.PartialAsync("_Export")
-                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/ImportRegisteredAirMAC")" class="btn btn-info">
-                        Import Registered AIRMAC(s)
+                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/ImportRegisteredAirMAC")" class=" btn btn-info" data-toggle="tooltip" title="Import Registered AIRMAC(s)">
+                        <span class="fa fa-upload" aria-hidden="true"></span>
+                    </a>
+                    <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Add")" class=" btn btn-info" data-toggle="tooltip" title="Register new AIRMAC(s)">
+                        <span class="fa fa-plus" aria-hidden="true"></span>
+                    </a>
+                    @*<a href="@String.Format("/{0}", "LogisticsAIRMACReg/ImportRegisteredAirMAC")" class="btn btn-info">
+                        
                     </a>
                     <a href="@String.Format("/{0}", "LogisticsAIRMACReg/Add")" class="btn btn-default">
                         Register new AIRMAC(s)
-                    </a>
+                    </a>*@
                 </div>
             </div>
         </div>
@@ -150,7 +156,7 @@
 
                 // button styles
                 styleBase: 'btn',
-                style: 'btn-default',
+                style: 'btn',
 
                 // dropdown size
                 size: 'auto',
