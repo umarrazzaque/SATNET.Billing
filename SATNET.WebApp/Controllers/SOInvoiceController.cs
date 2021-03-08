@@ -70,7 +70,7 @@ namespace SATNET.WebApp.Controllers
             if (serviceResult != null)
             {
                 model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
-                viewName = GetInvoiceViewName(serviceResult.RequestTypeId);
+                viewName = GetInvoiceViewName(serviceResult.RequestTypeId, "view");
             }
             return View(viewName, model);
         }
@@ -92,32 +92,40 @@ namespace SATNET.WebApp.Controllers
             return objList;
         }
 
-        [HttpGet]
-        [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
-        public async Task<IActionResult> GetInvoiceHtml(int invoiceId)
-        {
-            string viewName = "";
-            ViewBag.InvoiceId = invoiceId;
-            SOInvoiceViewModel model = new SOInvoiceViewModel();
-            var serviceResult = await _invoiceService.Get(invoiceId);
-            if (serviceResult != null)
-            {
-                model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
-                viewName = GetInvoiceViewName(serviceResult.RequestTypeId);
-            }
-            invoiceHtml = RenderViewToString(this, viewName, model);
+        //[HttpGet]
+        //[Authorize(Policy = "ReadOnlySOInvoicePolicy")]
+        //public async Task<IActionResult> GetInvoiceHtml(int invoiceId)
+        //{
+        //    string viewName = "";
+        //    ViewBag.InvoiceId = invoiceId;
+        //    SOInvoiceViewModel model = new SOInvoiceViewModel();
+        //    var serviceResult = await _invoiceService.Get(invoiceId);
+        //    if (serviceResult != null)
+        //    {
+        //        model = _mapper.Map<SOInvoiceViewModel>(serviceResult);
+        //        viewName = GetInvoiceViewName(serviceResult.RequestTypeId, "pdf");
+        //    }
+        //    invoiceHtml = RenderViewToString(this, viewName, model);
 
-            return Json(true);
-        }
+        //    return Json(true);
+        //}
 
-        private string GetInvoiceViewName(int requestTypeId)
+
+        private string GetInvoiceViewName(int requestTypeId, string type)
         {
             string viewName = "";
             switch (requestTypeId)
             {
                 case 1: //Activation
                 case 32://Re-Activation
-                    viewName = "Detail/Activation";
+                    if (type == "view")
+                    {
+                        viewName = "Detail/Activation";
+                    }
+                    else
+                    {
+                        viewName = "Detail/Activation";
+                    }
                     break;
 
                 case 2://Termination
@@ -154,12 +162,97 @@ namespace SATNET.WebApp.Controllers
             return viewName;
         }
 
+        //[HttpGet]
+        //public IActionResult DownloadPDF()
+        //{
+        //    //Initialize HTML to PDF converter
+        //    HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter(HtmlRenderingEngine.WebKit);
+        //    WebKitConverterSettings settings = new WebKitConverterSettings();
+        //    //Set print media type
+        //    settings.MediaType = MediaType.Print;
+        //    //Set the page orientation 
+        //    settings.Orientation = PdfPageOrientation.Portrait;
+        //    //Set WebKit path
+        //    string contentRootPath = _hostingEnvironment.ContentRootPath;
+        //    settings.WebKitPath = contentRootPath + "/QtBinariesWindows/";
+        //    settings.EnableJavaScript = true;
+        //    settings.EnableHyperLink = true;
+        //    //Assign WebKit settings to HTML converter
+        //    htmlConverter.ConverterSettings = settings;
+        //    //HTML string and base URL 
+        //    //string htmlText = "<html><body Align='Left'><br><p> <font size='12'>As-Salam-o-Alikum! </p></font> </body></html>";
+        //    string baseUrl = _hostingEnvironment.WebRootPath;
+        //    baseUrl = baseUrl + "/htmlToPdfFiles/";
+        //    //Convert a URL to PDF with HTML converter
+        //    string testHtmlText = "<html><body><img src=\"logo-icon.gif\" alt=\"logo-icon\" width=\"200\" height=\"70\"><p> As-Salam-o-Alikum!</p></body></html>";
+        //    PdfDocument document = htmlConverter.Convert(testHtmlText, baseUrl);
+        //    //PdfDocument document = htmlConverter.Convert(invoiceHtml, baseUrl);
+        //    //Save and close the PDF document
+        //    MemoryStream stream = new MemoryStream();
+        //    document.Save(stream);
+        //    document.Close(true);
+        //    return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "HTMLtoPDF.pdf");
+        //}
+
+        //[HttpGet]
+        //public IActionResult DownloadPDF()
+        //{
+        //    //Initialize HTML to PDF converter
+        //    HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter(HtmlRenderingEngine.WebKit);
+        //    WebKitConverterSettings settings = new WebKitConverterSettings();
+        //    settings.EnableForm = true;
+        //    //Set cookie name
+        //    //string cookieName = ".AspNetCore.Identity.Application";
+        //    ////Get cookie value from HttpRequest object for the requested page
+        //    //string cookieValue = string.Empty;
+        //    //if (Request.Cookies[cookieName] != null)
+        //    //{
+        //    //    cookieValue = Request.Cookies[cookieName];
+        //    //}
+        //    //settings.Cookies.Add(cookieName, cookieValue);
+        //    //Set print media type
+        //    settings.MediaType = MediaType.Print;
+        //    //Set the page orientation 
+        //    settings.Orientation = PdfPageOrientation.Portrait;
+        //    //Set WebKit path
+        //    string contentRootPath = _hostingEnvironment.ContentRootPath;
+        //    settings.WebKitPath = contentRootPath + "/QtBinariesWindows/";
+        //    settings.EnableJavaScript = true;
+        //    settings.EnableHyperLink = true;
+        //    //Assign WebKit settings to HTML converter
+        //    htmlConverter.ConverterSettings = settings;
+        //    //HTML string and base URL 
+        //    //string htmlText = "<html><body Align='Left'><br><p> <font size='12'>As-Salam-o-Alikum! </p></font> </body></html>";
+        //    string baseUrl = _hostingEnvironment.WebRootPath;
+        //    baseUrl = baseUrl + "/htmlToPdfFiles/";
+        //    //Convert a URL to PDF with HTML converter
+        //    //string testHtmlText = "<html><body><img src=\"logo-icon.png\" alt=\"logo-icon\" width=\"200\" height=\"70\"><p><bold> As-Salam-o-Alikum!</bold></p></body></html>";
+        //    //PdfDocument document = htmlConverter.Convert(testHtmlText, baseUrl);
+        //    PdfDocument document = htmlConverter.ConvertPartialHtml(invoiceHtml, baseUrl,"");
+
+        //    //PdfDocument document = htmlConverter.Convert("https://localhost:44394/SOInvoice/ViewInvoice?id=7454/");
+        //    //Save and close the PDF document
+        //    MemoryStream stream = new MemoryStream();
+        //    document.Save(stream);
+        //    document.Close(true);
+        //    return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "HTMLtoPDF.pdf");
+        //}
         [HttpGet]
-        public IActionResult DownloadPDF()
+        public IActionResult DownloadPDF(int invoiceId)
         {
             //Initialize HTML to PDF converter
             HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter(HtmlRenderingEngine.WebKit);
             WebKitConverterSettings settings = new WebKitConverterSettings();
+            settings.EnableForm = true;
+            //Set cookie name
+            string cookieName = ".AspNetCore.Identity.Application";
+            //Get cookie value from HttpRequest object for the requested page
+            string cookieValue = string.Empty;
+            if (Request.Cookies[cookieName] != null)
+            {
+                cookieValue = Request.Cookies[cookieName];
+            }
+            settings.Cookies.Add(cookieName, cookieValue);
             //Set print media type
             settings.MediaType = MediaType.Print;
             //Set the page orientation 
@@ -171,12 +264,9 @@ namespace SATNET.WebApp.Controllers
             settings.EnableHyperLink = true;
             //Assign WebKit settings to HTML converter
             htmlConverter.ConverterSettings = settings;
-            //HTML string and base URL 
-            //string htmlText = "<html><body Align='Left'><br><p> <font size='12'>As-Salam-o-Alikum! </p></font> </body></html>";
-            string baseUrl = _hostingEnvironment.WebRootPath;
-            baseUrl = baseUrl + "/css";
             //Convert a URL to PDF with HTML converter
-            PdfDocument document = htmlConverter.Convert(invoiceHtml, baseUrl);
+            PdfDocument document = htmlConverter.ConvertPartialHtml("https://localhost:44394/SOInvoice/ViewInvoice?id=" + invoiceId, "divInvoicePdf");//local
+            //PdfDocument document = htmlConverter.ConvertPartialHtml("http://usatbillingapp.westeurope.cloudapp.azure.com/SOInvoice/ViewInvoice?id=" + invoiceId, "divInvoicePdf");//live
             //Save and close the PDF document
             MemoryStream stream = new MemoryStream();
             document.Save(stream);

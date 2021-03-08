@@ -249,7 +249,7 @@ namespace SATNET.WebApp.Controllers
             //string htmlText = "<html><body Align='Left'><br><p> <font size='12'>As-Salam-o-Alikum! </p></font> </body></html>";
             string baseUrl = string.Empty;
             //Convert a URL to PDF with HTML converter
-            PdfDocument document = htmlConverter.Convert("https://localhost:44394/Site/");
+            PdfDocument document = htmlConverter.Convert("http://usatbillingapp.westeurope.cloudapp.azure.com/SOInvoice/ViewInvoice?id=4102/");
             //Save and close the PDF document
             MemoryStream stream = new MemoryStream();
             document.Save(stream);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -212,16 +213,16 @@ namespace SATNET.WebApp.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetProposedSiteName(int customerId)
-        {
-            string siteName = "";
-            if (customerId > 0)
-            {
-                var customer = await GetCustomer(customerId);
-                siteName = GetProposedSiteNameImp(customerId, customer.Code);
-            }
-            return Json(new { siteName });
-        }
+        //public async Task<IActionResult> GetProposedSiteName(int customerId)
+        //{
+        //    string siteName = "";
+        //    if (customerId > 0)
+        //    {
+        //        var customer = await GetCustomer(customerId);
+        //        siteName = GetProposedSiteNameImp(customerId, customer.Code);
+        //    }
+        //    return Json(new { siteName });
+        //}
         private string GetProposedSiteNameImp(int customerId, string customerCode)
         {
             string siteName = (customerCode.Equals("") || customerCode == null ?
@@ -234,32 +235,50 @@ namespace SATNET.WebApp.Controllers
             var ret = input.Substring(0, maxLength);
             return ret;
         }
+        //private string GetNumber(int to)
+        //{
+        //    var oneZero = "0";
+        //    var twoZero = "00";
+        //    var retValue = "";
+        //    if (to < 10)
+        //    {
+        //        retValue = twoZero + to;
+        //    }
+        //    else if (to >= 10 && to < 99)
+        //    {
+        //        retValue = oneZero + to; 
+        //    }
+        //    else if (to >= 100 && to < 1000)
+        //    {
+        //        retValue = oneZero + to;
+        //    }
+        //    return retValue;
+        //}
+        //private int GetSiteCount(int customerId)
+        //{
+        //    int totalCount = 1;
+        //    var serviceResult = _siteService.List(new Site() { CustomerId = customerId, Flag = "GET_SITE_COUNT" }).Result;
+        //    if (serviceResult.Any())
+        //    {
+        //        totalCount = serviceResult.FirstOrDefault().RecordsCount;
+        //    }
+        //    return totalCount;
+        //}
         private string GetNumber(int to)
         {
-            var oneZero = "0";
-            var twoZero = "00";
-            var retValue = "";
-            if (to < 10)
-            {
-                retValue = twoZero + to;
-            }
-            else if (to >= 10 && to < 99)
-            {
-                retValue = oneZero + to; 
-            }
-            else if (to >= 100 && to < 1000)
-            {
-                retValue = oneZero + to;
-            }
-            return retValue;
+            return to.ToString().PadLeft(3, '0'); // results in 009
         }
+
         private int GetSiteCount(int customerId)
         {
-            int totalCount = 1;
-            var serviceResult = _siteService.List(new Site() { CustomerId = customerId, Flag = "GET_SITE_COUNT" }).Result;
-            if (serviceResult.Any())
+            int totalCount = 0;
+            string lastSiteName;
+            var serviceResult = _siteService.List(new Site() { CustomerId = customerId, Flag = "Last_Site" }).Result;
+            if (serviceResult.Any() && serviceResult.Count > 0)
             {
-                totalCount = serviceResult.FirstOrDefault().RecordsCount;
+                lastSiteName = serviceResult.FirstOrDefault().Name;
+                var resultString = Regex.Match(lastSiteName, @"\d+").Value;
+                totalCount = Convert.ToInt32(resultString);
             }
             return totalCount;
         }

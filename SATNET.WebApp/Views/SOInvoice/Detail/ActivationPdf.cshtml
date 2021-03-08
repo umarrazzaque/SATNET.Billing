@@ -1,13 +1,14 @@
 ﻿@model SATNET.WebApp.Models.Invoice.SOInvoiceViewModel
-
+    <head>
+        <BASE HREF="https://localhost:44394/" />
+    </head>
 
 <div id="MainContents">
-    @await Html.PartialAsync("Detail/_Common")
-    <div id="divInvoicePdf" class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="invoice overflow-auto">
                 <div style="min-width: 600px">
-                    @await Html.PartialAsync("Detail/_CommonHeader")
+                    @await Html.PartialAsync("Detail/_CommonHeaderPdf")
                     <main>
                         @await Html.PartialAsync("Detail/_CommonHeader2", Model)
                         <table border="0" cellspacing="0" cellpadding="0">
@@ -76,34 +77,6 @@
     </div>
 </div>
 <input type="hidden" id="hdnInvoiceId" value="@ViewBag.InvoiceId" />
-@section scripts{
-    <script type="text/javascript">
-        $("#pdf").show();
-        $("#excel").hide();
-
-        $("#pdf").click(function () {
-            var invoiceId = $("#hdnInvoiceId").val();
-            if (invoiceId > 0) {
-                //generateInvoicePdf(invoiceId);
-                window.location.href = '/SOInvoice/DownloadPDF?invoiceId=' + invoiceId; 
-            }
-        });
-
-        @*generateInvoicePdf = function (invoiceId) {
-            $.ajax({
-                url: '/SOInvoice/GetInvoiceHtml',
-                data: { invoiceId: invoiceId },
-                type: 'Get',
-                dataType: 'json',
-                success: function (result) {
-                    if (result) {
-                        window.location.href = '@Url.Action("DownloadPDF", "SOInvoice")';
-                    }
-                    else {
-                    }
-                }
-            });
-        }*@
-    </script>
+@section styles{
 }
 

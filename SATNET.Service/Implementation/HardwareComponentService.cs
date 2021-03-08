@@ -162,10 +162,6 @@ namespace SATNET.Service.Implementation
             {
                  uow.CloseConnection();
             }
-
-
-
-
             return status;
         }
     }

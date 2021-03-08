@@ -87,6 +87,7 @@ namespace SATNET.Repository.Implementation
                     queryParameters.Add("@StatusId", statusId, DbType.Int32, ParameterDirection.Input);
                     var result = await dbCon.QueryAsync<Site>("SiteList", commandType: CommandType.StoredProcedure, param: queryParameters, transaction: UnitOfWork.Transaction);
                     sites = sites.Union(result).ToList();
+                    sites = sites.OrderBy(s => s.Name).ToList();
                 }
             }
             else

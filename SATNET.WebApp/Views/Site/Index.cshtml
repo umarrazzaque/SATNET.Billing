@@ -100,6 +100,7 @@
                     success: function (html) {
                         if (html !== null) {
                             $("#BodyContent").html(html);
+                            init_table_pagination('grid_table');
                         }
                     },
                     error: function () {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OfficeOpenXml;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
@@ -39,14 +40,34 @@ namespace SATNET.WebApp.Controllers
         [Authorize(Policy = "ReadOnlyLogisticsPolicy")]
         public async Task<IActionResult> Index()
         {
+            var hardwareModems = await _hardwareComponentService.List(new HardwareComponent()
+            {
+                SearchBy = "HC.HardwareTypeId",
+                Keyword = Convert.ToInt32(HardwareType.Modem).ToString()
+            });
+            ViewBag.SelectHardwareModems = new SelectList(hardwareModems, "Id", "HCValue");
+
+            var model = await GetUnRegisteredAIRMACList();
+            ViewBag.SelectUnRegisteredAIRMACs = new SelectList(model, "AIRMAC", "AIRMAC");
             //set session properties
             HttpContext.Session.SetString("product", "laptop");
             return View(await GetAirmacList());
         }
+        public async Task<List<HardwareComponentRegistrationModel>> GetUnRegisteredAIRMACList()
+        {
+            var retList = new List<HardwareComponentRegistrationModel>();
+            var serviceResult = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = "UnRegisteredAIRMAC" });
+            if (serviceResult.Any())
+            {
+                retList = _mapper.Map<List<HardwareComponentRegistrationModel>>(serviceResult);
+            }
+            return retList;
+        }
         private async Task<List<HardwareComponentRegistrationModel>> GetAirmacList()
         {
             var retList = new List<HardwareComponentRegistrationModel>();
-            var serviceResult = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { SearchBy = "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
+            var serviceResult = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = "UnRegisteredAIRMAC" });
+            //var serviceResult = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { SearchBy = "HC.HardwareTypeId", Keyword = Convert.ToInt32(HardwareType.Modem).ToString() });
             if (serviceResult.Any())
             {
                 retList = _mapper.Map<List<HardwareComponentRegistrationModel>>(serviceResult);
@@ -351,5 +372,21 @@ namespace SATNET.WebApp.Controllers
                 return Json("Error in Model Binding");
             }
         }
+        public async Task<IActionResult> GetAIRMACListByFilter(string modem, string airmac, string flag)
+        {
+            int modemId = 0;
+            if (modem != "")
+            {
+                modemId = Convert.ToInt32(modem);
+            }
+            var airmacs = new List<HardwareComponentRegistrationModel>();
+            var resultAIRMACs = await _hardwareComponentRegistrationService.List(new HardwareComponentRegistration() { Flag = flag, HardwareComponentId = modemId, AIRMAC = airmac});
+            if (resultAIRMACs.Any())
+            {
+                airmacs = _mapper.Map<List<HardwareComponentRegistrationModel>>(resultAIRMACs);
+            }
+            return PartialView("_List", airmacs);
+        }
+
     }
 }
