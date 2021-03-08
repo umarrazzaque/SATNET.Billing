@@ -163,11 +163,22 @@ namespace SATNET.WebApp.Controllers
                             {
                                 //try to avoid db call by checking from linq list
                                 hardwareComponentId = SpecificationExists("HC", "HC.HCValue", hardwareComponent);
-                                briefDescription += hardwareComponentId != -1 ? "" : "MODEM NUMBER NOT EXISTS - "; //MODEM MODEL NUMBER EXISTS
+                                briefDescription += hardwareComponentId != -1 ? "OK-" : "MODEM NUMBER NOT EXISTS - "; //MODEM MODEL NUMBER EXISTS
                             }
                             else
                             {
                                 briefDescription += "MODEM NUMBER IS EMPTY - ";
+                            }
+                            //check airmac number
+                            string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
+                            if (airMac != "")
+                            {
+                                isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
+                                briefDescription += isExist == true ? "Duplicate AIRMAC Number - " : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "OK-" : "AIRMAC NUMBER NOT EXISTS - ");//AIRMAC NUMBER EXISTS
+                            }
+                            else
+                            {
+                                briefDescription += "AIRMAC NUMBER IS EMPTY";
                             }
                             //check serial number
                             string serialNumber = worksheet.Cells[row, 2].Value != null ? worksheet.Cells[row, 2].Value.ToString().Trim() : "";
@@ -175,23 +186,13 @@ namespace SATNET.WebApp.Controllers
                             if (serialNumber != "")
                             {
                                 isExist = retModel.HardwareComponentImportList.Where(c => c.SerialNumber.Equals(serialNumber)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "" : "SERIAL NUMBER NOT EXISTS -");//SERIAL NUMBER EXISTS
+                                briefDescription += isExist == true ? "Duplicate Serail Number - " : (SpecificationExists("AIRMAC", "HCR.SerialNumber", serialNumber) > 0 ? "OK-" : "SERIAL NUMBER NOT EXISTS -");//SERIAL NUMBER EXISTS
                             }
                             else
                             {
                                 briefDescription += "SERIAL NUMBER IS EMPTY - ";
                             }
-                            //check airmac number
-                            string airMac = worksheet.Cells[row, 3].Value != null ? worksheet.Cells[row, 3].Value.ToString().Trim() : "";
-                            if (airMac != "")
-                            {
-                                isExist = retModel.HardwareComponentImportList.Where(c => c.AIRMAC.Equals(airMac)).ToList().Count > 0 ? true : false;
-                                briefDescription += isExist == true ? "Duplicate AIRMAC Number - " : (SpecificationExists("AIRMAC", "HCR.AIRMAC", airMac) > 0 ? "" : "AIRMAC NUMBER NOT EXISTS - ");//AIRMAC NUMBER EXISTS
-                            }
-                            else
-                            {
-                                briefDescription += "AIRMAC NUMBER IS EMPTY";
-                            }
+                            
                             //check all the specification exist in storage
                             if (!briefDescription.Contains("NUMBER NOT EXISTS"))
                             {
@@ -226,7 +227,7 @@ namespace SATNET.WebApp.Controllers
                                         if (cRes.Count == 1)
                                         {
                                             customerId = cRes.FirstOrDefault().Id;
-                                            briefDescription += "";
+                                            briefDescription += "OK-";
                                         }
                                         else
                                         {
@@ -245,7 +246,7 @@ namespace SATNET.WebApp.Controllers
                             }
                             else {
                                 //if (!briefDescription.Contains("NUMBER NOT EXISTS"))
-                                briefDescription += "Specification Not Exists";
+                                briefDescription += "SPECIFICATION NOT EXISTS{as a single record}";
                             }
                             if ( !(airMac.Equals("") && serialNumber.Equals("") && hardwareComponent.Equals("") ) ) {
                                 //add records in response list

@@ -5,13 +5,25 @@
 
     <div class="row">
         <div class="col-md-12">
-            <label id="import_state_label">@{
+            @{
                 string label_value = "";
-                if (Model.Any()) {
-                    label_value = Model.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0 ? "Error In File!" : "File Import Successfully!";
+                string label_style = "";
+                if (Model.Any())
+                {
+                    if (Model.Where(c => c.BriefDescription.Contains("Number")).ToList().Count > 0) {
+                        label_value = "ERROR IN FILE!";
+                        label_style = "color:red";
+                    }
+                    else
+                    {
+                        label_value = "FILE IMPORT SUCCESSFULLY!";
+                        label_style = "color:green";
+                    }
                 }
             }
-            @label_value</label>
+            <label id="import_state_label" style="@label_style">
+                @label_value
+            </label>
         </div>
     </div>
     <div class="table-responsive dataTables_wrapper dt-bootstrap4 mt-2">
@@ -64,8 +76,6 @@
                     }
                 </tr>
                 }
-
-
             </tbody>
         </table>
 
