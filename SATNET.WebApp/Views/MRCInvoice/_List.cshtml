@@ -11,7 +11,7 @@
                 @*<th class="text-center" width="30">
              <input type="checkbox">
         </th>*@
-                @*<th class="text-center">#</th>*@
+                <th class="text-center">#</th>
                 <th style="width:30%">Invoice Number</th>
                 <th style="width:15%"> Site Name </th>
                 <th style="width:15%"> Customer Name </th>
@@ -31,12 +31,12 @@
             {
             <tr>
                 @*<td class="text-center"> <input type="checkbox"></td>*@
-                @*<td class="text-center text-muted">
+                <td class="text-center text-muted">
             @{
                 counter++;
             }
             @counter
-        </td>*@
+        </td>
                 <td>
                     <a href="@String.Format("/{0}?id={1}", "MRCInvoice/ViewInvoice", @item.Id)" title="View Order Details" class="pl-1 pr-1 orderdetails">@item.InvoiceNumber</a>
                 </td>

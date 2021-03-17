@@ -351,5 +351,13 @@ namespace SATNET.WebApp.Controllers
             }
             return resultCount;
         }
+
+        public async Task<IActionResult> UnRegisterAirMac(string airmac)
+        {
+            StatusModel model = new StatusModel();
+            model = await _hardwareComponentRegistrationService.Update(new HardwareComponentRegistration() { Flag = "UnRegisterAIRMAC", AIRMAC = airmac });
+            model.IsReload = true;
+            return Json(model);
+        }
     }
 }

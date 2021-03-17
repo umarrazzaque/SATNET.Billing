@@ -88,6 +88,10 @@
             $("#selectCustomer").change(function () {
                 reLoadAIRMACList();
             });
+            $("#lnkUnRegisterAirmac").click(function () {
+                $('#modal-deleteConfirm .modal-header h6').html('Unregister AIRMAC Confirmation');
+                $('#modal-deleteConfirm .modal-body p').html('Are you sure that you want to unregister this AIRMAC?');
+            });
         });
 
         reLoadAIRMACList = function () {

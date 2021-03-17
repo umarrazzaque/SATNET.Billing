@@ -65,17 +65,14 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="hdnCustomerId" value="@ViewBag.CustomerId" />
     
 @section Scripts{
     <script type="text/javascript">
         $(function () {
             refreshCustomerSelectPicker();
             init_table_pagination('grid_table');
-            var _customerId = 0;
-            if (@ViewBag.CustomerId != null) {
-                _customerId=@ViewBag.CustomerId;
-            }
+
             $(".filters select#selectCustomer").change(function () {
                 GetSiteList();
             });
@@ -88,9 +85,14 @@
         });
 
         GetSiteList = function () {
-            var customerId = $("#selectCustomer").val();
             var statusId = $("#selectSiteStatus").val();
             var promotionId = $("#selectPromotion").val();
+
+            var customerId = $("#hdnCustomerId").val();
+            if (customerId == 0) {
+                customerId = $("#selectCustomer").val(); 
+            }
+                
             $.ajax(
                 {
                     url: '/Site/GetSiteListAjax',
@@ -118,14 +120,14 @@
                 noneResultsText: 'No results matched {0}',
 
                 // Sets the format for the text displayed when selectedTextFormat is count or count > #. {0} is the selected amount. {1} is total available for selection.
-                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options. 
+                // When set to a function, the first parameter is the number of selected options, and the second is the total number of options.
                 // The function must return a string.
                 countSelectedText: function (numSelected, numTotal) {
                     return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
                 },
 
                 // The text that is displayed when maxOptions is enabled and the maximum number of options for the given scenario have been selected.
-                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup. 
+                // If a function is used, it must return an array. array[0] is the text used when maxOptions is applied to the entire select element. array[1] is the text used when maxOptions is used on an optgroup.
                 // If a string is used, the same text is used for both the element and the optgroup.
                 maxOptionsText: function (numAll, numGroup) {
                     return [

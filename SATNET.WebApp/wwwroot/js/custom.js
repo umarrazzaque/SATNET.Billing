@@ -24,19 +24,19 @@ function init_table_pagination(tableName) {
         "lengthChange": true,
         "searching": true,
         "ordering": true,
-        "order": [],
+        //"order": [],
         "info": true,
         "autoWidth": false, 
-        "responsive": true,
-        "columnDefs": [
-            { "orderable": false, "targets": 0 }
-        ]
+        "responsive": true
+        //"columnDefs": [
+        //    { "orderable": false, "targets": 0 }
+        //]
     });
-    table.on('order.dt search.dt', function () {
+    /*table.on('order.dt search.dt', function () {
         table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
             cell.innerHTML = i + 1;
         });
-    }).draw();
+    }).draw();*/
     return table;
 }
 

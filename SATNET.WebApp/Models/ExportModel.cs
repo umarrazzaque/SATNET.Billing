@@ -11,7 +11,7 @@ namespace SATNET.WebApp.Models
     {
         public ExportModel()
         {
-            Property1 = Property2 = Property3 = Property4 = Property5 = Property6 = Property7 = Property8 = "";
+            Property1 = Property2 = Property3 = Property4 = Property5 = Property6 = Property7 = Property8 = Property9 = "";
         }
         public string Property1 { get; set; }
         public string Property2 { get; set; }
@@ -21,6 +21,7 @@ namespace SATNET.WebApp.Models
         public string Property6 { get; set; }
         public string Property7 { get; set; }
         public string Property8 { get; set; }
+        public string Property9 { get; set; }
     }
 }
     

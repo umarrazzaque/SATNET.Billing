@@ -78,12 +78,13 @@ namespace SATNET.WebApp
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("ManageServiceOrderPolicy", policy=>policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations"));
+                options.AddPolicy("ManageServiceOrderPolicy", policy=>policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "NOC"));
                 options.AddPolicy("ReadOnlyServiceOrderPolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
-                options.AddPolicy("ReadOnlySOInvoicePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting"));
+                options.AddPolicy("ReadOnlySOInvoicePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Management", "Accounting"));
                 options.AddPolicy("ReadOnlySitePolicy", policy => policy.RequireRole("Admin", "Reseller Accounting", "Reseller Operations", "Management", "Accounting", "NOC"));
                 options.AddPolicy("ReadOnlyLogisticsPolicy", policy => policy.RequireRole("Admin", "Management", "Accounting", "Logistics"));
                 options.AddPolicy("ManageLogisticsPolicy", policy => policy.RequireRole("Admin", "Accounting", "Logistics"));
+                options.AddPolicy("ReadOnlyReportsPolicy", policy => policy.RequireRole("Admin", "Accounting", "Reseller Accounting", "Management"));
             });
 
             
@@ -125,9 +126,10 @@ namespace SATNET.WebApp
             //services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ICodeErrorLogService, CodeErrorLogService>();
+            services.AddSingleton<ICodeErrorLogRepository, CodeErrorLogRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddScoped<IService<User>, UserService>();
             services.AddScoped<IService<ServicePlan>, ServicePlanService>();
             services.AddScoped<IService<ServicePlanPrice>, ServicePlanPriceService>();

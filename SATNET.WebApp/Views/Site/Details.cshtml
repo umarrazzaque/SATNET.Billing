@@ -16,7 +16,14 @@
         </div>
         <div class="page-title-actions">
             <div class="d-inline-block dropdown">
-                @await Html.PartialAsync("_Export")
+                <div class="dropdown d-inline-block">
+                    <button type="button" data-toggle="dropdown" class="mb-0 ml-2  btn  btn btn-info"> <span class="fa fa-download" aria-hidden="true" data-toggle="tooltip" title="Export"></span> <i class="fa fa-angle-down ml-2"></i></button>
+                    <div tabindex="-1" role="menu" class="dropdown-menu">
+                        <button id="btnExportSite" type="button" tabindex="0" class="dropdown-item"> <span class="fa fa-file-excel" aria-hidden="true"></span> &nbsp;Excel</button>
+                        <button style="display:none;" id="pdf" type="button" tabindex="0" class="dropdown-item"> <span class="fa fa-file-pdf" aria-hidden="true"></span> &nbsp;PDF</button>
+                        @*<button type="button" tabindex="0" class="dropdown-item">Print</button>*@
+                    </div>
+                </div>
                 <a href="@String.Format("/{0}", "Site/Index")" class=" btn btn-danger ">
                     Back
                 </a>
@@ -101,11 +108,56 @@
     </div>
     <div class="col-lg-6">
         <div class="position-relative form-group">
+            @Html.LabelFor(model => model.UpdatedOn, new { })
+            @Html.EditorFor(model => model.UpdatedOn, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative form-group">
             @Html.LabelFor(model => model.NextBillingDate, new { })
             @Html.EditorFor(model => model.NextBillingDate, new { htmlAttributes = new { @class = "form-control text-input", @readonly = "readonly" } })
         </div>
     </div>
 </div>
-
+<input type="hidden" id="hdnSiteId" value="@ViewBag.SiteId"/>
 <!-- /.Main content -->
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnExportSite").click(function (e) {
+                e.preventDefault();
+                window.location.href = '/Site/Excel?siteId=' + $('#hdnSiteId').val();
+            });
+        });
+
+        GetSiteList = function () {
+            var statusId = $("#selectSiteStatus").val();
+            var promotionId = $("#selectPromotion").val();
+
+            var customerId = $("#hdnCustomerId").val();
+            if (customerId == 0) {
+                customerId = $("#selectCustomer").val();
+            }
+
+            $.ajax(
+                {
+                    url: '/Site/GetSiteListAjax',
+                    data: { customerId: customerId, statusId: statusId, promotionId: promotionId },
+                    type: 'get',
+                    dataType: "html",
+                    success: function (html) {
+                        if (html !== null) {
+                            $("#BodyContent").html(html);
+                            init_table_pagination('grid_table');
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while processing the request.');
+                    }
+                });
+        }
+
+    </script>
+}
 

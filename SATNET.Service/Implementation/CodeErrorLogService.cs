@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Implementation
 {
-    public class ErrorLogService : IErrorLogService
+    public class CodeErrorLogService : ICodeErrorLogService
     {
-        private readonly IRepository<ErrorLog> _errorLogRepository;
-        public ErrorLogService(IRepository<ErrorLog> errorLogRepository)
+        private readonly ICodeErrorLogRepository _errorLogRepository;
+        public CodeErrorLogService(ICodeErrorLogRepository errorLogRepository)
         {
             _errorLogRepository = errorLogRepository;
         }
-        public async Task Add(ErrorLog obj)
+        public async Task Add(CodeErrorLog obj)
         {
             try
             {

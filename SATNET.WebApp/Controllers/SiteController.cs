@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using SATNET.Domain;
 using SATNET.Domain.Enums;
 using SATNET.Service;
@@ -131,6 +135,7 @@ namespace SATNET.WebApp.Controllers
         {
             Site obj = await _siteService.Get(id);
             SiteModel retModel = _mapper.Map<SiteModel>(obj);
+            ViewBag.SiteId = id;
             //var status = new StatusModel
             //{
             //    IsSuccess = true,
@@ -214,5 +219,56 @@ namespace SATNET.WebApp.Controllers
             return PartialView("_Site", model);
         }
 
+        public async Task<IActionResult> Excel(int siteId)
+        {
+            string fileName;
+            //List<SiteModel> sites = new List<SiteModel>();
+            Site obj = await _siteService.Get(siteId);
+            //SiteModel model = _mapper.Map<SiteModel>(obj);
+            fileName = obj.Name + ".xlsx";
+            //sites.Add(model);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Site Detail");
+                //ws.Cells["A1"].LoadFromCollection(sites, true);
+                // Load your collection site detail
+                ws.Cells[1, 1].Value = "Name";
+                ws.Cells[1, 2].Value = "Status";
+                ws.Cells[1, 3].Value = "City";
+                ws.Cells[1, 4].Value = "Area";
+                ws.Cells[1, 5].Value = "Subscriber";
+                ws.Cells[1, 6].Value = "Promotion";
+                ws.Cells[1, 7].Value = "Service Plan Type";
+                ws.Cells[1, 8].Value = "Service Plan";
+                ws.Cells[1, 9].Value = "Modem Model";
+                ws.Cells[1, 10].Value = "AIRMAC";
+                ws.Cells[1, 11].Value = "IP";
+                ws.Cells[1, 12].Value = "Planned Activation Date";
+                ws.Cells[1, 13].Value = "Last Modified Date";
+                ws.Cells[1, 14].Value = "Next Billing Date";
+                ws.Cells[1, 1, 1, 20].Style.Font.Bold = true;
+
+                ws.Cells[2, 1].Value = obj.Name;
+                ws.Cells[2, 2].Value = obj.Status;
+                ws.Cells[2, 3].Value = obj.City;
+                ws.Cells[2, 4].Value = obj.Area;
+                ws.Cells[2, 5].Value = obj.SubscriberName;
+                ws.Cells[2, 6].Value = obj.Promotion;
+                ws.Cells[2, 7].Value = obj.ServicePlanType;
+                ws.Cells[2, 8].Value = obj.ServicePlan;
+                ws.Cells[2, 9].Value = obj.ModemModel;
+                ws.Cells[2, 10].Value = obj.AirMac;
+                ws.Cells[2, 11].Value = obj.IPName;
+                ws.Cells[2, 12].Value = obj.ActivationDate.ToShortDateString();
+                ws.Cells[2, 13].Value = obj.UpdatedOn;
+                ws.Cells[2, 14].Value = obj.NextBillingDate.ToShortDateString();
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+
+                return File(fileBytes, "application/vnd.ms-excel", fileName);
+            }
+        }
     }
 }

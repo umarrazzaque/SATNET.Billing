@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SATNET.Domain
 {
-    public class ErrorLog : BaseEntity
+    public class CodeErrorLog : BaseEntity
     {
         public string Details { get; set; }
         public string Module { get; set; }

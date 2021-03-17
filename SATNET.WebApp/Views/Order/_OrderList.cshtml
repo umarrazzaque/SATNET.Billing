@@ -70,7 +70,7 @@
                     </td>
                     <td class="text-center">
                         <div class="buttons">
-                            @if (User.IsInRole("Admin"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("NOC"))
                             {
                                 if (item.StatusId == 20)
                                 {

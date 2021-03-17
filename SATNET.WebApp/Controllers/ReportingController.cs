@@ -32,7 +32,7 @@ namespace SATNET.WebApp.Controllers
         #region Site Ledger Report
 
         [HttpGet]
-        [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
+        [Authorize(Policy = "ReadOnlyReportsPolicy")]
         public async Task<IActionResult> GetSiteLedgerReport()
         {
             //var model = new SiteLedgerAllReport();
@@ -103,7 +103,7 @@ namespace SATNET.WebApp.Controllers
 
         #region Receivable per Category
         [HttpGet]
-        [Authorize(Policy = "ReadOnlySOInvoicePolicy")]
+        [Authorize(Policy = "ReadOnlyReportsPolicy")]
         public async Task<IActionResult> GetReceivableByCategoryReport()
         {
             List<Customer> customers = new List<Customer>();

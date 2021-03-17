@@ -14,9 +14,11 @@ namespace SATNET.Service.Implementation
     public class CustomerService : IService<Customer>
     {
         private readonly ExceptionService _exceptionService;
-        public CustomerService()
+        private readonly ICodeErrorLogRepository _codeErrorRepository;
+        public CustomerService(ICodeErrorLogRepository codeErrorRepository)
         {
             _exceptionService = new ExceptionService();
+            _codeErrorRepository = codeErrorRepository;
         }
         public async Task<StatusModel> Add(Customer obj)
         {
@@ -44,8 +46,9 @@ namespace SATNET.Service.Implementation
             catch (Exception e)
             {
                 status.IsSuccess = false;
-                status.ErrorCode = _exceptionService.HandleException(e).ErrorCode;
+                //status.ErrorCode = _exceptionService.HandleException(e).ErrorCode;
                 status.ErrorDescription = e.Message;
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "CustomerService", MethodName = "Add", Module = "Customer", CreatedBy = 1 });
             }
             finally
             {
@@ -80,6 +83,8 @@ namespace SATNET.Service.Implementation
             catch (Exception e)
             {
                 status.ErrorCode = "Cannot delete record due to referential records.";
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "CustomerService", MethodName = "Delete", Module = "Customer", CreatedBy = 1 });
+
             }
             finally
             {
@@ -104,7 +109,7 @@ namespace SATNET.Service.Implementation
             }
             catch (Exception e)
             {
-
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "CustomerService", MethodName = "Get", Module = "Customer", CreatedBy = 1 });
             }
             finally
             {
@@ -127,7 +132,7 @@ namespace SATNET.Service.Implementation
             }
             catch (Exception e)
             {
-
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "CustomerService", MethodName = "List", Module = "Customer", CreatedBy = 1 });
             }
             finally
             {
@@ -164,6 +169,7 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing request.";
                 status.ErrorDescription = e.Message;
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "CustomerService", MethodName = "Update", Module = "Customer", CreatedBy = 1 });
             }
             finally
             {

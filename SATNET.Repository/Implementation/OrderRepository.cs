@@ -148,6 +148,7 @@ namespace SATNET.Repository.Implementation
                 }
                 catch (Exception e)
                 {
+                    throw;
                 }
             }
             return result;

@@ -1,0 +1,187 @@
+﻿<li>
+    <a href="@Url.Action("Index","Home")" class="">
+        <i class="metismenu-icon icofont-contrast"></i> Dashboard
+    </a>
+</li>
+@*//Site Monitor*@
+<li>
+    <a href="@Url.Action("Index", "Site")" class="">
+        <i class="metismenu-icon icofont-site-map"></i> Site Monitor
+    </a>
+</li>
+@*//Service Orders*@
+<li>
+    <a href="@String.Format("/{0}", "Order")" class="">
+        <i class="metismenu-icon icofont-shopping-cart"></i> Service Orders
+    </a>
+</li>
+@*//Billing*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-bill"></i> Billing
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+            <a href="@String.Format("/{0}", "SOInvoice")" class="" title="View Service Order Invoices">
+                <i class="metismenu-icon icofont-bill"></i> Service Order Invoices
+            </a>
+            <a href="@String.Format("/{0}", "MRCInvoice")" class="" title="View Service Order Invoices">
+                <i class="metismenu-icon icofont-bill"></i> MRC Invoices
+            </a>
+            <a href="@String.Format("/{0}", "CreditNote")" class="" title="View Service Order Credit Notes">
+                <i class="metismenu-icon icofont-bill"></i>Service Order Credit Notes
+            </a>
+            <a href="#" class="" title="View Hardware Order Invoices">
+                <i class="metismenu-icon icofont-bill"></i>Purchase Order Invoices
+            </a>
+        </li>
+    </ul>
+</li>
+@*//Reports*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-look"></i> Reports
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+            <a href="@String.Format("/{0}", "Reporting/GetSiteLedgerReport")" class="" title="View Service Order Invoices">
+                <i class="metismenu-icon icofont-bill"></i> Site Ledger
+            </a>
+            @* <a href="@String.Format("/{0}", "Reporting/GetReceivableByCategoryReport")" class="" title="View Service Order Invoices">
+                    <i class="metismenu-icon icofont-bill"></i> Receivable per Category
+                </a>*@
+        </li>
+    </ul>
+</li>
+@*//Systems Log*@
+<li>
+    <a href="@Url.Action("Index", "SystemLogs")" class="">
+        <i class="metismenu-icon icofont-telescope"></i> System Logs
+    </a>
+</li>
+
+@*//Customer*@
+<li>
+    <a href="@Url.Action("Index", "Customer")" class="">
+        <i class="metismenu-icon icofont-architecture-alt"></i> Customers
+    </a>
+</li>
+@*//Hardware*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-wifi-router"></i> Hardware
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+
+            <a href="@Url.Action("Index","HardwareType")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Hardware Type
+            </a>
+            <a href="@Url.Action("Index","HardwareComponent")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Hardware Component
+            </a>
+            <a href="@Url.Action("Index","HardwareKit")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Hardware Kit
+            </a>
+            @*<a href="@Url.Action("Index","HardwareComponentRegistration")" class="">
+                    <i class="metismenu-icon icofont-library"></i> Manage Hardware Registration
+                </a>*@
+
+        </li>
+    </ul>
+</li>
+@*Logistics*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-truck-loaded"></i> Logistics
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+
+            <a href="@Url.Action("Index","LogisticsAIRMAC")" class="">
+                <i class="metismenu-icon icofont-library"></i> AIRMAC
+            </a>
+            <a href="@Url.Action("Index","LogisticsAIRMACReg")" class="">
+                <i class="metismenu-icon icofont-library"></i> Registered AIRMACs
+            </a>
+            <a href="@Url.Action("Index","LogisticBUC")" class="">
+                <i class="metismenu-icon icofont-library"></i> BUC
+            </a>
+            <a href="@Url.Action("Index","LogisticBUCReg")" class="">
+                <i class="metismenu-icon icofont-library"></i> Registered BUCs
+            </a>
+
+        </li>
+    </ul>
+</li>
+@*//Service Plan*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-library"></i> Service Plan
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+            <a href="@Url.Action("Index", "ServicePlan")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Plan
+            </a>
+            <a href="@Url.Action("Index", "ServicePlanPrice")" class="">
+                <i class="metismenu-icon icofont-contrast"></i> Manage Plan Pricelist
+            </a>
+            <a href="@Url.Action("Index","PlanType")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Plan Type
+            </a>
+        </li>
+    </ul>
+</li>
+@*//IP*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-network"></i> IP
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+            <a href="@Url.Action("Index", "IP")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage IPs
+            </a>
+            <a href="@Url.Action("Index", "IPPrice")" class="">
+                <i class="metismenu-icon icofont-contrast"></i>Manage IPs Pricelists
+            </a>
+        </li>
+    </ul>
+</li>
+@*// Token*@
+<li>
+    <a href="" class="">
+        <i class="metismenu-icon icofont-coins"></i> Token
+        <i class="metismenu-state-icon icofont-simple-down caret-left"></i>
+    </a>
+    <ul class="vertical-nav-menu">
+        <li>
+            <a href="@Url.Action("Index", "Token")" class="">
+                <i class="metismenu-icon icofont-library"></i> Manage Tokens
+            </a>
+            <a href="@Url.Action("Index", "TokenPrice")" class="">
+                <i class="metismenu-icon icofont-contrast"></i>Manage Token Pricelists
+            </a>
+        </li>
+    </ul>
+</li>
+@*// Promotion*@
+<li>
+    <a href="@Url.Action("Index", "Promotion")" class="">
+        <i class="metismenu-icon icofont-sale-discount"></i> Promotion
+    </a>
+</li>
+@*// User*@
+<li>
+    <a href="@Url.Action("Index", "User")" class="">
+        <i class="metismenu-icon icofont-user"></i> User
+    </a>
+</li>
+

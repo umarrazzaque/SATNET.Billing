@@ -34,15 +34,15 @@ namespace SATNET.WebApp.BackgroundTasks
             //ITrigger invoiceTrigger = CreateTrigger(invoiceJobMetaData);
 
             //MRC job which runs every month to generate recurring invoices 
-            var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 0 1 1 * ?"); //(live) At 01:00:00am, on the 1st day, every month 
-            //var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 */5 * ? * *"); // // Every 2 minutes
+            //var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 0 1 1 * ?"); //(live) At 01:00:00am, on the 1st day, every month 
+            var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 */5 * ? * *"); // // Every 2 minutes
             //var MRCJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "MCR Job", "0 0 1 * * ?"); // Every day at 1am
             IJobDetail _MRCJob = CreateJob(MRCJobMetaData);
             ITrigger MRCTrigger = CreateTrigger(MRCJobMetaData);
 
             //End of month job which runs at the end of month 
             //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(MRCJob), "End of month job", "0 0 21 ? * * *"); // At 21:00:00pm every day 
-            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */2 * ? * *"); // Every 5 minutes
+            //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */3 * ? * *"); // Every 5 minutes
             var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 0 21 L * ?"); //(live) At 21:00:00pm, on the last day of the month, every month
             //var endOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(EndOfMonthJob), "End of month job", "0 */30 * ? * *"); // Every 30 minutes
 
@@ -51,7 +51,7 @@ namespace SATNET.WebApp.BackgroundTasks
 
             //10th of each month job e.g to terminate all locked sites of previous month.
             //var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 0 20 ? * * *"); // At 20:00:00pm every day 
-            //var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 */2 * ? * *"); // Every 1 minutes
+            //var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 */5 * ? * *"); // Every 1 minutes
             var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 0 1 10 * ?"); //(live) At 01:00:00am, on the 10th day, every month
             //var tenthOfMonthJobMetaData = new JobMetadata(Guid.NewGuid(), typeof(TenthOfMonthJob), "Tenth of month Job", "0 */30 * ? * *"); // Every 30 minutes
             IJobDetail _tenthOfMonthJob = CreateJob(tenthOfMonthJobMetaData);

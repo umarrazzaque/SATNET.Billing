@@ -12,7 +12,12 @@ namespace SATNET.Service.Implementation
 {
     public class SiteService : IService<Site>
     {
+        private readonly ICodeErrorLogRepository _codeErrorRepository;
 
+        public SiteService(ICodeErrorLogRepository codeErrorRepository)
+        {
+            _codeErrorRepository = codeErrorRepository;
+        }
         public async Task<StatusModel> Add(Site obj)
         {
             var uow = new UnitOfWorkFactory().Create();
@@ -94,6 +99,7 @@ namespace SATNET.Service.Implementation
             }
             catch (Exception e)
             {
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "SiteService", MethodName = "Get", Module = "Site", CreatedBy = 1 });
 
             }
             finally
@@ -115,6 +121,7 @@ namespace SATNET.Service.Implementation
             }
             catch (Exception e)
             {
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "SiteService", MethodName = "List", Module = "Site", CreatedBy = 1 });
 
             }
             finally

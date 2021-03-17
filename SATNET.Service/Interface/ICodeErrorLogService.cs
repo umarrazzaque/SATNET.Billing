@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SATNET.Service.Interface
 {
-    public interface IErrorLogService
+    public interface ICodeErrorLogService
     {
-        public Task Add(ErrorLog obj);
+        public Task Add(CodeErrorLog obj);
     }
 }

@@ -17,15 +17,17 @@ namespace SATNET.Service.Implementation
         private readonly IRepository<Site> _siteRepository;
         private readonly IRepository<Lookup> _lookupRepository;
         private readonly IAPIService _APIService;
+        private readonly ICodeErrorLogRepository _codeErrorRepository;
         public OrderService()
         {
         }
-        public OrderService(IRepository<Order> orderRepository, IRepository<Site> siteRepository, IAPIService APIService, IRepository<Lookup> lookupRepository)
+        public OrderService(ICodeErrorLogRepository codeErrorRepository, IRepository<Order> orderRepository, IRepository<Site> siteRepository, IAPIService APIService, IRepository<Lookup> lookupRepository)
         {
             _orderRepository = orderRepository;
             _siteRepository = siteRepository;
             _APIService = APIService;
             _lookupRepository = lookupRepository;
+            _codeErrorRepository = codeErrorRepository;
         }
         public async Task<Order> Get(int id)
         {
@@ -59,7 +61,7 @@ namespace SATNET.Service.Implementation
             var status = new StatusModel { IsSuccess = true, ResponseUrl = "/Order/Index" };
             try
             {
-                status = await PassBusinessRules(order);
+                status = await IsPassedBusinessRules(order);
                 if (!status.IsSuccess)
                 {
                     return status;
@@ -96,6 +98,7 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing the request.";
                 status.ErrorDescription = e.Message;
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "OrderService", MethodName = "Add", Module = "Service Order", CreatedBy = 1 });
             }
             finally
             {
@@ -127,6 +130,7 @@ namespace SATNET.Service.Implementation
                 status.IsSuccess = false;
                 status.ErrorCode = "An error occured while processing the request.";
                 status.ErrorDescription = e.Message;
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "OrderService", MethodName = "Update", Module = "Service Order", CreatedBy = 1 });
             }
             finally
             {
@@ -153,6 +157,8 @@ namespace SATNET.Service.Implementation
             catch (Exception e)
             {
                 status.ErrorCode = "An error occured while processing request.";
+                await _codeErrorRepository.Add(new CodeErrorLog() { Details = e.Message, ClassName = "OrderService", MethodName = "Delete", Module = "Service Order", CreatedBy = 1 });
+
             }
             finally
             {
@@ -333,7 +339,7 @@ namespace SATNET.Service.Implementation
             }
             return status;
         }
-        private async Task<StatusModel> PassBusinessRules(Order order)
+        private async Task<StatusModel> IsPassedBusinessRules(Order order)
         {
             var status = new StatusModel { IsSuccess = true, ResponseUrl = "/Order/Index" };
             if (order.RequestTypeId == 3) // business rule: upgrade is possible only one time in a month.

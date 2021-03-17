@@ -17,11 +17,11 @@ namespace SATNET.Service.Implementation
         private readonly IService<Order> _orderService;
         private readonly IBackgroundTaskRepository _backgroundTaskRepository;
         private readonly IAPIService _APIService;
-        public BackgroundTaskService(IBackgroundTaskRepository backgroundTaskRepository, IConfiguration configuration)
+        public BackgroundTaskService(IBackgroundTaskRepository backgroundTaskRepository, IConfiguration configuration, ICodeErrorLogRepository errorLogRepository)
         {
             _backgroundTaskRepository = backgroundTaskRepository;
-            _siteService = new SiteService();
-            _orderService = new OrderService(new OrderRepository(configuration), new SiteRepository(new UnitOfWork()) , new APIService(configuration), new LookupRepository(new UnitOfWork()));
+            _siteService = new SiteService(errorLogRepository);
+            _orderService = new OrderService(errorLogRepository, new OrderRepository(configuration), new SiteRepository(new UnitOfWork()) , new APIService(configuration), new LookupRepository(new UnitOfWork()));
             _APIService = new APIService(configuration);
         }
         public void InsertMRCInvoice()
